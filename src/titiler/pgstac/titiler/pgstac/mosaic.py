@@ -1,6 +1,6 @@
 """STACAPI Backend."""
 
-from typing import Any, Dict, List, Tuple, Type, Union
+from typing import Any, Coroutine, Dict, List, Tuple, Type, Union
 
 import asyncpg
 import attr
@@ -13,12 +13,12 @@ from geojson_pydantic import Point, Polygon
 from morecantile import TileMatrixSet
 from morecantile.utils import bbox_to_feature
 from rio_tiler.constants import WEB_MERCATOR_TMS
-from rio_tiler.errors import PointOutsideBounds
 from rio_tiler.models import ImageData
-from rio_tiler.mosaic import mosaic_reader
-from rio_tiler.tasks import multi_values
 
+from titiler.pgstac.compat import AsyncReader, async_mosaic_reader
 from titiler.pgstac.reader import CustomSTACReader
+
+async_reader = type("AsyncReader", (AsyncReader,), {"reader": CustomSTACReader})
 
 
 @attr.s
@@ -42,7 +42,7 @@ class STACAPIBackend(BaseBackend):
     minzoom: int = attr.ib(default=0)
     maxzoom: int = attr.ib(default=30)
 
-    reader: Type[CustomSTACReader] = attr.ib(init=False, default=CustomSTACReader)
+    reader: Type[AsyncReader] = attr.ib(init=False, default=async_reader)
 
     # The reader is read-only, we can't pass mosaic_def to the init method
     mosaic_def: MosaicJSON = attr.ib(init=False)
@@ -121,32 +121,35 @@ class STACAPIBackend(BaseBackend):
         if reverse:
             mosaic_assets = list(reversed(mosaic_assets))
 
-        def _reader(item_id: str, x: int, y: int, z: int, **kwargs: Any) -> ImageData:
+        async def _reader(
+            item_id: str, x: int, y: int, z: int, **kwargs: Any
+        ) -> Coroutine[Any, Any, ImageData]:
             item = list(filter(lambda x: x["id"] == item_id, mosaic_assets))[0]
-            with self.reader(item, **self.reader_options) as src_dst:
-                return src_dst.tile(x, y, z, **kwargs)
+            async with self.reader(item, **self.reader_options) as src_dst:
+                return await src_dst.tile(x, y, z, **kwargs)
 
         ids = [assets["id"] for assets in mosaic_assets]
-        return mosaic_reader(ids, _reader, tile_x, tile_y, tile_z, **kwargs)
+        return await async_mosaic_reader(ids, _reader, tile_x, tile_y, tile_z, **kwargs)
 
     async def point(
         self, lon: float, lat: float, reverse: bool = False, **kwargs: Any,
     ) -> List:
         """Get Point value from multiple observation."""
-        mosaic_assets = await self.assets_for_point(lon, lat)
-        if not mosaic_assets:
-            raise NoAssetFoundError(f"No assets found for point ({lon},{lat})")
+        raise NotImplementedError
+        # mosaic_assets = await self.assets_for_point(lon, lat)
+        # if not mosaic_assets:
+        #     raise NoAssetFoundError(f"No assets found for point ({lon},{lat})")
 
-        if reverse:
-            mosaic_assets = list(reversed(mosaic_assets))
+        # if reverse:
+        #     mosaic_assets = list(reversed(mosaic_assets))
 
-        def _reader(item_id: str, lon: float, lat: float, **kwargs) -> Dict:
-            item = list(filter(lambda x: x["id"] == item_id, mosaic_assets))[0]
-            with self.reader(item_id, item=item, **self.reader_options) as src_dst:
-                return src_dst.point(lon, lat, **kwargs)
+        # def _reader(item_id: str, lon: float, lat: float, **kwargs) -> Dict:
+        #     item = list(filter(lambda x: x["id"] == item_id, mosaic_assets))[0]
+        #     with self.reader(item_id, item=item, **self.reader_options) as src_dst:
+        #         return src_dst.point(lon, lat, **kwargs)
 
-        if "allowed_exceptions" not in kwargs:
-            kwargs.update({"allowed_exceptions": (PointOutsideBounds,)})
+        # if "allowed_exceptions" not in kwargs:
+        #     kwargs.update({"allowed_exceptions": (PointOutsideBounds,)})
 
-        ids = [assets["id"] for assets in mosaic_assets]
-        return list(multi_values(ids, _reader, lon, lat, **kwargs).items())
+        # ids = [assets["id"] for assets in mosaic_assets]
+        # return list(multi_values(ids, _reader, lon, lat, **kwargs).items())
