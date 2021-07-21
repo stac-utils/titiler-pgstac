@@ -2,16 +2,15 @@
 
 from typing import Any, Dict, List, Tuple, Type, Union
 
-import asyncpg
 import attr
 import morecantile
-from buildpg import render
 from cogeo_mosaic.backends import BaseBackend
 from cogeo_mosaic.errors import NoAssetFoundError
 from cogeo_mosaic.mosaic import MosaicJSON
 from geojson_pydantic import Point, Polygon
 from morecantile import TileMatrixSet
 from morecantile.utils import bbox_to_feature
+from psycopg2 import pool as psycopg2Pool
 from rio_tiler.constants import WEB_MERCATOR_TMS
 from rio_tiler.errors import PointOutsideBounds
 from rio_tiler.models import ImageData
@@ -26,7 +25,7 @@ class STACAPIBackend(BaseBackend):
     """PGSTAC Api Mosaic Backend."""
 
     path: str = attr.ib()
-    pool: asyncpg.pool = attr.ib()
+    pool: psycopg2Pool = attr.ib()
 
     reader_options: Dict = attr.ib(factory=dict)
 
@@ -74,36 +73,38 @@ class STACAPIBackend(BaseBackend):
         """This method is not used but is required by the abstract class."""
         pass
 
-    async def assets_for_tile(self, x: int, y: int, z: int) -> List[Dict]:
+    def assets_for_tile(self, x: int, y: int, z: int) -> List[Dict]:
         """Retrieve assets for tile."""
         bbox = self.tms.bounds(morecantile.Tile(x, y, z))
-        return await self.get_assets(
+        return self.get_assets(
             Polygon(coordinates=bbox_to_feature(*bbox)["coordinates"])
         )
 
-    async def assets_for_point(self, lng: float, lat: float) -> List[Dict]:
+    def assets_for_point(self, lng: float, lat: float) -> List[Dict]:
         """Retrieve assets for point."""
-        return await self.get_assets(Point(coordinates=(0, 0)))
+        return self.get_assets(Point(coordinates=(0, 0)))
 
     # TODO: add LRU cache
-    async def get_assets(self, geom: Union[Point, Polygon]) -> List[Dict]:
+    def get_assets(self, geom: Union[Point, Polygon]) -> List[Dict]:
         """Find assets."""
-        async with self.pool.acquire() as conn:
-            q, p = render(
-                """
-                SELECT * FROM items_for_geom(:mosaicid::text, :geom::text::jsonb);
-                """,
-                mosaicid=self.path,
-                geom=geom.json(exclude_none=True),
-            )
-            items = await conn.fetchval(q, *p)
+        conn = self.pool.getconn()
+        try:
+            with conn:
+                with conn.cursor() as cursor:
+                    cursor.execute(
+                        f"SELECT * FROM items_for_geom('{self.path}'::text, '{geom.json(exclude_none=True)}'::text::jsonb);"
+                    )
+                    items = cursor.fetchone()[0]
+        finally:
+            self.pool.putconn(conn)
+
         return items.get("features", [])
 
     @property
     def _quadkeys(self) -> List[str]:
         return []
 
-    async def tile(
+    def tile(
         self,
         tile_x: int,
         tile_y: int,
@@ -112,7 +113,7 @@ class STACAPIBackend(BaseBackend):
         **kwargs: Any,
     ) -> Tuple[ImageData, List[str]]:
         """Get Tile from multiple observation."""
-        mosaic_assets = await self.assets_for_tile(tile_x, tile_y, tile_z)
+        mosaic_assets = self.assets_for_tile(tile_x, tile_y, tile_z)
         if not mosaic_assets:
             raise NoAssetFoundError(
                 f"No assets found for tile {tile_z}-{tile_x}-{tile_y}"
@@ -129,11 +130,11 @@ class STACAPIBackend(BaseBackend):
         ids = [assets["id"] for assets in mosaic_assets]
         return mosaic_reader(ids, _reader, tile_x, tile_y, tile_z, **kwargs)
 
-    async def point(
+    def point(
         self, lon: float, lat: float, reverse: bool = False, **kwargs: Any,
     ) -> List:
         """Get Point value from multiple observation."""
-        mosaic_assets = await self.assets_for_point(lon, lat)
+        mosaic_assets = self.assets_for_point(lon, lat)
         if not mosaic_assets:
             raise NoAssetFoundError(f"No assets found for point ({lon},{lat})")
 

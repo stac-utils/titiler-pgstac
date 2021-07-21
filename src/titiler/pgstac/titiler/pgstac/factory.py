@@ -6,7 +6,6 @@ from typing import Any, Callable, Dict, List, Optional, Type
 from urllib.parse import urlencode
 
 import rasterio
-from buildpg import render
 from cogeo_mosaic.backends import BaseBackend
 from morecantile import TileMatrixSet
 from pydantic import BaseModel, root_validator, validator
@@ -97,7 +96,7 @@ class MosaicTilerFactory(BaseTilerFactory):
             "/tiles/{mosaicid}/{TileMatrixSetId}/{z}/{x}/{y}@{scale}x.{format}",
             **img_endpoint_params,
         )
-        async def tile(
+        def tile(
             request: Request,
             mosaicid=Depends(self.path_dependency),
             z: int = Path(..., ge=0, le=30, description="Mercator tiles's zoom level"),
@@ -136,7 +135,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                         mosaic_read = t.from_start
                         timings.append(("mosaicread", round(mosaic_read * 1000, 2)))
 
-                        data, _ = await src_dst.tile(
+                        data, _ = src_dst.tile(
                             x,
                             y,
                             z,
@@ -266,7 +265,7 @@ class MosaicTilerFactory(BaseTilerFactory):
             responses={200: {"description": "Create a Mosaic."}},
             response_model=TileJSON,
         )
-        async def create_mosaic(
+        def create_mosaic(
             request: Request,
             body: MosaicCreate,
             tms: TileMatrixSet = Depends(self.tms_dependency),
@@ -292,14 +291,16 @@ class MosaicTilerFactory(BaseTilerFactory):
             kwargs: Dict = Depends(self.additional_dependency),  # noqa
         ):
             pool = request.app.state.writepool
-            async with pool.acquire() as conn:
-                q, p = render(
-                    """
-                    SELECT * FROM create_mosaic(:req::text::jsonb);
-                    """,
-                    req=body.json(exclude_none=True),
-                )
-                mosaicid = await conn.fetchval(q, *p)
+            conn = pool.getconn()
+            try:
+                with conn:
+                    with conn.cursor() as cursor:
+                        cursor.execute(
+                            f"SELECT * FROM create_mosaic('{body.json(exclude_none=True)}'::text::jsonb);"
+                        )
+                        mosaicid = cursor.fetchone()[0]
+            finally:
+                pool.putconn(conn)
 
             route_params = {
                 "mosaicid": mosaicid,

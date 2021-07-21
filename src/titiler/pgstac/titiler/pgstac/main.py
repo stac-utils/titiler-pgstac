@@ -1,20 +1,17 @@
 """FastAPI application using PGStac."""
 
 from fastapi import FastAPI
-from stac_fastapi.pgstac.config import Settings as pgStacSettings
-from stac_fastapi.pgstac.db import close_db_connection, connect_to_db
 from starlette.middleware.cors import CORSMiddleware
 from titiler.core.errors import DEFAULT_STATUS_CODES, add_exception_handlers
 from titiler.mosaic.errors import MOSAIC_STATUS_CODES
+from titiler.pgstac.db import close_db_connection, connect_to_db
 from titiler.pgstac.factory import MosaicTilerFactory
 from titiler.pgstac.settings import ApiSettings
 from titiler.pgstac.version import __version__ as titiler_pgstac_version
 
 settings = ApiSettings()
-pg_settings = pgStacSettings()
 
-app = FastAPI(title=settings.name, version=titiler_pgstac_version,)
-app.state.settings = pg_settings
+app = FastAPI(title=settings.name, version=titiler_pgstac_version)
 
 
 @app.on_event("startup")
