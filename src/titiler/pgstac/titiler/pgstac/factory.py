@@ -296,7 +296,8 @@ class MosaicTilerFactory(BaseTilerFactory):
                 with conn:
                     with conn.cursor() as cursor:
                         cursor.execute(
-                            f"SELECT * FROM create_mosaic('{body.json(exclude_none=True)}'::text::jsonb);"
+                            """SELECT * FROM create_mosaic(%s::text::jsonb);""",
+                            (body.json(exclude_none=True)),
                         )
                         mosaicid = cursor.fetchone()[0]
             finally:

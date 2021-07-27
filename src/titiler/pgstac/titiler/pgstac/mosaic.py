@@ -92,7 +92,8 @@ class STACAPIBackend(BaseBackend):
             with conn:
                 with conn.cursor() as cursor:
                     cursor.execute(
-                        f"SELECT * FROM items_for_geom('{self.path}'::text, '{geom.json(exclude_none=True)}'::text::jsonb);"
+                        "SELECT * FROM items_for_geom(%::text, %::text::jsonb);",
+                        (self.path, geom.json(exclude_none=True)),
                     )
                     items = cursor.fetchone()[0]
         finally:
