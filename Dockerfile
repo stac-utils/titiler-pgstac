@@ -2,15 +2,10 @@ FROM tiangolo/uvicorn-gunicorn:python3.8
 
 ENV CURL_CA_BUNDLE /etc/ssl/certs/ca-certificates.crt
 
-# TMP, waiting for stac-fastapi release
-RUN pip install -e git+https://github.com/stac-utils/stac-fastapi.git#egg=stac_fastapi&subdirectory=stac_fastapi/api \
-    && pip install git+https://github.com/stac-utils/stac-fastapi.git#egg=stac_fastapi.types&subdirectory=stac_fastapi/types \
-    && pip install git+https://github.com/stac-utils/stac-fastapi.git#egg=stac_fastapi.extensions&subdirectory=stac_fastapi/extensions \
-    && pip install git+https://github.com/stac-utils/stac-fastapi.git#egg=stac_fastapi.pgstac&subdirectory=stac_fastapi/pgstac
+# Install stac-fastapi. This is optional but enables to launch a stac api in parallel
+RUN pip install stac-fastapi.api~=2.0 stac-fastapi.types~=2.0 stac-fastapi.extensions~=2.0 stac-fastapi.pgstac~=2.0
 
-RUN pip install titiler.core titiler.mosaic
-
-# TiTiler
+# Install TiTiler pgstac
 COPY src/titiler/ /tmp/titiler/
 RUN pip install /tmp/titiler/pgstac --no-cache-dir
 
