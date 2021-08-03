@@ -8,7 +8,7 @@ with open("README.md") as f:
 inst_reqs = [
     "titiler.core",
     "titiler.mosaic",
-    "stac_fastapi.pgstac",
+    "psycopg2",
 ]
 extra_reqs = {
     "test": ["pytest", "pytest-cov", "pytest-asyncio", "requests"],
@@ -20,11 +20,13 @@ setup(
     description=u"",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    python_requires=">=3.8",
+    python_requires=">=3.6",
     classifiers=[
         "Intended Audience :: Information Technology",
         "Intended Audience :: Science/Research",
         "License :: OSI Approved :: BSD License",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
     ],

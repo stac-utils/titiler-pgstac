@@ -1,3 +1,3 @@
-FROM bitner/pgstac:0.2.7
+FROM ghcr.io/stac-utils/pgstac:v0.2.8
 
 COPY ./sql/999_mosaic.sql /docker-entrypoint-initdb.d/999_mosaic.sql
