@@ -71,6 +71,8 @@ class MosaicTilerFactory(BaseTilerFactory):
         self._mosaic_routes()
 
     def _tiles_routes(self):
+        """register tiles routes."""
+
         @self.router.get("/tiles/{mosaicid}/{z}/{x}/{y}", **img_endpoint_params)
         @self.router.get(
             "/tiles/{mosaicid}/{z}/{x}/{y}.{format}", **img_endpoint_params
@@ -96,6 +98,7 @@ class MosaicTilerFactory(BaseTilerFactory):
             "/tiles/{mosaicid}/{TileMatrixSetId}/{z}/{x}/{y}@{scale}x.{format}",
             **img_endpoint_params,
         )
+        # TODO add cache
         def tile(
             request: Request,
             mosaicid=Depends(self.path_dependency),
@@ -260,10 +263,13 @@ class MosaicTilerFactory(BaseTilerFactory):
                 }
 
     def _mosaic_routes(self):
+        """register mosaic routes."""
+
         @self.router.post(
             "/create",
             responses={200: {"description": "Create a Mosaic."}},
             response_model=TileJSON,
+            response_model_exclude_none=True,
         )
         def create_mosaic(
             request: Request,
@@ -281,6 +287,9 @@ class MosaicTilerFactory(BaseTilerFactory):
             maxzoom: Optional[int] = Query(
                 None, description="Overwrite default maxzoom."
             ),
+            bounds: Optional[str] = Query(
+                None, description="Overwrite default bounding box."
+            ),
             layer_params=Depends(self.layer_dependency),  # noqa
             dataset_params=Depends(self.dataset_dependency),  # noqa
             render_params=Depends(self.render_dependency),  # noqa
@@ -292,17 +301,31 @@ class MosaicTilerFactory(BaseTilerFactory):
         ):
             pool = request.app.state.writepool
             conn = pool.getconn()
+
             try:
                 with conn:
                     with conn.cursor() as cursor:
                         cursor.execute(
-                            """SELECT * FROM create_mosaic(%s::text::jsonb);""",
-                            (body.json(exclude_none=True)),
+                            "SELECT * FROM search_query(%s);",
+                            (body.json(exclude_none=True),),
                         )
-                        mosaicid = cursor.fetchone()[0]
+                        r = cursor.fetchone()
+                        fields = [
+                            "id",
+                            "search",
+                            "where_tag",
+                            "orderby_tag",
+                            "lastused",
+                            "usecount",
+                            "statslastupdated",
+                            "estimated_count",
+                            "total_count",
+                        ]
+                        mosaic_info = dict(zip(fields, r))
             finally:
                 pool.putconn(conn)
 
+            mosaicid = mosaic_info["id"]
             route_params = {
                 "mosaicid": mosaicid,
                 "z": "{z}",
@@ -322,6 +345,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                 "minzoom",
                 "maxzoom",
                 "mosaicid",
+                "bounds",
             ]
             qs = [
                 (key, value)
@@ -331,11 +355,17 @@ class MosaicTilerFactory(BaseTilerFactory):
             if qs:
                 tiles_url += f"?{urlencode(qs)}"
 
+            bbox = (
+                tuple(map(float, bounds.split(","))) if bounds else (-180, -90, 180, 90)
+            )
             with self.reader(
-                mosaicid, pool=request.app.state.readpool, **self.backend_options,
+                mosaicid,
+                pool=request.app.state.readpool,
+                bounds=bbox,
+                **self.backend_options,
             ) as src_dst:
                 center = list(src_dst.center)
-                if minzoom:
+                if minzoom is not None:
                     center[-1] = minzoom
                 return {
                     "bounds": src_dst.bounds,

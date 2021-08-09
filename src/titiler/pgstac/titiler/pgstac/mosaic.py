@@ -1,6 +1,7 @@
 """STACAPI Backend."""
 
-from typing import Any, Dict, List, Tuple, Type, Union
+import json
+from typing import Any, Dict, List, Optional, Tuple, Type, Union
 
 import attr
 import morecantile
@@ -33,9 +34,7 @@ class STACAPIBackend(BaseBackend):
     tms: TileMatrixSet = attr.ib(default=WEB_MERCATOR_TMS)
 
     # default values for bounds and zoom
-    bounds: Tuple[float, float, float, float] = attr.ib(
-        init=False, default=(-180, -90, 180, 90)
-    )
+    bounds: Tuple[float, float, float, float] = attr.ib(default=(-180, -90, 180, 90))
 
     # !!! Warning: those should be set by the user ¡¡¡
     minzoom: int = attr.ib(default=0)
@@ -46,7 +45,7 @@ class STACAPIBackend(BaseBackend):
     # The reader is read-only, we can't pass mosaic_def to the init method
     mosaic_def: MosaicJSON = attr.ib(init=False)
 
-    _backend_name = "STACFastAPI"
+    _backend_name = "PgSTAC"
 
     def __attrs_post_init__(self):
         """Post Init."""
@@ -56,6 +55,7 @@ class STACAPIBackend(BaseBackend):
         self.mosaic_def = MosaicJSON(
             mosaicjson="0.0.2",
             name=self.path,
+            bounds=self.bounds,
             minzoom=self.minzoom,
             maxzoom=self.maxzoom,
             tiles=[],
@@ -73,27 +73,47 @@ class STACAPIBackend(BaseBackend):
         """This method is not used but is required by the abstract class."""
         pass
 
-    def assets_for_tile(self, x: int, y: int, z: int) -> List[Dict]:
+    def assets_for_tile(self, x: int, y: int, z: int, **kwargs: Any) -> List[Dict]:
         """Retrieve assets for tile."""
         bbox = self.tms.bounds(morecantile.Tile(x, y, z))
         return self.get_assets(
-            Polygon(coordinates=bbox_to_feature(*bbox)["coordinates"])
+            Polygon(coordinates=bbox_to_feature(*bbox)["coordinates"]), **kwargs
         )
 
-    def assets_for_point(self, lng: float, lat: float) -> List[Dict]:
+    def assets_for_point(self, lng: float, lat: float, **kwargs: Any) -> List[Dict]:
         """Retrieve assets for point."""
-        return self.get_assets(Point(coordinates=(0, 0)))
+        return self.get_assets(Point(coordinates=(0, 0)), **kwargs)
 
     # TODO: add LRU cache
-    def get_assets(self, geom: Union[Point, Polygon]) -> List[Dict]:
+    def get_assets(
+        self,
+        geom: Union[Point, Polygon],
+        fields: Optional[Dict[str, Any]] = None,
+        scan_limit: int = 10000,
+        items_limit: int = 100,
+        time_limit: int = 5,
+        skipcovered: bool = True,
+    ) -> List[Dict]:
         """Find assets."""
+        fields = fields or {
+            "includes": ["assets", "id", "bbox"],
+        }
+
         conn = self.pool.getconn()
         try:
             with conn:
                 with conn.cursor() as cursor:
                     cursor.execute(
-                        "SELECT * FROM items_for_geom(%::text, %::text::jsonb);",
-                        (self.path, geom.json(exclude_none=True)),
+                        "SELECT * FROM geojsonsearch(%s, %s, %s, %s, %s, %s, %s);",
+                        (
+                            geom.json(exclude_none=True),
+                            self.path,
+                            json.dumps(fields),
+                            scan_limit,
+                            items_limit,
+                            f"{time_limit} seconds",
+                            skipcovered,
+                        ),
                     )
                     items = cursor.fetchone()[0]
         finally:
@@ -111,10 +131,22 @@ class STACAPIBackend(BaseBackend):
         tile_y: int,
         tile_z: int,
         reverse: bool = False,
+        scan_limit: int = 10000,
+        items_limit: int = 100,
+        time_limit: int = 5,
+        skipcovered: bool = True,
         **kwargs: Any,
     ) -> Tuple[ImageData, List[str]]:
         """Get Tile from multiple observation."""
-        mosaic_assets = self.assets_for_tile(tile_x, tile_y, tile_z)
+        mosaic_assets = self.assets_for_tile(
+            tile_x,
+            tile_y,
+            tile_z,
+            scan_limit=scan_limit,
+            items_limit=items_limit,
+            time_limit=time_limit,
+            skipcovered=skipcovered,
+        )
         if not mosaic_assets:
             raise NoAssetFoundError(
                 f"No assets found for tile {tile_z}-{tile_x}-{tile_y}"
@@ -132,10 +164,25 @@ class STACAPIBackend(BaseBackend):
         return mosaic_reader(ids, _reader, tile_x, tile_y, tile_z, **kwargs)
 
     def point(
-        self, lon: float, lat: float, reverse: bool = False, **kwargs: Any,
+        self,
+        lon: float,
+        lat: float,
+        reverse: bool = False,
+        scan_limit: int = 10000,
+        items_limit: int = 100,
+        time_limit: int = 5,
+        skipcovered: bool = True,
+        **kwargs: Any,
     ) -> List:
         """Get Point value from multiple observation."""
-        mosaic_assets = self.assets_for_point(lon, lat)
+        mosaic_assets = self.assets_for_point(
+            lon,
+            lat,
+            scan_limit=scan_limit,
+            items_limit=items_limit,
+            time_limit=time_limit,
+            skipcovered=skipcovered,
+        )
         if not mosaic_assets:
             raise NoAssetFoundError(f"No assets found for point ({lon},{lat})")
 
