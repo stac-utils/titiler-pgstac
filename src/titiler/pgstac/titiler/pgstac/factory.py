@@ -1,4 +1,4 @@
-"""titiler app."""
+"""Custom MosaicTiler Factory for PgSTAC Mosaic Backend."""
 
 import os
 from dataclasses import dataclass, field
@@ -22,7 +22,8 @@ from titiler.core.models.mapbox import TileJSON
 from titiler.core.resources.enums import ImageType, OptionalHeader
 from titiler.core.utils import Timer
 from titiler.mosaic.resources.enums import PixelSelectionMethod
-from titiler.pgstac.mosaic import STACAPIBackend
+from titiler.pgstac.logger import logger
+from titiler.pgstac.mosaic import PGSTACBackend
 
 
 class MosaicCreate(BaseModel):
@@ -35,7 +36,6 @@ class MosaicCreate(BaseModel):
     collections: Optional[List[str]] = None
     query: Optional[Dict[str, Dict[Operator, Any]]]
     sortby: Optional[List[SortExtension]]
-    limit: int = 20
 
     @root_validator(pre=True)
     def validate_query_fields(cls, values: Dict) -> Dict:
@@ -56,9 +56,9 @@ def MosaicPathParams(mosaicid: str = Path(..., description="Mosaic Id")) -> str:
 
 @dataclass
 class MosaicTilerFactory(BaseTilerFactory):
-    """Custom Mosaic Tiler. """
+    """Custom MosaicTiler for PgSTAC Mosaic Backend."""
 
-    reader: BaseBackend = STACAPIBackend
+    reader: BaseBackend = PGSTACBackend
     path_dependency: Callable[..., str] = MosaicPathParams
     layer_dependency: Type[DefaultDependency] = AssetsBidxExprParams
 
@@ -102,9 +102,9 @@ class MosaicTilerFactory(BaseTilerFactory):
         def tile(
             request: Request,
             mosaicid=Depends(self.path_dependency),
-            z: int = Path(..., ge=0, le=30, description="Mercator tiles's zoom level"),
-            x: int = Path(..., description="Mercator tiles's column"),
-            y: int = Path(..., description="Mercator tiles's row"),
+            z: int = Path(..., ge=0, le=30, description="Tile's zoom level"),
+            x: int = Path(..., description="Tile's column"),
+            y: int = Path(..., description="Tile's row"),
             tms: TileMatrixSet = Depends(self.tms_dependency),
             scale: int = Query(
                 1, gt=0, lt=4, description="Tile size scale. 1=256x256, 2=512x512..."
@@ -150,6 +150,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                             **kwargs,
                         )
             timings.append(("dataread", round((t.elapsed - mosaic_read) * 1000, 2)))
+            logger.debug(f"{data.metadata}")
 
             if not format:
                 format = ImageType.jpeg if data.mask.all() else ImageType.png
@@ -177,7 +178,8 @@ class MosaicTilerFactory(BaseTilerFactory):
                 )
 
             if OptionalHeader.x_assets in self.optional_headers:
-                headers["X-Assets"] = ",".join(data.assets)
+                ids = [x["id"] for x in data.assets]
+                headers["X-Assets"] = ",".join(ids)
 
             return Response(content, media_type=format.mediatype, headers=headers)
 
@@ -324,6 +326,8 @@ class MosaicTilerFactory(BaseTilerFactory):
                         mosaic_info = dict(zip(fields, r))
             finally:
                 pool.putconn(conn)
+
+            logger.debug(f"{mosaic_info}")
 
             mosaicid = mosaic_info["id"]
             route_params = {

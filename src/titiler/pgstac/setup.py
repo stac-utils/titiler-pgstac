@@ -9,6 +9,7 @@ inst_reqs = [
     "titiler.core",
     "titiler.mosaic",
     "psycopg2",
+    "rio-tiler>=2.1.2,<2.2",
 ]
 extra_reqs = {
     "test": ["pytest", "pytest-cov", "pytest-asyncio", "requests"],

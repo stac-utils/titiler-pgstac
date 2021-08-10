@@ -1,4 +1,4 @@
-"""STACAPI Backend."""
+"""PgSTAC custom Mosaic Backend and Custom STACReader."""
 
 import json
 from typing import Any, Dict, List, Optional, Tuple, Type, Union
@@ -13,19 +13,75 @@ from morecantile import TileMatrixSet
 from morecantile.utils import bbox_to_feature
 from psycopg2 import pool as psycopg2Pool
 from rio_tiler.constants import WEB_MERCATOR_TMS
-from rio_tiler.errors import PointOutsideBounds
+from rio_tiler.errors import InvalidAssetName, PointOutsideBounds
+from rio_tiler.io.base import BaseReader, MultiBaseReader
+from rio_tiler.io.cogeo import COGReader
 from rio_tiler.models import ImageData
 from rio_tiler.mosaic import mosaic_reader
 from rio_tiler.tasks import multi_values
 
-from titiler.pgstac.reader import CustomSTACReader
+from titiler.core.utils import Timer
 
 
 @attr.s
-class STACAPIBackend(BaseBackend):
-    """PGSTAC Api Mosaic Backend."""
+class CustomSTACReader(MultiBaseReader):
+    """Simplified STAC Reader.
 
+    Items should be in form of:
+    {
+        "id": "IAMASTACITEM",
+        "bbox": (0, 0, 10, 10),
+        "assets": {
+            "COG": {
+                "href": "https://somewhereovertherainbow.io/cog.tif"
+            }
+        }
+    }
+
+    """
+
+    item: Dict[str, Any] = attr.ib()
+    tms: TileMatrixSet = attr.ib(default=WEB_MERCATOR_TMS)
+    minzoom: int = attr.ib(default=None)
+    maxzoom: int = attr.ib(default=None)
+    reader: Type[BaseReader] = attr.ib(default=COGReader)
+    reader_options: Dict = attr.ib(factory=dict)
+
+    def __attrs_post_init__(self):
+        """Set reader spatial infos and list of valid assets."""
+        self.bounds = self.item["bbox"]
+        self.assets = list(self.item["assets"])
+
+        if self.minzoom is None:
+            self.minzoom = self.tms.minzoom
+
+        if self.maxzoom is None:
+            self.maxzoom = self.tms.maxzoom
+
+    def _get_asset_url(self, asset: str) -> str:
+        """Validate asset names and return asset's url.
+
+        Args:
+            asset (str): STAC asset name.
+
+        Returns:
+            str: STAC asset href.
+
+        """
+        if asset not in self.assets:
+            raise InvalidAssetName(f"{asset} is not valid")
+
+        return self.item["assets"][asset]["href"]
+
+
+@attr.s
+class PGSTACBackend(BaseBackend):
+    """PgSTAC Mosaic Backend."""
+
+    # Mosaic ID (hash)
     path: str = attr.ib()
+
+    # Connection POOL to the database
     pool: psycopg2Pool = attr.ib()
 
     reader_options: Dict = attr.ib(factory=dict)
@@ -33,13 +89,14 @@ class STACAPIBackend(BaseBackend):
     # Because we are not using mosaicjson we are not limited to the WebMercator TMS
     tms: TileMatrixSet = attr.ib(default=WEB_MERCATOR_TMS)
 
-    # default values for bounds and zoom
+    # default values for bounds
     bounds: Tuple[float, float, float, float] = attr.ib(default=(-180, -90, 180, 90))
 
     # !!! Warning: those should be set by the user ¡¡¡
     minzoom: int = attr.ib(default=0)
     maxzoom: int = attr.ib(default=30)
 
+    # Use Custom STAC reader
     reader: Type[CustomSTACReader] = attr.ib(init=False, default=CustomSTACReader)
 
     # The reader is read-only, we can't pass mosaic_def to the init method
@@ -115,11 +172,11 @@ class STACAPIBackend(BaseBackend):
                             skipcovered,
                         ),
                     )
-                    items = cursor.fetchone()[0]
+                    resp = cursor.fetchone()[0]
         finally:
             self.pool.putconn(conn)
 
-        return items.get("features", [])
+        return resp.get("features", [])
 
     @property
     def _quadkeys(self) -> List[str]:
@@ -138,15 +195,20 @@ class STACAPIBackend(BaseBackend):
         **kwargs: Any,
     ) -> Tuple[ImageData, List[str]]:
         """Get Tile from multiple observation."""
-        mosaic_assets = self.assets_for_tile(
-            tile_x,
-            tile_y,
-            tile_z,
-            scan_limit=scan_limit,
-            items_limit=items_limit,
-            time_limit=time_limit,
-            skipcovered=skipcovered,
-        )
+        metadata = {}
+        with Timer() as t:
+            mosaic_assets = self.assets_for_tile(
+                tile_x,
+                tile_y,
+                tile_z,
+                scan_limit=scan_limit,
+                items_limit=items_limit,
+                time_limit=time_limit,
+                skipcovered=skipcovered,
+            )
+        metadata["dbread"] = round(t.elapsed * 1000, 2)
+        metadata["assets_in_db"] = len(mosaic_assets)
+
         if not mosaic_assets:
             raise NoAssetFoundError(
                 f"No assets found for tile {tile_z}-{tile_x}-{tile_y}"
@@ -155,13 +217,22 @@ class STACAPIBackend(BaseBackend):
         if reverse:
             mosaic_assets = list(reversed(mosaic_assets))
 
-        def _reader(item_id: str, x: int, y: int, z: int, **kwargs: Any) -> ImageData:
-            item = list(filter(lambda x: x["id"] == item_id, mosaic_assets))[0]
+        def _reader(
+            item: Dict[str, Any], x: int, y: int, z: int, **kwargs: Any
+        ) -> ImageData:
             with self.reader(item, **self.reader_options) as src_dst:
                 return src_dst.tile(x, y, z, **kwargs)
 
-        ids = [assets["id"] for assets in mosaic_assets]
-        return mosaic_reader(ids, _reader, tile_x, tile_y, tile_z, **kwargs)
+        with Timer() as t:
+            img, assets_used = mosaic_reader(
+                mosaic_assets, _reader, tile_x, tile_y, tile_z, **kwargs
+            )
+
+        metadata["dataread"] = round(t.elapsed * 1000, 2)
+        metadata["assets_in_tile"] = len(assets_used)
+        img.metadata = metadata
+
+        return img, assets_used
 
     def point(
         self,
@@ -189,13 +260,11 @@ class STACAPIBackend(BaseBackend):
         if reverse:
             mosaic_assets = list(reversed(mosaic_assets))
 
-        def _reader(item_id: str, lon: float, lat: float, **kwargs) -> Dict:
-            item = list(filter(lambda x: x["id"] == item_id, mosaic_assets))[0]
-            with self.reader(item_id, item=item, **self.reader_options) as src_dst:
+        def _reader(item: Dict[str, Any], lon: float, lat: float, **kwargs) -> Dict:
+            with self.reader(item, **self.reader_options) as src_dst:
                 return src_dst.point(lon, lat, **kwargs)
 
         if "allowed_exceptions" not in kwargs:
             kwargs.update({"allowed_exceptions": (PointOutsideBounds,)})
 
-        ids = [assets["id"] for assets in mosaic_assets]
-        return list(multi_values(ids, _reader, lon, lat, **kwargs).items())
+        return list(multi_values(mosaic_assets, _reader, lon, lat, **kwargs).items())

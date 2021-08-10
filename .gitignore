@@ -99,3 +99,5 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+log-config.yml
