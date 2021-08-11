@@ -43,7 +43,7 @@ class MosaicCreate(BaseModel):
         return values
 
     @validator("datetime")
-    def validate_datetime(cls, v):
+    def validate_datetime(cls, v: str) -> str:
         """Pgstac does not require the base validator for datetime."""
         return v
 
@@ -64,13 +64,12 @@ class MosaicTilerFactory(BaseTilerFactory):
 
     backend_options: Dict = field(default_factory=dict)
 
-    def register_routes(self):
+    def register_routes(self) -> None:
         """This Method register routes to the router."""
-
         self._tiles_routes()
         self._mosaic_routes()
 
-    def _tiles_routes(self):
+    def _tiles_routes(self) -> None:
         """register tiles routes."""
 
         @self.router.get("/tiles/{mosaicid}/{z}/{x}/{y}", **img_endpoint_params)
@@ -264,7 +263,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                     "tiles": [tiles_url],
                 }
 
-    def _mosaic_routes(self):
+    def _mosaic_routes(self) -> None:
         """register mosaic routes."""
 
         @self.router.post(

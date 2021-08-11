@@ -47,7 +47,7 @@ class CustomSTACReader(MultiBaseReader):
     reader: Type[BaseReader] = attr.ib(default=COGReader)
     reader_options: Dict = attr.ib(factory=dict)
 
-    def __attrs_post_init__(self):
+    def __attrs_post_init__(self) -> None:
         """Set reader spatial infos and list of valid assets."""
         self.bounds = self.item["bbox"]
         self.assets = list(self.item["assets"])
@@ -104,7 +104,7 @@ class PGSTACBackend(BaseBackend):
 
     _backend_name = "PgSTAC"
 
-    def __attrs_post_init__(self):
+    def __attrs_post_init__(self) -> None:
         """Post Init."""
         # Construct a FAKE mosaicJSON
         # mosaic_def has to be defined.
@@ -118,11 +118,11 @@ class PGSTACBackend(BaseBackend):
             tiles=[],
         )
 
-    def write(self, overwrite: bool = True):
+    def write(self, overwrite: bool = True) -> None:
         """This method is not used but is required by the abstract class."""
         pass
 
-    def update(self):
+    def update(self) -> None:
         """We overwrite the default method."""
         pass
 
@@ -260,7 +260,9 @@ class PGSTACBackend(BaseBackend):
         if reverse:
             mosaic_assets = list(reversed(mosaic_assets))
 
-        def _reader(item: Dict[str, Any], lon: float, lat: float, **kwargs) -> Dict:
+        def _reader(
+            item: Dict[str, Any], lon: float, lat: float, **kwargs: Any,
+        ) -> Dict:
             with self.reader(item, **self.reader_options) as src_dst:
                 return src_dst.point(lon, lat, **kwargs)
 

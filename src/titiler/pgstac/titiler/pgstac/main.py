@@ -1,6 +1,7 @@
 """TiTiler+PgSTAC FastAPI application."""
 
 import logging
+from typing import Dict
 
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
@@ -21,13 +22,13 @@ app = FastAPI(title=settings.name, version=titiler_pgstac_version)
 
 
 @app.on_event("startup")
-async def startup_event():
+async def startup_event() -> None:
     """Connect to database on startup."""
     await connect_to_db(app)
 
 
 @app.on_event("shutdown")
-async def shutdown_event():
+async def shutdown_event() -> None:
     """Close database connection."""
     await close_db_connection(app)
 
@@ -52,6 +53,6 @@ app.include_router(mosaic.router)
 
 
 @app.get("/healthz", description="Health Check", tags=["Health Check"])
-def ping():
+def ping() -> Dict:
     """Health check."""
     return {"ping": "pong!"}
