@@ -10,6 +10,7 @@ inst_reqs = [
     "titiler.mosaic",
     "psycopg2",
     "rio-tiler>=2.1.2,<2.2",
+    "stac-pydantic==2.0.*",
 ]
 extra_reqs = {
     "test": ["pytest", "pytest-cov", "pytest-asyncio", "requests"],
