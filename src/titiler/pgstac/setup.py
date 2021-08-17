@@ -35,7 +35,7 @@ setup(
     keywords="COG STAC MosaicJSON FastAPI",
     author=u"Vincent Sarago",
     author_email="vincent@developmentseed.org",
-    url="https://github.com/developmentseed/titiler-pgstac",
+    url="https://github.com/stac-utils/titiler-pgstac",
     license="MIT",
     packages=find_namespace_packages(exclude=["tests*"]),
     include_package_data=True,

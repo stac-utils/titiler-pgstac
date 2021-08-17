@@ -5,6 +5,8 @@ from typing import Any, Dict, List, Optional, Tuple, Type, Union
 
 import attr
 import morecantile
+from cachetools import TTLCache, cached
+from cachetools.keys import hashkey
 from cogeo_mosaic.backends import BaseBackend
 from cogeo_mosaic.errors import NoAssetFoundError
 from cogeo_mosaic.mosaic import MosaicJSON
@@ -21,6 +23,9 @@ from rio_tiler.mosaic import mosaic_reader
 from rio_tiler.tasks import multi_values
 
 from titiler.core.utils import Timer
+from titiler.pgstac.settings import CacheSettings
+
+cache_config = CacheSettings()
 
 
 @attr.s
@@ -141,7 +146,10 @@ class PGSTACBackend(BaseBackend):
         """Retrieve assets for point."""
         return self.get_assets(Point(coordinates=(0, 0)), **kwargs)
 
-    # TODO: add LRU cache
+    @cached(
+        TTLCache(maxsize=cache_config.maxsize, ttl=cache_config.ttl),
+        key=lambda self, geom, **kwargs: hashkey(self.path, str(geom), **kwargs),
+    )
     def get_assets(
         self,
         geom: Union[Point, Polygon],

@@ -6,6 +6,7 @@ from typing import Dict
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 from titiler.core.errors import DEFAULT_STATUS_CODES, add_exception_handlers
+from titiler.core.resources.enums import OptionalHeader
 from titiler.mosaic.errors import MOSAIC_STATUS_CODES
 from titiler.pgstac.db import close_db_connection, connect_to_db
 from titiler.pgstac.factory import MosaicTilerFactory
@@ -47,8 +48,12 @@ if settings.cors_origins:
         allow_headers=["*"],
     )
 
+if settings.debug:
+    optional_headers = [OptionalHeader.server_timing]
+else:
+    optional_headers = []
 
-mosaic = MosaicTilerFactory()
+mosaic = MosaicTilerFactory(optional_headers=optional_headers)
 app.include_router(mosaic.router)
 
 

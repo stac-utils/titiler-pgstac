@@ -1,0 +1,12 @@
+FROM --platform=${TARGETPLATFORM:-linux/amd64} tiangolo/uvicorn-gunicorn:python3.8
+
+ENV CURL_CA_BUNDLE /etc/ssl/certs/ca-certificates.crt
+
+RUN pip install \
+    stac-fastapi.api==2.0.* \
+    stac-fastapi.types==2.0.* \
+    stac-fastapi.extensions==2.0.* \
+    stac-fastapi.pgstac==2.0.*
+
+ENV MODULE_NAME stac_fastapi.pgstac.app
+ENV VARIABLE_NAME app

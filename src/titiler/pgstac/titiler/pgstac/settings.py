@@ -88,3 +88,35 @@ def PostgresSettings() -> _PostgresSettings:
     From https://github.com/dmontagu/fastapi-utils/blob/af95ff4a8195caaa9edaa3dbd5b6eeb09691d9c7/fastapi_utils/api_settings.py#L60-L69
     """
     return _PostgresSettings()
+
+
+class _CacheSettings(pydantic.BaseSettings):
+    """Application settings"""
+
+    # TTL of the cache in seconds
+    ttl: int = 300
+
+    # Maximum size of the LRU cache in MB
+    maxsize: int = 512
+
+    # Whether or not caching is enabled
+    disable: bool = False
+
+    class Config:
+        """model config"""
+
+        env_file = ".env"
+
+    @pydantic.root_validator
+    def check_enable(cls, values):
+        """Check if cache is desabled."""
+        if values.get("disable"):
+            values["ttl"] = 0
+            values["maxsize"] = 0
+        return values
+
+
+@lru_cache()
+def CacheSettings() -> _CacheSettings:
+    """Cache settings."""
+    return _CacheSettings()
