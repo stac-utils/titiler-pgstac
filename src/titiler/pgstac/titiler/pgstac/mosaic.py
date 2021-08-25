@@ -157,6 +157,7 @@ class PGSTACBackend(BaseBackend):
         scan_limit: int = 10000,
         items_limit: int = 100,
         time_limit: int = 5,
+        exitwhenfull: bool = True,
         skipcovered: bool = True,
     ) -> List[Dict]:
         """Find assets."""
@@ -169,7 +170,7 @@ class PGSTACBackend(BaseBackend):
             with conn:
                 with conn.cursor() as cursor:
                     cursor.execute(
-                        "SELECT * FROM geojsonsearch(%s, %s, %s, %s, %s, %s, %s);",
+                        "SELECT * FROM geojsonsearch(%s, %s, %s, %s, %s, %s, %s, %s);",
                         (
                             geom.json(exclude_none=True),
                             self.path,
@@ -177,6 +178,7 @@ class PGSTACBackend(BaseBackend):
                             scan_limit,
                             items_limit,
                             f"{time_limit} seconds",
+                            exitwhenfull,
                             skipcovered,
                         ),
                     )
@@ -199,6 +201,7 @@ class PGSTACBackend(BaseBackend):
         scan_limit: int = 10000,
         items_limit: int = 100,
         time_limit: int = 5,
+        exitwhenfull: bool = True,
         skipcovered: bool = True,
         **kwargs: Any,
     ) -> Tuple[ImageData, List[str]]:
@@ -212,6 +215,7 @@ class PGSTACBackend(BaseBackend):
                 scan_limit=scan_limit,
                 items_limit=items_limit,
                 time_limit=time_limit,
+                exitwhenfull=exitwhenfull,
                 skipcovered=skipcovered,
             )
         metadata["dbread"] = round(t.elapsed * 1000, 2)
@@ -250,6 +254,7 @@ class PGSTACBackend(BaseBackend):
         scan_limit: int = 10000,
         items_limit: int = 100,
         time_limit: int = 5,
+        exitwhenfull: bool = True,
         skipcovered: bool = True,
         **kwargs: Any,
     ) -> List:
@@ -260,6 +265,7 @@ class PGSTACBackend(BaseBackend):
             scan_limit=scan_limit,
             items_limit=items_limit,
             time_limit=time_limit,
+            exitwhenfull=exitwhenfull,
             skipcovered=skipcovered,
         )
         if not mosaic_assets:

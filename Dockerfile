@@ -1,4 +1,4 @@
-FROM --platform=${TARGETPLATFORM:-linux/amd64} tiangolo/uvicorn-gunicorn:python3.8
+FROM tiangolo/uvicorn-gunicorn:python3.8
 
 ENV CURL_CA_BUNDLE /etc/ssl/certs/ca-certificates.crt
 
