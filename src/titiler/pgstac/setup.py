@@ -9,6 +9,8 @@ inst_reqs = [
     "titiler.core",
     "titiler.mosaic",
     "psycopg2",
+    "rio-tiler>=2.1.2,<2.2",
+    "stac-pydantic==2.0.*",
 ]
 extra_reqs = {
     "test": ["pytest", "pytest-cov", "pytest-asyncio", "requests"],
@@ -33,7 +35,7 @@ setup(
     keywords="COG STAC MosaicJSON FastAPI",
     author=u"Vincent Sarago",
     author_email="vincent@developmentseed.org",
-    url="https://github.com/developmentseed/titiler-pgstac",
+    url="https://github.com/stac-utils/titiler-pgstac",
     license="MIT",
     packages=find_namespace_packages(exclude=["tests*"]),
     include_package_data=True,

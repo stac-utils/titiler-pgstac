@@ -29,12 +29,27 @@ $ git clone https://github.com/stac-utils/titiler-pgstac.git
 $ cd titiler-pgstac
 $ pip install -e src/titiler/pgstac
 $ pip install uvicorn
+```
+
+## Launch
+
+You'll need to have `POSTGRES_USER`, `POSTGRES_PASS`, `POSTGRES_DBNAME`, `POSTGRES_HOST_READER`, `POSTGRES_HOST_WRITER`, `POSTGRES_PORT` variables set in your environment pointing to your pgstac db
+
+```
+export POSTGRES_USER=username
+export POSTGRES_PASS=password
+export POSTGRES_DBNAME=postgis
+export POSTGRES_HOST_READER=database
+export POSTGRES_HOST_WRITER=database
+export POSTGRES_PORT=5432
+```
+
+```
 $ uvicorn titiler.pgstac.main:app --reload --port 8082 --host 0.0.0.0
 ```
 
 ## Docker
 
-- Built the docker locally
 ```
 $ git clone https://github.com/stac-utils/titiler-pgstac.git
 $ cd titiler-pgstac

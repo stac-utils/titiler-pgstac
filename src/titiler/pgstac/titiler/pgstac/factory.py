@@ -1,4 +1,4 @@
-"""titiler app."""
+"""Custom MosaicTiler Factory for PgSTAC Mosaic Backend."""
 
 import os
 from dataclasses import dataclass, field
@@ -22,7 +22,8 @@ from titiler.core.models.mapbox import TileJSON
 from titiler.core.resources.enums import ImageType, OptionalHeader
 from titiler.core.utils import Timer
 from titiler.mosaic.resources.enums import PixelSelectionMethod
-from titiler.pgstac.mosaic import STACAPIBackend
+from titiler.pgstac.logger import logger
+from titiler.pgstac.mosaic import PGSTACBackend
 
 
 class MosaicCreate(BaseModel):
@@ -35,7 +36,6 @@ class MosaicCreate(BaseModel):
     collections: Optional[List[str]] = None
     query: Optional[Dict[str, Dict[Operator, Any]]]
     sortby: Optional[List[SortExtension]]
-    limit: int = 20
 
     @root_validator(pre=True)
     def validate_query_fields(cls, values: Dict) -> Dict:
@@ -43,7 +43,7 @@ class MosaicCreate(BaseModel):
         return values
 
     @validator("datetime")
-    def validate_datetime(cls, v):
+    def validate_datetime(cls, v: str) -> str:
         """Pgstac does not require the base validator for datetime."""
         return v
 
@@ -56,21 +56,22 @@ def MosaicPathParams(mosaicid: str = Path(..., description="Mosaic Id")) -> str:
 
 @dataclass
 class MosaicTilerFactory(BaseTilerFactory):
-    """Custom Mosaic Tiler. """
+    """Custom MosaicTiler for PgSTAC Mosaic Backend."""
 
-    reader: BaseBackend = STACAPIBackend
+    reader: BaseBackend = PGSTACBackend
     path_dependency: Callable[..., str] = MosaicPathParams
     layer_dependency: Type[DefaultDependency] = AssetsBidxExprParams
 
     backend_options: Dict = field(default_factory=dict)
 
-    def register_routes(self):
+    def register_routes(self) -> None:
         """This Method register routes to the router."""
-
         self._tiles_routes()
         self._mosaic_routes()
 
-    def _tiles_routes(self):
+    def _tiles_routes(self) -> None:
+        """register tiles routes."""
+
         @self.router.get("/tiles/{mosaicid}/{z}/{x}/{y}", **img_endpoint_params)
         @self.router.get(
             "/tiles/{mosaicid}/{z}/{x}/{y}.{format}", **img_endpoint_params
@@ -96,12 +97,13 @@ class MosaicTilerFactory(BaseTilerFactory):
             "/tiles/{mosaicid}/{TileMatrixSetId}/{z}/{x}/{y}@{scale}x.{format}",
             **img_endpoint_params,
         )
+        # TODO add cache
         def tile(
             request: Request,
             mosaicid=Depends(self.path_dependency),
-            z: int = Path(..., ge=0, le=30, description="Mercator tiles's zoom level"),
-            x: int = Path(..., description="Mercator tiles's column"),
-            y: int = Path(..., description="Mercator tiles's row"),
+            z: int = Path(..., ge=0, le=30, description="Tile's zoom level"),
+            x: int = Path(..., description="Tile's column"),
+            y: int = Path(..., description="Tile's row"),
             tms: TileMatrixSet = Depends(self.tms_dependency),
             scale: int = Query(
                 1, gt=0, lt=4, description="Tile size scale. 1=256x256, 2=512x512..."
@@ -147,6 +149,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                             **kwargs,
                         )
             timings.append(("dataread", round((t.elapsed - mosaic_read) * 1000, 2)))
+            logger.debug(f"{data.metadata}")
 
             if not format:
                 format = ImageType.jpeg if data.mask.all() else ImageType.png
@@ -174,7 +177,8 @@ class MosaicTilerFactory(BaseTilerFactory):
                 )
 
             if OptionalHeader.x_assets in self.optional_headers:
-                headers["X-Assets"] = ",".join(data.assets)
+                ids = [x["id"] for x in data.assets]
+                headers["X-Assets"] = ",".join(ids)
 
             return Response(content, media_type=format.mediatype, headers=headers)
 
@@ -259,11 +263,14 @@ class MosaicTilerFactory(BaseTilerFactory):
                     "tiles": [tiles_url],
                 }
 
-    def _mosaic_routes(self):
+    def _mosaic_routes(self) -> None:
+        """register mosaic routes."""
+
         @self.router.post(
             "/create",
             responses={200: {"description": "Create a Mosaic."}},
             response_model=TileJSON,
+            response_model_exclude_none=True,
         )
         def create_mosaic(
             request: Request,
@@ -281,6 +288,9 @@ class MosaicTilerFactory(BaseTilerFactory):
             maxzoom: Optional[int] = Query(
                 None, description="Overwrite default maxzoom."
             ),
+            bounds: Optional[str] = Query(
+                None, description="Overwrite default bounding box."
+            ),
             layer_params=Depends(self.layer_dependency),  # noqa
             dataset_params=Depends(self.dataset_dependency),  # noqa
             render_params=Depends(self.render_dependency),  # noqa
@@ -292,17 +302,33 @@ class MosaicTilerFactory(BaseTilerFactory):
         ):
             pool = request.app.state.writepool
             conn = pool.getconn()
+
             try:
                 with conn:
                     with conn.cursor() as cursor:
                         cursor.execute(
-                            """SELECT * FROM create_mosaic(%s::text::jsonb);""",
-                            (body.json(exclude_none=True)),
+                            "SELECT * FROM search_query(%s);",
+                            (body.json(exclude_none=True),),
                         )
-                        mosaicid = cursor.fetchone()[0]
+                        r = cursor.fetchone()
+                        fields = [
+                            "id",
+                            "search",
+                            "where_tag",
+                            "orderby_tag",
+                            "lastused",
+                            "usecount",
+                            "statslastupdated",
+                            "estimated_count",
+                            "total_count",
+                        ]
+                        mosaic_info = dict(zip(fields, r))
             finally:
                 pool.putconn(conn)
 
+            logger.debug(f"{mosaic_info}")
+
+            mosaicid = mosaic_info["id"]
             route_params = {
                 "mosaicid": mosaicid,
                 "z": "{z}",
@@ -322,6 +348,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                 "minzoom",
                 "maxzoom",
                 "mosaicid",
+                "bounds",
             ]
             qs = [
                 (key, value)
@@ -331,11 +358,17 @@ class MosaicTilerFactory(BaseTilerFactory):
             if qs:
                 tiles_url += f"?{urlencode(qs)}"
 
+            bbox = (
+                tuple(map(float, bounds.split(","))) if bounds else (-180, -90, 180, 90)
+            )
             with self.reader(
-                mosaicid, pool=request.app.state.readpool, **self.backend_options,
+                mosaicid,
+                pool=request.app.state.readpool,
+                bounds=bbox,
+                **self.backend_options,
             ) as src_dst:
                 center = list(src_dst.center)
-                if minzoom:
+                if minzoom is not None:
                     center[-1] = minzoom
                 return {
                     "bounds": src_dst.bounds,
