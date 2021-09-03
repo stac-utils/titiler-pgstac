@@ -14,7 +14,14 @@ inst_reqs = [
     "stac-pydantic==2.0.*",
 ]
 extra_reqs = {
-    "test": ["pytest", "pytest-cov", "pytest-asyncio", "requests", "pypgstac"],
+    "test": [
+        "pytest",
+        "pytest-cov",
+        "pytest-asyncio",
+        "requests",
+        "pypgstac",
+        "asyncpg",
+    ],
 }
 
 
