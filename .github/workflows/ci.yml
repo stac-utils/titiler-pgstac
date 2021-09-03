@@ -16,14 +16,6 @@ jobs:
       matrix:
         python-version: [3.7, 3.8, 3.9]
 
-#ENVIRONMENT=local
-#POSTGRES_USER=username
-#POSTGRES_PASS=password
-#POSTGRES_DBNAME=postgis
-#POSTGRES_HOST_READER=localhost
-#POSTGRES_HOST_WRITER=localhost
-#POSTGRES_PORT=5439
-
     services:
       postgres:
         image: postgis/postgis:10-2.5
