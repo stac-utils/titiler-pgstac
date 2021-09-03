@@ -27,13 +27,13 @@ Connect PgSTAC and TiTiler
 ```
 $ git clone https://github.com/stac-utils/titiler-pgstac.git
 $ cd titiler-pgstac
-$ pip install -e src/titiler/pgstac
+$ pip install -e .
 $ pip install uvicorn
 ```
 
 ## Launch
 
-You'll need to have `POSTGRES_USER`, `POSTGRES_PASS`, `POSTGRES_DBNAME`, `POSTGRES_HOST_READER`, `POSTGRES_HOST_WRITER`, `POSTGRES_PORT` variables set in your environment pointing to your pgstac db
+You'll need to have `POSTGRES_USER`, `POSTGRES_PASS`, `POSTGRES_DBNAME`, `POSTGRES_HOST_READER`, `POSTGRES_HOST_WRITER`, `POSTGRES_PORT` variables set in your environment pointing to your Postgres database where pgstac has been installed.
 
 ```
 export POSTGRES_USER=username
