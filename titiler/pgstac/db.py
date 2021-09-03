@@ -2,8 +2,9 @@
 
 from psycopg2 import pool
 
-from fastapi import FastAPI
 from titiler.pgstac.settings import PostgresSettings
+
+from fastapi import FastAPI
 
 settings = PostgresSettings()
 

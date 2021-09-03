@@ -1,4 +1,4 @@
-"""PgSTAC custom Mosaic Backend and Custom STACReader."""
+"""TiTiler.PgSTAC custom Mosaic Backend and Custom STACReader."""
 
 import json
 from typing import Any, Dict, List, Optional, Tuple, Type, Union
@@ -12,7 +12,6 @@ from cogeo_mosaic.errors import NoAssetFoundError
 from cogeo_mosaic.mosaic import MosaicJSON
 from geojson_pydantic import Point, Polygon
 from morecantile import TileMatrixSet
-from morecantile.utils import bbox_to_feature
 from psycopg2 import pool as psycopg2Pool
 from rio_tiler.constants import WEB_MERCATOR_TMS
 from rio_tiler.errors import InvalidAssetName, PointOutsideBounds
@@ -22,7 +21,6 @@ from rio_tiler.models import ImageData
 from rio_tiler.mosaic import mosaic_reader
 from rio_tiler.tasks import multi_values
 
-from titiler.core.utils import Timer
 from titiler.pgstac.settings import CacheSettings
 
 cache_config = CacheSettings()
@@ -138,13 +136,11 @@ class PGSTACBackend(BaseBackend):
     def assets_for_tile(self, x: int, y: int, z: int, **kwargs: Any) -> List[Dict]:
         """Retrieve assets for tile."""
         bbox = self.tms.bounds(morecantile.Tile(x, y, z))
-        return self.get_assets(
-            Polygon(coordinates=bbox_to_feature(*bbox)["coordinates"]), **kwargs
-        )
+        return self.get_assets(Polygon.from_bounds(*bbox), **kwargs)
 
     def assets_for_point(self, lng: float, lat: float, **kwargs: Any) -> List[Dict]:
         """Retrieve assets for point."""
-        return self.get_assets(Point(coordinates=(0, 0)), **kwargs)
+        return self.get_assets(Point(coordinates=(lng, lat)), **kwargs)
 
     @cached(
         TTLCache(maxsize=cache_config.maxsize, ttl=cache_config.ttl),
@@ -162,7 +158,7 @@ class PGSTACBackend(BaseBackend):
     ) -> List[Dict]:
         """Find assets."""
         fields = fields or {
-            "includes": ["assets", "id", "bbox"],
+            "include": ["assets", "id", "bbox"],
         }
 
         conn = self.pool.getconn()
@@ -206,20 +202,16 @@ class PGSTACBackend(BaseBackend):
         **kwargs: Any,
     ) -> Tuple[ImageData, List[str]]:
         """Get Tile from multiple observation."""
-        metadata = {}
-        with Timer() as t:
-            mosaic_assets = self.assets_for_tile(
-                tile_x,
-                tile_y,
-                tile_z,
-                scan_limit=scan_limit,
-                items_limit=items_limit,
-                time_limit=time_limit,
-                exitwhenfull=exitwhenfull,
-                skipcovered=skipcovered,
-            )
-        metadata["dbread"] = round(t.elapsed * 1000, 2)
-        metadata["assets_in_db"] = len(mosaic_assets)
+        mosaic_assets = self.assets_for_tile(
+            tile_x,
+            tile_y,
+            tile_z,
+            scan_limit=scan_limit,
+            items_limit=items_limit,
+            time_limit=time_limit,
+            exitwhenfull=exitwhenfull,
+            skipcovered=skipcovered,
+        )
 
         if not mosaic_assets:
             raise NoAssetFoundError(
@@ -235,16 +227,7 @@ class PGSTACBackend(BaseBackend):
             with self.reader(item, **self.reader_options) as src_dst:
                 return src_dst.tile(x, y, z, **kwargs)
 
-        with Timer() as t:
-            img, assets_used = mosaic_reader(
-                mosaic_assets, _reader, tile_x, tile_y, tile_z, **kwargs
-            )
-
-        metadata["dataread"] = round(t.elapsed * 1000, 2)
-        metadata["assets_in_tile"] = len(assets_used)
-        img.metadata = metadata
-
-        return img, assets_used
+        return mosaic_reader(mosaic_assets, _reader, tile_x, tile_y, tile_z, **kwargs)
 
     def point(
         self,
