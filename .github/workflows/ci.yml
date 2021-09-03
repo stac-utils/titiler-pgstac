@@ -48,7 +48,7 @@ jobs:
         run: tox -e py
         env:
           POSTGRES_USER: username
-          POSTGRES_PASSWORD: password
+          POSTGRES_PASS: password
           POSTGRES_HOST_READER: localhost
           POSTGRES_HOST_WRITER: localhost
           POSTGRES_DBNAME: postgres
