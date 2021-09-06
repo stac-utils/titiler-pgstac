@@ -140,6 +140,10 @@ class PGSTACBackend(BaseBackend):
 
     def assets_for_point(self, lng: float, lat: float, **kwargs: Any) -> List[Dict]:
         """Retrieve assets for point."""
+        # Point search is currently broken within PgSTAC
+        # in order to return the correct result we need to make sure exitwhenfull and skipcovered options
+        # are set to `False`
+        # ref: https://github.com/stac-utils/pgstac/pull/52
         kwargs.update(**{"exitwhenfull": False, "skipcovered": False})
         return self.get_assets(Point(coordinates=(lng, lat)), **kwargs)
 
