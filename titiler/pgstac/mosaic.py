@@ -140,6 +140,7 @@ class PGSTACBackend(BaseBackend):
 
     def assets_for_point(self, lng: float, lat: float, **kwargs: Any) -> List[Dict]:
         """Retrieve assets for point."""
+        kwargs.update(**{"exitwhenfull": False, "skipcovered": False})
         return self.get_assets(Point(coordinates=(lng, lat)), **kwargs)
 
     @cached(
@@ -160,7 +161,7 @@ class PGSTACBackend(BaseBackend):
         fields = fields or {
             "include": ["assets", "id", "bbox"],
         }
-
+        print(geom.json(exclude_none=True))
         conn = self.pool.getconn()
         try:
             with conn:
