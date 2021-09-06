@@ -2,16 +2,13 @@
 
 import os
 from dataclasses import dataclass, field
-from typing import Any, Callable, Dict, List, Optional, Sequence, Type
+from typing import Callable, Dict, Optional, Type
 from urllib.parse import urlencode
 
 import rasterio
 from cogeo_mosaic.backends import BaseBackend
 from morecantile import TileMatrixSet
-from pydantic import BaseModel, root_validator, validator
 from rio_tiler.constants import MAX_THREADS
-from stac_pydantic.api.extensions.query import Operator
-from stac_pydantic.api.extensions.sort import SortExtension
 
 from titiler.core.dependencies import AssetsBidxExprParams, DefaultDependency, TMSParams
 from titiler.core.factory import BaseTilerFactory, img_endpoint_params
@@ -19,35 +16,13 @@ from titiler.core.models.mapbox import TileJSON
 from titiler.core.resources.enums import ImageType, OptionalHeader
 from titiler.core.utils import Timer
 from titiler.mosaic.resources.enums import PixelSelectionMethod
+from titiler.pgstac.models import SearchQuery
 from titiler.pgstac.mosaic import PGSTACBackend
 
 from fastapi import Depends, Path, Query
 
 from starlette.requests import Request
 from starlette.responses import Response
-
-
-class SearchQuery(BaseModel):
-    """Create Mosaic model.
-
-    Simplified version of the `search` model
-    """
-
-    datetime: Optional[str]
-    collections: Optional[List[str]] = None
-    bbox: Optional[Sequence[float]]
-    query: Optional[Dict[str, Dict[Operator, Any]]]
-    sortby: Optional[List[SortExtension]]
-
-    @root_validator(pre=True)
-    def validate_query_fields(cls, values: Dict) -> Dict:
-        """Pgstac does not require the base validator for query fields."""
-        return values
-
-    @validator("datetime")
-    def validate_datetime(cls, v: str) -> str:
-        """Pgstac does not require the base validator for datetime."""
-        return v
 
 
 def PathParams(searchid: str = Path(..., description="Search Id")) -> str:
