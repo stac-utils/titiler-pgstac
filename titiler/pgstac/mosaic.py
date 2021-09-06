@@ -165,7 +165,6 @@ class PGSTACBackend(BaseBackend):
         fields = fields or {
             "include": ["assets", "id", "bbox"],
         }
-        print(geom.json(exclude_none=True))
         conn = self.pool.getconn()
         try:
             with conn:
