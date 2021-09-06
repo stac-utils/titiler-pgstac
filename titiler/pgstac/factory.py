@@ -344,7 +344,7 @@ class MosaicTilerFactory(BaseTilerFactory):
             searchid = search_info["hash"]
             return {
                 "searchid": searchid,
-                "metadata": self.url_for(request, "info", searchid=searchid),
+                "metadata": self.url_for(request, "info_search", searchid=searchid),
                 "tiles": self.url_for(request, "tilejson", searchid=searchid),
             }
 
