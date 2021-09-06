@@ -43,20 +43,19 @@ def test_info(app):
     assert resp["total_count"] == 163
 
 
-# This Fails for now need to be fixed in pgstac
-# def test_assets_for_point(app):
-#     """Get assets for a Point."""
-#     response = app.get(f"/{search_no_bbox}/-85.6358,36.1624/assets")
-#     assert response.status_code == 200
-#     resp = response.json()
-#     assert len(resp) == 1
-#     assert list(resp[0]) == ["id", "bbox", "assets"]
+def test_assets_for_point(app):
+    """Get assets for a Point."""
+    response = app.get(f"/{search_no_bbox}/-85.6358,36.1624/assets")
+    assert response.status_code == 200
+    resp = response.json()
+    assert len(resp) == 1
+    assert list(resp[0]) == ["id", "bbox", "assets"]
 
-#     # no assets found outside the query bbox
-#     response = app.get(f"/{search_bbox}/-85.6358,36.1624//assets")
-#     assert response.status_code == 200
-#     resp = response.json()
-#     assert len(resp) == 0
+    # no assets found outside the query bbox
+    response = app.get(f"/{search_bbox}/-85.6358,36.1624/assets")
+    assert response.status_code == 200
+    resp = response.json()
+    assert len(resp) == 0
 
 
 def test_assets_for_tile(app):
@@ -66,6 +65,7 @@ def test_assets_for_tile(app):
     resp = response.json()
     assert len(resp) == 1
     assert list(resp[0]) == ["id", "bbox", "assets"]
+    assert resp[0]["id"] == "20200307aC0853900w361030"
 
     # no assets found outside the query bbox
     response = app.get(f"/{search_bbox}/15/8589/12849/assets")
