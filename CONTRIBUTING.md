@@ -7,12 +7,8 @@ Issues and pull requests are more than welcome: https://github.com/stac-utils/ti
 ```bash
 $ git clone https://github.com/stac-utils/titiler-pgstac.git
 $ cd titiler
-$ pip install \
-   pre-commit \
-   -e src/titiler/pgstac["test"]
+$ pip install pre-commit -e .["test"]
 ```
-
-**Python3.8 only**
 
 This repo is set to use `pre-commit` to run *isort*, *flake8*, *pydocstring*, *black* ("uncompromising Python code formatter") and mypy when committing new code.
 

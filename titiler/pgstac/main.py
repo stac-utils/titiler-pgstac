@@ -3,7 +3,9 @@
 import logging
 from typing import Dict
 
+from titiler.core.dependencies import TileMatrixSetName, TMSParams
 from titiler.core.errors import DEFAULT_STATUS_CODES, add_exception_handlers
+from titiler.core.factory import TMSFactory
 from titiler.core.middleware import (
     CacheControlMiddleware,
     LoggerMiddleware,
@@ -67,6 +69,9 @@ else:
 
 mosaic = MosaicTilerFactory(optional_headers=optional_headers)
 app.include_router(mosaic.router)
+
+tms = TMSFactory(supported_tms=TileMatrixSetName, tms_dependency=TMSParams)
+app.include_router(tms.router, tags=["TileMatrixSets"])
 
 
 @app.get("/healthz", description="Health Check", tags=["Health Check"])

@@ -1,37 +1,52 @@
-**WORK IN PROGRESS / EXPERIMENTAL**
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/10407788/132182694-52cd3d02-5b80-4bb0-9102-b98272fae0f9.png"/>
+  <p align="center">Connect PgSTAC and TiTiler.</p>
+</p>
 
-## titiler.pgstac
-
-Connect PgSTAC and TiTiler
+<p align="center">
+  <a href="https://github.com/stac-utils/titiler-pgstac/actions?query=workflow%3ACI" target="_blank">
+      <img src="https://github.com/developmentseed/titiler/workflows/CI/badge.svg" alt="Test">
+  </a>
+  <a href="https://codecov.io/gh/stac-utils/titiler-pgstac" target="_blank">
+      <img src="https://codecov.io/gh/stac-utils/titiler-pgstac/branch/master/graph/badge.svg" alt="Coverage">
+  </a>
+  <a href="https://pypi.org/project/titiler.pgstac" target="_blank">
+      <img src="https://img.shields.io/pypi/v/titiler.pgstac?color=%2334D058&label=pypi%20package" alt="Package version">
+  </a>
+  <a href="https://github.com/stac-utils/titiler-pgstac/blob/master/LICENSE" target="_blank">
+      <img src="https://img.shields.io/github/license/stac-utils/titiler-pgstac.svg" alt="License">
+  </a>
+</p>
 
 ---
 
-**Documentation**:
+**Documentation**: <a href="https://stac-utils.github.io/titiler-pgstac/" target="_blank">https://stac-utils.github.io/titiler-pgstac/</a>
 
 **Source Code**: <a href="https://github.com/stac-utils/titiler-pgstac" target="_blank">https://github.com/stac-utils/titiler-pgstac</a>
 
 ---
 
-### Overview
+`TiTiler.PgSTAC` is a [titiler](https://github.com/developmentseed/titile) extension which connect to [pgstac](https://github.com/stac-utils/pgstac) STAC database in order to create **mosaics** in response to a STAC-api `search` query.
 
-1. Mosaic Creation
-
-<img width="995" alt="Screen Shot 2021-07-20 at 4 47 46 PM" src="https://user-images.githubusercontent.com/10407788/126345041-df19a42a-bd6a-44cc-b26c-40f44d5035a6.png">
-
-2. Tile Request
-
-<img width="973" alt="Screen Shot 2021-07-20 at 4 47 51 PM" src="https://user-images.githubusercontent.com/10407788/126345102-eb521670-bac0-4283-a396-95620db3ff5c.png">
 
 ## Installation
+
+To install from PyPI and run:
+
+```bash
+$ pip install -U pip
+$ pip install titiler.pgstac
+```
+
+To install from sources and run for development:
 
 ```
 $ git clone https://github.com/stac-utils/titiler-pgstac.git
 $ cd titiler-pgstac
 $ pip install -e .
-$ pip install uvicorn
 ```
 
-## Launch
+### Launch
 
 You'll need to have `POSTGRES_USER`, `POSTGRES_PASS`, `POSTGRES_DBNAME`, `POSTGRES_HOST_READER`, `POSTGRES_HOST_WRITER`, `POSTGRES_PORT` variables set in your environment pointing to your Postgres database where pgstac has been installed.
 
@@ -45,10 +60,11 @@ export POSTGRES_PORT=5432
 ```
 
 ```
-$ uvicorn titiler.pgstac.main:app --reload --port 8082 --host 0.0.0.0
+$ pip install uvicorn
+$ uvicorn titiler.pgstac.main:app --reload
 ```
 
-## Docker
+### Using Docker
 
 ```
 $ git clone https://github.com/stac-utils/titiler-pgstac.git

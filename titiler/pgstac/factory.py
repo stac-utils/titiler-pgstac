@@ -352,7 +352,7 @@ class MosaicTilerFactory(BaseTilerFactory):
             "/{searchid}/info",
             responses={200: {"description": "Get Search query metadata."}},
         )
-        def info(request: Request, searchid=Depends(self.path_dependency)):
+        def info_search(request: Request, searchid=Depends(self.path_dependency)):
             """Get Search query metadata."""
             pool = request.app.state.readpool
             conn = pool.getconn()
