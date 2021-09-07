@@ -32,7 +32,7 @@ When we have a `searchid` we can now call the dynamic tiler and ask for tiles.
 
 ![](https://user-images.githubusercontent.com/10407788/132197899-e79b3118-313b-45e7-a431-5d3034984459.png)
 
-Note: Because tiles will be create from STAC items we need to pass an `assets={stac asset}` to the tiler.
+Note: Because tiles will be created from STAC items we need to pass `assets={stac asset}` to the tiler.
 
 #### Example
 
