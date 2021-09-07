@@ -99,5 +99,4 @@ jobs:
           TOXENV: release
           TWINE_USERNAME: ${{ secrets.PYPI_STACUTILS_PASSWORD }}
           TWINE_PASSWORD: ${{ secrets.PYPI_STACUTILS_USERNAME }}
-        run: |
-          scripts/publish
+        run: tox
