@@ -97,7 +97,7 @@ jobs:
         if: steps.tag.outputs.tag == steps.module.outputs.version
         env:
           TOXENV: release
-          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
-          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+          TWINE_USERNAME: ${{ secrets.PYPI_STACUTILS_PASSWORD }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_STACUTILS_USERNAME }}
         run: |
           scripts/publish
