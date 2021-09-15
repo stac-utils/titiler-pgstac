@@ -89,6 +89,17 @@ def test_tilejson(app):
     assert round(resp["bounds"][0]) == -180
     assert "?assets=cog" in resp["tiles"][0]
 
+    response = app.get(
+        f"/{search_no_bbox}/tilejson.json?assets=cog&scan_limit=100&items_limit=1&time_limit=2&exitwhenfull=False&skipcovered=False"
+    )
+    assert response.headers["content-type"] == "application/json"
+    assert response.status_code == 200
+    resp = response.json()
+    assert (
+        "?assets=cog&scan_limit=100&items_limit=1&time_limit=2&exitwhenfull=False&skipcovered=False"
+        in resp["tiles"][0]
+    )
+
     response = app.get(f"/{search_no_bbox}/tilejson.json?expression=cog")
     assert response.status_code == 200
     resp = response.json()

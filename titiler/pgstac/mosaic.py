@@ -155,16 +155,23 @@ class PGSTACBackend(BaseBackend):
         self,
         geom: Union[Point, Polygon],
         fields: Optional[Dict[str, Any]] = None,
-        scan_limit: int = 10000,
-        items_limit: int = 100,
-        time_limit: int = 5,
-        exitwhenfull: bool = True,
-        skipcovered: bool = True,
+        scan_limit: Optional[int] = None,
+        items_limit: Optional[int] = None,
+        time_limit: Optional[int] = None,
+        exitwhenfull: Optional[bool] = None,
+        skipcovered: Optional[bool] = None,
     ) -> List[Dict]:
         """Find assets."""
         fields = fields or {
             "include": ["assets", "id", "bbox"],
         }
+
+        scan_limit = scan_limit or 10000
+        items_limit = items_limit or 100
+        time_limit = time_limit or 5
+        exitwhenfull = True if exitwhenfull is None else exitwhenfull
+        skipcovered = True if skipcovered is None else skipcovered
+
         conn = self.pool.getconn()
         try:
             with conn:
@@ -198,11 +205,11 @@ class PGSTACBackend(BaseBackend):
         tile_y: int,
         tile_z: int,
         reverse: bool = False,
-        scan_limit: int = 10000,
-        items_limit: int = 100,
-        time_limit: int = 5,
-        exitwhenfull: bool = True,
-        skipcovered: bool = True,
+        scan_limit: Optional[int] = None,
+        items_limit: Optional[int] = None,
+        time_limit: Optional[int] = None,
+        exitwhenfull: Optional[bool] = None,
+        skipcovered: Optional[bool] = None,
         **kwargs: Any,
     ) -> Tuple[ImageData, List[str]]:
         """Get Tile from multiple observation."""
@@ -238,11 +245,11 @@ class PGSTACBackend(BaseBackend):
         lon: float,
         lat: float,
         reverse: bool = False,
-        scan_limit: int = 10000,
-        items_limit: int = 100,
-        time_limit: int = 5,
-        exitwhenfull: bool = True,
-        skipcovered: bool = True,
+        scan_limit: Optional[int] = None,
+        items_limit: Optional[int] = None,
+        time_limit: Optional[int] = None,
+        exitwhenfull: Optional[bool] = None,
+        skipcovered: Optional[bool] = None,
         **kwargs: Any,
     ) -> List:
         """Get Point value from multiple observation."""

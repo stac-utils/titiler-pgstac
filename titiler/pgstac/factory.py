@@ -31,6 +31,42 @@ def PathParams(searchid: str = Path(..., description="Search Id")) -> str:
 
 
 @dataclass
+class PgSTACParams:
+    """PgSTAC parameters."""
+
+    scan_limit: Optional[int] = Query(
+        None,
+        description="Return as soon as we scan N items (defaults to 10000 in PgSTAC).",
+    )
+    items_limit: Optional[int] = Query(
+        None,
+        description="Return as soon as we have N items per geometry (defaults to 100 in PgSTAC).",
+    )
+    time_limit: Optional[int] = Query(
+        None,
+        description="Return after N seconds to avoid long requests (defaults to 5 in PgSTAC).",
+    )
+    exitwhenfull: Optional[bool] = Query(
+        None,
+        description="Return as soon as the geometry is fully covered (defaults to True in PgSTAC).",
+    )
+    skipcovered: Optional[bool] = Query(
+        None,
+        description="Skip any items that would show up completely under the previous items (defaults to True in PgSTAC).",
+    )
+
+    # Future dependencies class in titiler 0.4.0
+    # Those 2 method enable dict unpacking `**PgSTACParams()`
+    def keys(self):
+        """Return keys."""
+        return self.__dict__.keys()
+
+    def __getitem__(self, key):
+        """Return value."""
+        return self.__dict__[key]
+
+
+@dataclass
 class MosaicTilerFactory(BaseTilerFactory):
     """Custom MosaicTiler for PgSTAC Mosaic Backend."""
 
@@ -97,6 +133,7 @@ class MosaicTilerFactory(BaseTilerFactory):
             pixel_selection: PixelSelectionMethod = Query(
                 PixelSelectionMethod.first, description="Pixel selection method."
             ),
+            pgstac_params: PgSTACParams = Depends(),
             kwargs: Dict = Depends(self.additional_dependency),
         ):
             """Create map tile."""
@@ -126,6 +163,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                             tilesize=tilesize,
                             **layer_params.kwargs,
                             **dataset_params.kwargs,
+                            **pgstac_params,
                             **kwargs,
                         )
             timings.append(("dataread", round((t.elapsed - mosaic_read) * 1000, 2)))
@@ -196,6 +234,7 @@ class MosaicTilerFactory(BaseTilerFactory):
             pixel_selection: PixelSelectionMethod = Query(
                 PixelSelectionMethod.first, description="Pixel selection method."
             ),  # noqa
+            pgstac_params: PgSTACParams = Depends(),  # noqa
             kwargs: Dict = Depends(self.additional_dependency),  # noqa
         ):
             """Return TileJSON document for a SearchId."""
@@ -266,6 +305,7 @@ class MosaicTilerFactory(BaseTilerFactory):
             x: int = Path(..., description="Tiles's column"),
             y: int = Path(..., description="Tiles's row"),
             tms: TileMatrixSet = Depends(self.tms_dependency),
+            pgstac_params: PgSTACParams = Depends(),
         ):
             """Return a list of assets which overlap a given tile"""
             with self.reader(
@@ -274,7 +314,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                 tms=tms,
                 **self.backend_options,
             ) as src_dst:
-                return src_dst.assets_for_tile(x, y, z)
+                return src_dst.assets_for_tile(x, y, z, **pgstac_params)
 
         @self.router.get(
             "/{searchid}/{lon},{lat}/assets",
@@ -285,12 +325,13 @@ class MosaicTilerFactory(BaseTilerFactory):
             searchid=Depends(self.path_dependency),
             lon: float = Path(..., description="Longitude"),
             lat: float = Path(..., description="Latitude"),
+            pgstac_params: PgSTACParams = Depends(),
         ):
             """Return a list of assets for a given point."""
             with self.reader(
                 searchid, pool=request.app.state.readpool, **self.backend_options,
             ) as src_dst:
-                return src_dst.assets_for_point(lon, lat)
+                return src_dst.assets_for_point(lon, lat, **pgstac_params)
 
     def _search_routes(self) -> None:
         """register search routes."""
