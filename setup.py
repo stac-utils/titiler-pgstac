@@ -9,7 +9,6 @@ inst_reqs = [
     "titiler.core>=0.3.8,<0.4",
     "titiler.mosaic",
     "geojson-pydantic>=0.3.1,<0.4",
-    "psycopg2",
     "rio-tiler>=2.1.2,<2.2",
     "stac-pydantic==2.0.*",
 ]
@@ -22,6 +21,8 @@ extra_reqs = {
         "pypgstac",
         "asyncpg",
     ],
+    "psycopg2": ["psycopg2"],
+    "psycopg2-binary": ["psycopg2-binary"],
 }
 
 

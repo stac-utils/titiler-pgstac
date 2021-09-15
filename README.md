@@ -34,8 +34,13 @@
 To install from PyPI and run:
 
 ```bash
-$ pip install -U pip
-$ pip install titiler.pgstac
+# Make sure to have pip up to date
+$ python -m pip install -U pip
+
+# Install psycopg2 or psycopg2-binary
+$ python -m pip install psycopg2-binary  # or psycopg2
+
+$ python -m pip install titiler.pgstac
 ```
 
 To install from sources and run for development:
@@ -43,8 +48,13 @@ To install from sources and run for development:
 ```
 $ git clone https://github.com/stac-utils/titiler-pgstac.git
 $ cd titiler-pgstac
-$ pip install -e .
+$ python -m pip install -e .
 ```
+
+### `psycopg2` requirement
+
+`titiler.pgstac` depends on the `psycopg2` library. Because there are two ways of installing this package (`psycopg2` or `psycopg2-binary`), it is let to the user to install it. if you should to install `psycopg2`, you'll need to have Postgres installed.
+
 
 ### Launch
 
