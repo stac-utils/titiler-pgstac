@@ -8,7 +8,7 @@ COPY setup.py /tmp/setup.py
 COPY setup.cfg /tmp/setup.cfg
 COPY README.md /tmp/README.md
 
-RUN cd /tmp && pip install . --no-cache-dir
+RUN cd /tmp && pip install .[psycopg2] --no-cache-dir
 RUN rm -rf /tmp/titiler
 
 ENV MODULE_NAME titiler.pgstac.main
