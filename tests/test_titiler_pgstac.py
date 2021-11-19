@@ -4,8 +4,8 @@ from unittest.mock import patch
 
 from .conftest import mock_rasterio_open, parse_img
 
-search_no_bbox = "14031051a5d8bcee56f7a5016d47250f"
-search_bbox = "1bb7a216738ffb7f5847df9dfb444e3d"
+search_no_bbox = "076233571a03a39e92cc92953f97f752"
+search_bbox = "18a1a6f23de16464c84c6bf0b4406215"
 
 
 def test_register(app):
@@ -40,7 +40,7 @@ def test_info(app):
 
     assert "hash" in resp
     assert resp["search"] == {"collections": ["noaa-emergency-response"]}
-    assert resp["total_count"] == 163
+    assert resp["metadata"] == {}
 
 
 def test_assets_for_point(app):
