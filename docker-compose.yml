@@ -8,7 +8,7 @@ services:
     platform: linux/amd64
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.gunicorn
     ports:
       - "8081:8081"
     environment:
@@ -26,6 +26,8 @@ services:
       # PG connection
       - DB_MIN_CONN_SIZE=1
       - DB_MAX_CONN_SIZE=1
+      # - DB_MAX_QUERIES=10
+      # - DB_MAX_IDLE=10
       # GDAL Config
       - CPL_TMPDIR=/tmp
       - GDAL_CACHEMAX=75%
@@ -38,8 +40,8 @@ services:
       # TiTiler Config
       - MOSAIC_CONCURRENCY=1
       # AWS S3 endpoint config
-      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      # - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      # - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
     depends_on:
       - database
 
@@ -57,7 +59,7 @@ services:
       # Application
       - HOST=0.0.0.0
       - PORT=8081
-      - WEB_CONCURRENCY=1
+      - WEB_CONCURRENCY=10
       # Postgres connection
       - POSTGRES_USER=username
       - POSTGRES_PASS=password
@@ -66,7 +68,9 @@ services:
       - POSTGRES_PORT=5432
       # PG connection
       - DB_MIN_CONN_SIZE=1
-      - DB_MAX_CONN_SIZE=1
+      - DB_MAX_CONN_SIZE=10
+      # - DB_MAX_QUERIES=10
+      # - DB_MAX_IDLE=10
       # GDAL Config
       - CPL_TMPDIR=/tmp
       - GDAL_CACHEMAX=75%
@@ -79,8 +83,8 @@ services:
       # TiTiler Config
       - MOSAIC_CONCURRENCY=1
       # AWS S3 endpoint config
-      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      # - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      # - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
     depends_on:
       - database
 

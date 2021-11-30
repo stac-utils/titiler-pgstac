@@ -103,4 +103,3 @@ ENV/
 log-config.yml
 
 .pgdata/
-benchmark/
