@@ -44,23 +44,27 @@ class _PostgresSettings(pydantic.BaseSettings):
     Attributes:
         postgres_user: postgres username.
         postgres_pass: postgres password.
-        postgres_host_reader: hostname for the reader connection.
-        postgres_host_writer: hostname for the writer connection.
+        postgres_host: database hostname.
         postgres_port: database port.
         postgres_dbname: database name.
     """
 
     postgres_user: str
     postgres_pass: str
-    postgres_host_reader: str
-    postgres_host_writer: str
+    postgres_host: str
     postgres_port: str
     postgres_dbname: str
 
-    db_min_conn_size: int = 1
-    db_max_conn_size: int = 10
-    db_max_queries: int = 50000
-    db_max_inactive_conn_lifetime: float = 300
+    # see https://www.psycopg.org/psycopg3/docs/api/pool.html#the-connectionpool-class for options
+    db_min_conn_size: int = 1  # The minimum number of connection the pool will hold
+    db_max_conn_size: int = 10  # The maximum number of connections the pool will hold
+    db_max_queries: int = (
+        50000  # Maximum number of requests that can be queued to the pool
+    )
+    db_max_idle: float = 300  # Maximum time, in seconds, that a connection can stay unused in the pool before being closed, and the pool shrunk.
+    db_num_workers: int = (
+        3  # Number of background worker threads used to maintain the pool state
+    )
 
     class Config:
         """model config"""
@@ -68,14 +72,9 @@ class _PostgresSettings(pydantic.BaseSettings):
         env_file = ".env"
 
     @property
-    def reader_connection_string(self):
+    def connection_string(self):
         """Create reader psql connection string."""
-        return f"postgresql://{self.postgres_user}:{self.postgres_pass}@{self.postgres_host_reader}:{self.postgres_port}/{self.postgres_dbname}"
-
-    @property
-    def writer_connection_string(self):
-        """Create writer psql connection string."""
-        return f"postgresql://{self.postgres_user}:{self.postgres_pass}@{self.postgres_host_writer}:{self.postgres_port}/{self.postgres_dbname}"
+        return f"postgresql://{self.postgres_user}:{self.postgres_pass}@{self.postgres_host}:{self.postgres_port}/{self.postgres_dbname}"
 
 
 @lru_cache()

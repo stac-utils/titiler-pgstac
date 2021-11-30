@@ -12,7 +12,7 @@ from cogeo_mosaic.errors import NoAssetFoundError
 from cogeo_mosaic.mosaic import MosaicJSON
 from geojson_pydantic import Point, Polygon
 from morecantile import TileMatrixSet
-from psycopg2 import pool as psycopg2Pool
+from psycopg_pool import ConnectionPool
 from rio_tiler.constants import WEB_MERCATOR_TMS
 from rio_tiler.errors import InvalidAssetName, PointOutsideBounds
 from rio_tiler.io.base import BaseReader, MultiBaseReader
@@ -85,7 +85,7 @@ class PGSTACBackend(BaseBackend):
     path: str = attr.ib()
 
     # Connection POOL to the database
-    pool: psycopg2Pool = attr.ib()
+    pool: ConnectionPool = attr.ib()
 
     reader_options: Dict = attr.ib(factory=dict)
 
@@ -172,26 +172,22 @@ class PGSTACBackend(BaseBackend):
         exitwhenfull = True if exitwhenfull is None else exitwhenfull
         skipcovered = True if skipcovered is None else skipcovered
 
-        conn = self.pool.getconn()
-        try:
-            with conn:
-                with conn.cursor() as cursor:
-                    cursor.execute(
-                        "SELECT * FROM geojsonsearch(%s, %s, %s, %s, %s, %s, %s, %s);",
-                        (
-                            geom.json(exclude_none=True),
-                            self.path,
-                            json.dumps(fields),
-                            scan_limit,
-                            items_limit,
-                            f"{time_limit} seconds",
-                            exitwhenfull,
-                            skipcovered,
-                        ),
-                    )
-                    resp = cursor.fetchone()[0]
-        finally:
-            self.pool.putconn(conn)
+        with self.pool.connection() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(
+                    "SELECT * FROM geojsonsearch(%s, %s, %s, %s, %s, %s, %s, %s);",
+                    (
+                        geom.json(exclude_none=True),
+                        self.path,
+                        json.dumps(fields),
+                        scan_limit,
+                        items_limit,
+                        f"{time_limit} seconds",
+                        exitwhenfull,
+                        skipcovered,
+                    ),
+                )
+                resp = cursor.fetchone()[0]
 
         return resp.get("features", [])
 
@@ -269,7 +265,10 @@ class PGSTACBackend(BaseBackend):
             mosaic_assets = list(reversed(mosaic_assets))
 
         def _reader(
-            item: Dict[str, Any], lon: float, lat: float, **kwargs: Any,
+            item: Dict[str, Any],
+            lon: float,
+            lat: float,
+            **kwargs: Any,
         ) -> Dict:
             with self.reader(item, **self.reader_options) as src_dst:
                 return src_dst.point(lon, lat, **kwargs)
