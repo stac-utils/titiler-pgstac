@@ -1,42 +1,90 @@
 version: '3'
 
 services:
-  titiler:
-    container_name: titiler-pgstac
+  tiler:
+    container_name: tiler-pgstac
+    # At the time of writing, rasterio and psycopg wheels are not available for arm64 arch
+    # so we force the image to be built with linux/amd64
     platform: linux/amd64
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.gunicorn
     ports:
       - "8081:8081"
     environment:
+      # Application
       - HOST=0.0.0.0
       - PORT=8081
-      - APP_HOST=0.0.0.0
-      - APP_PORT=8081
-      - ENVIRONMENT=local
+      - WEB_CONCURRENCY=1
+      - WORKERS_PER_CORE=1
+      # Postgres connection
       - POSTGRES_USER=username
       - POSTGRES_PASS=password
       - POSTGRES_DBNAME=postgis
-      - POSTGRES_HOST_READER=database
-      - POSTGRES_HOST_WRITER=database
+      - POSTGRES_HOST=database
       - POSTGRES_PORT=5432
+      # PG connection
       - DB_MIN_CONN_SIZE=1
       - DB_MAX_CONN_SIZE=1
-      - WEB_CONCURRENCY=1
-      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      # - DB_MAX_QUERIES=10
+      # - DB_MAX_IDLE=10
+      # GDAL Config
       - CPL_TMPDIR=/tmp
       - GDAL_CACHEMAX=75%
       - GDAL_DISABLE_READDIR_ON_OPEN=EMPTY_DIR
       - GDAL_HTTP_MERGE_CONSECUTIVE_RANGES=YES
       - GDAL_HTTP_MULTIPLEX=YES
       - GDAL_HTTP_VERSION=2
-      - PYTHONWARNINGS=ignore
       - VSI_CACHE=TRUE
       - VSI_CACHE_SIZE=536870912
-      - WORKERS_PER_CORE=1
+      # TiTiler Config
       - MOSAIC_CONCURRENCY=1
+      # AWS S3 endpoint config
+      # - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      # - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    depends_on:
+      - database
+
+  tiler-uvicorn:
+    container_name: tiler-pgstac-uvicorn
+    # At the time of writing, rasterio and psycopg wheels are not available for arm64 arch
+    # so we force the image to be built with linux/amd64
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: Dockerfile.uvicorn
+    ports:
+      - "8081:8081"
+    environment:
+      # Application
+      - HOST=0.0.0.0
+      - PORT=8081
+      - WEB_CONCURRENCY=10
+      # Postgres connection
+      - POSTGRES_USER=username
+      - POSTGRES_PASS=password
+      - POSTGRES_DBNAME=postgis
+      - POSTGRES_HOST=database
+      - POSTGRES_PORT=5432
+      # PG connection
+      - DB_MIN_CONN_SIZE=1
+      - DB_MAX_CONN_SIZE=10
+      # - DB_MAX_QUERIES=10
+      # - DB_MAX_IDLE=10
+      # GDAL Config
+      - CPL_TMPDIR=/tmp
+      - GDAL_CACHEMAX=75%
+      - GDAL_DISABLE_READDIR_ON_OPEN=EMPTY_DIR
+      - GDAL_HTTP_MERGE_CONSECUTIVE_RANGES=YES
+      - GDAL_HTTP_MULTIPLEX=YES
+      - GDAL_HTTP_VERSION=2
+      - VSI_CACHE=TRUE
+      - VSI_CACHE_SIZE=536870912
+      # TiTiler Config
+      - MOSAIC_CONCURRENCY=1
+      # AWS S3 endpoint config
+      # - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      # - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
     depends_on:
       - database
 
@@ -53,6 +101,8 @@ services:
     ports:
       - "5439:5432"
     command: postgres -N 500
+    volumes:
+      - ./.pgdata:/var/lib/postgresql/data
 
 networks:
   default:

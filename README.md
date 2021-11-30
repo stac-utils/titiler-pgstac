@@ -37,8 +37,8 @@ To install from PyPI and run:
 # Make sure to have pip up to date
 $ python -m pip install -U pip
 
-# Install psycopg2 or psycopg2-binary
-$ python -m pip install psycopg2-binary  # or psycopg2
+# Install `psycopg` or `psycopg["binary"]` or `psycopg["c"]`
+$ python -m pip install psycopg["binary"]
 
 $ python -m pip install titiler.pgstac
 ```
@@ -51,21 +51,31 @@ $ cd titiler-pgstac
 $ python -m pip install -e .
 ```
 
-### `psycopg2` requirement
+### `psycopg` requirement
 
-`titiler.pgstac` depends on the `psycopg2` library. Because there are two ways of installing this package (`psycopg2` or `psycopg2-binary`), the user must install this separately from `titiler.pgstac`. `psycopg2-binary` is a binary wheel distribution of the `psycopg2` package and is simpler for development. `psycopg2` is [generally recommended](https://github.com/psycopg/psycopg2/blob/e7c5f95bf60f4d243733e3cbcedb365d76aa28d5/README.rst#installation) for production use. Note that to install `psycopg2`, you'll need to have Postgres headers installed and available for the compilation process.
+`titiler.pgstac` depends on the `psycopg` library. Because there are three ways of installing this package (`psycopg` or , `psycopg["c"]`, `psycopg["binary"]`), the user must install this separately from `titiler.pgstac`.
 
+- `psycopg`: no wheel, pure python implementation. It requires the `libpq` installed in the system.
+- `psycopg["binary"]`: binary wheel distribution (shipped with libpq) of the `psycopg` package and is simpler for development. It requires development packages installed on the client machine.
+- `psycopg["c"]`: a C (faster) implementation of the libpq wrapper. It requires the `libpq` installed in the system.
+
+`psycopg[c]` or `psycopg` are generally recommended for production use.
+
+In `titiler.pgstac` setup.py, we have added three options to let users choose which psycopg install to use:
+
+- `pip install titiler.pgstac["psycopg"]`: pure python
+- `pip install titiler.pgstac["psycopg-c"]`: use the C wrapper (requires development packages installed on the client machine)
+- `pip install titiler.pgstac["psycopg-binary"]`: binary wheels
 
 ### Launch
 
-You'll need to have `POSTGRES_USER`, `POSTGRES_PASS`, `POSTGRES_DBNAME`, `POSTGRES_HOST_READER`, `POSTGRES_HOST_WRITER`, `POSTGRES_PORT` variables set in your environment pointing to your Postgres database where pgstac has been installed.
+You'll need to have `POSTGRES_USER`, `POSTGRES_PASS`, `POSTGRES_DBNAME`, `POSTGRES_HOST`, `POSTGRES_PORT` variables set in your environment pointing to your Postgres database where pgstac has been installed.
 
 ```
 export POSTGRES_USER=username
 export POSTGRES_PASS=password
 export POSTGRES_DBNAME=postgis
-export POSTGRES_HOST_READER=database
-export POSTGRES_HOST_WRITER=database
+export POSTGRES_HOST=database
 export POSTGRES_PORT=5432
 ```
 
@@ -79,9 +89,7 @@ $ uvicorn titiler.pgstac.main:app --reload
 ```
 $ git clone https://github.com/stac-utils/titiler-pgstac.git
 $ cd titiler-pgstac
-
-$ docker-compose build
-$ docker-compose up
+$ docker-compose up --build tiler-pgstac
 ```
 
 ## Contribution & Development

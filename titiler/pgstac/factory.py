@@ -147,7 +147,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                 with rasterio.Env(**self.gdal_config):
                     with self.reader(
                         searchid,
-                        pool=request.app.state.readpool,
+                        pool=request.app.state.dbpool,
                         tms=tms,
                         **self.backend_options,
                     ) as src_dst:
@@ -238,19 +238,15 @@ class MosaicTilerFactory(BaseTilerFactory):
             kwargs: Dict = Depends(self.additional_dependency),  # noqa
         ):
             """Return TileJSON document for a SearchId."""
-            pool = request.app.state.readpool
-            conn = pool.getconn()
-            try:
-                with conn:
-                    with conn.cursor() as cursor:
-                        cursor.execute(
-                            "SELECT * FROM searches WHERE hash=%s;", (searchid,),
-                        )
-                        r = cursor.fetchone()
-                        fields = list(map(lambda x: x[0], cursor.description))
-                        search_info = dict(zip(fields, r))
-            finally:
-                pool.putconn(conn)
+            with request.app.state.dbpool.connection() as conn:
+                with conn.cursor() as cursor:
+                    cursor.execute(
+                        "SELECT * FROM searches WHERE hash=%s;",
+                        (searchid,),
+                    )
+                    r = cursor.fetchone()
+                    fields = list(map(lambda x: x[0], cursor.description))
+                    search_info = dict(zip(fields, r))
 
             route_params = {
                 "searchid": searchid,
@@ -310,7 +306,7 @@ class MosaicTilerFactory(BaseTilerFactory):
             """Return a list of assets which overlap a given tile"""
             with self.reader(
                 searchid,
-                pool=request.app.state.readpool,
+                pool=request.app.state.dbpool,
                 tms=tms,
                 **self.backend_options,
             ) as src_dst:
@@ -329,7 +325,9 @@ class MosaicTilerFactory(BaseTilerFactory):
         ):
             """Return a list of assets for a given point."""
             with self.reader(
-                searchid, pool=request.app.state.readpool, **self.backend_options,
+                searchid,
+                pool=request.app.state.dbpool,
+                **self.backend_options,
             ) as src_dst:
                 return src_dst.assets_for_point(lon, lat, **pgstac_params)
 
@@ -337,25 +335,20 @@ class MosaicTilerFactory(BaseTilerFactory):
         """register search routes."""
 
         @self.router.post(
-            "/register", responses={200: {"description": "Register a Search."}},
+            "/register",
+            responses={200: {"description": "Register a Search."}},
         )
         def register_search(request: Request, body: SearchQuery):
             """Register a Search query."""
-            pool = request.app.state.writepool
-            conn = pool.getconn()
-
-            try:
-                with conn:
-                    with conn.cursor() as cursor:
-                        cursor.execute(
-                            "SELECT * FROM search_query(%s);",
-                            (body.json(exclude_none=True),),
-                        )
-                        r = cursor.fetchone()
-                        fields = list(map(lambda x: x[0], cursor.description))
-                        search_info = dict(zip(fields, r))
-            finally:
-                pool.putconn(conn)
+            with request.app.state.dbpool.connection() as conn:
+                with conn.cursor() as cursor:
+                    cursor.execute(
+                        "SELECT * FROM search_query(%s);",
+                        (body.json(exclude_none=True),),
+                    )
+                    r = cursor.fetchone()
+                    fields = list(map(lambda x: x[0], cursor.description))
+                    search_info = dict(zip(fields, r))
 
             searchid = search_info["hash"]
             return {
@@ -370,18 +363,14 @@ class MosaicTilerFactory(BaseTilerFactory):
         )
         def info_search(request: Request, searchid=Depends(self.path_dependency)):
             """Get Search query metadata."""
-            pool = request.app.state.readpool
-            conn = pool.getconn()
-            try:
-                with conn:
-                    with conn.cursor() as cursor:
-                        cursor.execute(
-                            "SELECT * FROM searches WHERE hash=%s;", (searchid,),
-                        )
-                        r = cursor.fetchone()
-                        fields = list(map(lambda x: x[0], cursor.description))
-                        search_info = dict(zip(fields, r))
-            finally:
-                pool.putconn(conn)
+            with request.app.state.dbpool.connection() as conn:
+                with conn.cursor() as cursor:
+                    cursor.execute(
+                        "SELECT * FROM searches WHERE hash=%s;",
+                        (searchid,),
+                    )
+                    r = cursor.fetchone()
+                    fields = list(map(lambda x: x[0], cursor.description))
+                    search_info = dict(zip(fields, r))
 
             return search_info

@@ -7,9 +7,8 @@ with open("README.md") as f:
 
 inst_reqs = [
     "titiler.core>=0.3.8,<0.4",
-    "titiler.mosaic",
+    "titiler.mosaic>=0.3.8,<0.4",
     "geojson-pydantic>=0.3.1,<0.4",
-    "rio-tiler>=2.1.2,<2.2",
     "stac-pydantic==2.0.*",
 ]
 extra_reqs = {
@@ -21,8 +20,10 @@ extra_reqs = {
         "pypgstac",
         "asyncpg",
     ],
-    "psycopg2": ["psycopg2"],
-    "psycopg2-binary": ["psycopg2-binary"],
+    # https://www.psycopg.org/psycopg3/docs/api/pq.html#pq-module-implementations
+    "psycopg": ["psycopg[pool]"],  # pure python implementation
+    "psycopg-c": ["psycopg[c,pool]"],  # C implementation of the libpq wrapper
+    "psycopg-binary": ["psycopg[binary,pool]"],  # pre-compiled C implementation
 }
 
 
