@@ -51,7 +51,7 @@ def test_assets_for_point(app):
     assert len(resp) == 1
     assert list(resp[0]) == ["id", "bbox", "assets"]
 
-    # no assets found outside the query bbox
+    # no assets found outside the mosaic bbox
     response = app.get(f"/{search_bbox}/-85.6358,36.1624/assets")
     assert response.status_code == 200
     resp = response.json()
@@ -159,5 +159,6 @@ def test_tiles(rio, app):
     assert meta["width"] == 256
     assert meta["height"] == 256
 
+    # tile is outside mosaic bbox, it should return 404 (NoAssetFoundError)
     response = app.get(f"/tiles/{search_bbox}/{z}/{x}/{y}?assets=cog")
     assert response.status_code == 404
