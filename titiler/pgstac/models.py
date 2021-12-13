@@ -5,7 +5,7 @@ Note: This is mostly a copy of https://github.com/stac-utils/stac-fastapi/blob/m
 """
 
 import operator
-from enum import auto
+from enum import Enum, auto
 from types import DynamicClassAttribute
 from typing import Any, Callable, Dict, List, Optional, Union
 
@@ -17,9 +17,19 @@ from geojson_pydantic.geometries import (
     Point,
     Polygon,
 )
-from pydantic import BaseModel, root_validator, validator
+from pydantic import BaseModel, Field, root_validator, validator
 from stac_pydantic.shared import BBox
 from stac_pydantic.utils import AutoValueEnum
+
+
+class FilterLang(str, Enum):
+    """filter language.
+
+    ref: https://github.com/radiantearth/stac-api-spec/tree/master/fragments/filter#get-query-parameters-and-post-json-fields
+    """
+
+    cql_json = "cql-json"
+    cql_text = "cql-text"
 
 
 class Operator(str, AutoValueEnum):
@@ -48,7 +58,7 @@ class SearchQuery(BaseModel):
 
     Notes/Diff with standard model:
         - 'fields' is not in the Model because it's defined at the tiler level
-
+        - we don't set limit
     """
 
     collections: Optional[List[str]] = None
@@ -61,10 +71,12 @@ class SearchQuery(BaseModel):
     filter: Optional[Dict]
     datetime: Optional[str] = None
     sortby: Any
+    filter_lang: Optional[FilterLang] = Field(None, alias="filter-lang")
 
     class Config:
         """Config for model."""
 
+        use_enum_values = True
         extra = "allow"
 
     @root_validator(pre=True)

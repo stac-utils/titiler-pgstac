@@ -4,13 +4,13 @@ from unittest.mock import patch
 
 from .conftest import mock_rasterio_open, parse_img
 
-search_no_bbox = "076233571a03a39e92cc92953f97f752"
-search_bbox = "18a1a6f23de16464c84c6bf0b4406215"
+search_no_bbox = "d7f31eb5c11b1b7fa46990ef2de7b136"
+search_bbox = "ef44755ef0ecfe9a3be58b6e94ebc264"
 
 
 def test_register(app):
     """Register Search requests."""
-    query = {"collections": ["noaa-emergency-response"]}
+    query = {"collections": ["noaa-emergency-response"], "filter-lang": "cql-json"}
     response = app.post("/register", json=query)
     assert response.status_code == 200
 
@@ -22,6 +22,7 @@ def test_register(app):
     query = {
         "collections": ["noaa-emergency-response"],
         "bbox": [-85.535, 36.137, -85.465, 36.179],
+        "filter-lang": "cql-json",
     }
     response = app.post("/register", json=query)
     assert response.status_code == 200
@@ -39,7 +40,10 @@ def test_info(app):
     resp = response.json()
 
     assert "hash" in resp
-    assert resp["search"] == {"collections": ["noaa-emergency-response"]}
+    assert resp["search"] == {
+        "collections": ["noaa-emergency-response"],
+        "filter-lang": "cql-json",
+    }
     assert resp["metadata"] == {}
 
 
@@ -50,8 +54,15 @@ def test_assets_for_point(app):
     resp = response.json()
     assert len(resp) == 1
     assert list(resp[0]) == ["id", "bbox", "assets"]
+    assert resp[0]["id"] == "20200307aC0853900w361030"
 
-    # no assets found outside the query bbox
+    # make sure we can find assets when having both bbox and geometry
+    response = app.get(f"/{search_bbox}/-85.5,36.1624/assets")
+    assert response.status_code == 200
+    resp = response.json()
+    assert len(resp) == 2
+
+    # no assets found outside the mosaic bbox
     response = app.get(f"/{search_bbox}/-85.6358,36.1624/assets")
     assert response.status_code == 200
     resp = response.json()
@@ -66,6 +77,12 @@ def test_assets_for_tile(app):
     assert len(resp) == 1
     assert list(resp[0]) == ["id", "bbox", "assets"]
     assert resp[0]["id"] == "20200307aC0853900w361030"
+
+    # make sure we can find assets when having both bbox and geometry
+    response = app.get(f"/{search_bbox}/15/8601/12849/assets")
+    assert response.status_code == 200
+    resp = response.json()
+    assert len(resp) == 2
 
     # no assets found outside the query bbox
     response = app.get(f"/{search_bbox}/15/8589/12849/assets")
@@ -159,5 +176,148 @@ def test_tiles(rio, app):
     assert meta["width"] == 256
     assert meta["height"] == 256
 
+    # tile is outside mosaic bbox, it should return 404 (NoAssetFoundError)
     response = app.get(f"/tiles/{search_bbox}/{z}/{x}/{y}?assets=cog")
+    assert response.status_code == 404
+
+
+@patch("rio_tiler.io.cogeo.rasterio")
+def test_cql2(rio, app):
+    """Test with cql2."""
+    rio.open = mock_rasterio_open
+
+    query = {
+        "filter": {
+            "op": "=",
+            "args": [{"property": "collection"}, "noaa-emergency-response"],
+        }
+    }
+    response = app.post("/register", json=query)
+    assert response.status_code == 200
+    resp = response.json()
+    assert resp["metadata"]
+    assert resp["tiles"]
+
+    cql2_id = resp["searchid"]
+
+    response = app.get(f"/{cql2_id}/info")
+    assert response.status_code == 200
+    resp = response.json()
+    assert "hash" in resp
+    assert resp["search"] == {
+        "filter": {
+            "op": "=",
+            "args": [{"property": "collection"}, "noaa-emergency-response"],
+        }
+    }
+    assert resp["metadata"] == {}
+
+    response = app.get(f"/{cql2_id}/-85.6358,36.1624/assets")
+    assert response.status_code == 200
+    resp = response.json()
+    assert len(resp) == 1
+    assert list(resp[0]) == ["id", "bbox", "assets"]
+    assert resp[0]["id"] == "20200307aC0853900w361030"
+
+    response = app.get(f"/{cql2_id}/15/8589/12849/assets")
+    assert response.status_code == 200
+    resp = response.json()
+    assert len(resp) == 1
+    assert list(resp[0]) == ["id", "bbox", "assets"]
+    assert resp[0]["id"] == "20200307aC0853900w361030"
+
+    response = app.get(f"/{cql2_id}/tilejson.json?assets=cog")
+    assert response.headers["content-type"] == "application/json"
+    assert response.status_code == 200
+    resp = response.json()
+    assert resp["name"] == cql2_id
+    assert resp["minzoom"] == 0
+    assert resp["maxzoom"] == 24
+    assert round(resp["bounds"][0]) == -180
+    assert "?assets=cog" in resp["tiles"][0]
+
+    z, x, y = 15, 8589, 12849
+    response = app.get(f"/tiles/{cql2_id}/{z}/{x}/{y}?assets=cog")
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "image/jpeg"
+    meta = parse_img(response.content)
+    assert meta["width"] == 256
+    assert meta["height"] == 256
+
+
+@patch("rio_tiler.io.cogeo.rasterio")
+def test_cql2_with_geometry(rio, app):
+    """Test with cql2 with geometry filter."""
+    rio.open = mock_rasterio_open
+    # Filter with geometry
+    query = {
+        "filter": {
+            "op": "and",
+            "args": [
+                {
+                    "op": "=",
+                    "args": [{"property": "collection"}, "noaa-emergency-response"],
+                },
+                {
+                    "op": "s_intersects",
+                    "args": [
+                        {"property": "geometry"},
+                        {
+                            "coordinates": [
+                                [
+                                    [-85.535, 36.137],
+                                    [-85.535, 36.179],
+                                    [-85.465, 36.179],
+                                    [-85.465, 36.137],
+                                    [-85.535, 36.137],
+                                ]
+                            ],
+                            "type": "Polygon",
+                        },
+                    ],
+                },
+            ],
+        }
+    }
+    response = app.post("/register", json=query)
+    assert response.status_code == 200
+    resp = response.json()
+    assert resp["metadata"]
+    assert resp["tiles"]
+
+    cql2_id = resp["searchid"]
+
+    response = app.get(f"/{cql2_id}/info")
+    assert response.status_code == 200
+    resp = response.json()
+    assert "hash" in resp
+    assert resp["metadata"] == {}
+
+    # make sure we can find assets when having both geometry filter and geometry
+    response = app.get(f"/{cql2_id}/15/8601/12849/assets")
+    assert response.status_code == 200
+    resp = response.json()
+    assert len(resp) == 2
+
+    # point is outside the geometry filter
+    response = app.get(f"/{cql2_id}/-85.6358,36.1624/assets")
+    assert response.status_code == 200
+    resp = response.json()
+    assert len(resp) == 0
+
+    # make sure we can find assets when having both geometry filter and geometry
+    response = app.get(f"/{cql2_id}/15/8601/12849/assets")
+    assert response.status_code == 200
+    resp = response.json()
+    assert len(resp) == 2
+
+    # tile is outside the geometry filter
+    response = app.get(f"/{cql2_id}/15/8589/12849/assets")
+    assert response.status_code == 200
+    resp = response.json()
+    assert len(resp) == 0
+
+    # tile is outside the geometry filter
+    z, x, y = 15, 8589, 12849
+    response = app.get(f"/tiles/{cql2_id}/{z}/{x}/{y}?assets=cog")
     assert response.status_code == 404

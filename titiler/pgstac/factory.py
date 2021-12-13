@@ -31,7 +31,7 @@ def PathParams(searchid: str = Path(..., description="Search Id")) -> str:
 
 
 @dataclass
-class PgSTACParams:
+class PgSTACParams(DefaultDependency):
     """PgSTAC parameters."""
 
     scan_limit: Optional[int] = Query(
@@ -55,22 +55,12 @@ class PgSTACParams:
         description="Skip any items that would show up completely under the previous items (defaults to True in PgSTAC).",
     )
 
-    # Future dependencies class in titiler 0.4.0
-    # Those 2 method enable dict unpacking `**PgSTACParams()`
-    def keys(self):
-        """Return keys."""
-        return self.__dict__.keys()
-
-    def __getitem__(self, key):
-        """Return value."""
-        return self.__dict__[key]
-
 
 @dataclass
 class MosaicTilerFactory(BaseTilerFactory):
     """Custom MosaicTiler for PgSTAC Mosaic Backend."""
 
-    reader: BaseBackend = PGSTACBackend
+    reader: Type[BaseBackend] = PGSTACBackend
     path_dependency: Callable[..., str] = PathParams
     layer_dependency: Type[DefaultDependency] = AssetsBidxExprParams
 
@@ -128,13 +118,13 @@ class MosaicTilerFactory(BaseTilerFactory):
             ),
             layer_params=Depends(self.layer_dependency),
             dataset_params=Depends(self.dataset_dependency),
-            render_params=Depends(self.render_dependency),
-            colormap=Depends(self.colormap_dependency),
             pixel_selection: PixelSelectionMethod = Query(
                 PixelSelectionMethod.first, description="Pixel selection method."
             ),
+            postprocess_params=Depends(self.process_dependency),
+            colormap=Depends(self.colormap_dependency),
+            render_params=Depends(self.render_dependency),
             pgstac_params: PgSTACParams = Depends(),
-            kwargs: Dict = Depends(self.additional_dependency),
         ):
             """Create map tile."""
             timings = []
@@ -159,12 +149,11 @@ class MosaicTilerFactory(BaseTilerFactory):
                             y,
                             z,
                             pixel_selection=pixel_selection.method(),
-                            threads=threads,
                             tilesize=tilesize,
-                            **layer_params.kwargs,
-                            **dataset_params.kwargs,
+                            threads=threads,
+                            **layer_params,
+                            **dataset_params,
                             **pgstac_params,
-                            **kwargs,
                         )
             timings.append(("dataread", round((t.elapsed - mosaic_read) * 1000, 2)))
 
@@ -172,19 +161,15 @@ class MosaicTilerFactory(BaseTilerFactory):
                 format = ImageType.jpeg if data.mask.all() else ImageType.png
 
             with Timer() as t:
-                image = data.post_process(
-                    in_range=render_params.rescale_range,
-                    color_formula=render_params.color_formula,
-                )
+                image = data.post_process(**postprocess_params)
             timings.append(("postprocess", round(t.elapsed * 1000, 2)))
 
             with Timer() as t:
                 content = image.render(
-                    add_mask=render_params.return_mask,
                     img_format=format.driver,
                     colormap=colormap,
                     **format.profile,
-                    **render_params.kwargs,
+                    **render_params,
                 )
             timings.append(("format", round(t.elapsed * 1000, 2)))
 
@@ -229,13 +214,13 @@ class MosaicTilerFactory(BaseTilerFactory):
             ),
             layer_params=Depends(self.layer_dependency),  # noqa
             dataset_params=Depends(self.dataset_dependency),  # noqa
-            render_params=Depends(self.render_dependency),  # noqa
-            colormap=Depends(self.colormap_dependency),  # noqa
             pixel_selection: PixelSelectionMethod = Query(
                 PixelSelectionMethod.first, description="Pixel selection method."
             ),  # noqa
+            postprocess_params=Depends(self.process_dependency),  # noqa
+            colormap=Depends(self.colormap_dependency),  # noqa
+            render_params=Depends(self.render_dependency),  # noqa
             pgstac_params: PgSTACParams = Depends(),  # noqa
-            kwargs: Dict = Depends(self.additional_dependency),  # noqa
         ):
             """Return TileJSON document for a SearchId."""
             with request.app.state.dbpool.connection() as conn:
@@ -344,7 +329,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                 with conn.cursor() as cursor:
                     cursor.execute(
                         "SELECT * FROM search_query(%s);",
-                        (body.json(exclude_none=True),),
+                        (body.json(exclude_none=True, by_alias=True),),
                     )
                     r = cursor.fetchone()
                     fields = list(map(lambda x: x[0], cursor.description))

@@ -6,8 +6,8 @@ with open("README.md") as f:
     long_description = f.read()
 
 inst_reqs = [
-    "titiler.core>=0.3.8,<0.4",
-    "titiler.mosaic>=0.3.8,<0.4",
+    "titiler.core>=0.4.0,<0.5",
+    "titiler.mosaic>=0.4.0,<0.5",
     "geojson-pydantic>=0.3.1,<0.4",
     "stac-pydantic==2.0.*",
 ]
@@ -17,7 +17,7 @@ extra_reqs = {
         "pytest-cov",
         "pytest-asyncio",
         "requests",
-        "pypgstac",
+        "pypgstac>=0.4,<0.5",
         "asyncpg",
     ],
     # https://www.psycopg.org/psycopg3/docs/api/pq.html#pq-module-implementations

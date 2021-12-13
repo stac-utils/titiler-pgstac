@@ -12,13 +12,23 @@ The first step of the mosaic create is to register a `Search` query within the P
 
 #### Example
 
-```
-curl -X 'POST' 'http://127.0.0.1:8000/register' -H 'accept: application/json' -H 'Content-Type: application/json'
--d '{"collections":["landsat-c2l2-sr"], "bbox":[-123.75,34.30714385628804,-118.125,38.82259097617712]}' | jq
+```bash
+curl -X 'POST' 'http://127.0.0.1:8081/register' -H 'accept: application/json' -H 'Content-Type: application/json'
+-d '{"collections":["landsat-c2l2-sr"], "bbox":[-123.75,34.30714385628804,-118.125,38.82259097617712], "filter-lang": "cql-json"}' | jq
+
 {
   "searchid": "f1ed59f0a6ad91ed80ae79b7b52bc707",
   "metadata": "http://127.0.0.1:8000/f1ed59f0a6ad91ed80ae79b7b52bc707/info",
   "tiles": "http://127.0.0.1:8000/f1ed59f0a6ad91ed80ae79b7b52bc707/tilejson.json"
+}
+
+# Or using CQL-2
+curl -X 'POST' 'http://127.0.0.1:8000/register' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{"filter": {"op": "and", "args": [{"op": "=", "args": [{"property": "collection"}, "landsat-c2l2-sr"]}, {"op": "s_intersects", "args": [{"property": "geometry"}, {"coordinates": [[[-123.75, 34.30714385628804], [-123.75, 38.82259097617712], [-118.125, 38.82259097617712], [-118.125, 34.30714385628804], [-123.75, 34.30714385628804]]], "type": "Polygon"}]}]}}' | jq
+
+{
+  "searchid": "5181a09f58f348db706aa761cd594ce7",
+  "metadata": "http://127.0.0.1:8000/5181a09f58f348db706aa761cd594ce7/info",
+  "tiles": "http://127.0.0.1:8000/5181a09f58f348db706aa761cd594ce7/tilejson.json"
 }
 ```
 
