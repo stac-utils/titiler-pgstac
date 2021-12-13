@@ -73,6 +73,9 @@ class SearchQuery(BaseModel):
     sortby: Any
     filter_lang: Optional[FilterLang] = Field(None, alias="filter-lang")
 
+    # Metadata associated with the search
+    metadata: Optional[Dict[str, Any]]
+
     class Config:
         """Config for model."""
 

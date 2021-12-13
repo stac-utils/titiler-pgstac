@@ -321,3 +321,34 @@ def test_cql2_with_geometry(rio, app):
     z, x, y = 15, 8589, 12849
     response = app.get(f"/tiles/{cql2_id}/{z}/{x}/{y}?assets=cog")
     assert response.status_code == 404
+
+
+def test_query_with_metadata(app):
+    """Test with cql2."""
+    query = {
+        "filter": {
+            "op": "=",
+            "args": [{"property": "collection"}, "noaa-emergency-response"],
+        },
+        "metadata": {"name": "mymosaic", "minzoom": 1, "maxzoom": 2},
+    }
+
+    response = app.post("/register", json=query)
+    assert response.status_code == 200
+    resp = response.json()
+    assert resp["metadata"]
+    assert resp["tiles"]
+
+    cql2_id = resp["searchid"]
+
+    response = app.get(f"/{cql2_id}/info")
+    assert response.status_code == 200
+    resp = response.json()
+    assert "hash" in resp
+    assert resp["search"] == {
+        "filter": {
+            "op": "=",
+            "args": [{"property": "collection"}, "noaa-emergency-response"],
+        }
+    }
+    assert resp["metadata"] == {"name": "mymosaic", "minzoom": 1, "maxzoom": 2}
