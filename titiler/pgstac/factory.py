@@ -329,7 +329,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                 with conn.cursor() as cursor:
                     cursor.execute(
                         "SELECT * FROM search_query(%s);",
-                        (body.json(exclude_none=True),),
+                        (body.json(exclude_none=True, by_alias=True),),
                     )
                     r = cursor.fetchone()
                     fields = list(map(lambda x: x[0], cursor.description))
