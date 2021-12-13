@@ -4,13 +4,13 @@ from unittest.mock import patch
 
 from .conftest import mock_rasterio_open, parse_img
 
-search_no_bbox = "076233571a03a39e92cc92953f97f752"
-search_bbox = "18a1a6f23de16464c84c6bf0b4406215"
+search_no_bbox = "d7f31eb5c11b1b7fa46990ef2de7b136"
+search_bbox = "ef44755ef0ecfe9a3be58b6e94ebc264"
 
 
 def test_register(app):
     """Register Search requests."""
-    query = {"collections": ["noaa-emergency-response"]}
+    query = {"collections": ["noaa-emergency-response"], "filter-lang": "cql-json"}
     response = app.post("/register", json=query)
     assert response.status_code == 200
 
@@ -22,6 +22,7 @@ def test_register(app):
     query = {
         "collections": ["noaa-emergency-response"],
         "bbox": [-85.535, 36.137, -85.465, 36.179],
+        "filter-lang": "cql-json",
     }
     response = app.post("/register", json=query)
     assert response.status_code == 200
@@ -39,7 +40,10 @@ def test_info(app):
     resp = response.json()
 
     assert "hash" in resp
-    assert resp["search"] == {"collections": ["noaa-emergency-response"]}
+    assert resp["search"] == {
+        "collections": ["noaa-emergency-response"],
+        "filter-lang": "cql-json",
+    }
     assert resp["metadata"] == {}
 
 
