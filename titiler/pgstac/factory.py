@@ -1,5 +1,6 @@
 """Custom MosaicTiler Factory for PgSTAC Mosaic Backend."""
 
+import json
 import os
 from dataclasses import dataclass, field
 from typing import Callable, Dict, Optional, Type
@@ -325,11 +326,18 @@ class MosaicTilerFactory(BaseTilerFactory):
         )
         def register_search(request: Request, body: SearchQuery):
             """Register a Search query."""
+            search = body.json(
+                exclude_none=True,
+                exclude={"metadata"},
+                by_alias=True,
+            )
+            metadata = body.metadata or {}
+
             with request.app.state.dbpool.connection() as conn:
                 with conn.cursor() as cursor:
                     cursor.execute(
-                        "SELECT * FROM search_query(%s);",
-                        (body.json(exclude_none=True, by_alias=True),),
+                        "SELECT * FROM search_query(%s, _metadata => %s);",
+                        (search, json.dumps(metadata)),
                     )
                     r = cursor.fetchone()
                     fields = list(map(lambda x: x[0], cursor.description))
