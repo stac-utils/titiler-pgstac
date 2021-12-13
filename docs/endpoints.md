@@ -15,8 +15,6 @@ The `titiler.pgstac` package comes with a full FastAPI application.
 
 ## Description
 
-
-
 ### Register a Search Request
 
 `:endpoint:/register - [POST]`
@@ -36,8 +34,10 @@ curl -X 'POST' 'http://127.0.0.1:8000/register' -H 'accept: application/json' -H
 }
 
 # or using CQL2
-curl -X 'POST' 'http://127.0.0.1:8081/register' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{"filter": {"op": "=", "args": [{"property": "collection"}, "landsat-c2l2-sr"]}}' | jq
+curl -X 'POST' 'http://127.0.0.1:8081/register' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{"filter": {"op": "=", "args": [{"property": "collection"}, "landsat-c2l2-sr"]}}'
 
+# or using CQL2 with metadata
+curl -X 'POST' 'http://127.0.0.1:8081/register' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{"filter": {"op": "=", "args": [{"property": "collection"}, "landsat-c2l2-sr"]}, "metadata": {"name": "landsat mosaic"}}'
 ```
 
 ### Search metadata
@@ -89,24 +89,27 @@ curl 'http://127.0.0.1:8000/f1ed59f0a6ad91ed80ae79b7b52bc707/info' | jq
     - **format**: Output image format, default is set to None and will be either JPEG or PNG depending on masked value. OPTIONAL
 
 - QueryParams:
-    - **assets**: Comma (',') delimited asset names. OPTIONAL*
-    - **expression**: rio-tiler's band math expression (e.g B1/B2). OPTIONAL*
-    - **bidx**: Comma (',') delimited band indexes. OPTIONAL
+    - **assets** (array[str]): asset names.
+    - **expression** (str): rio-tiler's math expression with asset names (e.g `Asset1/Asset2`).
+    - **asset_bidx** (array[str]): Per asset band indexes (e.g `Asset1|1,2,3`).
+    - **asset_expression** (array[str]): Per asset band math expression (e.g `Asset1|b1\*b2`).
     - **nodata**: Overwrite internal Nodata value. OPTIONAL
-    - **rescale**: Comma (',') delimited Min,Max bounds. OPTIONAL
-    - **color_formula**: rio-color formula. OPTIONAL
-    - **colormap_name**: rio-tiler color map name. OPTIONAL
-    - **colormap**: JSON encoded custom Colormap. OPTIONAL
-    - **resampling_method**: rasterio resampling method. Default is `nearest`.
+    - **unscale** (bool): Apply dataset internal Scale/Offset.
+    - **resampling** (str): rasterio resampling method. Default is `nearest`.
+    - **rescale** (array[str]): Comma (',') delimited Min,Max range (e.g `rescale=0,1000`, `rescale=0,1000&rescale=0,3000&rescale=0,2000`).
+    - **color_formula** (str): rio-color formula.
+    - **colormap** (str): JSON encoded custom Colormap.
+    - **colormap_name** (str): rio-tiler color map name.
+    - **return_mask** (bool): Add mask to the output data. Default is True.
 
-**assets** OR **expression** is required
-
+!!! important
+    **assets** OR **expression** is required
 
 Example:
 
 - `https://myendpoint/tiles/f1ed59f0a6ad91ed80ae79b7b52bc707/1/2/3?assets=B01`
 - `https://myendpoint/tiles/f1ed59f0a6ad91ed80ae79b7b52bc707/1/2/3.jpg?assets=B01`
-- `https://myendpoint/tiles/f1ed59f0a6ad91ed80ae79b7b52bc707/WorldCRS84Quad/1/2/3@2x.png?assets=B01`
+- `https://myendpoint/tiles/f1ed59f0a6ad91ed80ae79b7b52bc707/WorldCRS84Quad/1/2/3@2x.png?assets=B01&assets=B02&assets=B03`
 - `https://myendpoint/tiles/f1ed59f0a6ad91ed80ae79b7b52bc707/WorldCRS84Quad/1/2/3?assets=B01&rescale=0,1000&colormap_name=cfastie`
 
 ### TilesJSON
@@ -122,18 +125,21 @@ Example:
     - **tile_scale**: Tile size scale, default is set to 1 (256x256). OPTIONAL
     - **minzoom**: Overwrite default minzoom. OPTIONAL
     - **maxzoom**: Overwrite default maxzoom. OPTIONAL
-    - **assets**: Comma (',') delimited asset names. OPTIONAL*
-    - **expression**: rio-tiler's band math expression (e.g B1/B2). OPTIONAL*
-    - **bidx**: Comma (',') delimited band indexes. OPTIONAL
-    - **nodata**: Overwrite internal Nodata value. OPTIONAL
-    - **rescale**: Comma (',') delimited Min,Max bounds. OPTIONAL
-    - **color_formula**: rio-color formula. OPTIONAL
-    - **colormap_name**: rio-tiler color map name. OPTIONAL
-    - **colormap**: JSON encoded custom Colormap. OPTIONAL
-    - **resampling_method**: rasterio resampling method. Default is `nearest`.
-    - **kwargs**: Other options will be forwarded to the `tiles` url.
+    - **assets** (array[str]): asset names.
+    - **expression** (str): rio-tiler's math expression with asset names (e.g `Asset1/Asset2`).
+    - **asset_bidx** (array[str]): Per asset band math expression (e.g `Asset1|1,2,3`).
+    - **asset_expression** (array[str]): Per asset band math expression (e.g `Asset1|b1\*b2`).
+    - **nodata** (str, int, float): Overwrite internal Nodata value.
+    - **unscale** (bool): Apply dataset internal Scale/Offset.
+    - **resampling** (str): rasterio resampling method. Default is `nearest`.
+    - **rescale** (array[str]): Comma (',') delimited Min,Max range (e.g `rescale=0,1000`, `rescale=0,1000&rescale=0,3000&rescale=0,2000`).
+    - **color_formula** (str): rio-color formula.
+    - **colormap** (str): JSON encoded custom Colormap.
+    - **colormap_name** (str): rio-tiler color map name.
+    - **return_mask** (bool): Add mask to the output data. Default is True.
 
-**assets** OR **expression** is required
+!!! important
+    **assets** OR **expression** is required
 
 Example:
 

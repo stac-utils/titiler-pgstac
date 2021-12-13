@@ -1,6 +1,6 @@
 # Release Notes
 
-## 0.1.0.a2 (TDB) Pre-Release
+## 0.1.0.a2 (2021-12-13) Pre-Release
 
 * Switch to **psycopg3**
 * add `filter-lang` in Search model to support newer PgSTAC (with CQL-2)
