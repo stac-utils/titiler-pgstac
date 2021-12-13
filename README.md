@@ -28,7 +28,6 @@
 
 `TiTiler.PgSTAC` is a [titiler](https://github.com/developmentseed/titile) extension which connect to [pgstac](https://github.com/stac-utils/pgstac) STAC database in order to create **mosaics** in response to a STAC-api `search` query.
 
-
 ## Installation
 
 To install from PyPI and run:
@@ -50,6 +49,10 @@ $ git clone https://github.com/stac-utils/titiler-pgstac.git
 $ cd titiler-pgstac
 $ python -m pip install -e .
 ```
+
+### `PgSTAC` version
+
+`titiler.pgstac` depends on `pgstac >=0.3.4` (https://github.com/stac-utils/pgstac/blob/main/CHANGELOG.md#v034).
 
 ### `psycopg` requirement
 

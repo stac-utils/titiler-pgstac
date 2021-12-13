@@ -17,7 +17,7 @@ extra_reqs = {
         "pytest-cov",
         "pytest-asyncio",
         "requests",
-        "pypgstac",
+        "pypgstac>=0.4,<0.5",
         "asyncpg",
     ],
     # https://www.psycopg.org/psycopg3/docs/api/pq.html#pq-module-implementations

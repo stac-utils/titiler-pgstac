@@ -9,6 +9,7 @@
 * Unify *reader/writer* db pools to `request.app.state.dbpool`
 * rename `PostgresSettings.db_max_inactive_conn_lifetime` to `PostgresSettings.max_idle`
 * remove `PostgresSettings().reader_connection_string` and `PostgresSettings().writer_connection_string`. Replaced with `PostgresSettings().connection_string`
+* update titiler requirement (>= 0.4)
 
 ## 0.1.0.a1 (2021-09-15) Pre-Release
 

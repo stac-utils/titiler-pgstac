@@ -27,13 +27,17 @@ Example:
 
 - `https://myendpoint/register`
 
-```
-curl -X 'POST' 'http://127.0.0.1:8000/register' -d '{"collections":["landsat-c2l2-sr"], "bbox":[-123.75,34.30714385628804,-118.125,38.82259097617712]}' | jq
+```bash
+curl -X 'POST' 'http://127.0.0.1:8000/register' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{"collections":["landsat-c2l2-sr"], "bbox":[-123.75,34.30714385628804,-118.125,38.82259097617712], "filter-lang": "cql-json"}' | jq
 {
-  "searchid": "f1ed59f0a6ad91ed80ae79b7b52bc707",
-  "metadata": "http://127.0.0.1:8000/f1ed59f0a6ad91ed80ae79b7b52bc707/info",
-  "tiles": "http://127.0.0.1:8000/f1ed59f0a6ad91ed80ae79b7b52bc707/tilejson.json"
+  "searchid": "5181a09f58f348db706aa761cd594ce7",
+  "metadata": "http://127.0.0.1:8000/5181a09f58f348db706aa761cd594ce7/info",
+  "tiles": "http://127.0.0.1:8000/5181a09f58f348db706aa761cd594ce7/tilejson.json"
 }
+
+# or using CQL2
+curl -X 'POST' 'http://127.0.0.1:8081/register' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{"filter": {"op": "=", "args": [{"property": "collection"}, "landsat-c2l2-sr"]}}' | jq
+
 ```
 
 ### Search metadata
@@ -47,10 +51,10 @@ Example:
 
 - `https://myendpoint/f1ed59f0a6ad91ed80ae79b7b52bc707/info`
 
-```
+```bash
 curl 'http://127.0.0.1:8000/f1ed59f0a6ad91ed80ae79b7b52bc707/info' | jq
 {
-  "hash": "f1ed59f0a6ad91ed80ae79b7b52bc707",
+  "hash": "5181a09f58f348db706aa761cd594ce7",
   "search": {
     "bbox": [
       -123.75,
@@ -60,15 +64,14 @@ curl 'http://127.0.0.1:8000/f1ed59f0a6ad91ed80ae79b7b52bc707/info' | jq
     ],
     "collections": [
       "landsat-c2l2-sr"
-    ]
+    ],
+    "filter-lang": "cql-json"
   },
   "_where": "(((collection_id = ANY ( '{landsat-c2l2-sr}'::text[] )) AND st_intersects(geometry, '0103000020E610000001000000050000000000000000F05EC055F6687D502741400000000000F05EC02D553EA94A6943400000000000885DC02D553EA94A6943400000000000885DC055F6687D502741400000000000F05EC055F6687D50274140'::geometry)))",
   "orderby": "datetime DESC, id DESC",
-  "lastused": "2021-09-06T09:33:41.676272+00:00",
+  "lastused": "2021-12-13T16:43:55.959925+00:00",
   "usecount": 2,
-  "statslastupdated": "2021-09-06T09:33:34.892161+00:00",
-  "estimated_count": 1,
-  "total_count": 0
+  "metadata": {}
 }
 ```
 

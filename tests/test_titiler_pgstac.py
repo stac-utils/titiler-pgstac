@@ -54,6 +54,13 @@ def test_assets_for_point(app):
     resp = response.json()
     assert len(resp) == 1
     assert list(resp[0]) == ["id", "bbox", "assets"]
+    assert resp[0]["id"] == "20200307aC0853900w361030"
+
+    # make sure we can find assets when having both bbox and geometry
+    response = app.get(f"/{search_bbox}/-85.5,36.1624/assets")
+    assert response.status_code == 200
+    resp = response.json()
+    assert len(resp) == 2
 
     # no assets found outside the mosaic bbox
     response = app.get(f"/{search_bbox}/-85.6358,36.1624/assets")
@@ -70,6 +77,12 @@ def test_assets_for_tile(app):
     assert len(resp) == 1
     assert list(resp[0]) == ["id", "bbox", "assets"]
     assert resp[0]["id"] == "20200307aC0853900w361030"
+
+    # make sure we can find assets when having both bbox and geometry
+    response = app.get(f"/{search_bbox}/15/8601/12849/assets")
+    assert response.status_code == 200
+    resp = response.json()
+    assert len(resp) == 2
 
     # no assets found outside the query bbox
     response = app.get(f"/{search_bbox}/15/8589/12849/assets")
@@ -280,11 +293,23 @@ def test_cql2_with_geometry(rio, app):
     assert "hash" in resp
     assert resp["metadata"] == {}
 
+    # make sure we can find assets when having both geometry filter and geometry
+    response = app.get(f"/{cql2_id}/15/8601/12849/assets")
+    assert response.status_code == 200
+    resp = response.json()
+    assert len(resp) == 2
+
     # point is outside the geometry filter
     response = app.get(f"/{cql2_id}/-85.6358,36.1624/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 0
+
+    # make sure we can find assets when having both geometry filter and geometry
+    response = app.get(f"/{cql2_id}/15/8601/12849/assets")
+    assert response.status_code == 200
+    resp = response.json()
+    assert len(resp) == 2
 
     # tile is outside the geometry filter
     response = app.get(f"/{cql2_id}/15/8589/12849/assets")
