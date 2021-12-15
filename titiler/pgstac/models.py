@@ -30,6 +30,7 @@ class FilterLang(str, Enum):
 
     cql_json = "cql-json"
     cql_text = "cql-text"
+    cql2_json = "cql2-json"
 
 
 class Operator(str, AutoValueEnum):
