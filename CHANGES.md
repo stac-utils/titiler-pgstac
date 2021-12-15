@@ -1,5 +1,9 @@
 # Release Notes
 
+## 0.1.0.a3 (2021-12-15) Pre-Release
+
+* Forward TMS to the STAC Reader (allow multiple TMS) (https://github.com/stac-utils/titiler-pgstac/pull/28)
+
 ## 0.1.0.a2 (2021-12-13) Pre-Release
 
 * Switch to **psycopg3**

@@ -2,6 +2,8 @@
 
 from unittest.mock import patch
 
+from rasterio.crs import CRS
+
 from .conftest import mock_rasterio_open, parse_img
 
 search_no_bbox = "d7f31eb5c11b1b7fa46990ef2de7b136"
@@ -179,6 +181,26 @@ def test_tiles(rio, app):
     # tile is outside mosaic bbox, it should return 404 (NoAssetFoundError)
     response = app.get(f"/tiles/{search_bbox}/{z}/{x}/{y}?assets=cog")
     assert response.status_code == 404
+
+    response = app.get(
+        f"/tiles/{search_no_bbox}/WebMercatorQuad/{z}/{x}/{y}.tif?assets=cog"
+    )
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "image/tiff; application=geotiff"
+    meta = parse_img(response.content)
+    assert meta["crs"] == CRS.from_epsg(3857)
+    assert meta["width"] == 256
+    assert meta["height"] == 256
+
+    response = app.get(
+        f"/tiles/{search_no_bbox}/WorldCRS84Quad/18/137421/78424.tif?assets=cog"
+    )
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "image/tiff; application=geotiff"
+    meta = parse_img(response.content)
+    assert meta["crs"] == CRS.from_epsg(4326)
+    assert meta["width"] == 256
+    assert meta["height"] == 256
 
 
 @patch("rio_tiler.io.cogeo.rasterio")
