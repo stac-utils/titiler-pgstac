@@ -27,7 +27,7 @@ Example:
 
 ```bash
 curl -X 'POST' 'http://127.0.0.1:8000/register' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{"collections":["landsat-c2l2-sr"], "bbox":[-123.75,34.30714385628804,-118.125,38.82259097617712], "filter-lang": "cql-json"}' | jq
-{
+>> {
   "searchid": "5181a09f58f348db706aa761cd594ce7",
   "metadata": "http://127.0.0.1:8000/5181a09f58f348db706aa761cd594ce7/info",
   "tiles": "http://127.0.0.1:8000/5181a09f58f348db706aa761cd594ce7/tilejson.json"
@@ -53,7 +53,7 @@ Example:
 
 ```bash
 curl 'http://127.0.0.1:8000/f1ed59f0a6ad91ed80ae79b7b52bc707/info' | jq
-{
+>> {
   "hash": "5181a09f58f348db706aa761cd594ce7",
   "search": {
     "bbox": [
@@ -82,9 +82,9 @@ curl 'http://127.0.0.1:8000/f1ed59f0a6ad91ed80ae79b7b52bc707/info' | jq
 - PathParams:
     - **searchid**: search query hashkey.
     - **TileMatrixSetId**: TileMatrixSet name, default is `WebMercatorQuad`. OPTIONAL
-    - **z**: Mercator tile's zoom level.
-    - **x**: Mercator tile's column.
-    - **y**: Mercator tile's row.
+    - **z**: Tile's zoom level.
+    - **x**: Tile's column.
+    - **y**: Tile's row.
     - **scale**: Tile size scale, default is set to 1 (256x256). OPTIONAL
     - **format**: Output image format, default is set to None and will be either JPEG or PNG depending on masked value. OPTIONAL
 
@@ -152,9 +152,8 @@ Example:
 `:endpoint:/tileMatrixSets` - Get the list of supported TileMatrixSet
 
 ```bash
-$ curl https://myendpoint/tileMatrixSets | jq
-
-{
+curl https://myendpoint/tileMatrixSets | jq
+>> {
   "tileMatrixSets": [
     {
       "id": "LINZAntarticaMapTilegrid",
@@ -180,9 +179,8 @@ $ curl https://myendpoint/tileMatrixSets | jq
     - **TileMatrixSetId**: TileMatrixSet name
 
 ```bash
-$ curl http://127.0.0.1:8000/tileMatrixSets/WebMercatorQuad | jq
-
-{
+curl http://127.0.0.1:8000/tileMatrixSets/WebMercatorQuad | jq
+>> {
   "type": "TileMatrixSetType",
   "title": "Google Maps Compatible for the World",
   "identifier": "WebMercatorQuad",

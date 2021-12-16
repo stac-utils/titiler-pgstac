@@ -12,7 +12,7 @@ extra:
       link: "https://github.com/stac-utils"
 
 nav:
-  - TiTiler.PgSTAC: "index.md"
+  - Home: "index.md"
   - Intro: "intro.md"
   - Default Endpoints: "endpoints.md"
   - Examples:

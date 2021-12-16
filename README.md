@@ -70,7 +70,7 @@ In `titiler.pgstac` setup.py, we have added three options to let users choose wh
 - `pip install titiler.pgstac["psycopg-c"]`: use the C wrapper (requires development packages installed on the client machine)
 - `pip install titiler.pgstac["psycopg-binary"]`: binary wheels
 
-### Launch
+## Launch
 
 You'll need to have `POSTGRES_USER`, `POSTGRES_PASS`, `POSTGRES_DBNAME`, `POSTGRES_HOST`, `POSTGRES_PORT` variables set in your environment pointing to your Postgres database where pgstac has been installed.
 
