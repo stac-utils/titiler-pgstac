@@ -1,3 +1,3 @@
 """titiler.pgstac version."""
 
-__version__ = "0.1.0.a3"
+__version__ = "0.1.0.a4"
