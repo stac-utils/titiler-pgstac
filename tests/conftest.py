@@ -7,10 +7,9 @@ from typing import Any, Dict
 import asyncpg
 import pytest
 import rasterio
+from httpx import AsyncClient
 from pypgstac import pypgstac
 from rasterio.io import MemoryFile
-
-from starlette.testclient import TestClient
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "fixtures")
 collection = os.path.join(DATA_DIR, "noaa-emergency-response.json")
@@ -126,7 +125,8 @@ async def app():
             await conn.close()
 
             await connect_to_db(app)
-            yield TestClient(app)
+            async with AsyncClient(app=app, base_url="http://test") as client:
+                yield client
             await close_db_connection(app)
 
         finally:

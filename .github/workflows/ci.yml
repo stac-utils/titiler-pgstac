@@ -50,7 +50,7 @@ jobs:
         run: pre-commit run --all-files
 
       - name: Run tests
-        run: python -m pytest --cov=titiler.pgstac --cov-report=xml --cov-report=term-missing --ignore=venv
+        run: python -m pytest --cov=titiler.pgstac --cov-report=xml --cov-report=term-missing --ignore=venv -s -vv
         env:
           POSTGRES_USER: username
           POSTGRES_PASS: password

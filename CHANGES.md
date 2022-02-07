@@ -1,5 +1,9 @@
 # Release Notes
 
+## 0.1.0.a4 (2022-02-07) Pre-Release
+
+* add tile `buffer` option to match rio-tiler tile options (https://github.com/stac-utils/titiler-pgstac/pull/31)
+
 ## 0.1.0.a3 (2021-12-15) Pre-Release
 
 * Forward TMS to the STAC Reader (allow multiple TMS) (https://github.com/stac-utils/titiler-pgstac/pull/28)

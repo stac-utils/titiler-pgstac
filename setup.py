@@ -15,8 +15,8 @@ extra_reqs = {
     "test": [
         "pytest",
         "pytest-cov",
-        "pytest-asyncio",
-        "requests",
+        "pytest-asyncio<0.18.0",
+        "httpx",
         "pypgstac>=0.4,<0.5",
         "asyncpg",
     ],
