@@ -171,6 +171,13 @@ def test_tiles(rio, app):
     assert meta["width"] == 256
     assert meta["height"] == 256
 
+    response = app.get(f"/tiles/{search_no_bbox}/{z}/{x}/{y}?assets=cog&buffer=0.5")
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "image/jpeg"
+    meta = parse_img(response.content)
+    assert meta["width"] == 257
+    assert meta["height"] == 257
+
     response = app.get(f"/tiles/{search_no_bbox}/{z}/{x}/{y}.png?assets=cog")
     assert response.status_code == 200
     assert response.headers["content-type"] == "image/png"

@@ -101,6 +101,7 @@ curl 'http://127.0.0.1:8000/f1ed59f0a6ad91ed80ae79b7b52bc707/info' | jq
     - **colormap** (str): JSON encoded custom Colormap.
     - **colormap_name** (str): rio-tiler color map name.
     - **return_mask** (bool): Add mask to the output data. Default is True.
+    - **buffer** (float): Add buffer on each side of the tile (e.g 0.5 = 257x257, 1.0 = 258x258).
 
 !!! important
     **assets** OR **expression** is required
@@ -137,6 +138,7 @@ Example:
     - **colormap** (str): JSON encoded custom Colormap.
     - **colormap_name** (str): rio-tiler color map name.
     - **return_mask** (bool): Add mask to the output data. Default is True.
+    - **buffer** (float): Add buffer on each side of the tile (e.g 0.5 = 257x257, 1.0 = 258x258).
 
 !!! important
     **assets** OR **expression** is required
