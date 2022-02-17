@@ -26,7 +26,7 @@
 
 ---
 
-`TiTiler.PgSTAC` is a [titiler](https://github.com/developmentseed/titile) extension which connect to [pgstac](https://github.com/stac-utils/pgstac) STAC database in order to create **mosaics** in response to a STAC-api `search` query.
+`TiTiler.PgSTAC` is a [titiler](https://github.com/developmentseed/titiler) extension which connect to [pgstac](https://github.com/stac-utils/pgstac) STAC database in order to create **mosaics** in response to a STAC-api `search` query.
 
 ## Installation
 
@@ -92,7 +92,13 @@ $ uvicorn titiler.pgstac.main:app --reload
 ```
 $ git clone https://github.com/stac-utils/titiler-pgstac.git
 $ cd titiler-pgstac
-$ docker-compose up --build tiler-pgstac
+$ docker-compose up --build tiler
+```
+
+It runs `titiler.pgstac` using Gunicorn web server. To run Uvicorn based version:
+
+```
+$ docker-compose up --build tiler-uvicorn
 ```
 
 ## Contribution & Development
