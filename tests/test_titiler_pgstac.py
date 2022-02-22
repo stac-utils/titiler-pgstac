@@ -394,4 +394,9 @@ async def test_query_with_metadata(app):
             "args": [{"property": "collection"}, "noaa-emergency-response"],
         }
     }
-    assert resp["metadata"] == {"name": "mymosaic", "minzoom": 1, "maxzoom": 2}
+    assert resp["metadata"] == {
+        "type": "mosaic",
+        "name": "mymosaic",
+        "minzoom": 1,
+        "maxzoom": 2,
+    }

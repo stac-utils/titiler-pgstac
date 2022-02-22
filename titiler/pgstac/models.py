@@ -54,6 +54,52 @@ class Operator(str, AutoValueEnum):
         return getattr(operator, self._value_)
 
 
+class SearchEnum(str, Enum):
+    """Metadata type."""
+
+    mosaic = "mosaic"
+
+
+class SearchMetadata(BaseModel):
+    """Metadata Model."""
+
+    type: SearchEnum = SearchEnum.mosaic
+
+    # WGS84 bounds
+    bounds: Optional[BBox]
+
+    # Min/Max zoom for WebMercatorQuad TMS
+    minzoom: Optional[int]
+    maxzoom: Optional[int]
+
+    # Name
+    name: Optional[str]
+
+    # List of available assets
+    assets: Optional[List[str]]
+
+    # Set of default configuration
+    # e.g
+    # {
+    #     "true_color": {
+    #         "assets": ["B4", "B3", "B2"],
+    #         "color_formula": "Gamma RGB 3.5 Saturation 1.7 Sigmoidal RGB 15 0.35",
+    #     },
+    #     "ndvi": {
+    #         "expression": "(B4-B3)/(B4+B3)",
+    #         "rescale": "-1,1",
+    #         "colormap_name": "viridis"
+    #     }
+    # }
+    defaults: Optional[Dict[str, Any]]
+
+    class Config:
+        """Config for model."""
+
+        use_enum_values = True
+        extra = "allow"
+
+
 class SearchQuery(BaseModel):
     """Search model.
 
@@ -75,7 +121,7 @@ class SearchQuery(BaseModel):
     filter_lang: Optional[FilterLang] = Field(None, alias="filter-lang")
 
     # Metadata associated with the search
-    metadata: Optional[Dict[str, Any]]
+    metadata: Optional[SearchMetadata]
 
     class Config:
         """Config for model."""

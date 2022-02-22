@@ -343,10 +343,13 @@ class MosaicTilerFactory(BaseTilerFactory):
             """Register a Search query."""
             search = body.json(
                 exclude_none=True,
-                exclude={"metadata"},
+                exclude={"metadata"},  # metadata is not part of the pgstac search model
                 by_alias=True,
             )
-            metadata = body.metadata or {}
+            if body.metadata:
+                metadata = body.metadata.dict(exclude_none=True)
+            else:
+                metadata = {}
 
             with request.app.state.dbpool.connection() as conn:
                 with conn.cursor() as cursor:
