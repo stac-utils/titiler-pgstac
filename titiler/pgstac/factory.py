@@ -8,6 +8,7 @@ from urllib.parse import urlencode
 import rasterio
 from cogeo_mosaic.backends import BaseBackend
 from morecantile import TileMatrixSet
+from psycopg.rows import class_row
 from rio_tiler.constants import MAX_THREADS
 
 from titiler.core.dependencies import AssetsBidxExprParams, DefaultDependency, TMSParams
@@ -256,17 +257,17 @@ class MosaicTilerFactory(BaseTilerFactory):
         ):
             """Return TileJSON document for a SearchId."""
             with request.app.state.dbpool.connection() as conn:
-                with conn.cursor() as cursor:
+                with conn.cursor(row_factory=class_row(model.Search)) as cursor:
                     cursor.execute(
                         "SELECT * FROM searches WHERE hash=%s;",
                         (searchid,),
                     )
-                    r = cursor.fetchone()
-                    fields = list(map(lambda x: x[0], cursor.description))
-                    search_info = dict(zip(fields, r))
+                    search_info = cursor.fetchone()
+                    if not search_info:
+                        raise KeyError(f"search {searchid} not found")
 
             route_params = {
-                "searchid": searchid,
+                "searchid": search_info.id,
                 "z": "{z}",
                 "x": "{x}",
                 "y": "{y}",
@@ -293,10 +294,10 @@ class MosaicTilerFactory(BaseTilerFactory):
                 tiles_url += f"?{urlencode(qs)}"
 
             return {
-                "bounds": search_info["search"].get("bbox", tms.bbox),
+                "bounds": search_info.input_search.get("bbox", tms.bbox),
                 "minzoom": minzoom if minzoom is not None else tms.minzoom,
                 "maxzoom": maxzoom if maxzoom is not None else tms.maxzoom,
-                "name": searchid,
+                "name": search_info.id,
                 "tiles": [tiles_url],
             }
 
@@ -362,7 +363,7 @@ class MosaicTilerFactory(BaseTilerFactory):
             search, metadata = search_query
 
             with request.app.state.dbpool.connection() as conn:
-                with conn.cursor() as cursor:
+                with conn.cursor(row_factory=class_row(model.Search)) as cursor:
                     cursor.execute(
                         "SELECT * FROM search_query(%s, _metadata => %s);",
                         (
@@ -370,31 +371,30 @@ class MosaicTilerFactory(BaseTilerFactory):
                             metadata.json(exclude_none=True),
                         ),
                     )
-                    r = cursor.fetchone()
-                    fields = list(map(lambda x: x[0], cursor.description))
-                    search_info = dict(zip(fields, r))
+                    search_info = cursor.fetchone()
 
-            searchid = search_info["hash"]
             return {
-                "searchid": searchid,
-                "metadata": self.url_for(request, "info_search", searchid=searchid),
-                "tiles": self.url_for(request, "tilejson", searchid=searchid),
+                "searchid": search_info.id,
+                "metadata": self.url_for(
+                    request, "info_search", searchid=search_info.id
+                ),
+                "tiles": self.url_for(request, "tilejson", searchid=search_info.id),
             }
 
         @self.router.get(
             "/{searchid}/info",
             responses={200: {"description": "Get Search query metadata."}},
+            response_model=model.Search,
+            response_model_exclude_none=True,
         )
         def info_search(request: Request, searchid=Depends(self.path_dependency)):
             """Get Search query metadata."""
             with request.app.state.dbpool.connection() as conn:
-                with conn.cursor() as cursor:
+                with conn.cursor(row_factory=class_row(model.Search)) as cursor:
                     cursor.execute(
                         "SELECT * FROM searches WHERE hash=%s;",
                         (searchid,),
                     )
-                    r = cursor.fetchone()
-                    fields = list(map(lambda x: x[0], cursor.description))
-                    search_info = dict(zip(fields, r))
+                    search_info = cursor.fetchone()
 
             return search_info

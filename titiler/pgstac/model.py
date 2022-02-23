@@ -5,6 +5,7 @@ Note: This is mostly a copy of https://github.com/stac-utils/stac-fastapi/blob/m
 """
 
 import operator
+from datetime import datetime
 from enum import Enum, auto
 from types import DynamicClassAttribute
 from typing import Any, Callable, Dict, List, Optional, Union
@@ -102,7 +103,7 @@ class Metadata(BaseModel):
 
 
 class PgSTACSearch(BaseModel):
-    """Search model.
+    """Search Query model.
 
     Notes/Diff with standard model:
         - 'fields' is not in the Model because it's defined at the tiler level
@@ -179,3 +180,26 @@ class RegisterMosaic(PgSTACSearch):
     """Model of /register endpoint input."""
 
     metadata: Metadata = Field(default_factory=Metadata)
+
+
+class Search(BaseModel):
+    """PgSTAC Search entry.
+
+    ref: https://github.com/stac-utils/pgstac/blob/3499daa2bfa700ae7bb07503795c169bf2ebafc7/sql/004_search.sql#L907-L915
+    """
+
+    id: str = Field(alias="hash")
+    input_search: Dict[str, Any] = Field(alias="search")
+    sql_where: str = Field(alias="_where")
+    orderby: str
+    lastused: datetime
+    usecount: int
+    metadata: Metadata
+
+    @validator("metadata", pre=True)
+    def validate_metadata(cls, v):
+        """Set SearchType.search when not present in metadata."""
+        if "type" not in v:
+            v["type"] = SearchType.search.name
+
+        return v
