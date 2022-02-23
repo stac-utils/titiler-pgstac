@@ -54,16 +54,17 @@ class Operator(str, AutoValueEnum):
         return getattr(operator, self._value_)
 
 
-class SearchEnum(str, Enum):
-    """Metadata type."""
+class SearchType(str, Enum):
+    """Search type."""
 
     mosaic = "mosaic"
+    search = "search"
 
 
-class SearchMetadata(BaseModel):
+class Metadata(BaseModel):
     """Metadata Model."""
 
-    type: SearchEnum = SearchEnum.mosaic
+    type: SearchType = SearchType.mosaic
 
     # WGS84 bounds
     bounds: Optional[BBox]
@@ -100,7 +101,7 @@ class SearchMetadata(BaseModel):
         extra = "allow"
 
 
-class SearchQuery(BaseModel):
+class PgSTACSearch(BaseModel):
     """Search model.
 
     Notes/Diff with standard model:
@@ -119,9 +120,6 @@ class SearchQuery(BaseModel):
     datetime: Optional[str] = None
     sortby: Any
     filter_lang: Optional[FilterLang] = Field(None, alias="filter-lang")
-
-    # Metadata associated with the search
-    metadata: Optional[SearchMetadata]
 
     class Config:
         """Config for model."""
@@ -175,3 +173,9 @@ class SearchQuery(BaseModel):
                 raise ValueError("Bounding box must be within (-180, -90, 180, 90)")
 
         return v
+
+
+class RegisterMosaic(PgSTACSearch):
+    """Model of /register endpoint input."""
+
+    metadata: Metadata = Field(default_factory=Metadata)

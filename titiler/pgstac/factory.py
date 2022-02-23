@@ -1,9 +1,8 @@
 """Custom MosaicTiler Factory for PgSTAC Mosaic Backend."""
 
-import json
 import os
 from dataclasses import dataclass, field
-from typing import Callable, Dict, Optional, Type
+from typing import Callable, Dict, Optional, Tuple, Type
 from urllib.parse import urlencode
 
 import rasterio
@@ -17,7 +16,7 @@ from titiler.core.models.mapbox import TileJSON
 from titiler.core.resources.enums import ImageType, OptionalHeader
 from titiler.core.utils import Timer
 from titiler.mosaic.resources.enums import PixelSelectionMethod
-from titiler.pgstac.models import SearchQuery
+from titiler.pgstac import model
 from titiler.pgstac.mosaic import PGSTACBackend
 
 from fastapi import Depends, Path, Query
@@ -29,6 +28,18 @@ from starlette.responses import Response
 def PathParams(searchid: str = Path(..., description="Search Id")) -> str:
     """SearcId"""
     return searchid
+
+
+def SearchParams(
+    body: model.RegisterMosaic,
+) -> Tuple[model.PgSTACSearch, model.Metadata]:
+    """Search parameters."""
+    search = body.dict(
+        exclude_none=True,
+        exclude={"metadata"},
+        by_alias=True,
+    )
+    return model.PgSTACSearch(**search), body.metadata
 
 
 @dataclass
@@ -67,6 +78,11 @@ class MosaicTilerFactory(BaseTilerFactory):
 
     # TileMatrixSet dependency
     tms_dependency: Callable[..., TileMatrixSet] = TMSParams
+
+    # Search dependency
+    search_dependency: Callable[
+        ..., Tuple[model.PgSTACSearch, model.Metadata]
+    ] = SearchParams
 
     backend_options: Dict = field(default_factory=dict)
 
@@ -339,23 +355,20 @@ class MosaicTilerFactory(BaseTilerFactory):
             "/register",
             responses={200: {"description": "Register a Search."}},
         )
-        def register_search(request: Request, body: SearchQuery):
+        def register_search(
+            request: Request, search_query=Depends(self.search_dependency)
+        ):
             """Register a Search query."""
-            search = body.json(
-                exclude_none=True,
-                exclude={"metadata"},  # metadata is not part of the pgstac search model
-                by_alias=True,
-            )
-            if body.metadata:
-                metadata = body.metadata.dict(exclude_none=True)
-            else:
-                metadata = {}
+            search, metadata = search_query
 
             with request.app.state.dbpool.connection() as conn:
                 with conn.cursor() as cursor:
                     cursor.execute(
                         "SELECT * FROM search_query(%s, _metadata => %s);",
-                        (search, json.dumps(metadata)),
+                        (
+                            search.json(by_alias=True, exclude_none=True),
+                            metadata.json(exclude_none=True),
+                        ),
                     )
                     r = cursor.fetchone()
                     fields = list(map(lambda x: x[0], cursor.description))

@@ -7,8 +7,8 @@ from rasterio.crs import CRS
 
 from .conftest import mock_rasterio_open, parse_img
 
-search_no_bbox = "d7f31eb5c11b1b7fa46990ef2de7b136"
-search_bbox = "ef44755ef0ecfe9a3be58b6e94ebc264"
+search_no_bbox = "8f5fb37ec266f4b84ec6aa4fe0453c59"
+search_bbox = "5e86ce566b979e567370a6ad85aaa68a"
 
 
 @pytest.mark.asyncio
@@ -47,7 +47,7 @@ async def test_info(app):
         "collections": ["noaa-emergency-response"],
         "filter-lang": "cql-json",
     }
-    assert resp["metadata"] == {}
+    assert resp["metadata"] == {"type": "mosaic"}
 
 
 @pytest.mark.asyncio
@@ -251,7 +251,7 @@ async def test_cql2(rio, app):
             "args": [{"property": "collection"}, "noaa-emergency-response"],
         }
     }
-    assert resp["metadata"] == {}
+    assert resp["metadata"] == {"type": "mosaic"}
 
     response = await app.get(f"/{cql2_id}/-85.6358,36.1624/assets")
     assert response.status_code == 200
@@ -333,7 +333,7 @@ async def test_cql2_with_geometry(rio, app):
     assert response.status_code == 200
     resp = response.json()
     assert "hash" in resp
-    assert resp["metadata"] == {}
+    assert resp["metadata"] == {"type": "mosaic"}
 
     # make sure we can find assets when having both geometry filter and geometry
     response = await app.get(f"/{cql2_id}/15/8601/12849/assets")
