@@ -3,7 +3,7 @@
 import json
 import os
 from dataclasses import dataclass, field
-from typing import Callable, Dict, Optional, Type
+from typing import Any, Callable, Dict, Optional, Tuple, Type
 from urllib.parse import urlencode
 
 import rasterio
@@ -29,6 +29,17 @@ from starlette.responses import Response
 def PathParams(searchid: str = Path(..., description="Search Id")) -> str:
     """SearcId"""
     return searchid
+
+
+def SearchParams(body: SearchQuery) -> Tuple[str, Optional[Dict[str, Any]]]:
+    """Search parameters."""
+    search = body.json(
+        exclude_none=True,
+        exclude={"metadata"},
+        by_alias=True,
+    )
+    metadata = body.metadata or {}
+    return search, metadata
 
 
 @dataclass
@@ -67,6 +78,11 @@ class MosaicTilerFactory(BaseTilerFactory):
 
     # TileMatrixSet dependency
     tms_dependency: Callable[..., TileMatrixSet] = TMSParams
+
+    # Search dependency
+    search_dependency: Callable[
+        ..., Tuple[str, Optional[Dict[str, Any]]]
+    ] = SearchParams
 
     backend_options: Dict = field(default_factory=dict)
 
@@ -339,14 +355,11 @@ class MosaicTilerFactory(BaseTilerFactory):
             "/register",
             responses={200: {"description": "Register a Search."}},
         )
-        def register_search(request: Request, body: SearchQuery):
+        def register_search(
+            request: Request, search_query=Depends(self.search_dependency)
+        ):
             """Register a Search query."""
-            search = body.json(
-                exclude_none=True,
-                exclude={"metadata"},
-                by_alias=True,
-            )
-            metadata = body.metadata or {}
+            search, metadata = search_query
 
             with request.app.state.dbpool.connection() as conn:
                 with conn.cursor() as cursor:
