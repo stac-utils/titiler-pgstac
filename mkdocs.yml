@@ -15,6 +15,7 @@ nav:
   - Home: "index.md"
   - Intro: "intro.md"
   - Default Endpoints: "endpoints.md"
+  - Advanced Usage: "advanced.md"
   - Examples:
     - demo: "notebooks/demo.ipynb"
   - Development - Contributing: "contributing.md"
