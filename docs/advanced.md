@@ -19,13 +19,14 @@ We want our application to take this information into account while
 registering a search query. It can be done in the following way:
 
 ```python
+from typing import Tuple
 import json
 import jwt
 from fastapi import FastAPI
 from fastapi.security.utils import get_authorization_scheme_param
 from starlette.requests import Request
 from titiler.pgstac.factory import MosaicTilerFactory
-from titiler.pgstac.models import SearchQuery
+from titiler.pgstac.model import RegisterMosaic, Metadata, PgSTACSearch
 
 
 app = FastAPI()
@@ -36,12 +37,11 @@ AREAS = {
 }
 
 
-def search_factory(request: Request, body: SearchQuery):
+def search_factory(request: Request, body: RegisterMosaic) -> Tuple[PgSTACSearch, Metadata]:
     authorization = request.headers.get("Authorization")
     scheme, token = get_authorization_scheme_param(authorization)
     payload = jwt.decode(token, algorithms=["HS256"], key="your-256-bit-secret")
 
-    metadata = body.metadata or {}
     search = body.dict(exclude_none=True, exclude={"metadata"}, by_alias=True)
     search["filter"] = {
         "op": "and",
@@ -54,7 +54,7 @@ def search_factory(request: Request, body: SearchQuery):
         ],
     }
 
-    return json.dumps(search), metadata
+    return model.PgSTACSearch(**search), body.metadata
 
 
 mosaic = MosaicTilerFactory(search_dependency=search_factory)
@@ -75,5 +75,5 @@ $ curl -s -X 'POST' \
 $ curl -X 'GET' \
   'http://localhost:8081/bbc3c8f4c392436f74de6cd0308469f6/info' \
   -H 'accept: application/json'
-{"hash":"bbc3c8f4c392436f74de6cd0308469f6","search":{"filter":{"op":"and","args":[{"op":"s_intersects","args":[{"property":"geometry"},{"type":"Point","coordinates":[-41.93,-12.76]}]},{"op":"and","args":[{"op":"=","args":[{"property":"collection"},"l1"]}]}]}},"_where":"(  ( st_intersects(geometry, '0101000020E6100000D7A3703D0AF744C085EB51B81E8529C0'::geometry) and  ( (collection_id = 'l1') )  )  )  ","orderby":"datetime DESC, id DESC","lastused":"2022-02-23T13:00:04.090757+00:00","usecount":3,"metadata":{}}
+{"hash":"bbc3c8f4c392436f74de6cd0308469f6","search":{"filter":{"op":"and","args":[{"op":"s_intersects","args":[{"property":"geometry"},{"type":"Point","coordinates":[-41.93,-12.76]}]},{"op":"and","args":[{"op":"=","args":[{"property":"collection"},"l1"]}]}]}},"_where":"(  ( st_intersects(geometry, '0101000020E6100000D7A3703D0AF744C085EB51B81E8529C0'::geometry) and  ( (collection_id = 'l1') )  )  )  ","orderby":"datetime DESC, id DESC","lastused":"2022-02-23T13:00:04.090757+00:00","usecount":3,"metadata":{"type":"mosaic"}}
 ```

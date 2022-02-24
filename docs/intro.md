@@ -25,9 +25,9 @@ curl -X 'POST' 'http://127.0.0.1:8081/register' \
   -d '{"collections":["landsat-c2l2-sr"], "bbox":[-123.75,34.30714385628804,-118.125,38.82259097617712], "filter-lang": "cql-json"}' | jq
 
 >> {
-  "searchid": "5181a09f58f348db706aa761cd594ce7",
-  "metadata": "http://127.0.0.1:8081/5181a09f58f348db706aa761cd594ce7/info",
-  "tiles": "http://127.0.0.1:8081/5181a09f58f348db706aa761cd594ce7/tilejson.json"
+  "searchid": "5a1b82d38d53a5d200273cbada886bd7",
+  "metadata": "http://127.0.0.1:8081/5a1b82d38d53a5d200273cbada886bd7/info",
+  "tiles": "http://127.0.0.1:8081/5a1b82d38d53a5d200273cbada886bd7/tilejson.json"
 }
 
 # Or using CQL-2
@@ -37,19 +37,19 @@ curl -X 'POST' 'http://127.0.0.1:8081/register' \
   -d '{"filter": {"op": "and", "args": [{"op": "=", "args": [{"property": "collection"}, "landsat-c2l2-sr"]}, {"op": "s_intersects", "args": [{"property": "geometry"}, {"coordinates": [[[-123.75, 34.30714385628804], [-123.75, 38.82259097617712], [-118.125, 38.82259097617712], [-118.125, 34.30714385628804], [-123.75, 34.30714385628804]]], "type": "Polygon"}]}]}}' | jq
 
 >> {
-  "searchid": "3e3ab7cb3d1064728cc1a58bbf6b2b0f",
-  "metadata": "http://127.0.0.1:8081/3e3ab7cb3d1064728cc1a58bbf6b2b0f/info",
-  "tiles": "http://127.0.0.1:8081/3e3ab7cb3d1064728cc1a58bbf6b2b0f/tilejson.json"
+  "searchid": "5063721f06957d6b2320326d82e90d1e",
+  "metadata": "http://127.0.0.1:8081/5063721f06957d6b2320326d82e90d1e/info",
+  "tiles": "http://127.0.0.1:8081/5063721f06957d6b2320326d82e90d1e/tilejson.json"
 }
 ```
 
 #### 1.1 Get Mosaic metadata
 
 ```bash
-curl http://127.0.0.1:8081/3e3ab7cb3d1064728cc1a58bbf6b2b0f/info | jq
+curl http://127.0.0.1:8081/5063721f06957d6b2320326d82e90d1e/info | jq
 
 >> {
-  "hash": "3e3ab7cb3d1064728cc1a58bbf6b2b0f",
+  "hash": "5063721f06957d6b2320326d82e90d1e",
   "search": {
     "filter": {
       "op": "and",
@@ -101,11 +101,13 @@ curl http://127.0.0.1:8081/3e3ab7cb3d1064728cc1a58bbf6b2b0f/info | jq
       ]
     }
   },
-  "_where": " ( (collection_id = 'landsat-c2l2-sr') and st_intersects(geometry, '0103000020E610000001000000050000000000000000F05EC055F6687D502741400000000000F05EC02D553EA94A6943400000000000885DC02D553EA94A6943400000000000885DC055F6687D502741400000000000F05EC055F6687D50274140'::geometry) ) ",
+  "_where": "(  ( (collection_id = 'landsat-c2l2-sr') and st_intersects(geometry, '0103000020E610000001000000050000000000000000F05EC055F6687D502741400000000000F05EC02D553EA94A6943400000000000885DC02D553EA94A6943400000000000885DC055F6687D502741400000000000F05EC055F6687D50274140'::geometry) )  )  ",
   "orderby": "datetime DESC, id DESC",
-  "lastused": "2021-12-16T08:42:21.247913+00:00",
-  "usecount": 2,
-  "metadata": {}
+  "lastused": "2022-02-24T07:47:52.450201+00:00",
+  "usecount": 1,
+  "metadata": {
+    "type": "mosaic"
+  }
 }
 ```
 
@@ -115,23 +117,34 @@ Note: In addition to the `search query`, a user can pass `metadata`, which will 
 curl -X 'POST' 'http://127.0.0.1:8081/register' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
-  -d '{"collections":["landsat-c2l2-sr"], "bbox":[-123.75,34.30714385628804,-118.125,38.82259097617712], "filter-lang": "cql-json", "metadata": {"minzoom": 8, "maxzoom": 13, "default-assets": ["B04", "B03", "B02"]}}' | jq
+  -d '{"collections":["landsat-c2l2-sr"], "bbox":[-123.75,34.30714385628804,-118.125,38.82259097617712], "filter-lang": "cql-json", "metadata": {"minzoom": 8, "maxzoom": 13, "assets": ["B04", "B03", "B02"], "defaults": {"true_color": {"assets": ["B04", "B03", "B02"], "color_formula": "Gamma RGB 3.5 Saturation 1.7 Sigmoidal RGB 15 0.35"}}}}' | jq
 
 >> {
-  "searchid": "5f6f9df1bdb034d3886eb5d04b23a99d",
-  "metadata": "http://127.0.0.1:8081/5f6f9df1bdb034d3886eb5d04b23a99d/info",
-  "tiles": "http://127.0.0.1:8081/5f6f9df1bdb034d3886eb5d04b23a99d/tilejson.json"
+  "searchid": "f31d7de8a5ddfa3a80b9a9dd06378db1",
+  "metadata": "http://127.0.0.1:8081/f31d7de8a5ddfa3a80b9a9dd06378db1/info",
+  "tiles": "http://127.0.0.1:8081/f31d7de8a5ddfa3a80b9a9dd06378db1/tilejson.json"
 }
 
-curl http://127.0.0.1:8081/5f6f9df1bdb034d3886eb5d04b23a99d/info | jq '.metadata'
+curl http://127.0.0.1:8081/f31d7de8a5ddfa3a80b9a9dd06378db1/info | jq '.metadata'
 >> {
-  "maxzoom": 13,
+  "type": "mosaic",
   "minzoom": 8,
-  "default-assets": [
+  "maxzoom": 13,
+  "assets": [
     "B04",
     "B03",
     "B02"
-  ]
+  ],
+  "defaults": {
+    "true_color": {
+      "assets": [
+        "B04",
+        "B03",
+        "B02"
+      ],
+      "color_formula": "Gamma RGB 3.5 Saturation 1.7 Sigmoidal RGB 15 0.35"
+    }
+  }
 }
 ```
 

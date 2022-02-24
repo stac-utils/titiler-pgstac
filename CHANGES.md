@@ -1,5 +1,17 @@
 # Release Notes
 
+## Unreleased
+
+* Add `search_dependency` to allow customization of the PgSTAC Search query (Author @drnextgis, https://github.com/stac-utils/titiler-pgstac/pull/41)
+* Add PgSTAC Search entries model (https://github.com/stac-utils/titiler-pgstac/pull/43)
+* Add `Metadata` specification (https://github.com/stac-utils/titiler-pgstac/pull/38)
+
+**breaking changes**
+
+* When registering a `search` to PgSTAC with the `/register` endpoint, a default metadata `{"type": "mosaic"}` will be set.
+* Renamed `titiler.pgstac.models` to `titiler.pgstac.model`
+* Renamed `titiler.pgstac.models.SearchQuery` to `titiler.pgstac.model.PgSTACSearch` (and removed `metadata`)
+
 ## 0.1.0.a4 (2022-02-07) Pre-Release
 
 * add tile `buffer` option to match rio-tiler tile options (https://github.com/stac-utils/titiler-pgstac/pull/31)

@@ -2,16 +2,16 @@ The `titiler.pgstac` package comes with a full FastAPI application.
 
 ## API
 
-| Method | URL                                                                       | Output    | Description
-| ------ | --------------------------------------------------------------------------|---------- |--------------
-| `POST` | `/register`                                                               | JSON      | Register Search query
-| `GET`  | `/{searchid}/info`                                                        | JSON      | Return metadata info about a search query
-| `GET`  | `/{searchid}/[{TileMatrixSetId}]/{z}/{x}/{Y}/assets`                      | JSON      | Return a list of assets which overlap a given tile
-| `GET`  | `/{searchid}/{lon},{lat}/assets`                                          | JSON      | Return a list of assets which overlap a given point
-| `GET`  | `/tiles/{searchid}/[{TileMatrixSetId}]/{z}/{x}/{y}[@{scale}x][.{format}]` | image/bin | Create a web map tile image for a search query and a tile index
-| `GET`  | `/{searchid}/[{TileMatrixSetId}]/tilejson.json`                           | JSON      | Return a Mapbox TileJSON document
-| `GET`  | `/tileMatrixSets`                   | JSON      | return the list of supported TileMatrixSet
-| `GET`  | `/tileMatrixSets/{TileMatrixSetId}` | JSON      | return the TileMatrixSet JSON document
+| Method | URL                                                                       | Output                            | Description
+| ------ | --------------------------------------------------------------------------|-----------------------------------|--------------
+| `POST` | `/register`                                                               | JSON                              | Register **Search** query
+| `GET`  | `/{searchid}/info`                                                        | JSON ([Search][search_model])     | Return **Search** query infos
+| `GET`  | `/{searchid}/[{TileMatrixSetId}]/{z}/{x}/{Y}/assets`                      | JSON                              | Return a list of assets which overlap a given tile
+| `GET`  | `/{searchid}/{lon},{lat}/assets`                                          | JSON                              | Return a list of assets which overlap a given point
+| `GET`  | `/tiles/{searchid}/[{TileMatrixSetId}]/{z}/{x}/{y}[@{scale}x][.{format}]` | image/bin                         | Create a web map tile image for a search query and a tile index
+| `GET`  | `/{searchid}/[{TileMatrixSetId}]/tilejson.json`                           | JSON ([TileJSON][tilejson_model]) | Return a Mapbox TileJSON document
+| `GET`  | `/tileMatrixSets`                                                         | JSON ([TMS list][tms_list_model]) | return the list of supported TileMatrixSet
+| `GET`  | `/tileMatrixSets/{TileMatrixSetId}`                                       | JSON ([TileMatrixSet][tms_model]) | return the TileMatrixSet JSON document
 
 ## Description
 
@@ -20,6 +20,7 @@ The `titiler.pgstac` package comes with a full FastAPI application.
 `:endpoint:/register - [POST]`
 
 - Body: A valid STAC Search query (see: https://github.com/radiantearth/stac-api-spec/tree/master/item-search)
+
 
 Example:
 
@@ -40,7 +41,11 @@ curl -X 'POST' 'http://127.0.0.1:8081/register' -H 'accept: application/json' -H
 curl -X 'POST' 'http://127.0.0.1:8081/register' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{"filter": {"op": "=", "args": [{"property": "collection"}, "landsat-c2l2-sr"]}, "metadata": {"name": "landsat mosaic"}}'
 ```
 
-### Search metadata
+!!! important
+
+  You can add `metadata` to your Search query. In `titiler-pgstac`, metadata defaults to `{"type": "mosaic"}`.
+
+### Search infos
 
 `:endpoint:/{searchid}/info - [GET]`
 
@@ -71,7 +76,9 @@ curl 'http://127.0.0.1:8000/f1ed59f0a6ad91ed80ae79b7b52bc707/info' | jq
   "orderby": "datetime DESC, id DESC",
   "lastused": "2021-12-13T16:43:55.959925+00:00",
   "usecount": 2,
-  "metadata": {}
+  "metadata": {
+    "type": "mosaic"
+  }
 }
 ```
 
@@ -216,3 +223,11 @@ curl http://127.0.0.1:8000/tileMatrixSets/WebMercatorQuad | jq
     },
     ...
 ```
+
+
+[tilejson_model]: https://github.com/developmentseed/titiler/blob/2335048a407f17127099cbbc6c14e1328852d619/src/titiler/core/titiler/core/models/mapbox.py#L16-L38
+
+[search_model]: https://github.com/stac-utils/titiler-pgstac/blob/c85f88bafba5fb7c0a37209a222272fe58ad0cf9/titiler/pgstac/model.py#L185-L197
+
+[tms_list_model]: https://github.com/developmentseed/titiler/blob/f88e6e2fcbe5748cec91cfec160c08d5244183c6/src/titiler/core/titiler/core/models/OGC.py#L40-L48
+[tms_model]: https://github.com/developmentseed/morecantile/blob/aafdbfdc943d88203664b231bb027a1fe8227b14/morecantile/models.py#L119-L130
