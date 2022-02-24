@@ -5,6 +5,7 @@ Note: This is mostly a copy of https://github.com/stac-utils/stac-fastapi/blob/m
 """
 
 import operator
+from datetime import datetime
 from enum import Enum, auto
 from types import DynamicClassAttribute
 from typing import Any, Callable, Dict, List, Optional, Union
@@ -54,8 +55,55 @@ class Operator(str, AutoValueEnum):
         return getattr(operator, self._value_)
 
 
-class SearchQuery(BaseModel):
-    """Search model.
+class SearchType(str, Enum):
+    """Search type."""
+
+    mosaic = "mosaic"
+    search = "search"
+
+
+class Metadata(BaseModel):
+    """Metadata Model."""
+
+    type: SearchType = SearchType.mosaic
+
+    # WGS84 bounds
+    bounds: Optional[BBox]
+
+    # Min/Max zoom for WebMercatorQuad TMS
+    minzoom: Optional[int]
+    maxzoom: Optional[int]
+
+    # Name
+    name: Optional[str]
+
+    # List of available assets
+    assets: Optional[List[str]]
+
+    # Set of default configuration
+    # e.g
+    # {
+    #     "true_color": {
+    #         "assets": ["B4", "B3", "B2"],
+    #         "color_formula": "Gamma RGB 3.5 Saturation 1.7 Sigmoidal RGB 15 0.35",
+    #     },
+    #     "ndvi": {
+    #         "expression": "(B4-B3)/(B4+B3)",
+    #         "rescale": "-1,1",
+    #         "colormap_name": "viridis"
+    #     }
+    # }
+    defaults: Optional[Dict[str, Any]]
+
+    class Config:
+        """Config for model."""
+
+        use_enum_values = True
+        extra = "allow"
+
+
+class PgSTACSearch(BaseModel):
+    """Search Query model.
 
     Notes/Diff with standard model:
         - 'fields' is not in the Model because it's defined at the tiler level
@@ -73,9 +121,6 @@ class SearchQuery(BaseModel):
     datetime: Optional[str] = None
     sortby: Any
     filter_lang: Optional[FilterLang] = Field(None, alias="filter-lang")
-
-    # Metadata associated with the search
-    metadata: Optional[Dict[str, Any]]
 
     class Config:
         """Config for model."""
@@ -127,5 +172,34 @@ class SearchQuery(BaseModel):
             # Validate against WGS84
             if xmin < -180 or ymin < -90 or xmax > 180 or ymax > 90:
                 raise ValueError("Bounding box must be within (-180, -90, 180, 90)")
+
+        return v
+
+
+class RegisterMosaic(PgSTACSearch):
+    """Model of /register endpoint input."""
+
+    metadata: Metadata = Field(default_factory=Metadata)
+
+
+class Search(BaseModel):
+    """PgSTAC Search entry.
+
+    ref: https://github.com/stac-utils/pgstac/blob/3499daa2bfa700ae7bb07503795c169bf2ebafc7/sql/004_search.sql#L907-L915
+    """
+
+    id: str = Field(alias="hash")
+    input_search: Dict[str, Any] = Field(alias="search")
+    sql_where: str = Field(alias="_where")
+    orderby: str
+    lastused: datetime
+    usecount: int
+    metadata: Metadata
+
+    @validator("metadata", pre=True)
+    def validate_metadata(cls, v):
+        """Set SearchType.search when not present in metadata."""
+        if "type" not in v:
+            v["type"] = SearchType.search.name
 
         return v

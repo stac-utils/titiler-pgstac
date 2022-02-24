@@ -1,14 +1,14 @@
 """Custom MosaicTiler Factory for PgSTAC Mosaic Backend."""
 
-import json
 import os
 from dataclasses import dataclass, field
-from typing import Any, Callable, Dict, Optional, Tuple, Type
+from typing import Callable, Dict, Optional, Tuple, Type
 from urllib.parse import urlencode
 
 import rasterio
 from cogeo_mosaic.backends import BaseBackend
 from morecantile import TileMatrixSet
+from psycopg.rows import class_row
 from rio_tiler.constants import MAX_THREADS
 
 from titiler.core.dependencies import AssetsBidxExprParams, DefaultDependency, TMSParams
@@ -17,7 +17,7 @@ from titiler.core.models.mapbox import TileJSON
 from titiler.core.resources.enums import ImageType, OptionalHeader
 from titiler.core.utils import Timer
 from titiler.mosaic.resources.enums import PixelSelectionMethod
-from titiler.pgstac.models import SearchQuery
+from titiler.pgstac import model
 from titiler.pgstac.mosaic import PGSTACBackend
 
 from fastapi import Depends, Path, Query
@@ -31,15 +31,16 @@ def PathParams(searchid: str = Path(..., description="Search Id")) -> str:
     return searchid
 
 
-def SearchParams(body: SearchQuery) -> Tuple[str, Optional[Dict[str, Any]]]:
+def SearchParams(
+    body: model.RegisterMosaic,
+) -> Tuple[model.PgSTACSearch, model.Metadata]:
     """Search parameters."""
-    search = body.json(
+    search = body.dict(
         exclude_none=True,
         exclude={"metadata"},
         by_alias=True,
     )
-    metadata = body.metadata or {}
-    return search, metadata
+    return model.PgSTACSearch(**search), body.metadata
 
 
 @dataclass
@@ -81,7 +82,7 @@ class MosaicTilerFactory(BaseTilerFactory):
 
     # Search dependency
     search_dependency: Callable[
-        ..., Tuple[str, Optional[Dict[str, Any]]]
+        ..., Tuple[model.PgSTACSearch, model.Metadata]
     ] = SearchParams
 
     backend_options: Dict = field(default_factory=dict)
@@ -256,17 +257,17 @@ class MosaicTilerFactory(BaseTilerFactory):
         ):
             """Return TileJSON document for a SearchId."""
             with request.app.state.dbpool.connection() as conn:
-                with conn.cursor() as cursor:
+                with conn.cursor(row_factory=class_row(model.Search)) as cursor:
                     cursor.execute(
                         "SELECT * FROM searches WHERE hash=%s;",
                         (searchid,),
                     )
-                    r = cursor.fetchone()
-                    fields = list(map(lambda x: x[0], cursor.description))
-                    search_info = dict(zip(fields, r))
+                    search_info = cursor.fetchone()
+                    if not search_info:
+                        raise KeyError(f"search {searchid} not found")
 
             route_params = {
-                "searchid": searchid,
+                "searchid": search_info.id,
                 "z": "{z}",
                 "x": "{x}",
                 "y": "{y}",
@@ -293,10 +294,10 @@ class MosaicTilerFactory(BaseTilerFactory):
                 tiles_url += f"?{urlencode(qs)}"
 
             return {
-                "bounds": search_info["search"].get("bbox", tms.bbox),
+                "bounds": search_info.input_search.get("bbox", tms.bbox),
                 "minzoom": minzoom if minzoom is not None else tms.minzoom,
                 "maxzoom": maxzoom if maxzoom is not None else tms.maxzoom,
-                "name": searchid,
+                "name": search_info.id,
                 "tiles": [tiles_url],
             }
 
@@ -362,36 +363,38 @@ class MosaicTilerFactory(BaseTilerFactory):
             search, metadata = search_query
 
             with request.app.state.dbpool.connection() as conn:
-                with conn.cursor() as cursor:
+                with conn.cursor(row_factory=class_row(model.Search)) as cursor:
                     cursor.execute(
                         "SELECT * FROM search_query(%s, _metadata => %s);",
-                        (search, json.dumps(metadata)),
+                        (
+                            search.json(by_alias=True, exclude_none=True),
+                            metadata.json(exclude_none=True),
+                        ),
                     )
-                    r = cursor.fetchone()
-                    fields = list(map(lambda x: x[0], cursor.description))
-                    search_info = dict(zip(fields, r))
+                    search_info = cursor.fetchone()
 
-            searchid = search_info["hash"]
             return {
-                "searchid": searchid,
-                "metadata": self.url_for(request, "info_search", searchid=searchid),
-                "tiles": self.url_for(request, "tilejson", searchid=searchid),
+                "searchid": search_info.id,
+                "metadata": self.url_for(
+                    request, "info_search", searchid=search_info.id
+                ),
+                "tiles": self.url_for(request, "tilejson", searchid=search_info.id),
             }
 
         @self.router.get(
             "/{searchid}/info",
             responses={200: {"description": "Get Search query metadata."}},
+            response_model=model.Search,
+            response_model_exclude_none=True,
         )
         def info_search(request: Request, searchid=Depends(self.path_dependency)):
             """Get Search query metadata."""
             with request.app.state.dbpool.connection() as conn:
-                with conn.cursor() as cursor:
+                with conn.cursor(row_factory=class_row(model.Search)) as cursor:
                     cursor.execute(
                         "SELECT * FROM searches WHERE hash=%s;",
                         (searchid,),
                     )
-                    r = cursor.fetchone()
-                    fields = list(map(lambda x: x[0], cursor.description))
-                    search_info = dict(zip(fields, r))
+                    search_info = cursor.fetchone()
 
             return search_info
