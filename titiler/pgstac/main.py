@@ -67,6 +67,7 @@ if settings.debug:
 else:
     optional_headers = []
 
+
 mosaic = MosaicTilerFactory(optional_headers=optional_headers)
 app.include_router(mosaic.router)
 

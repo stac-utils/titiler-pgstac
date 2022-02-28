@@ -19,8 +19,8 @@ async def test_register(app):
     assert response.status_code == 200
     resp = response.json()
     assert resp["searchid"] == search_no_bbox
-    assert resp["metadata"]
-    assert resp["tiles"]
+    assert resp["links"]
+    assert [link["rel"] for link in resp["links"]] == ["metadata", "tilejson"]
 
     query = {
         "collections": ["noaa-emergency-response"],
@@ -32,8 +32,8 @@ async def test_register(app):
 
     resp = response.json()
     assert resp["searchid"] == search_bbox
-    assert resp["metadata"]
-    assert resp["tiles"]
+    assert resp["links"]
+    assert [link["rel"] for link in resp["links"]] == ["metadata", "tilejson"]
 
 
 @pytest.mark.asyncio
@@ -42,12 +42,14 @@ async def test_info(app):
     response = await app.get(f"/{search_no_bbox}/info")
     assert response.status_code == 200
     resp = response.json()
-    assert "hash" in resp
-    assert resp["search"] == {
+    assert resp["search"]
+    assert resp["links"]
+    search = resp["search"]
+    assert search["search"] == {
         "collections": ["noaa-emergency-response"],
         "filter-lang": "cql-json",
     }
-    assert resp["metadata"] == {"type": "mosaic"}
+    assert search["metadata"] == {"type": "mosaic"}
 
 
 @pytest.mark.asyncio
@@ -236,22 +238,24 @@ async def test_cql2(rio, app):
     response = await app.post("/register", json=query)
     assert response.status_code == 200
     resp = response.json()
-    assert resp["metadata"]
-    assert resp["tiles"]
+    assert resp["searchid"]
+    assert resp["links"]
 
     cql2_id = resp["searchid"]
 
     response = await app.get(f"/{cql2_id}/info")
     assert response.status_code == 200
     resp = response.json()
-    assert "hash" in resp
-    assert resp["search"] == {
+    assert resp["search"]
+    assert resp["links"]
+    search = resp["search"]
+    assert search["search"] == {
         "filter": {
             "op": "=",
             "args": [{"property": "collection"}, "noaa-emergency-response"],
         }
     }
-    assert resp["metadata"] == {"type": "mosaic"}
+    assert search["metadata"] == {"type": "mosaic"}
 
     response = await app.get(f"/{cql2_id}/-85.6358,36.1624/assets")
     assert response.status_code == 200
@@ -324,16 +328,18 @@ async def test_cql2_with_geometry(rio, app):
     response = await app.post("/register", json=query)
     assert response.status_code == 200
     resp = response.json()
-    assert resp["metadata"]
-    assert resp["tiles"]
+    assert resp["searchid"]
+    assert resp["links"]
 
     cql2_id = resp["searchid"]
 
     response = await app.get(f"/{cql2_id}/info")
     assert response.status_code == 200
     resp = response.json()
-    assert "hash" in resp
-    assert resp["metadata"] == {"type": "mosaic"}
+    assert resp["search"]
+    assert resp["links"]
+    search = resp["search"]
+    assert search["metadata"] == {"type": "mosaic"}
 
     # make sure we can find assets when having both geometry filter and geometry
     response = await app.get(f"/{cql2_id}/15/8601/12849/assets")
@@ -379,22 +385,24 @@ async def test_query_with_metadata(app):
     response = await app.post("/register", json=query)
     assert response.status_code == 200
     resp = response.json()
-    assert resp["metadata"]
-    assert resp["tiles"]
+    assert resp["searchid"]
+    assert resp["links"]
 
     cql2_id = resp["searchid"]
 
     response = await app.get(f"/{cql2_id}/info")
     assert response.status_code == 200
     resp = response.json()
-    assert "hash" in resp
-    assert resp["search"] == {
+    assert resp["search"]
+    assert resp["links"]
+    search = resp["search"]
+    assert search["search"] == {
         "filter": {
             "op": "=",
             "args": [{"property": "collection"}, "noaa-emergency-response"],
         }
     }
-    assert resp["metadata"] == {
+    assert search["metadata"] == {
         "type": "mosaic",
         "name": "mymosaic",
         "minzoom": 1,
