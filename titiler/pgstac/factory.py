@@ -2,7 +2,7 @@
 
 import os
 from dataclasses import dataclass, field
-from typing import Callable, Dict, Optional, Tuple, Type
+from typing import Callable, Dict, List, Optional, Tuple, Type
 from urllib.parse import urlencode
 
 import rasterio
@@ -311,6 +311,7 @@ class MosaicTilerFactory(BaseTilerFactory):
         @self.router.get(
             "/{searchid}/{TileMatrixSetId}/{z}/{x}/{y}/assets",
             responses={200: {"description": "Return list of assets"}},
+            response_model=List[Dict],
         )
         def assets_for_tile(
             request: Request,
@@ -333,6 +334,7 @@ class MosaicTilerFactory(BaseTilerFactory):
         @self.router.get(
             "/{searchid}/{lon},{lat}/assets",
             responses={200: {"description": "Return list of assets"}},
+            response_model=List[Dict],
         )
         def assets_for_point(
             request: Request,
@@ -355,6 +357,8 @@ class MosaicTilerFactory(BaseTilerFactory):
         @self.router.post(
             "/register",
             responses={200: {"description": "Register a Search."}},
+            response_model=model.RegisterResponse,
+            response_model_exclude_none=True,
         )
         def register_search(
             request: Request, search_query=Depends(self.search_dependency)
@@ -373,18 +377,26 @@ class MosaicTilerFactory(BaseTilerFactory):
                     )
                     search_info = cursor.fetchone()
 
-            return {
-                "searchid": search_info.id,
-                "metadata": self.url_for(
-                    request, "info_search", searchid=search_info.id
-                ),
-                "tiles": self.url_for(request, "tilejson", searchid=search_info.id),
-            }
+            return model.RegisterResponse(
+                searchid=search_info.id,
+                links=[
+                    model.Link(
+                        rel="metadata",
+                        href=self.url_for(
+                            request, "info_search", searchid=search_info.id
+                        ),
+                    ),
+                    model.Link(
+                        rel="tilejson",
+                        href=self.url_for(request, "tilejson", searchid=search_info.id),
+                    ),
+                ],
+            )
 
         @self.router.get(
             "/{searchid}/info",
             responses={200: {"description": "Get Search query metadata."}},
-            response_model=model.Search,
+            response_model=model.Info,
             response_model_exclude_none=True,
         )
         def info_search(request: Request, searchid=Depends(self.path_dependency)):
@@ -397,4 +409,18 @@ class MosaicTilerFactory(BaseTilerFactory):
                     )
                     search_info = cursor.fetchone()
 
-            return search_info
+            return model.Info(
+                search=search_info,
+                links=[
+                    model.Link(
+                        rel="self",
+                        href=self.url_for(
+                            request, "info_search", searchid=search_info.id
+                        ),
+                    ),
+                    model.Link(
+                        rel="tilejson",
+                        href=self.url_for(request, "tilejson", searchid=search_info.id),
+                    ),
+                ],
+            )

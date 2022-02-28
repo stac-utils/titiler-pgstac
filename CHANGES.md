@@ -11,6 +11,65 @@
 * When registering a `search` to PgSTAC with the `/register` endpoint, a default metadata `{"type": "mosaic"}` will be set.
 * Renamed `titiler.pgstac.models` to `titiler.pgstac.model`
 * Renamed `titiler.pgstac.models.SearchQuery` to `titiler.pgstac.model.PgSTACSearch` (and removed `metadata`)
+* output response for `/register` endpoint:
+```js
+// before
+{
+    "searchid": "...",
+    "metadata": "http://endpoint/.../info",
+    "tiles": "http://endpoint/.../tilejson.json",
+}
+
+// now
+{
+    "searchid": "...",
+    "links": [
+        {
+            "rel": "info",
+            "href": "http://endpoint/.../info",
+            "type": "application/json",
+        },
+        {
+            "rel": "tilejson",
+            "href": "http://endpoint/.../tilejson.json",
+            "type": "application/json",
+        }
+    ]
+}
+```
+
+* output response for `/info` endpoint:
+```js
+// before
+{
+    "hash": "...",
+    "search": {},
+    "_where": "...",
+    ...
+}
+
+// now
+{
+    "search": {
+        "hash": "...",
+        "search": {},
+        "_where": "...",
+        ...
+    },
+    "links": [
+        {
+            "rel": "self",
+            "href": "http://endpoint/.../info",
+            "type": "application/json",
+        },
+        {
+            "rel": "tilejson",
+            "href": "http://endpoint/.../tilejson.json",
+            "type": "application/json",
+        }
+    ]
+}
+```
 
 ## 0.1.0.a4 (2022-02-07) Pre-Release
 

@@ -22,6 +22,8 @@ from pydantic import BaseModel, Field, root_validator, validator
 from stac_pydantic.shared import BBox
 from stac_pydantic.utils import AutoValueEnum
 
+from titiler.core.resources.enums import MediaType
+
 
 class FilterLang(str, Enum):
     """filter language.
@@ -203,3 +205,36 @@ class Search(BaseModel):
             v["type"] = SearchType.search.name
 
         return v
+
+
+class Link(BaseModel):
+    """Link model.
+
+    Ref: http://schemas.opengis.net/ogcapi/features/part1/1.0/openapi/schemas/link.yaml
+    """
+
+    rel: Optional[str]
+    title: Optional[str]
+    type: Optional[MediaType] = MediaType.json
+    href: str
+    hreflang: Optional[str]
+    length: Optional[int]
+
+    class Config:
+        """Link model configuration."""
+
+        use_enum_values = True
+
+
+class RegisterResponse(BaseModel):
+    """Response model for /register endpoint."""
+
+    searchid: str
+    links: Optional[List[Link]]
+
+
+class Info(BaseModel):
+    """Response model for /info endpoint."""
+
+    search: Search
+    links: Optional[List[Link]]
