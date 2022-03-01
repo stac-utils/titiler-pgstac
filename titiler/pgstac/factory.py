@@ -8,6 +8,7 @@ from urllib.parse import urlencode
 import rasterio
 from cogeo_mosaic.backends import BaseBackend
 from morecantile import TileMatrixSet
+from psycopg import sql
 from psycopg.rows import class_row
 from rio_tiler.constants import MAX_THREADS
 
@@ -423,4 +424,111 @@ class MosaicTilerFactory(BaseTilerFactory):
                         href=self.url_for(request, "tilejson", searchid=search_info.id),
                     ),
                 ],
+            )
+
+    def _mosaic_list(self) -> None:
+        """register mosaic routes."""
+
+        @self.router.get(
+            "/list",
+            responses={200: {"description": "List Mosaics in PgSTAC."}},
+            response_model=model.Infos,
+            response_model_exclude_none=True,
+        )
+        def list_search(
+            request: Request,
+            limit: int = Query(10, description="Limit number of search"),
+            offset: Optional[int] = Query(None, description="Offset"),
+        ):
+            """List a Search query."""
+            default_limit = int(os.environ.get("TITILER_PGSTAC_MAX_MOSAIC", "10000"))
+            if not limit or limit > default_limit:
+                # we set a hard limit to avoid returning too many records
+                limit = default_limit
+
+            offset_and_limit = [
+                sql.SQL("LIMIT {number}").format(number=sql.Literal(limit))
+            ]
+
+            if offset:
+                offset_and_limit.append(
+                    sql.SQL("OFFSET {start}").format(start=sql.Literal(offset))
+                )
+
+            # filter to only return `metadata->type == 'mosaic'`
+            mosaic_filter = sql.SQL("metadata::json->>{key} = {value}").format(
+                key=sql.Literal("type"), value=sql.Literal("mosaic")
+            )
+
+            # additional metadat property filter
+            # <propname>=val - filter for a metadata property. Multiple property filters are ANDed together.
+            qs_key_to_remove = ["limit", "offset", "properties", "sortby", "type"]
+            additional_filter = [
+                sql.SQL("metadata::json->>{key} = {value}").format(
+                    key=sql.Literal(key), value=sql.Literal(value)
+                )
+                for (key, value) in request.query_params.items()
+                if key.lower() not in qs_key_to_remove
+            ]
+            filters = [
+                sql.SQL("WHERE"),
+                sql.SQL("AND ").join([mosaic_filter, *additional_filter]),
+            ]
+
+            # TODO: enable SortBy
+            with request.app.state.dbpool.connection() as conn:
+                with conn.cursor() as cursor:
+                    # Get Total Number of searches rows
+                    query = [
+                        sql.SQL("SELECT count(*) FROM searches"),
+                        *filters,
+                    ]
+                    cursor.execute(sql.SQL(" ").join(query))
+                    nb_items = cursor.fetchone()[0]
+
+                    # Get rows
+                    cursor.row_factory = class_row(model.Search)
+                    query = [
+                        sql.SQL("SELECT * FROM searches"),
+                        *filters,
+                        *offset_and_limit,
+                    ]
+
+                    cursor.execute(sql.SQL(" ").join(query))
+
+                    searches_info = cursor.fetchall()
+
+            qs = f"?{request.query_params}" if request.query_params else ""
+
+            return model.Infos(
+                searches=[
+                    model.Info(
+                        search=search,
+                        links=[
+                            model.Link(
+                                rel="metadata",
+                                href=self.url_for(
+                                    request, "info_search", searchid=search.id
+                                ),
+                            ),
+                            model.Link(
+                                rel="tilejson",
+                                href=self.url_for(
+                                    request, "tilejson", searchid=search.id
+                                ),
+                            ),
+                        ],
+                    )
+                    for search in searches_info
+                ],
+                links=[
+                    model.Link(
+                        rel="self",
+                        href=self.url_for(request, "list_search") + qs,
+                    ),
+                    # TODO: next
+                    # TODO: prev
+                ],
+                numberMatched=int(nb_items),
+                numberReturned=len(searches_info),
             )

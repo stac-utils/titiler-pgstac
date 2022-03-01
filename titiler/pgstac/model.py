@@ -238,3 +238,12 @@ class Info(BaseModel):
 
     search: Search
     links: Optional[List[Link]]
+
+
+class Infos(BaseModel):
+    """Response model for /list endpoint."""
+
+    searches: List[Info]
+    links: Optional[List[Link]]
+    numberMatched: Optional[int]
+    numberReturned: Optional[int]
