@@ -8,6 +8,7 @@
 
 **breaking changes**
 
+* update `titiler.core` and `titiler.mosaic` requirement to `>=0.5`
 * When registering a `search` to PgSTAC with the `/register` endpoint, a default metadata `{"type": "mosaic"}` will be set.
 * Renamed `titiler.pgstac.models` to `titiler.pgstac.model`
 * Renamed `titiler.pgstac.models.SearchQuery` to `titiler.pgstac.model.PgSTACSearch` (and removed `metadata`)

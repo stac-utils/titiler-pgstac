@@ -135,7 +135,7 @@ Example:
     - **maxzoom**: Overwrite default maxzoom. OPTIONAL
     - **assets** (array[str]): asset names.
     - **expression** (str): rio-tiler's math expression with asset names (e.g `Asset1/Asset2`).
-    - **asset_bidx** (array[str]): Per asset band math expression (e.g `Asset1|1,2,3`).
+    - **asset_bidx** (array[str]): Per asset band indexes (e.g `Asset1|1,2,3`).
     - **asset_expression** (array[str]): Per asset band math expression (e.g `Asset1|b1\*b2`).
     - **nodata** (str, int, float): Overwrite internal Nodata value.
     - **unscale** (bool): Apply dataset internal Scale/Offset.
