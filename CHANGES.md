@@ -1,6 +1,6 @@
 # Release Notes
 
-## Unreleased
+## 0.1.0.a5 (2022-03-03) Pre-Release
 
 * Add `search_dependency` to allow customization of the PgSTAC Search query (Author @drnextgis, https://github.com/stac-utils/titiler-pgstac/pull/41)
 * Add PgSTAC Search entries model (https://github.com/stac-utils/titiler-pgstac/pull/43)
