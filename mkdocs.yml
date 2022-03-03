@@ -14,12 +14,14 @@ extra:
 nav:
   - Home: "index.md"
   - Intro: "intro.md"
-  - Default Endpoints: "endpoints.md"
-  - Advanced Usage: "advanced.md"
+  - Default endpoints: "endpoints.md"
+  - Advanced usage:
+    - Custom search model: "advanced/custom_search.md"
+    - Metadata: "advanced/metadata.md"
   - Examples:
     - demo: "notebooks/demo.ipynb"
   - Development - Contributing: "contributing.md"
-  - Release Notes: "release-notes.md"
+  - Release notes: "release-notes.md"
 
 plugins:
   - search

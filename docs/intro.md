@@ -26,8 +26,18 @@ curl -X 'POST' 'http://127.0.0.1:8081/register' \
 
 >> {
   "searchid": "5a1b82d38d53a5d200273cbada886bd7",
-  "metadata": "http://127.0.0.1:8081/5a1b82d38d53a5d200273cbada886bd7/info",
-  "tiles": "http://127.0.0.1:8081/5a1b82d38d53a5d200273cbada886bd7/tilejson.json"
+  "links": [
+    {
+      "rel": "metadata",
+      "type": "application/json",
+      "href": "http://127.0.0.1:8081/5a1b82d38d53a5d200273cbada886bd7/info"
+    },
+    {
+      "rel": "tilejson",
+      "type": "application/json",
+      "href": "http://127.0.0.1:8081/5a1b82d38d53a5d200273cbada886bd7/tilejson.json"
+    }
+  ]
 }
 
 # Or using CQL-2
@@ -38,8 +48,18 @@ curl -X 'POST' 'http://127.0.0.1:8081/register' \
 
 >> {
   "searchid": "5063721f06957d6b2320326d82e90d1e",
-  "metadata": "http://127.0.0.1:8081/5063721f06957d6b2320326d82e90d1e/info",
-  "tiles": "http://127.0.0.1:8081/5063721f06957d6b2320326d82e90d1e/tilejson.json"
+  "links": [
+    {
+      "rel": "metadata",
+      "type": "application/json",
+      "href": "http://127.0.0.1:8081/5063721f06957d6b2320326d82e90d1e/info"
+    },
+    {
+      "rel": "tilejson",
+      "type": "application/json",
+      "href": "http://127.0.0.1:8081/5063721f06957d6b2320326d82e90d1e/tilejson.json"
+    }
+  ]
 }
 ```
 
@@ -49,65 +69,79 @@ curl -X 'POST' 'http://127.0.0.1:8081/register' \
 curl http://127.0.0.1:8081/5063721f06957d6b2320326d82e90d1e/info | jq
 
 >> {
-  "hash": "5063721f06957d6b2320326d82e90d1e",
   "search": {
-    "filter": {
-      "op": "and",
-      "args": [
-        {
-          "op": "=",
-          "args": [
-            {
-              "property": "collection"
-            },
-            "landsat-c2l2-sr"
-          ]
-        },
-        {
-          "op": "s_intersects",
-          "args": [
-            {
-              "property": "geometry"
-            },
-            {
-              "type": "Polygon",
-              "coordinates": [
-                [
+    "hash": "5063721f06957d6b2320326d82e90d1e",
+    "search": {
+      "filter": {
+        "op": "and",
+        "args": [
+          {
+            "op": "=",
+            "args": [
+              {
+                "property": "collection"
+              },
+              "landsat-c2l2-sr"
+            ]
+          },
+          {
+            "op": "s_intersects",
+            "args": [
+              {
+                "property": "geometry"
+              },
+              {
+                "type": "Polygon",
+                "coordinates": [
                   [
-                    -123.75,
-                    34.30714385628804
-                  ],
-                  [
-                    -123.75,
-                    38.82259097617712
-                  ],
-                  [
-                    -118.125,
-                    38.82259097617712
-                  ],
-                  [
-                    -118.125,
-                    34.30714385628804
-                  ],
-                  [
-                    -123.75,
-                    34.30714385628804
+                    [
+                      -123.75,
+                      34.30714385628804
+                    ],
+                    [
+                      -123.75,
+                      38.82259097617712
+                    ],
+                    [
+                      -118.125,
+                      38.82259097617712
+                    ],
+                    [
+                      -118.125,
+                      34.30714385628804
+                    ],
+                    [
+                      -123.75,
+                      34.30714385628804
+                    ]
                   ]
                 ]
-              ]
-            }
-          ]
-        }
-      ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "_where": "(  ( (collection_id = 'landsat-c2l2-sr') and st_intersects(geometry, '0103000020E610000001000000050000000000000000F05EC055F6687D502741400000000000F05EC02D553EA94A6943400000000000885DC02D553EA94A6943400000000000885DC055F6687D502741400000000000F05EC055F6687D50274140'::geometry) )  )  ",
+    "orderby": "datetime DESC, id DESC",
+    "lastused": "2022-03-03T11:44:55.878504+00:00",
+    "usecount": 2,
+    "metadata": {
+      "type": "mosaic"
     }
   },
-  "_where": "(  ( (collection_id = 'landsat-c2l2-sr') and st_intersects(geometry, '0103000020E610000001000000050000000000000000F05EC055F6687D502741400000000000F05EC02D553EA94A6943400000000000885DC02D553EA94A6943400000000000885DC055F6687D502741400000000000F05EC055F6687D50274140'::geometry) )  )  ",
-  "orderby": "datetime DESC, id DESC",
-  "lastused": "2022-02-24T07:47:52.450201+00:00",
-  "usecount": 1,
-  "metadata": {
-    "type": "mosaic"
-  }
+  "links": [
+    {
+      "rel": "self",
+      "type": "application/json",
+      "href": "http://127.0.0.1:8081/5063721f06957d6b2320326d82e90d1e/info"
+    },
+    {
+      "rel": "tilejson",
+      "type": "application/json",
+      "href": "http://127.0.0.1:8081/5063721f06957d6b2320326d82e90d1e/tilejson.json"
+    }
+  ]
 }
 ```
 
@@ -121,11 +155,21 @@ curl -X 'POST' 'http://127.0.0.1:8081/register' \
 
 >> {
   "searchid": "f31d7de8a5ddfa3a80b9a9dd06378db1",
-  "metadata": "http://127.0.0.1:8081/f31d7de8a5ddfa3a80b9a9dd06378db1/info",
-  "tiles": "http://127.0.0.1:8081/f31d7de8a5ddfa3a80b9a9dd06378db1/tilejson.json"
+  "links": [
+    {
+      "rel": "metadata",
+      "type": "application/json",
+      "href": "http://127.0.0.1:8081/f31d7de8a5ddfa3a80b9a9dd06378db1/info"
+    },
+    {
+      "rel": "tilejson",
+      "type": "application/json",
+      "href": "http://127.0.0.1:8081/f31d7de8a5ddfa3a80b9a9dd06378db1/tilejson.json"
+    }
+  ]
 }
 
-curl http://127.0.0.1:8081/f31d7de8a5ddfa3a80b9a9dd06378db1/info | jq '.metadata'
+curl http://127.0.0.1:8081/f31d7de8a5ddfa3a80b9a9dd06378db1/info | jq '.search.metadata'
 >> {
   "type": "mosaic",
   "minzoom": 8,

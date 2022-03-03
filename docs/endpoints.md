@@ -4,8 +4,8 @@ The `titiler.pgstac` package comes with a full FastAPI application.
 
 | Method | URL                                                                       | Output                            | Description
 | ------ | --------------------------------------------------------------------------|-----------------------------------|--------------
-| `POST` | `/register`                                                               | JSON                              | Register **Search** query
-| `GET`  | `/{searchid}/info`                                                        | JSON ([Search][search_model])     | Return **Search** query infos
+| `POST` | `/register`                                                               | JSON ([Register][register_model]) | Register **Search** query
+| `GET`  | `/{searchid}/info`                                                        | JSON ([Info][info_model])         | Return **Search** query infos
 | `GET`  | `/{searchid}/[{TileMatrixSetId}]/{z}/{x}/{Y}/assets`                      | JSON                              | Return a list of assets which overlap a given tile
 | `GET`  | `/{searchid}/{lon},{lat}/assets`                                          | JSON                              | Return a list of assets which overlap a given point
 | `GET`  | `/tiles/{searchid}/[{TileMatrixSetId}]/{z}/{x}/{y}[@{scale}x][.{format}]` | image/bin                         | Create a web map tile image for a search query and a tile index
@@ -27,11 +27,21 @@ Example:
 - `https://myendpoint/register`
 
 ```bash
-curl -X 'POST' 'http://127.0.0.1:8000/register' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{"collections":["landsat-c2l2-sr"], "bbox":[-123.75,34.30714385628804,-118.125,38.82259097617712], "filter-lang": "cql-json"}' | jq
+curl -X 'POST' 'http://127.0.0.1:8081/register' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{"collections":["landsat-c2l2-sr"], "bbox":[-123.75,34.30714385628804,-118.125,38.82259097617712], "filter-lang": "cql-json"}' | jq
 >> {
-  "searchid": "5181a09f58f348db706aa761cd594ce7",
-  "metadata": "http://127.0.0.1:8000/5181a09f58f348db706aa761cd594ce7/info",
-  "tiles": "http://127.0.0.1:8000/5181a09f58f348db706aa761cd594ce7/tilejson.json"
+  "searchid": "5a1b82d38d53a5d200273cbada886bd7",
+  "links": [
+    {
+      "rel": "metadata",
+      "type": "application/json",
+      "href": "http://127.0.0.1:8081/5a1b82d38d53a5d200273cbada886bd7/info"
+    },
+    {
+      "rel": "tilejson",
+      "type": "application/json",
+      "href": "http://127.0.0.1:8081/5a1b82d38d53a5d200273cbada886bd7/tilejson.json"
+    }
+  ]
 }
 
 # or using CQL2
@@ -54,31 +64,45 @@ curl -X 'POST' 'http://127.0.0.1:8081/register' -H 'accept: application/json' -H
 
 Example:
 
-- `https://myendpoint/f1ed59f0a6ad91ed80ae79b7b52bc707/info`
+- `https://myendpoint/5a1b82d38d53a5d200273cbada886bd7/info`
 
 ```bash
-curl 'http://127.0.0.1:8000/f1ed59f0a6ad91ed80ae79b7b52bc707/info' | jq
+curl 'http://127.0.0.1:8081/5a1b82d38d53a5d200273cbada886bd7/info' | jq
 >> {
-  "hash": "5181a09f58f348db706aa761cd594ce7",
   "search": {
-    "bbox": [
-      -123.75,
-      34.30714385628804,
-      -118.125,
-      38.82259097617712
-    ],
-    "collections": [
-      "landsat-c2l2-sr"
-    ],
-    "filter-lang": "cql-json"
+    "hash": "5a1b82d38d53a5d200273cbada886bd7",
+    "search": {
+      "bbox": [
+        -123.75,
+        34.30714385628804,
+        -118.125,
+        38.82259097617712
+      ],
+      "collections": [
+        "landsat-c2l2-sr"
+      ],
+      "filter-lang": "cql-json"
+    },
+    "_where": "(  TRUE  )  AND collection_id = ANY ('{landsat-c2l2-sr}')  AND geometry && '0103000020E610000001000000050000000000000000F05EC055F6687D502741400000000000F05EC02D553EA94A6943400000000000885DC02D553EA94A6943400000000000885DC055F6687D502741400000000000F05EC055F6687D50274140' ",
+    "orderby": "datetime DESC, id DESC",
+    "lastused": "2022-03-03T11:42:07.213313+00:00",
+    "usecount": 2,
+    "metadata": {
+      "type": "mosaic"
+    }
   },
-  "_where": "(((collection_id = ANY ( '{landsat-c2l2-sr}'::text[] )) AND st_intersects(geometry, '0103000020E610000001000000050000000000000000F05EC055F6687D502741400000000000F05EC02D553EA94A6943400000000000885DC02D553EA94A6943400000000000885DC055F6687D502741400000000000F05EC055F6687D50274140'::geometry)))",
-  "orderby": "datetime DESC, id DESC",
-  "lastused": "2021-12-13T16:43:55.959925+00:00",
-  "usecount": 2,
-  "metadata": {
-    "type": "mosaic"
-  }
+  "links": [
+    {
+      "rel": "self",
+      "type": "application/json",
+      "href": "http://127.0.0.1:8081/5a1b82d38d53a5d200273cbada886bd7/info"
+    },
+    {
+      "rel": "tilejson",
+      "type": "application/json",
+      "href": "http://127.0.0.1:8081/5a1b82d38d53a5d200273cbada886bd7/tilejson.json"
+    }
+  ]
 }
 ```
 
@@ -227,7 +251,8 @@ curl http://127.0.0.1:8000/tileMatrixSets/WebMercatorQuad | jq
 
 [tilejson_model]: https://github.com/developmentseed/titiler/blob/2335048a407f17127099cbbc6c14e1328852d619/src/titiler/core/titiler/core/models/mapbox.py#L16-L38
 
-[search_model]: https://github.com/stac-utils/titiler-pgstac/blob/c85f88bafba5fb7c0a37209a222272fe58ad0cf9/titiler/pgstac/model.py#L185-L197
+[info_model]: https://github.com/stac-utils/titiler-pgstac/blob/047315da8851a974660032ca45f219db2c3a8d54/titiler/pgstac/model.py#L236-L240
+[register_model]: https://github.com/stac-utils/titiler-pgstac/blob/047315da8851a974660032ca45f219db2c3a8d54/titiler/pgstac/model.py#L229-L233
 
 [tms_list_model]: https://github.com/developmentseed/titiler/blob/f88e6e2fcbe5748cec91cfec160c08d5244183c6/src/titiler/core/titiler/core/models/OGC.py#L40-L48
 [tms_model]: https://github.com/developmentseed/morecantile/blob/aafdbfdc943d88203664b231bb027a1fe8227b14/morecantile/models.py#L119-L130
