@@ -11,10 +11,13 @@ from psycopg_pool import ConnectionPool
 
 from titiler.core.dependencies import DefaultDependency
 from titiler.pgstac import model
+from titiler.pgstac.settings import CacheSettings
 
 from fastapi import HTTPException, Path, Query
 
 from starlette.requests import Request
+
+cache_config = CacheSettings()
 
 
 def PathParams(searchid: str = Path(..., description="Search Id")) -> str:
@@ -61,9 +64,7 @@ class PgSTACParams(DefaultDependency):
 
 
 @cached(
-    TTLCache(
-        maxsize=512, ttl=300
-    ),  # TODO: make this configurable. see https://github.com/developmentseed/cogeo-mosaic/blob/master/cogeo_mosaic/cache.py#L6-L32
+    TTLCache(maxsize=cache_config.maxsize, ttl=cache_config.ttl),
     key=lambda pool, collection, item: hashkey(collection, item),
 )
 def get_stac_item(pool: ConnectionPool, collection: str, item: str) -> Dict:
