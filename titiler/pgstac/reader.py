@@ -16,7 +16,6 @@ from rio_tiler.io.stac import DEFAULT_VALID_TYPE, _get_assets
 class PgSTACReader(MultiBaseReader):
     """Custom STAC Reader."""
 
-    # Input can be of type String or Dict
     input: pystac.Item = attr.ib()
 
     tms: TileMatrixSet = attr.ib(default=WEB_MERCATOR_TMS)
