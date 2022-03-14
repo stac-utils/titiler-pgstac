@@ -1,10 +1,13 @@
 # Release Notes
 
-## Unreleased
+## 0.1.0.a6 (2022-03-14) Pre-Release
 
 * move dependencies to `titiler.pgstac.dependencies`
-* add `/mosaic` prefix to the PgSTAC mosaic endpoints
 * add `/stac` endpoints to work with PgSTAC items
+
+**breaking changes**
+
+* add `/mosaic` prefix to the PgSTAC mosaic endpoints
 
 ## 0.1.0.a5 (2022-03-03) Pre-Release
 
