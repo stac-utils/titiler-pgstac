@@ -22,6 +22,7 @@ nav:
   - Advanced usage:
     - Custom search model: "advanced/custom_search.md"
     - Metadata: "advanced/metadata.md"
+    - List/Search mosaics: "advanced/list_mosaics.md"
   - Examples:
     - demo: "notebooks/demo.ipynb"
   - Development - Contributing: "contributing.md"
