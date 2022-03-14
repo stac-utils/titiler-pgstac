@@ -14,7 +14,11 @@ extra:
 nav:
   - Home: "index.md"
   - Intro: "intro.md"
-  - Default endpoints: "endpoints.md"
+  - Endpoints:
+    - Mosaic: "mosaic_endpoints.md"
+    - Item: "item_endpoints.md"
+    - TileMatrixSet: "tms_endpoints.md"
+  - Tiler Factories: "tiler_factories.md"
   - Advanced usage:
     - Custom search model: "advanced/custom_search.md"
     - Metadata: "advanced/metadata.md"

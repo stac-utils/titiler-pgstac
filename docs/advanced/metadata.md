@@ -43,29 +43,29 @@
 ```
 
 !!! Important
-    - When using the `/register` endpoint, `{"type": "mosaic"}` will be set by default
+    - When using the `/mosaic/register` endpoint, `{"type": "mosaic"}` will be set by default
     - All metadata fields are optional and custom fields are also allowed.
 
 
 ```
-curl -X 'POST' 'http://127.0.0.1:8081/register' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{"filter": {"op": "=", "args": [{"property": "collection"}, "landsat-c2l2-sr"]}, "metadata": {"name": "landsat mosaic"}}'
+curl -X 'POST' 'http://127.0.0.1:8081/mosaic/register' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{"filter": {"op": "=", "args": [{"property": "collection"}, "landsat-c2l2-sr"]}, "metadata": {"name": "landsat mosaic"}}'
 >> {
   "searchid": "d7fcdefd0457c949ea7a6192bc2c7122",
   "links": [
     {
       "rel": "metadata",
       "type": "application/json",
-      "href": "http://127.0.0.1:8081/d7fcdefd0457c949ea7a6192bc2c7122/info"
+      "href": "http://127.0.0.1:8081/mosaic/d7fcdefd0457c949ea7a6192bc2c7122/info"
     },
     {
       "rel": "tilejson",
       "type": "application/json",
-      "href": "http://127.0.0.1:8081/d7fcdefd0457c949ea7a6192bc2c7122/tilejson.json"
+      "href": "http://127.0.0.1:8081/mosaic/d7fcdefd0457c949ea7a6192bc2c7122/tilejson.json"
     }
   ]
 }
 
-curl http://127.0.0.1:8081/d7fcdefd0457c949ea7a6192bc2c7122/info | jq '.search.metadata'
+curl http://127.0.0.1:8081/mosaic/d7fcdefd0457c949ea7a6192bc2c7122/info | jq '.search.metadata'
 >> {
   "type": "mosaic",
   "name": "landsat mosaic"
