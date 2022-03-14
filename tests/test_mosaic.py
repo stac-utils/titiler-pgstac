@@ -1,4 +1,4 @@
-"""Test titiler.pgstac search endpoints."""
+"""Test titiler.pgstac Mosaic endpoints."""
 
 from unittest.mock import patch
 
@@ -15,7 +15,7 @@ search_bbox = "5e86ce566b979e567370a6ad85aaa68a"
 async def test_register(app):
     """Register Search requests."""
     query = {"collections": ["noaa-emergency-response"], "filter-lang": "cql-json"}
-    response = await app.post("/register", json=query)
+    response = await app.post("/mosaic/register", json=query)
     assert response.status_code == 200
     resp = response.json()
     assert resp["searchid"] == search_no_bbox
@@ -27,7 +27,7 @@ async def test_register(app):
         "bbox": [-85.535, 36.137, -85.465, 36.179],
         "filter-lang": "cql-json",
     }
-    response = await app.post("/register", json=query)
+    response = await app.post("/mosaic/register", json=query)
     assert response.status_code == 200
 
     resp = response.json()
@@ -39,7 +39,7 @@ async def test_register(app):
 @pytest.mark.asyncio
 async def test_info(app):
     """Should return metadata about a search query."""
-    response = await app.get(f"/{search_no_bbox}/info")
+    response = await app.get(f"/mosaic/{search_no_bbox}/info")
     assert response.status_code == 200
     resp = response.json()
     assert resp["search"]
@@ -55,7 +55,7 @@ async def test_info(app):
 @pytest.mark.asyncio
 async def test_assets_for_point(app):
     """Get assets for a Point."""
-    response = await app.get(f"/{search_no_bbox}/-85.6358,36.1624/assets")
+    response = await app.get(f"/mosaic/{search_no_bbox}/-85.6358,36.1624/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 1
@@ -63,13 +63,13 @@ async def test_assets_for_point(app):
     assert resp[0]["id"] == "20200307aC0853900w361030"
 
     # make sure we can find assets when having both bbox and geometry
-    response = await app.get(f"/{search_bbox}/-85.5,36.1624/assets")
+    response = await app.get(f"/mosaic/{search_bbox}/-85.5,36.1624/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 2
 
     # no assets found outside the mosaic bbox
-    response = await app.get(f"/{search_bbox}/-85.6358,36.1624/assets")
+    response = await app.get(f"/mosaic/{search_bbox}/-85.6358,36.1624/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 0
@@ -78,7 +78,7 @@ async def test_assets_for_point(app):
 @pytest.mark.asyncio
 async def test_assets_for_tile(app):
     """Get assets for a Tile."""
-    response = await app.get(f"/{search_no_bbox}/15/8589/12849/assets")
+    response = await app.get(f"/mosaic/{search_no_bbox}/15/8589/12849/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 1
@@ -86,13 +86,13 @@ async def test_assets_for_tile(app):
     assert resp[0]["id"] == "20200307aC0853900w361030"
 
     # make sure we can find assets when having both bbox and geometry
-    response = await app.get(f"/{search_bbox}/15/8601/12849/assets")
+    response = await app.get(f"/mosaic/{search_bbox}/15/8601/12849/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 2
 
     # no assets found outside the query bbox
-    response = await app.get(f"/{search_bbox}/15/8589/12849/assets")
+    response = await app.get(f"/mosaic/{search_bbox}/15/8589/12849/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 0
@@ -101,10 +101,10 @@ async def test_assets_for_tile(app):
 @pytest.mark.asyncio
 async def test_tilejson(app):
     """Create TileJSON."""
-    response = await app.get(f"/{search_no_bbox}/tilejson.json")
+    response = await app.get(f"/mosaic/{search_no_bbox}/tilejson.json")
     assert response.status_code == 400
 
-    response = await app.get(f"/{search_no_bbox}/tilejson.json?assets=cog")
+    response = await app.get(f"/mosaic/{search_no_bbox}/tilejson.json?assets=cog")
     assert response.headers["content-type"] == "application/json"
     assert response.status_code == 200
     resp = response.json()
@@ -115,7 +115,7 @@ async def test_tilejson(app):
     assert "?assets=cog" in resp["tiles"][0]
 
     response = await app.get(
-        f"/{search_no_bbox}/tilejson.json?assets=cog&scan_limit=100&items_limit=1&time_limit=2&exitwhenfull=False&skipcovered=False"
+        f"/mosaic/{search_no_bbox}/tilejson.json?assets=cog&scan_limit=100&items_limit=1&time_limit=2&exitwhenfull=False&skipcovered=False"
     )
     assert response.headers["content-type"] == "application/json"
     assert response.status_code == 200
@@ -125,18 +125,18 @@ async def test_tilejson(app):
         in resp["tiles"][0]
     )
 
-    response = await app.get(f"/{search_no_bbox}/tilejson.json?expression=cog")
+    response = await app.get(f"/mosaic/{search_no_bbox}/tilejson.json?expression=cog")
     assert response.status_code == 200
     resp = response.json()
     assert "?expression=cog" in resp["tiles"][0]
 
-    response = await app.get(f"/{search_no_bbox}/tilejson.json?expression=cog")
+    response = await app.get(f"/mosaic/{search_no_bbox}/tilejson.json?expression=cog")
     assert response.status_code == 200
     resp = response.json()
     assert "?expression=cog" in resp["tiles"][0]
 
     response = await app.get(
-        f"/{search_no_bbox}/WorldCRS84Quad/tilejson.json?assets=cog"
+        f"/mosaic/{search_no_bbox}/WorldCRS84Quad/tilejson.json?assets=cog"
     )
     assert response.status_code == 200
     resp = response.json()
@@ -146,13 +146,13 @@ async def test_tilejson(app):
     assert "?assets=cog" in resp["tiles"][0]
 
     response = await app.get(
-        f"/{search_no_bbox}/tilejson.json?assets=cog&tile_format=png"
+        f"/mosaic/{search_no_bbox}/tilejson.json?assets=cog&tile_format=png"
     )
     assert response.status_code == 200
     resp = response.json()
     assert ".png?assets=cog" in resp["tiles"][0]
 
-    response = await app.get(f"/{search_bbox}/tilejson.json?assets=cog")
+    response = await app.get(f"/mosaic/{search_bbox}/tilejson.json?assets=cog")
     assert response.headers["content-type"] == "application/json"
     assert response.status_code == 200
     resp = response.json()
@@ -172,10 +172,10 @@ async def test_tiles(rio, app):
     z, x, y = 15, 8589, 12849
 
     # missing assets
-    response = await app.get(f"/tiles/{search_no_bbox}/{z}/{x}/{y}")
+    response = await app.get(f"/mosaic/tiles/{search_no_bbox}/{z}/{x}/{y}")
     assert response.status_code == 400
 
-    response = await app.get(f"/tiles/{search_no_bbox}/{z}/{x}/{y}?assets=cog")
+    response = await app.get(f"/mosaic/tiles/{search_no_bbox}/{z}/{x}/{y}?assets=cog")
     assert response.status_code == 200
     assert response.headers["content-type"] == "image/jpeg"
     meta = parse_img(response.content)
@@ -183,7 +183,7 @@ async def test_tiles(rio, app):
     assert meta["height"] == 256
 
     response = await app.get(
-        f"/tiles/{search_no_bbox}/{z}/{x}/{y}?assets=cog&buffer=0.5"
+        f"/mosaic/tiles/{search_no_bbox}/{z}/{x}/{y}?assets=cog&buffer=0.5"
     )
     assert response.status_code == 200
     assert response.headers["content-type"] == "image/jpeg"
@@ -191,7 +191,9 @@ async def test_tiles(rio, app):
     assert meta["width"] == 257
     assert meta["height"] == 257
 
-    response = await app.get(f"/tiles/{search_no_bbox}/{z}/{x}/{y}.png?assets=cog")
+    response = await app.get(
+        f"/mosaic/tiles/{search_no_bbox}/{z}/{x}/{y}.png?assets=cog"
+    )
     assert response.status_code == 200
     assert response.headers["content-type"] == "image/png"
     meta = parse_img(response.content)
@@ -199,11 +201,11 @@ async def test_tiles(rio, app):
     assert meta["height"] == 256
 
     # tile is outside mosaic bbox, it should return 404 (NoAssetFoundError)
-    response = await app.get(f"/tiles/{search_bbox}/{z}/{x}/{y}?assets=cog")
+    response = await app.get(f"/mosaic/tiles/{search_bbox}/{z}/{x}/{y}?assets=cog")
     assert response.status_code == 404
 
     response = await app.get(
-        f"/tiles/{search_no_bbox}/WebMercatorQuad/{z}/{x}/{y}.tif?assets=cog"
+        f"/mosaic/tiles/{search_no_bbox}/WebMercatorQuad/{z}/{x}/{y}.tif?assets=cog"
     )
     assert response.status_code == 200
     assert response.headers["content-type"] == "image/tiff; application=geotiff"
@@ -213,7 +215,7 @@ async def test_tiles(rio, app):
     assert meta["height"] == 256
 
     response = await app.get(
-        f"/tiles/{search_no_bbox}/WorldCRS84Quad/18/137421/78424.tif?assets=cog"
+        f"/mosaic/tiles/{search_no_bbox}/WorldCRS84Quad/18/137421/78424.tif?assets=cog"
     )
     assert response.status_code == 200
     assert response.headers["content-type"] == "image/tiff; application=geotiff"
@@ -235,7 +237,7 @@ async def test_cql2(rio, app):
             "args": [{"property": "collection"}, "noaa-emergency-response"],
         }
     }
-    response = await app.post("/register", json=query)
+    response = await app.post("/mosaic/register", json=query)
     assert response.status_code == 200
     resp = response.json()
     assert resp["searchid"]
@@ -243,7 +245,7 @@ async def test_cql2(rio, app):
 
     cql2_id = resp["searchid"]
 
-    response = await app.get(f"/{cql2_id}/info")
+    response = await app.get(f"/mosaic/{cql2_id}/info")
     assert response.status_code == 200
     resp = response.json()
     assert resp["search"]
@@ -257,21 +259,21 @@ async def test_cql2(rio, app):
     }
     assert search["metadata"] == {"type": "mosaic"}
 
-    response = await app.get(f"/{cql2_id}/-85.6358,36.1624/assets")
+    response = await app.get(f"/mosaic/{cql2_id}/-85.6358,36.1624/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 1
     assert list(resp[0]) == ["id", "bbox", "assets"]
     assert resp[0]["id"] == "20200307aC0853900w361030"
 
-    response = await app.get(f"/{cql2_id}/15/8589/12849/assets")
+    response = await app.get(f"/mosaic/{cql2_id}/15/8589/12849/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 1
     assert list(resp[0]) == ["id", "bbox", "assets"]
     assert resp[0]["id"] == "20200307aC0853900w361030"
 
-    response = await app.get(f"/{cql2_id}/tilejson.json?assets=cog")
+    response = await app.get(f"/mosaic/{cql2_id}/tilejson.json?assets=cog")
     assert response.headers["content-type"] == "application/json"
     assert response.status_code == 200
     resp = response.json()
@@ -282,7 +284,7 @@ async def test_cql2(rio, app):
     assert "?assets=cog" in resp["tiles"][0]
 
     z, x, y = 15, 8589, 12849
-    response = await app.get(f"/tiles/{cql2_id}/{z}/{x}/{y}?assets=cog")
+    response = await app.get(f"/mosaic/tiles/{cql2_id}/{z}/{x}/{y}?assets=cog")
     assert response.status_code == 200
     assert response.headers["content-type"] == "image/jpeg"
     meta = parse_img(response.content)
@@ -325,7 +327,7 @@ async def test_cql2_with_geometry(rio, app):
             ],
         }
     }
-    response = await app.post("/register", json=query)
+    response = await app.post("/mosaic/register", json=query)
     assert response.status_code == 200
     resp = response.json()
     assert resp["searchid"]
@@ -333,7 +335,7 @@ async def test_cql2_with_geometry(rio, app):
 
     cql2_id = resp["searchid"]
 
-    response = await app.get(f"/{cql2_id}/info")
+    response = await app.get(f"/mosaic/{cql2_id}/info")
     assert response.status_code == 200
     resp = response.json()
     assert resp["search"]
@@ -342,32 +344,32 @@ async def test_cql2_with_geometry(rio, app):
     assert search["metadata"] == {"type": "mosaic"}
 
     # make sure we can find assets when having both geometry filter and geometry
-    response = await app.get(f"/{cql2_id}/15/8601/12849/assets")
+    response = await app.get(f"/mosaic/{cql2_id}/15/8601/12849/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 2
 
     # point is outside the geometry filter
-    response = await app.get(f"/{cql2_id}/-85.6358,36.1624/assets")
+    response = await app.get(f"/mosaic/{cql2_id}/-85.6358,36.1624/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 0
 
     # make sure we can find assets when having both geometry filter and geometry
-    response = await app.get(f"/{cql2_id}/15/8601/12849/assets")
+    response = await app.get(f"/mosaic/{cql2_id}/15/8601/12849/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 2
 
     # tile is outside the geometry filter
-    response = await app.get(f"/{cql2_id}/15/8589/12849/assets")
+    response = await app.get(f"/mosaic/{cql2_id}/15/8589/12849/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 0
 
     # tile is outside the geometry filter
     z, x, y = 15, 8589, 12849
-    response = await app.get(f"/tiles/{cql2_id}/{z}/{x}/{y}?assets=cog")
+    response = await app.get(f"/mosaic/tiles/{cql2_id}/{z}/{x}/{y}?assets=cog")
     assert response.status_code == 404
 
 
@@ -382,7 +384,7 @@ async def test_query_with_metadata(app):
         "metadata": {"name": "mymosaic", "minzoom": 1, "maxzoom": 2},
     }
 
-    response = await app.post("/register", json=query)
+    response = await app.post("/mosaic/register", json=query)
     assert response.status_code == 200
     resp = response.json()
     assert resp["searchid"]
@@ -390,7 +392,7 @@ async def test_query_with_metadata(app):
 
     cql2_id = resp["searchid"]
 
-    response = await app.get(f"/{cql2_id}/info")
+    response = await app.get(f"/mosaic/{cql2_id}/info")
     assert response.status_code == 200
     resp = response.json()
     assert resp["search"]

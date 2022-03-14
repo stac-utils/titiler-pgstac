@@ -18,55 +18,13 @@ from titiler.core.resources.enums import ImageType, OptionalHeader
 from titiler.core.utils import Timer
 from titiler.mosaic.resources.enums import PixelSelectionMethod
 from titiler.pgstac import model
+from titiler.pgstac.dependencies import PathParams, PgSTACParams, SearchParams
 from titiler.pgstac.mosaic import PGSTACBackend
 
 from fastapi import Depends, Path, Query
 
 from starlette.requests import Request
 from starlette.responses import Response
-
-
-def PathParams(searchid: str = Path(..., description="Search Id")) -> str:
-    """SearcId"""
-    return searchid
-
-
-def SearchParams(
-    body: model.RegisterMosaic,
-) -> Tuple[model.PgSTACSearch, model.Metadata]:
-    """Search parameters."""
-    search = body.dict(
-        exclude_none=True,
-        exclude={"metadata"},
-        by_alias=True,
-    )
-    return model.PgSTACSearch(**search), body.metadata
-
-
-@dataclass
-class PgSTACParams(DefaultDependency):
-    """PgSTAC parameters."""
-
-    scan_limit: Optional[int] = Query(
-        None,
-        description="Return as soon as we scan N items (defaults to 10000 in PgSTAC).",
-    )
-    items_limit: Optional[int] = Query(
-        None,
-        description="Return as soon as we have N items per geometry (defaults to 100 in PgSTAC).",
-    )
-    time_limit: Optional[int] = Query(
-        None,
-        description="Return after N seconds to avoid long requests (defaults to 5 in PgSTAC).",
-    )
-    exitwhenfull: Optional[bool] = Query(
-        None,
-        description="Return as soon as the geometry is fully covered (defaults to True in PgSTAC).",
-    )
-    skipcovered: Optional[bool] = Query(
-        None,
-        description="Skip any items that would show up completely under the previous items (defaults to True in PgSTAC).",
-    )
 
 
 @dataclass

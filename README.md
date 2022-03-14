@@ -26,7 +26,7 @@
 
 ---
 
-`TiTiler.PgSTAC` is a [titiler](https://github.com/developmentseed/titiler) extension which connect to [pgstac](https://github.com/stac-utils/pgstac) STAC database in order to create **mosaics** in response to a STAC-api `search` query.
+`TiTiler.PgSTAC` is a [titiler](https://github.com/developmentseed/titiler) extension which connect to [pgstac](https://github.com/stac-utils/pgstac) STAC database in order to create dynamic **mosaics** based on [`Search Query`](https://github.com/radiantearth/stac-api-spec/tree/master/item-search).
 
 ## Installation
 

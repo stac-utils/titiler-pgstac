@@ -1,5 +1,11 @@
 # Release Notes
 
+## Unreleased
+
+* move dependencies to `titiler.pgstac.dependencies`
+* add `/mosaic` prefix to the PgSTAC mosaic endpoints
+* add `/stac` endpoints to work with PgSTAC items
+
 ## 0.1.0.a5 (2022-03-03) Pre-Release
 
 * Add `search_dependency` to allow customization of the PgSTAC Search query (Author @drnextgis, https://github.com/stac-utils/titiler-pgstac/pull/41)
