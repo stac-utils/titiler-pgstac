@@ -70,7 +70,9 @@ else:
     optional_headers = []
 
 
-mosaic = MosaicTilerFactory(optional_headers=optional_headers, router_prefix="/mosaic")
+mosaic = MosaicTilerFactory(
+    optional_headers=optional_headers, router_prefix="/mosaic", add_statistics=True
+)
 app.include_router(mosaic.router, tags=["Mosaic"], prefix="/mosaic")
 
 stac = MultiBaseTilerFactory(

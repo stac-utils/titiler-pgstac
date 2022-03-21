@@ -410,3 +410,55 @@ async def test_query_with_metadata(app):
         "minzoom": 1,
         "maxzoom": 2,
     }
+
+
+@patch("rio_tiler.io.cogeo.rasterio")
+@pytest.mark.asyncio
+async def test_statistics(rio, app):
+    """Get Stats."""
+    rio.open = mock_rasterio_open
+
+    feat = {
+        "type": "FeatureCollection",
+        "features": [
+            {
+                "type": "Feature",
+                "properties": {},
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [
+                        [
+                            [-85.64065933227539, 36.16587374136926],
+                            [-85.64546585083008, 36.161716102717804],
+                            [-85.64443588256836, 36.158043338486344],
+                            [-85.64083099365234, 36.157904740240866],
+                            [-85.63679695129393, 36.15901351934466],
+                            [-85.6358528137207, 36.161577510965],
+                            [-85.63568115234375, 36.16441859292501],
+                            [-85.63902854919434, 36.16511152412467],
+                            [-85.64065933227539, 36.16587374136926],
+                        ]
+                    ],
+                },
+            }
+        ],
+    }
+
+    response = await app.post(f"/mosaic/{search_no_bbox}/statistics", json=feat)
+    assert response.status_code == 400
+
+    response = await app.post(
+        f"/mosaic/{search_no_bbox}/statistics", json=feat, params={"assets": "cog"}
+    )
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "application/geo+json"
+    assert response.json()["features"][0]["properties"]["statistics"]["cog_1"]
+
+    response = await app.post(
+        f"/mosaic/{search_no_bbox}/statistics",
+        json=feat["features"][0],
+        params={"assets": "cog"},
+    )
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "application/geo+json"
+    assert response.json()["properties"]["statistics"]["cog_1"]
