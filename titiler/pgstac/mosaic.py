@@ -1,7 +1,8 @@
 """TiTiler.PgSTAC custom Mosaic Backend and Custom STACReader."""
 
 import json
-from typing import Any, Dict, List, Optional, Tuple, Type, Union
+import math
+from typing import Any, Dict, List, Optional, Tuple, Type
 
 import attr
 import morecantile
@@ -11,9 +12,12 @@ from cogeo_mosaic.backends import BaseBackend
 from cogeo_mosaic.errors import NoAssetFoundError
 from cogeo_mosaic.mosaic import MosaicJSON
 from geojson_pydantic import Point, Polygon
+from geojson_pydantic.geometries import Geometry, parse_geometry_obj
 from morecantile import TileMatrixSet
 from psycopg_pool import ConnectionPool
 from rasterio.crs import CRS
+from rasterio.features import bounds as featureBounds
+from rasterio.warp import transform_geom
 from rio_tiler.constants import WEB_MERCATOR_TMS, WGS84_CRS
 from rio_tiler.errors import InvalidAssetName, PointOutsideBounds
 from rio_tiler.io.base import BaseReader, MultiBaseReader
@@ -179,7 +183,7 @@ class PGSTACBackend(BaseBackend):
     )
     def get_assets(
         self,
-        geom: Union[Point, Polygon],
+        geom: Geometry,
         fields: Optional[Dict[str, Any]] = None,
         scan_limit: Optional[int] = None,
         items_limit: Optional[int] = None,
@@ -303,3 +307,68 @@ class PGSTACBackend(BaseBackend):
             kwargs.update({"allowed_exceptions": (PointOutsideBounds,)})
 
         return list(multi_values(mosaic_assets, _reader, lon, lat, **kwargs).items())
+
+    def feature(
+        self,
+        shape: Dict,
+        dst_crs: Optional[CRS] = None,
+        shape_crs: CRS = WGS84_CRS,
+        max_size: int = 1024,
+        reverse: bool = False,
+        scan_limit: Optional[int] = None,
+        items_limit: Optional[int] = None,
+        time_limit: Optional[int] = None,
+        exitwhenfull: Optional[bool] = None,
+        skipcovered: Optional[bool] = None,
+        **kwargs: Any,
+    ) -> Tuple[ImageData, List[str]]:
+        """Get Tile from multiple observation."""
+        if "geometry" in shape:
+            shape = shape["geometry"]
+
+        # PgSTAC except geometry in WGS84
+        shape_wgs84 = shape
+        if shape_crs != WGS84_CRS:
+            shape_wgs84 = transform_geom(shape_crs, WGS84_CRS, shape)
+
+        mosaic_assets = self.get_assets(
+            parse_geometry_obj(shape_wgs84),
+            scan_limit=scan_limit,
+            items_limit=items_limit,
+            time_limit=time_limit,
+            exitwhenfull=exitwhenfull,
+            skipcovered=skipcovered,
+        )
+
+        if not mosaic_assets:
+            raise NoAssetFoundError("No assets found for tile input Geometry")
+
+        if reverse:
+            mosaic_assets = list(reversed(mosaic_assets))
+
+        # We need to set width/height on each `src.feature()` call
+        # so each data will overlap. We define the output shape based on
+        # the X/Y length of the feature bbox and the maximum allowed size `max_size`.
+        bbox = featureBounds(shape)
+        x_length = bbox[2] - bbox[0]
+        y_length = bbox[3] - bbox[1]
+        yx_ratio = y_length / x_length
+        if yx_ratio > 1:
+            height = max_size
+            width = math.ceil(height / yx_ratio)
+        else:
+            width = max_size
+            height = math.ceil(width * yx_ratio)
+
+        def _reader(item: Dict[str, Any], shape: Dict, **kwargs: Any) -> ImageData:
+            with self.reader(item, **self.reader_options) as src_dst:
+                return src_dst.feature(shape, **kwargs)
+
+        return mosaic_reader(
+            mosaic_assets,
+            _reader,
+            shape,
+            shape_crs=shape_crs,
+            dst_crs=dst_crs or shape_crs,
+            **kwargs,
+        )

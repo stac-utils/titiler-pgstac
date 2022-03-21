@@ -2,26 +2,31 @@
 
 import os
 from dataclasses import dataclass, field
-from typing import Callable, Dict, List, Optional, Tuple, Type
+from typing import Callable, Dict, List, Optional, Tuple, Type, Union
 from urllib.parse import urlencode
 
 import rasterio
 from cogeo_mosaic.backends import BaseBackend
+from geojson_pydantic import Feature, FeatureCollection
 from morecantile import TileMatrixSet
 from psycopg.rows import class_row
 from rio_tiler.constants import MAX_THREADS
+from rio_tiler.models import BandStatistics
+from rio_tiler.utils import get_array_statistics
 
-from titiler.core.dependencies import AssetsBidxExprParams, DefaultDependency, TMSParams
+from titiler.core.dependencies import AssetsBidxExprParams, DefaultDependency
 from titiler.core.factory import BaseTilerFactory, img_endpoint_params
 from titiler.core.models.mapbox import TileJSON
+from titiler.core.models.responses import MultiBaseStatisticsGeoJSON
 from titiler.core.resources.enums import ImageType, OptionalHeader
+from titiler.core.resources.responses import GeoJSONResponse
 from titiler.core.utils import Timer
 from titiler.mosaic.resources.enums import PixelSelectionMethod
 from titiler.pgstac import model
 from titiler.pgstac.dependencies import PathParams, PgSTACParams, SearchParams
 from titiler.pgstac.mosaic import PGSTACBackend
 
-from fastapi import Depends, Path, Query
+from fastapi import Body, Depends, Path, Query
 
 from starlette.requests import Request
 from starlette.responses import Response
@@ -35,9 +40,6 @@ class MosaicTilerFactory(BaseTilerFactory):
     path_dependency: Callable[..., str] = PathParams
     layer_dependency: Type[DefaultDependency] = AssetsBidxExprParams
 
-    # TileMatrixSet dependency
-    tms_dependency: Callable[..., TileMatrixSet] = TMSParams
-
     # Search dependency
     search_dependency: Callable[
         ..., Tuple[model.PgSTACSearch, model.Metadata]
@@ -45,11 +47,16 @@ class MosaicTilerFactory(BaseTilerFactory):
 
     backend_options: Dict = field(default_factory=dict)
 
+    # Add/Remove some endpoints
+    add_statistics: bool = False
+
     def register_routes(self) -> None:
         """This Method register routes to the router."""
         self._search_routes()
         self._tiles_routes()
         self._assets_routes()
+        if self.add_statistics:
+            self._statistics_routes()
 
     def _tiles_routes(self) -> None:
         """register tiles routes."""
@@ -382,3 +389,103 @@ class MosaicTilerFactory(BaseTilerFactory):
                     ),
                 ],
             )
+
+    def _statistics_routes(self):
+        """Register /statistics endpoint."""
+
+        @self.router.post(
+            "/{searchid}/statistics",
+            response_model=MultiBaseStatisticsGeoJSON,
+            response_model_exclude_none=True,
+            response_class=GeoJSONResponse,
+            responses={
+                200: {
+                    "content": {"application/json": {}},
+                    "description": "Return statistics for geojson features.",
+                }
+            },
+        )
+        def geojson_statistics(
+            request: Request,
+            geojson: Union[FeatureCollection, Feature] = Body(
+                ..., description="GeoJSON Feature or FeatureCollection."
+            ),
+            searchid=Depends(self.path_dependency),
+            layer_params=Depends(self.layer_dependency),
+            dataset_params=Depends(self.dataset_dependency),
+            pixel_selection: PixelSelectionMethod = Query(
+                PixelSelectionMethod.first, description="Pixel selection method."
+            ),
+            max_size: int = Query(1024, description="Maximum image size to read onto."),
+            stats_params=Depends(self.stats_dependency),
+            histogram_params=Depends(self.histogram_dependency),
+            pgstac_params: PgSTACParams = Depends(),
+        ):
+            """Get Statistics from a geojson feature or featureCollection."""
+            threads = int(os.getenv("MOSAIC_CONCURRENCY", MAX_THREADS))
+
+            with rasterio.Env(**self.gdal_config):
+                with self.reader(
+                    searchid,
+                    pool=request.app.state.dbpool,
+                    **self.backend_options,
+                ) as src_dst:
+                    if isinstance(geojson, FeatureCollection):
+                        for feature in geojson:
+                            data, _ = src_dst.feature(
+                                feature.dict(exclude_none=True),
+                                pixel_selection=pixel_selection.method(),
+                                threads=threads,
+                                max_size=max_size,
+                                **layer_params,
+                                **dataset_params,
+                                **pgstac_params,
+                            )
+
+                            stats = get_array_statistics(
+                                data.as_masked(),
+                                **stats_params,
+                                **histogram_params,
+                            )
+
+                        feature.properties = feature.properties or {}
+                        feature.properties.update(
+                            {
+                                "statistics": {
+                                    f"{data.band_names[ix]}": BandStatistics(
+                                        **stats[ix]
+                                    )
+                                    for ix in range(len(stats))
+                                }
+                            }
+                        )
+
+                    else:  # simple feature
+                        data, _ = src_dst.feature(
+                            geojson.dict(exclude_none=True),
+                            pixel_selection=pixel_selection.method(),
+                            threads=threads,
+                            max_size=max_size,
+                            **layer_params,
+                            **dataset_params,
+                            **pgstac_params,
+                        )
+                        stats = get_array_statistics(
+                            data.as_masked(),
+                            **stats_params,
+                            **histogram_params,
+                        )
+
+                        geojson.properties = geojson.properties or {}
+                        geojson.properties.update(
+                            {
+                                "statistics": {
+                                    f"{data.band_names[ix]}": BandStatistics(
+                                        **stats[ix]
+                                    )
+                                    for ix in range(len(stats))
+                                }
+                            }
+                        )
+
+            return geojson
