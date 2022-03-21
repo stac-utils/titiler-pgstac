@@ -20,9 +20,10 @@ nav:
     - TileMatrixSet: "tms_endpoints.md"
   - Tiler Factories: "tiler_factories.md"
   - Advanced usage:
+    - Mosaic metadata specification: "advanced/metadata.md"
     - Custom search model: "advanced/custom_search.md"
-    - Metadata: "advanced/metadata.md"
-    - List/Search mosaics: "advanced/list_mosaics.md"
+    - Custom mosaic list endpoint : "advanced/list_mosaics.md"
+    - Custom feature crop endpoint: "advanced/geojson_crop.md"
   - Examples:
     - demo: "notebooks/demo.ipynb"
   - Development - Contributing: "contributing.md"

@@ -1,5 +1,10 @@
 # Release Notes
 
+## Unreleased
+
+* add `feature()` method to `PGSTACBackend` mosaic backend
+* add `/statistics` endpoint to return statistics given a GeoJSON feature or featureCollection
+
 ## 0.1.0.a6 (2022-03-14) Pre-Release
 
 * move dependencies to `titiler.pgstac.dependencies`

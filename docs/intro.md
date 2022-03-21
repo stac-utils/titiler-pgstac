@@ -1,8 +1,8 @@
 
 
-**TiTiler.PgSTAC** is TiTiler extension, which create dynamic tiler connected to PgSTAC databases.
+**TiTiler.PgSTAC** is a TiTiler extension, which create dynamic tiler connected to PgSTAC databases.
 
-By default the main application provides two set of endpoints:
+By default the main application (`titiler.pgstac.main.app`) provides two sets of endpoints:
 
 - `/mosaic`: Dynamic mosaic tiler based on STAC Queries
 
@@ -10,7 +10,7 @@ By default the main application provides two set of endpoints:
 
 ## Mosaic
 
-### 1. Register a `Search` request (Mosaic)
+#### 1. Register a `Search` request (Mosaic)
 
 ![](https://user-images.githubusercontent.com/10407788/132193537-0560016f-09bc-4a25-8a2a-eac9b50bc28a.png)
 
@@ -70,7 +70,7 @@ curl -X 'POST' 'http://127.0.0.1:8081/mosaic/register' \
 }
 ```
 
-#### 1.1 Get Mosaic metadata
+##### 1.1 Get Mosaic metadata
 
 ```bash
 curl http://127.0.0.1:8081/mosaic/5063721f06957d6b2320326d82e90d1e/info | jq
@@ -199,7 +199,7 @@ curl http://127.0.0.1:8081/mosaic/f31d7de8a5ddfa3a80b9a9dd06378db1/info | jq '.s
 }
 ```
 
-### 2. Fetch mosaic `Tiles`
+#### 2. Fetch mosaic `Tiles`
 
 When we have a `searchid` we can now call the dynamic tiler and ask for Map Tiles.
 
