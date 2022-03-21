@@ -39,6 +39,7 @@ class CustomSTACReader(MultiBaseReader):
     Inputs should be in form of:
     {
         "id": "IAMASTACITEM",
+        "collection": "mycollection",
         "bbox": (0, 0, 10, 10),
         "assets": {
             "COG": {
@@ -193,7 +194,7 @@ class PGSTACBackend(BaseBackend):
     ) -> List[Dict]:
         """Find assets."""
         fields = fields or {
-            "include": ["assets", "id", "bbox"],
+            "include": ["assets", "id", "bbox", "collection"],
         }
 
         scan_limit = scan_limit or 10000

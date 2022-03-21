@@ -59,7 +59,7 @@ async def test_assets_for_point(app):
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 1
-    assert list(resp[0]) == ["id", "bbox", "assets"]
+    assert list(resp[0]) == ["id", "bbox", "assets", "collection"]
     assert resp[0]["id"] == "20200307aC0853900w361030"
 
     # make sure we can find assets when having both bbox and geometry
@@ -82,7 +82,7 @@ async def test_assets_for_tile(app):
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 1
-    assert list(resp[0]) == ["id", "bbox", "assets"]
+    assert list(resp[0]) == ["id", "bbox", "assets", "collection"]
     assert resp[0]["id"] == "20200307aC0853900w361030"
 
     # make sure we can find assets when having both bbox and geometry
@@ -263,14 +263,14 @@ async def test_cql2(rio, app):
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 1
-    assert list(resp[0]) == ["id", "bbox", "assets"]
+    assert list(resp[0]) == ["id", "bbox", "assets", "collection"]
     assert resp[0]["id"] == "20200307aC0853900w361030"
 
     response = await app.get(f"/mosaic/{cql2_id}/15/8589/12849/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 1
-    assert list(resp[0]) == ["id", "bbox", "assets"]
+    assert list(resp[0]) == ["id", "bbox", "assets", "collection"]
     assert resp[0]["id"] == "20200307aC0853900w361030"
 
     response = await app.get(f"/mosaic/{cql2_id}/tilejson.json?assets=cog")

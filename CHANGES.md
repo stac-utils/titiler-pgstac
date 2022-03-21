@@ -4,6 +4,7 @@
 
 * add `feature()` method to `PGSTACBackend` mosaic backend
 * add `/statistics` endpoint to return statistics given a GeoJSON feature or featureCollection
+* add `collection` in allowed returned fields
 
 ## 0.1.0.a6 (2022-03-14) Pre-Release
 
