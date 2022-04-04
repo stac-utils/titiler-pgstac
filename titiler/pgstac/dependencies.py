@@ -73,12 +73,11 @@ def get_stac_item(pool: ConnectionPool, collection: str, item: str) -> Dict:
         with conn.cursor(row_factory=dict_row) as cursor:
             cursor.execute(
                 (
-                    "SELECT * FROM pgstac.items WHERE "
-                    "collection_id=%s AND id=%s LIMIT 1;"
+                    "SELECT * FROM pgstac.get_item(%s, %s) LIMIT 1;"
                 ),
                 (
-                    collection,
                     item,
+                    collection,
                 ),
             )
 
@@ -89,7 +88,7 @@ def get_stac_item(pool: ConnectionPool, collection: str, item: str) -> Dict:
                     detail=f"No item '{item}' found in '{collection}' collection",
                 )
 
-            return pystac.Item.from_dict(resp["content"])
+            return pystac.Item.from_dict(resp["get_item"])
 
 
 def ItemPathParams(
