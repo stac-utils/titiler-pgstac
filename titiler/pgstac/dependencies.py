@@ -78,11 +78,7 @@ def get_stac_item(pool: ConnectionPool, collection: str, item: str) -> Dict:
             )
 
             resp = cursor.fetchone()
-            if (
-                not resp
-                or "features" not in resp
-                or len(resp["features"] != 1)
-            ):
+            if not resp or "features" not in resp or len(resp["features"] != 1):
                 raise HTTPException(
                     status_code=404,
                     detail=f"No item '{item}' found in '{collection}' collection",
