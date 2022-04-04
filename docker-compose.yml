@@ -29,16 +29,27 @@ services:
       # - DB_MAX_QUERIES=10
       # - DB_MAX_IDLE=10
       # GDAL Config
-      - CPL_TMPDIR=/tmp
-      - GDAL_CACHEMAX=75%
+      # This option controls the default GDAL raster block cache size.
+      # If its value is small (less than 100000), it is assumed to be measured in megabytes, otherwise in bytes.
+      - GDAL_CACHEMAX=200
       - GDAL_DISABLE_READDIR_ON_OPEN=EMPTY_DIR
+      - GDAL_INGESTED_BYTES_AT_OPEN=32768
       - GDAL_HTTP_MERGE_CONSECUTIVE_RANGES=YES
       - GDAL_HTTP_MULTIPLEX=YES
       - GDAL_HTTP_VERSION=2
+      # The file can be cached in RAM by setting the configuration option VSI_CACHE to TRUE.
+      # The cache size defaults to 25 MB, but can be modified by setting the configuration option VSI_CACHE_SIZE (in bytes).
+      # Content in that cache is discarded when the file handle is closed.
       - VSI_CACHE=TRUE
       - VSI_CACHE_SIZE=536870912
+      # In addition, a global least-recently-used cache of 16 MB shared among all downloaded content is enabled by default,
+      # and content in it may be reused after a file handle has been closed and reopen,
+      # during the life-time of the process or until VSICurlClearCache() is called.
+      # Starting with GDAL 2.3, the size of this global LRU cache can be modified by
+      # setting the configuration option CPL_VSIL_CURL_CACHE_SIZE (in bytes).
+      - CPL_VSIL_CURL_CACHE_SIZE=200000000
       # TiTiler Config
-      - MOSAIC_CONCURRENCY=1
+      - MOSAIC_CONCURRENCY=5
       # AWS S3 endpoint config
       # - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       # - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
@@ -59,7 +70,7 @@ services:
       # Application
       - HOST=0.0.0.0
       - PORT=8081
-      - WEB_CONCURRENCY=10
+      - WEB_CONCURRENCY=1
       # Postgres connection
       - POSTGRES_USER=username
       - POSTGRES_PASS=password
@@ -73,15 +84,28 @@ services:
       # - DB_MAX_IDLE=10
       # GDAL Config
       - CPL_TMPDIR=/tmp
-      - GDAL_CACHEMAX=75%
+      # This option controls the default GDAL raster block cache size.
+      # If its value is small (less than 100000), it is assumed to be measured in megabytes, otherwise in bytes.
+      - GDAL_CACHEMAX=200
       - GDAL_DISABLE_READDIR_ON_OPEN=EMPTY_DIR
+      - GDAL_INGESTED_BYTES_AT_OPEN=32768
       - GDAL_HTTP_MERGE_CONSECUTIVE_RANGES=YES
       - GDAL_HTTP_MULTIPLEX=YES
       - GDAL_HTTP_VERSION=2
+      # The file can be cached in RAM by setting the configuration option VSI_CACHE to TRUE.
+      # The cache size defaults to 25 MB, but can be modified by setting the configuration option VSI_CACHE_SIZE (in bytes).
+      # Content in that cache is discarded when the file handle is closed.
       - VSI_CACHE=TRUE
       - VSI_CACHE_SIZE=536870912
+      # In addition, a global least-recently-used cache of 16 MB shared among all downloaded content is enabled by default,
+      # and content in it may be reused after a file handle has been closed and reopen,
+      # during the life-time of the process or until VSICurlClearCache() is called.
+      # Starting with GDAL 2.3, the size of this global LRU cache can be modified by
+      # setting the configuration option CPL_VSIL_CURL_CACHE_SIZE (in bytes).
+      - CPL_VSIL_CURL_CACHE_SIZE=200000000
       # TiTiler Config
-      - MOSAIC_CONCURRENCY=1
+      - MOSAIC_CONCURRENCY=5
+      # - RIO_TILER_MAX_THREADS=2
       # AWS S3 endpoint config
       # - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       # - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
