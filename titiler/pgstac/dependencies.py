@@ -69,23 +69,20 @@ class PgSTACParams(DefaultDependency):
 )
 def get_stac_item(pool: ConnectionPool, collection: str, item: str) -> Dict:
     """Get STAC Item from PGStac."""
-    search = model.PgSTACSearch(
-        ids = [item],
-        collections = [collection]
-    )
+    search = model.PgSTACSearch(ids=[item], collections=[collection])
     with pool.connection() as conn:
         with conn.cursor(row_factory=dict_row) as cursor:
             cursor.execute(
-                (
-                    "SELECT * FROM pgstac.search(%s) LIMIT 1;"
-                ),
-                (
-                    search.json(by_alias=True, exclude_none=True),
-                ),
+                ("SELECT * FROM pgstac.search(%s) LIMIT 1;"),
+                (search.json(by_alias=True, exclude_none=True),),
             )
 
             resp = cursor.fetchone()
-            if not resp or 'features' not in resp or len(resp['features'] != 1):
+            if (
+                not resp
+                or "features" not in resp
+                or len(resp["features"] != 1)
+            ):
                 raise HTTPException(
                     status_code=404,
                     detail=f"No item '{item}' found in '{collection}' collection",
