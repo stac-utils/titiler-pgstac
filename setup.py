@@ -29,7 +29,7 @@ extra_reqs = {
 
 setup(
     name="titiler.pgstac",
-    description=u"Connect PgSTAC and TiTiler",
+    description="Connect PgSTAC and TiTiler",
     long_description=long_description,
     long_description_content_type="text/markdown",
     python_requires=">=3.7",
@@ -42,7 +42,7 @@ setup(
         "Programming Language :: Python :: 3.9",
     ],
     keywords="COG STAC MosaicJSON FastAPI PgSTAC",
-    author=u"Vincent Sarago",
+    author="Vincent Sarago",
     author_email="vincent@developmentseed.org",
     url="https://github.com/stac-utils/titiler-pgstac",
     license="MIT",
