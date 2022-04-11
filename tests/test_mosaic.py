@@ -411,6 +411,12 @@ async def test_query_with_metadata(app):
         "maxzoom": 2,
     }
 
+    response = await app.get(f"/mosaic/{cql2_id}/tilejson.json?assets=cog")
+    assert response.status_code == 200
+    resp = response.json()
+    assert resp["minzoom"] == 1
+    assert resp["maxzoom"] == 2
+
 
 @patch("rio_tiler.io.cogeo.rasterio")
 @pytest.mark.asyncio

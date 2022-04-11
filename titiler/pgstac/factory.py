@@ -2,7 +2,7 @@
 
 import os
 from dataclasses import dataclass, field
-from typing import Callable, Dict, List, Optional, Tuple, Type, Union
+from typing import Any, Callable, Dict, List, Optional, Tuple, Type, Union
 from urllib.parse import urlencode
 
 import rasterio
@@ -30,6 +30,11 @@ from fastapi import Body, Depends, Path, Query
 
 from starlette.requests import Request
 from starlette.responses import Response
+
+
+def _first_value(values: List[Any], default: Any = None):
+    """Return the first not None value."""
+    return next(filter(lambda x: x is not None, values), default)
 
 
 @dataclass
@@ -258,11 +263,17 @@ class MosaicTilerFactory(BaseTilerFactory):
             if qs:
                 tiles_url += f"?{urlencode(qs)}"
 
+            minzoom = _first_value([minzoom, search_info.metadata.minzoom], tms.minzoom)
+            maxzoom = _first_value([maxzoom, search_info.metadata.maxzoom], tms.maxzoom)
+            bounds = _first_value(
+                [search_info.input_search.get("bbox"), search_info.metadata.bounds],
+                tms.bbox,
+            )
             return {
-                "bounds": search_info.input_search.get("bbox", tms.bbox),
-                "minzoom": minzoom if minzoom is not None else tms.minzoom,
-                "maxzoom": maxzoom if maxzoom is not None else tms.maxzoom,
-                "name": search_info.id,
+                "bounds": bounds,
+                "minzoom": minzoom,
+                "maxzoom": maxzoom,
+                "name": search_info.metadata.name or search_info.id,
                 "tiles": [tiles_url],
             }
 

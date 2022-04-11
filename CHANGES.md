@@ -1,5 +1,9 @@
 # Release Notes
 
+## Unreleased
+
+* Insert mosaic metadata `min/max zoom` and `bounds` in tilejson
+
 ## 0.1.0.a7 (2022-04-05) Pre-Release
 
 * add `feature()` method to `PGSTACBackend` mosaic backend
