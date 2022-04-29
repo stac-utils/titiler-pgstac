@@ -6,10 +6,8 @@ from titiler.pgstac.settings import PostgresSettings
 
 from fastapi import FastAPI
 
-settings = PostgresSettings()
 
-
-async def connect_to_db(app: FastAPI) -> None:
+async def connect_to_db(app: FastAPI, settings: PostgresSettings) -> None:
     """Connect to Database."""
     app.state.dbpool = ConnectionPool(
         conninfo=settings.connection_string,

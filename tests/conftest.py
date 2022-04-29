@@ -124,7 +124,7 @@ async def app():
 
             await conn.close()
 
-            await connect_to_db(app)
+            await connect_to_db(app, settings)
             async with AsyncClient(app=app, base_url="http://test") as client:
                 yield client
             await close_db_connection(app)
