@@ -17,7 +17,7 @@ from titiler.pgstac.db import close_db_connection, connect_to_db
 from titiler.pgstac.dependencies import ItemPathParams
 from titiler.pgstac.factory import MosaicTilerFactory
 from titiler.pgstac.reader import PgSTACReader
-from titiler.pgstac.settings import ApiSettings, PostgresSettings
+from titiler.pgstac.settings import ApiSettings
 from titiler.pgstac.version import __version__ as titiler_pgstac_version
 
 from fastapi import FastAPI
@@ -29,7 +29,6 @@ logging.getLogger("botocore.utils").disabled = True
 logging.getLogger("rio-tiler").setLevel(logging.ERROR)
 
 settings = ApiSettings()
-pg_settings = PostgresSettings()
 
 app = FastAPI(title=settings.name, version=titiler_pgstac_version)
 
@@ -37,7 +36,7 @@ app = FastAPI(title=settings.name, version=titiler_pgstac_version)
 @app.on_event("startup")
 async def startup_event() -> None:
     """Connect to database on startup."""
-    await connect_to_db(app, settings=pg_settings)
+    await connect_to_db(app)
 
 
 @app.on_event("shutdown")
