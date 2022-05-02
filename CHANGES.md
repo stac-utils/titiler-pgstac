@@ -3,7 +3,7 @@
 ## Unreleased
 
 * Insert mosaic metadata `min/max zoom` and `bounds` in tilejson
-* allow users the ability to optionally provide `PostgresSettings` to `connect_to_db()` function in the event that they want to customize how their DB credentials are populated (https://github.com/stac-utils/titiler-pgstac/pull/53)
+* allow users the ability to optionally provide `PostgresSettings` to `connect_to_db()` function in the event that they want to customize how their DB credentials are populated (author @alukach, https://github.com/stac-utils/titiler-pgstac/pull/53)
 
 
 ## 0.1.0.a7 (2022-04-05) Pre-Release
