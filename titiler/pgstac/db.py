@@ -1,5 +1,7 @@
 """Database connection handling."""
 
+from typing import Optional
+
 from psycopg_pool import ConnectionPool
 
 from titiler.pgstac.settings import PostgresSettings
@@ -7,10 +9,13 @@ from titiler.pgstac.settings import PostgresSettings
 from fastapi import FastAPI
 
 
-async def connect_to_db(app: FastAPI, settings: PostgresSettings = None) -> None:
+async def connect_to_db(
+    app: FastAPI, settings: Optional[PostgresSettings] = None
+) -> None:
     """Connect to Database."""
     if not settings:
         settings = PostgresSettings()
+
     app.state.dbpool = ConnectionPool(
         conninfo=settings.connection_string,
         min_size=settings.db_min_conn_size,
