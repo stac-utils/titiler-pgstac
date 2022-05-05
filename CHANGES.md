@@ -1,5 +1,9 @@
 # Release Notes
 
+## 0.1.0.a9 (2022-05-05) Pre-Release
+
+* remove LRU cache on all settings classes to enable support for manually providing settings via keyword arguments and minimizing lines of code (author @alukach, https://github.com/stac-utils/titiler-pgstac/pull/54)
+
 ## 0.1.0.a8 (2022-05-02) Pre-Release
 
 * Insert mosaic metadata `min/max zoom` and `bounds` in tilejson (https://github.com/stac-utils/titiler-pgstac/pull/51)
