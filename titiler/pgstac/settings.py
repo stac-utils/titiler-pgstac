@@ -26,7 +26,7 @@ class _ApiSettings(pydantic.BaseSettings):
 
 
 @lru_cache()
-def ApiSettings() -> _ApiSettings:
+def ApiSettings(**kwargs) -> _ApiSettings:
     """
     This function returns a cached instance of the APISettings object.
     Caching is used to prevent re-reading the environment every time the API settings are used in an endpoint.
@@ -35,7 +35,7 @@ def ApiSettings() -> _ApiSettings:
 
     From https://github.com/dmontagu/fastapi-utils/blob/af95ff4a8195caaa9edaa3dbd5b6eeb09691d9c7/fastapi_utils/api_settings.py#L60-L69
     """
-    return _ApiSettings()
+    return _ApiSettings(**kwargs)
 
 
 class _PostgresSettings(pydantic.BaseSettings):
@@ -78,9 +78,9 @@ class _PostgresSettings(pydantic.BaseSettings):
 
 
 @lru_cache()
-def PostgresSettings() -> _PostgresSettings:
+def PostgresSettings(**kwargs) -> _PostgresSettings:
     """Postgres Settings."""
-    return _PostgresSettings()
+    return _PostgresSettings(**kwargs)
 
 
 class _CacheSettings(pydantic.BaseSettings):
@@ -111,6 +111,6 @@ class _CacheSettings(pydantic.BaseSettings):
 
 
 @lru_cache()
-def CacheSettings() -> _CacheSettings:
+def CacheSettings(**kwargs) -> _CacheSettings:
     """Cache settings."""
-    return _CacheSettings()
+    return _CacheSettings(**kwargs)
