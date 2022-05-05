@@ -1,11 +1,9 @@
 """API settings."""
 
-from functools import lru_cache
-
 import pydantic
 
 
-class _ApiSettings(pydantic.BaseSettings):
+class ApiSettings(pydantic.BaseSettings):
     """API settings"""
 
     name: str = "titiler-pgstac"
@@ -25,20 +23,7 @@ class _ApiSettings(pydantic.BaseSettings):
         env_file = ".env"
 
 
-@lru_cache()
-def ApiSettings() -> _ApiSettings:
-    """
-    This function returns a cached instance of the APISettings object.
-    Caching is used to prevent re-reading the environment every time the API settings are used in an endpoint.
-    If you want to change an environment variable and reset the cache (e.g., during testing), this can be done
-    using the `lru_cache` instance method `ApiSettings.cache_clear()`.
-
-    From https://github.com/dmontagu/fastapi-utils/blob/af95ff4a8195caaa9edaa3dbd5b6eeb09691d9c7/fastapi_utils/api_settings.py#L60-L69
-    """
-    return _ApiSettings()
-
-
-class _PostgresSettings(pydantic.BaseSettings):
+class PostgresSettings(pydantic.BaseSettings):
     """Postgres-specific API settings.
 
     Attributes:
@@ -77,13 +62,7 @@ class _PostgresSettings(pydantic.BaseSettings):
         return f"postgresql://{self.postgres_user}:{self.postgres_pass}@{self.postgres_host}:{self.postgres_port}/{self.postgres_dbname}"
 
 
-@lru_cache()
-def PostgresSettings() -> _PostgresSettings:
-    """Postgres Settings."""
-    return _PostgresSettings()
-
-
-class _CacheSettings(pydantic.BaseSettings):
+class CacheSettings(pydantic.BaseSettings):
     """Cache settings"""
 
     # TTL of the cache in seconds
@@ -108,9 +87,3 @@ class _CacheSettings(pydantic.BaseSettings):
             values["ttl"] = 0
             values["maxsize"] = 0
         return values
-
-
-@lru_cache()
-def CacheSettings() -> _CacheSettings:
-    """Cache settings."""
-    return _CacheSettings()
