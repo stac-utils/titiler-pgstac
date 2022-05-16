@@ -1,7 +1,7 @@
 """Custom MosaicTiler Factory for PgSTAC Mosaic Backend."""
 
 import os
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Any, Callable, Dict, List, Optional, Tuple, Type, Union
 from urllib.parse import urlencode
 
@@ -23,7 +23,12 @@ from titiler.core.resources.responses import GeoJSONResponse
 from titiler.core.utils import Timer
 from titiler.mosaic.resources.enums import PixelSelectionMethod
 from titiler.pgstac import model
-from titiler.pgstac.dependencies import PathParams, PgSTACParams, SearchParams
+from titiler.pgstac.dependencies import (
+    BackendParams,
+    PathParams,
+    PgSTACParams,
+    SearchParams,
+)
 from titiler.pgstac.mosaic import PGSTACBackend
 
 from fastapi import Body, Depends, Path, Query
@@ -50,7 +55,7 @@ class MosaicTilerFactory(BaseTilerFactory):
         ..., Tuple[model.PgSTACSearch, model.Metadata]
     ] = SearchParams
 
-    backend_options: Dict = field(default_factory=dict)
+    backend_dependency: Type[DefaultDependency] = BackendParams
 
     # Add/Remove some endpoints
     add_statistics: bool = False
@@ -92,7 +97,6 @@ class MosaicTilerFactory(BaseTilerFactory):
             **img_endpoint_params,
         )
         def tile(
-            request: Request,
             searchid=Depends(self.path_dependency),
             z: int = Path(..., ge=0, le=30, description="Tile's zoom level"),
             x: int = Path(..., description="Tile's column"),
@@ -120,6 +124,8 @@ class MosaicTilerFactory(BaseTilerFactory):
                 description="Buffer on each side of the given tile. It must be a multiple of `0.5`. Output **tilesize** will be expanded to `tilesize + 2 * tile_buffer` (e.g 0.5 = 257x257, 1.0 = 258x258).",
             ),
             pgstac_params: PgSTACParams = Depends(),
+            backend_params=Depends(self.backend_dependency),
+            reader_params=Depends(self.reader_dependency),
         ):
             """Create map tile."""
             timings = []
@@ -132,9 +138,9 @@ class MosaicTilerFactory(BaseTilerFactory):
                 with rasterio.Env(**self.gdal_config):
                     with self.reader(
                         searchid,
-                        pool=request.app.state.dbpool,
                         tms=tms,
-                        **self.backend_options,
+                        reader_options={**reader_params},
+                        **backend_params,
                     ) as src_dst:
                         mosaic_read = t.from_start
                         timings.append(("mosaicread", round(mosaic_read * 1000, 2)))
@@ -224,6 +230,8 @@ class MosaicTilerFactory(BaseTilerFactory):
                 description="Buffer on each side of the given tile. It must be a multiple of `0.5`. Output **tilesize** will be expanded to `tilesize + 2 * tile_buffer` (e.g 0.5 = 257x257, 1.0 = 258x258).",
             ),
             pgstac_params: PgSTACParams = Depends(),  # noqa
+            backend_params=Depends(self.backend_dependency),  # noqa
+            reader_params=Depends(self.reader_dependency),  # noqa
         ):
             """Return TileJSON document for a SearchId."""
             with request.app.state.dbpool.connection() as conn:
@@ -290,20 +298,21 @@ class MosaicTilerFactory(BaseTilerFactory):
             response_model=List[Dict],
         )
         def assets_for_tile(
-            request: Request,
             searchid=Depends(self.path_dependency),
             z: int = Path(..., ge=0, le=30, description="Tiles's zoom level"),
             x: int = Path(..., description="Tiles's column"),
             y: int = Path(..., description="Tiles's row"),
             tms: TileMatrixSet = Depends(self.tms_dependency),
             pgstac_params: PgSTACParams = Depends(),
+            backend_params=Depends(self.backend_dependency),
+            reader_params=Depends(self.reader_dependency),
         ):
             """Return a list of assets which overlap a given tile"""
             with self.reader(
                 searchid,
-                pool=request.app.state.dbpool,
                 tms=tms,
-                **self.backend_options,
+                reader_options={**reader_params},
+                **backend_params,
             ) as src_dst:
                 return src_dst.assets_for_tile(x, y, z, **pgstac_params)
 
@@ -313,17 +322,18 @@ class MosaicTilerFactory(BaseTilerFactory):
             response_model=List[Dict],
         )
         def assets_for_point(
-            request: Request,
             searchid=Depends(self.path_dependency),
             lon: float = Path(..., description="Longitude"),
             lat: float = Path(..., description="Latitude"),
             pgstac_params: PgSTACParams = Depends(),
+            backend_params=Depends(self.backend_dependency),
+            reader_params=Depends(self.reader_dependency),
         ):
             """Return a list of assets for a given point."""
             with self.reader(
                 searchid,
-                pool=request.app.state.dbpool,
-                **self.backend_options,
+                reader_options={**reader_params},
+                **backend_params,
             ) as src_dst:
                 return src_dst.assets_for_point(lon, lat, **pgstac_params)
 
@@ -417,7 +427,6 @@ class MosaicTilerFactory(BaseTilerFactory):
             },
         )
         def geojson_statistics(
-            request: Request,
             geojson: Union[FeatureCollection, Feature] = Body(
                 ..., description="GeoJSON Feature or FeatureCollection."
             ),
@@ -431,6 +440,8 @@ class MosaicTilerFactory(BaseTilerFactory):
             stats_params=Depends(self.stats_dependency),
             histogram_params=Depends(self.histogram_dependency),
             pgstac_params: PgSTACParams = Depends(),
+            backend_params=Depends(self.backend_dependency),
+            reader_params=Depends(self.reader_dependency),
         ):
             """Get Statistics from a geojson feature or featureCollection."""
             threads = int(os.getenv("MOSAIC_CONCURRENCY", MAX_THREADS))
@@ -438,8 +449,8 @@ class MosaicTilerFactory(BaseTilerFactory):
             with rasterio.Env(**self.gdal_config):
                 with self.reader(
                     searchid,
-                    pool=request.app.state.dbpool,
-                    **self.backend_options,
+                    reader_options={**reader_params},
+                    **backend_params,
                 ) as src_dst:
                     if isinstance(geojson, FeatureCollection):
                         for feature in geojson:

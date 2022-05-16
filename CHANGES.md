@@ -1,5 +1,9 @@
 # Release Notes
 
+## 0.1.0a10 (2022-05-13) Pre-Release
+
+* update `titiler` version and add `reader_dependency` and `backend_dependency` in endpoint factory.
+
 ## 0.1.0.a9 (2022-05-05) Pre-Release
 
 * remove LRU cache on all settings classes to enable support for manually providing settings via keyword arguments and to minimize lines of code (author @alukach, https://github.com/stac-utils/titiler-pgstac/pull/54)

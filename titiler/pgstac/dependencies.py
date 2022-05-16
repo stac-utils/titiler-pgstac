@@ -1,6 +1,6 @@
 """titiler-pgstac dependencies."""
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Dict, Optional, Tuple
 
 import pystac
@@ -35,6 +35,21 @@ def SearchParams(
         by_alias=True,
     )
     return model.PgSTACSearch(**search), body.metadata
+
+
+@dataclass(init=False)
+class BackendParams(DefaultDependency):
+    """backend parameters."""
+
+    pool: ConnectionPool = field(init=False)
+
+    def __init__(self, request: Request):
+        """Initialize BackendParams
+
+        Note: Because we don't want `pool` to appear in the documentation we use a dataclass with a custom `__init__` method.
+        FastAPI will use the `__init__` method but will exclude Request in the documentation making `pool` an invisible dependency.
+        """
+        self.pool = request.app.state.dbpool
 
 
 @dataclass
