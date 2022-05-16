@@ -6,8 +6,8 @@ with open("README.md") as f:
     long_description = f.read()
 
 inst_reqs = [
-    "titiler.core>=0.5,<0.6",
-    "titiler.mosaic>=0.5,<0.6",
+    "titiler.core>=0.6,<0.7",
+    "titiler.mosaic>=0.6,<0.7",
     "geojson-pydantic>=0.3.1,<0.4",
     "stac-pydantic==2.0.*",
 ]
