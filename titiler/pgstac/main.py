@@ -3,6 +3,9 @@
 import logging
 from typing import Dict
 
+from psycopg import OperationalError
+from psycopg_pool import PoolTimeout
+
 from titiler.core.dependencies import TileMatrixSetName, TMSParams
 from titiler.core.errors import DEFAULT_STATUS_CODES, add_exception_handlers
 from titiler.core.factory import MultiBaseTilerFactory, TMSFactory
@@ -20,7 +23,7 @@ from titiler.pgstac.reader import PgSTACReader
 from titiler.pgstac.settings import ApiSettings
 from titiler.pgstac.version import __version__ as titiler_pgstac_version
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
 
 from starlette.middleware.cors import CORSMiddleware
 
@@ -88,6 +91,15 @@ app.include_router(tms.router, tags=["TileMatrixSets"])
 
 
 @app.get("/healthz", description="Health Check", tags=["Health Check"])
-def ping() -> Dict:
+def ping(
+    timeout: int = Query(1, description="Timeout getting SQL connection from the pool.")
+) -> Dict:
     """Health check."""
-    return {"ping": "pong!"}
+    try:
+        with app.state.dbpool.connection(timeout) as conn:
+            conn.execute("SELECT 1")
+            db_online = True
+    except (OperationalError, PoolTimeout):
+        db_online = False
+
+    return {"database_online": db_online}
