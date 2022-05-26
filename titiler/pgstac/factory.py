@@ -49,6 +49,7 @@ class MosaicTilerFactory(BaseTilerFactory):
     reader: Type[BaseBackend] = PGSTACBackend
     path_dependency: Callable[..., str] = PathParams
     layer_dependency: Type[DefaultDependency] = AssetsBidxExprParams
+    gdal_config_dependency: Callable[..., str] = None
 
     # Search dependency
     search_dependency: Callable[
@@ -59,6 +60,12 @@ class MosaicTilerFactory(BaseTilerFactory):
 
     # Add/Remove some endpoints
     add_statistics: bool = False
+
+    def __post_init__(self):
+        """Post Init: Set gdal_config_dependency if not specified."""
+        if not self.gdal_config_dependency:
+            self.gdal_config_dependency = lambda: self.gdal_config
+        return super().__post_init__()
 
     def register_routes(self) -> None:
         """This Method register routes to the router."""
@@ -126,6 +133,7 @@ class MosaicTilerFactory(BaseTilerFactory):
             pgstac_params: PgSTACParams = Depends(),
             backend_params=Depends(self.backend_dependency),
             reader_params=Depends(self.reader_dependency),
+            gdal_config=Depends(self.gdal_config_dependency),
         ):
             """Create map tile."""
             timings = []
@@ -135,7 +143,7 @@ class MosaicTilerFactory(BaseTilerFactory):
 
             threads = int(os.getenv("MOSAIC_CONCURRENCY", MAX_THREADS))
             with Timer() as t:
-                with rasterio.Env(**self.gdal_config):
+                with rasterio.Env(**gdal_config):
                     with self.reader(
                         searchid,
                         tms=tms,
@@ -442,11 +450,12 @@ class MosaicTilerFactory(BaseTilerFactory):
             pgstac_params: PgSTACParams = Depends(),
             backend_params=Depends(self.backend_dependency),
             reader_params=Depends(self.reader_dependency),
+            gdal_config=Depends(self.gdal_config_dependency),
         ):
             """Get Statistics from a geojson feature or featureCollection."""
             threads = int(os.getenv("MOSAIC_CONCURRENCY", MAX_THREADS))
 
-            with rasterio.Env(**self.gdal_config):
+            with rasterio.Env(**gdal_config):
                 with self.reader(
                     searchid,
                     reader_options={**reader_params},
