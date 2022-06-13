@@ -8,7 +8,8 @@ import asyncpg
 import pytest
 import rasterio
 from httpx import AsyncClient
-from pypgstac import pypgstac
+from pypgstac.db import PgstacDB
+from pypgstac.migrate import Migrate
 from rasterio.io import MemoryFile
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "fixtures")
@@ -91,8 +92,10 @@ async def app():
             assert val
             await conn.close()
 
-            version = await pypgstac.run_migration(dsn=settings.connection_string)
-            print(f"PGStac Migrated to {version}")
+            with PgstacDB(dsn=settings.connection_string) as db:
+                migrator = Migrate(db)
+                version = migrator.run_migration()
+                print(f"PGStac Migrated to {version}")
 
             print("Registering collection and items")
             conn = await asyncpg.connect(dsn=settings.connection_string)
