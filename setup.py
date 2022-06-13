@@ -6,12 +6,13 @@ with open("README.md") as f:
     long_description = f.read()
 
 inst_reqs = [
-    "titiler.core>=0.6,<0.7",
-    "titiler.mosaic>=0.6,<0.7",
-    "geojson-pydantic>=0.3.1,<0.4",
+    "titiler.core>=0.7,<0.8",
+    "titiler.mosaic>=0.7,<0.8",
+    "geojson-pydantic>=0.4,<0.5",
     "stac-pydantic==2.0.*",
 ]
 extra_reqs = {
+    "dev": ["pre-commit"],
     "test": [
         "pytest",
         "pytest-cov",
