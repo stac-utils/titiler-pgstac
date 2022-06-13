@@ -126,6 +126,7 @@ class MosaicTilerFactory(BaseTilerFactory):
             pgstac_params: PgSTACParams = Depends(),
             backend_params=Depends(self.backend_dependency),
             reader_params=Depends(self.reader_dependency),
+            env=Depends(self.environment_dependency),
         ):
             """Create map tile."""
             timings = []
@@ -135,7 +136,7 @@ class MosaicTilerFactory(BaseTilerFactory):
 
             threads = int(os.getenv("MOSAIC_CONCURRENCY", MAX_THREADS))
             with Timer() as t:
-                with rasterio.Env(**self.gdal_config):
+                with rasterio.Env(**env):
                     with self.reader(
                         searchid,
                         tms=tms,
@@ -442,11 +443,12 @@ class MosaicTilerFactory(BaseTilerFactory):
             pgstac_params: PgSTACParams = Depends(),
             backend_params=Depends(self.backend_dependency),
             reader_params=Depends(self.reader_dependency),
+            env=Depends(self.environment_dependency),
         ):
             """Get Statistics from a geojson feature or featureCollection."""
             threads = int(os.getenv("MOSAIC_CONCURRENCY", MAX_THREADS))
 
-            with rasterio.Env(**self.gdal_config):
+            with rasterio.Env(**env):
                 with self.reader(
                     searchid,
                     reader_options={**reader_params},

@@ -1,5 +1,9 @@
 # Release Notes
 
+## 0.1.0 (TBD)
+
+* update `titiler.core` and `titiler.mosaic` requirement to `0.7`
+
 ## 0.1.0a10 (2022-05-16) Pre-Release
 
 * update `titiler` version and add `reader_dependency` and `backend_dependency` in endpoint factory.
