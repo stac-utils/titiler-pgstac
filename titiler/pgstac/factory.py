@@ -64,6 +64,7 @@ class MosaicTilerFactory(BaseTilerFactory):
         """This Method register routes to the router."""
         self._search_routes()
         self._tiles_routes()
+        self._tilejson_routes()
         self._assets_routes()
         if self.add_statistics:
             self._statistics_routes()
@@ -186,6 +187,9 @@ class MosaicTilerFactory(BaseTilerFactory):
                 headers["X-Assets"] = ",".join(ids)
 
             return Response(content, media_type=format.mediatype, headers=headers)
+
+    def _tilejson_routes(self) -> None:
+        """register tiles routes."""
 
         @self.router.get(
             "/{searchid}/tilejson.json",
