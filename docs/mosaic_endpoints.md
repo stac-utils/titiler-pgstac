@@ -46,8 +46,7 @@ curl -X 'POST' 'http://127.0.0.1:8081/mosaic/register' -H 'accept: application/j
 ```
 
 !!! important
-
-  You can add `metadata` to your Search query. In `titiler-pgstac`, metadata defaults to `{"type": "mosaic"}`.
+    You can add `metadata` to your Search query. In `titiler-pgstac`, metadata defaults to `{"type": "mosaic"}`.
 
 ### Search infos
 

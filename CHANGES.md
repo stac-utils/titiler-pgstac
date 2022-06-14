@@ -1,8 +1,9 @@
 # Release Notes
 
-## 0.1.0 (TBD)
+## 0.1.0 (20222-06-14)
 
 * update `titiler.core` and `titiler.mosaic` requirement to `0.7`
+* add `MosaicTilerFactory._tilejson_routes` method to register `TileJSON` routes
 
 ## 0.1.0a10 (2022-05-16) Pre-Release
 
