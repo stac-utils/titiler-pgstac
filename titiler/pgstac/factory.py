@@ -400,6 +400,9 @@ class MosaicTilerFactory(BaseTilerFactory):
                     )
                     search_info = cursor.fetchone()
 
+            if not search_info:
+                raise KeyError(f"search {searchid} not found")
+
             return model.Info(
                 search=search_info,
                 links=[
