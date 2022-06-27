@@ -4,6 +4,7 @@
 
 * update `titiler.core` and `titiler.mosaic` requirement to `0.7`
 * add `MosaicTilerFactory._tilejson_routes` method to register `TileJSON` routes
+* raise `cogeo_mosaic.errors.MosaicNotFoundError` when SearchId is not found in *pgstac.searches* table
 
 **breaking changes**
 

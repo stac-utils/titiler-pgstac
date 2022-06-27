@@ -7,6 +7,7 @@ from urllib.parse import urlencode
 
 import rasterio
 from cogeo_mosaic.backends import BaseBackend
+from cogeo_mosaic.errors import MosaicNotFoundError
 from geojson_pydantic import Feature, FeatureCollection
 from morecantile import TileMatrixSet
 from psycopg.rows import class_row
@@ -247,7 +248,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                     )
                     search_info = cursor.fetchone()
                     if not search_info:
-                        raise KeyError(f"search {searchid} not found")
+                        raise MosaicNotFoundError(f"SearchId `{searchid}` not found")
 
             route_params = {
                 "searchid": search_info.id,
@@ -399,6 +400,9 @@ class MosaicTilerFactory(BaseTilerFactory):
                         (searchid,),
                     )
                     search_info = cursor.fetchone()
+
+            if not search_info:
+                raise MosaicNotFoundError(f"SearchId `{searchid}` not found")
 
             return model.Info(
                 search=search_info,
