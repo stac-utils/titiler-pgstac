@@ -1,9 +1,14 @@
 # Release Notes
 
-## 0.1.0 (20222-06-14)
+## 0.1.0 (20222-06-27)
 
 * update `titiler.core` and `titiler.mosaic` requirement to `0.7`
 * add `MosaicTilerFactory._tilejson_routes` method to register `TileJSON` routes
+
+**breaking changes**
+
+* move version definition in `titiler.pgstac.__version__`
+* remove unused `fetch_options` in `titiler.pgstac.reader.PgSTACReader`
 
 ## 0.1.0a10 (2022-05-16) Pre-Release
 

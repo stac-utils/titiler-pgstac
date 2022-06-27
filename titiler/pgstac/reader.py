@@ -14,7 +14,11 @@ from rio_tiler.io.stac import DEFAULT_VALID_TYPE, _get_assets
 
 @attr.s
 class PgSTACReader(MultiBaseReader):
-    """Custom STAC Reader."""
+    """Custom STAC Reader.
+
+    Only accept `pystac.Item` as input (while rio_tiler.io.STACReader accepts url or pystac.Item)
+
+    """
 
     input: pystac.Item = attr.ib()
 
@@ -32,8 +36,6 @@ class PgSTACReader(MultiBaseReader):
 
     reader: Type[BaseReader] = attr.ib(default=COGReader)
     reader_options: Dict = attr.ib(factory=dict)
-
-    fetch_options: Dict = attr.ib(factory=dict)
 
     def __attrs_post_init__(self):
         """Fetch STAC Item and get list of valid assets."""
