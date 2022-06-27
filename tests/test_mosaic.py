@@ -51,6 +51,11 @@ async def test_info(app):
     }
     assert search["metadata"] == {"type": "mosaic"}
 
+    response = await app.get("/mosaic/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/info")
+    assert response.status_code == 404
+    resp = response.json()
+    assert resp["detail"] == "SearchId `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa` not found"
+
 
 @pytest.mark.asyncio
 async def test_assets_for_point(app):
@@ -74,6 +79,14 @@ async def test_assets_for_point(app):
     resp = response.json()
     assert len(resp) == 0
 
+    # searchId not found
+    response = await app.get(
+        "/mosaic/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/-85.5,36.1624/assets"
+    )
+    assert response.status_code == 404
+    resp = response.json()
+    assert resp["detail"] == "SearchId `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa` not found"
+
 
 @pytest.mark.asyncio
 async def test_assets_for_tile(app):
@@ -96,6 +109,14 @@ async def test_assets_for_tile(app):
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 0
+
+    # searchId not found
+    response = await app.get(
+        "/mosaic/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/15/8589/12849/assets"
+    )
+    assert response.status_code == 404
+    resp = response.json()
+    assert resp["detail"] == "SearchId `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa` not found"
 
 
 @pytest.mark.asyncio
@@ -162,6 +183,12 @@ async def test_tilejson(app):
     assert resp["bounds"] == [-85.535, 36.137, -85.465, 36.179]
     assert "?assets=cog" in resp["tiles"][0]
 
+    # searchId not found
+    response = await app.get("/mosaic/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/info?assets=cog")
+    assert response.status_code == 404
+    resp = response.json()
+    assert resp["detail"] == "SearchId `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa` not found"
+
 
 @patch("rio_tiler.io.cogeo.rasterio")
 @pytest.mark.asyncio
@@ -223,6 +250,14 @@ async def test_tiles(rio, app):
     assert meta["crs"] == CRS.from_epsg(4326)
     assert meta["width"] == 256
     assert meta["height"] == 256
+
+    # searchId not found
+    response = await app.get(
+        "/mosaic/tiles/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/0/0/0?assets=cog"
+    )
+    assert response.status_code == 404
+    resp = response.json()
+    assert resp["detail"] == "SearchId `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa` not found"
 
 
 @patch("rio_tiler.io.cogeo.rasterio")
@@ -468,3 +503,13 @@ async def test_statistics(rio, app):
     assert response.status_code == 200
     assert response.headers["content-type"] == "application/geo+json"
     assert response.json()["properties"]["statistics"]["cog_1"]
+
+    # searchId not found
+    response = await app.post(
+        "/mosaic/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/statistics",
+        json=feat,
+        params={"assets": "cog"},
+    )
+    assert response.status_code == 404
+    resp = response.json()
+    assert resp["detail"] == "SearchId `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa` not found"
