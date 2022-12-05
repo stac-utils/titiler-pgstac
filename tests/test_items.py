@@ -2,18 +2,15 @@
 
 from unittest.mock import patch
 
-import pytest
-
 from .conftest import mock_rasterio_open
 
 
-@patch("rio_tiler.io.cogeo.rasterio")
-@pytest.mark.asyncio
-async def test_stac_items(rio, app):
+@patch("rio_tiler.io.rasterio.rasterio")
+def test_stac_items(rio, app):
     """test STAC items endpoints."""
     rio.open = mock_rasterio_open
 
-    response = await app.get(
+    response = app.get(
         "/stac/info",
         params={
             "collection": "noaa-emergency-response",
@@ -24,7 +21,7 @@ async def test_stac_items(rio, app):
     resp = response.json()
     assert resp["cog"]
 
-    response = await app.get(
+    response = app.get(
         "/stac/info",
         params={
             "collection": "noaa-emergency-response",
@@ -37,7 +34,7 @@ async def test_stac_items(rio, app):
         in response.json()["detail"]
     )
 
-    response = await app.get(
+    response = app.get(
         "/stac/asset_statistics",
         params={
             "collection": "noaa-emergency-response",

@@ -1,5 +1,16 @@
 # Release Notes
 
+## 0.2.0 (TBD)
+
+* add python 3.10 and 3.11 support
+* update to rio-tiler 4.1
+
+**breaking changes**
+
+* remove python 3.7 support
+* update titiler requirement to `>=0.9.0`
+* replace `connection_string` by `database_url` in `settings.PostgresSettings`. We can now directly set `DATABASE_URL` environment variable.
+
 ## 0.1.0 (20222-06-27)
 
 * update `titiler.core` and `titiler.mosaic` requirement to `0.7`

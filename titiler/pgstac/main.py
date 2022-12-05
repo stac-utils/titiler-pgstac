@@ -6,9 +6,8 @@ from typing import Dict
 from psycopg import OperationalError
 from psycopg_pool import PoolTimeout
 
-from titiler.core.dependencies import TileMatrixSetName, TMSParams
 from titiler.core.errors import DEFAULT_STATUS_CODES, add_exception_handlers
-from titiler.core.factory import MultiBaseTilerFactory, TMSFactory
+from titiler.core.factory import AlgorithmFactory, MultiBaseTilerFactory, TMSFactory
 from titiler.core.middleware import (
     CacheControlMiddleware,
     LoggerMiddleware,
@@ -86,8 +85,11 @@ stac = MultiBaseTilerFactory(
 )
 app.include_router(stac.router, tags=["Items"], prefix="/stac")
 
-tms = TMSFactory(supported_tms=TileMatrixSetName, tms_dependency=TMSParams)
-app.include_router(tms.router, tags=["TileMatrixSets"])
+tms = TMSFactory()
+app.include_router(tms.router, tags=["Tiling Schemes"])
+
+algorithms = AlgorithmFactory()
+app.include_router(algorithms.router, tags=["Algorithms"])
 
 
 @app.get("/healthz", description="Health Check", tags=["Health Check"])
