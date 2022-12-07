@@ -58,16 +58,24 @@ class MosaicTilerFactory(TitilerPgSTACFactory.MosaicTilerFactory):
             pixel_selection: PixelSelectionMethod = Query(
                 PixelSelectionMethod.first, description="Pixel selection method."
             ),  # noqa
-            postprocess_params=Depends(self.process_dependency),  # noqa
-            colormap=Depends(self.colormap_dependency),  # noqa
-            render_params=Depends(self.render_dependency),  # noqa
-            tile_buffer: Optional[float] = Query(  # noqa
+            buffer: Optional[float] = Query(
                 None,
                 gt=0,
                 alias="buffer",
                 title="Tile buffer.",
-                description="Buffer on each side of the given tile. It must be a multiple of `0.5`. Output **tilesize** will be expanded to `tilesize + 2 * tile_buffer` (e.g 0.5 = 257x257, 1.0 = 258x258).",
-            ),
+                description="Buffer on each side of the given tile. It must be a multiple of `0.5`. Output **tilesize** will be expanded to `tilesize + 2 * buffer` (e.g 0.5 = 257x257, 1.0 = 258x258).",
+            ),  # noqa
+            post_process=Depends(self.process_dependency),  # noqa
+            rescale: Optional[List[Tuple[float, ...]]] = Depends(
+                RescalingParams
+            ),  # noqa
+            color_formula: Optional[str] = Query(
+                None,
+                title="Color Formula",
+                description="rio-color formula (info: https://github.com/mapbox/rio-color)",
+            ),  # noqa
+            colormap=Depends(self.colormap_dependency),  # noqa
+            render_params=Depends(self.render_dependency),  # noqa
             pgstac_params: PgSTACParams = Depends(),  # noqa
             backend_params=Depends(self.backend_dependency),  # noqa
             reader_params=Depends(self.reader_dependency),  # noqa

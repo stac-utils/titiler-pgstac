@@ -1,7 +1,6 @@
 """TiTiler.PgSTAC custom Mosaic Backend and Custom STACReader."""
 
 import json
-import math
 from typing import Any, Dict, List, Optional, Tuple, Type
 
 import attr
@@ -18,7 +17,6 @@ from morecantile import TileMatrixSet
 from psycopg import errors as pgErrors
 from psycopg_pool import ConnectionPool
 from rasterio.crs import CRS
-from rasterio.features import bounds as featureBounds
 from rasterio.warp import transform_geom
 from rio_tiler.constants import WEB_MERCATOR_TMS, WGS84_CRS
 from rio_tiler.errors import InvalidAssetName, PointOutsideBounds
@@ -342,7 +340,7 @@ class PGSTACBackend(BaseBackend):
         skipcovered: Optional[bool] = None,
         **kwargs: Any,
     ) -> Tuple[ImageData, List[str]]:
-        """Get Tile from multiple observation."""
+        """Create an Image from multiple items for a GeoJSON feature."""
         if "geometry" in shape:
             shape = shape["geometry"]
 
@@ -366,20 +364,6 @@ class PGSTACBackend(BaseBackend):
         if reverse:
             mosaic_assets = list(reversed(mosaic_assets))
 
-        # We need to set width/height on each `src.feature()` call
-        # so each data will overlap. We define the output shape based on
-        # the X/Y length of the feature bbox and the maximum allowed size `max_size`.
-        bbox = featureBounds(shape)
-        x_length = bbox[2] - bbox[0]
-        y_length = bbox[3] - bbox[1]
-        yx_ratio = y_length / x_length
-        if yx_ratio > 1:
-            height = max_size
-            width = math.ceil(height / yx_ratio)
-        else:
-            width = max_size
-            height = math.ceil(width * yx_ratio)
-
         def _reader(item: Dict[str, Any], shape: Dict, **kwargs: Any) -> ImageData:
             with self.reader(item, **self.reader_options) as src_dst:
                 return src_dst.feature(shape, **kwargs)
@@ -390,5 +374,6 @@ class PGSTACBackend(BaseBackend):
             shape,
             shape_crs=shape_crs,
             dst_crs=dst_crs or shape_crs,
+            max_size=max_size,
             **kwargs,
         )

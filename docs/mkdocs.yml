@@ -1,6 +1,9 @@
 site_name: TiTiler.PgSTAC
 site_description: Dynamic Mosaics From PgSTAC database.
 
+docs_dir: 'src'
+site_dir: 'build'
+
 repo_name: "stac-utils/titiler-pgstac"
 repo_url: "https://github.com/stac-utils/titiler-pgstac"
 edit_uri: "blob/master/docs/"
