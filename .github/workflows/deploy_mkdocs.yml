@@ -32,4 +32,4 @@ jobs:
           python -m pip install nbconvert mkdocs mkdocs-material mkdocs-jupyter pygments pdocs
 
       - name: Deploy docs
-        run: mkdocs gh-deploy --force
+        run: mkdocs gh-deploy -f docs/mkdocs.yml --force
