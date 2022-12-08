@@ -1,20 +1,26 @@
 """``pytest`` configuration."""
 
-import asyncio
 import os
 from typing import Any, Dict
 
-import asyncpg
+import psycopg
 import pytest
+import pytest_pgsql
 import rasterio
-from httpx import AsyncClient
 from pypgstac.db import PgstacDB
+from pypgstac.load import Loader
 from pypgstac.migrate import Migrate
 from rasterio.io import MemoryFile
+
+from starlette.testclient import TestClient
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "fixtures")
 collection = os.path.join(DATA_DIR, "noaa-emergency-response.json")
 items = os.path.join(DATA_DIR, "noaa-eri-nashville2020.json")
+
+test_db = pytest_pgsql.TransactedPostgreSQLTestDB.create_fixture(
+    "test_db", scope="session", use_restore_state=False
+)
 
 
 def parse_img(content: bytes) -> Dict[Any, Any]:
@@ -37,104 +43,53 @@ def mock_rasterio_open(asset):
 
 
 @pytest.fixture(scope="session")
-def event_loop():
-    """event loop for fixtures."""
-    return asyncio.get_event_loop()
+def database_url(test_db):
+    """
+    Session scoped fixture to launch a postgresql database in a separate process.  We use psycopg2 to ingest test data
+    because pytest-asyncio event loop is a function scoped fixture and cannot be called within the current scope.  Yields
+    a database url which we pass to our application through a monkeypatched environment variable.
+    """
+    with PgstacDB(dsn=str(test_db.connection.engine.url)) as db:
+        print("Running to PgSTAC migration...")
+        migrator = Migrate(db)
+        version = migrator.run_migration()
+        assert version
+        assert test_db.has_schema("pgstac")
+        print(f"PgSTAC version: {version}")
 
+        print("Load items and collection into PgSTAC")
+        loader = Loader(db=db)
+        loader.load_collections(collection)
+        loader.load_items(items)
 
-@pytest.fixture(scope="session")
-async def app():
-    """Setup DB."""
-    print("Setting up test db")
-
-    with pytest.MonkeyPatch.context() as mp:
-        mp.setenv("AWS_ACCESS_KEY_ID", "jqt")
-        mp.setenv("AWS_SECRET_ACCESS_KEY", "rde")
-        mp.setenv("AWS_DEFAULT_REGION", "us-west-2")
-        mp.setenv("AWS_REGION", "us-west-2")
-        mp.delenv("AWS_PROFILE", raising=False)
-        mp.setenv("POSTGRES_DBNAME", "pgstactestdb")
-        mp.setenv("TITILER_PGSTAC_CACHE_DISABLE", "TRUE")
-        mp.setenv("TITILER_PGSTAC_API_DEBUG", "TRUE")
-
-        from titiler.pgstac.db import close_db_connection, connect_to_db
-        from titiler.pgstac.main import app
-        from titiler.pgstac.settings import PostgresSettings
-
-        settings = PostgresSettings()
-        assert settings.postgres_dbname == "pgstactestdb"
-
-        defaut_dsn = settings.connection_string.replace("/pgstactestdb", "/postgres")
-        print(f"Connecting to database {defaut_dsn}")
-        conn = await asyncpg.connect(dsn=defaut_dsn)
-
-        print("creating tmp database...")
-        try:
-            await conn.execute("CREATE DATABASE pgstactestdb;")
-            await conn.execute(
-                "ALTER DATABASE pgstactestdb SET search_path to pgstac, public;"
-            )
-        except asyncpg.exceptions.DuplicateDatabaseError:
-            print("pgstactestdb already exists, cleaning it...")
-            await conn.execute("DROP DATABASE pgstactestdb;")
-            await conn.execute("CREATE DATABASE pgstactestdb;")
-            await conn.execute(
-                "ALTER DATABASE pgstactestdb SET search_path to pgstac, public;"
-            )
-        finally:
-            await conn.close()
-
-        try:
-            print("migrating...")
-            os.environ["postgres_dbname"] = "pgstactestdb"
-            conn = await asyncpg.connect(dsn=settings.connection_string)
-            val = await conn.fetchval("SELECT true")
-            assert val
-            await conn.close()
-
-            with PgstacDB(dsn=settings.connection_string) as db:
-                migrator = Migrate(db)
-                version = migrator.run_migration()
-                print(f"PGStac Migrated to {version}")
-
-            print("Registering collection and items")
-            conn = await asyncpg.connect(dsn=settings.connection_string)
-            await conn.copy_to_table(
-                "collections",
-                source=collection,
-                columns=["content"],
-                format="csv",
-                quote=chr(27),
-                delimiter=chr(31),
-            )
-            # Make sure we have our collection
-            val = await conn.fetchval("SELECT COUNT(*) FROM collections")
-            print(f"registered {val} collection")
+    # Make sure we have 1 collection and 163 items in pgstac
+    with psycopg.connect(str(test_db.connection.engine.url)) as conn:
+        with conn.cursor() as cur:
+            cur.execute("SELECT COUNT(*) FROM pgstac.collections")
+            val = cur.fetchone()[0]
             assert val == 1
 
-            await conn.copy_to_table(
-                "items_staging",
-                source=items,
-                columns=["content"],
-                format="csv",
-                quote=chr(27),
-                delimiter=chr(31),
-            )
-            # Make sure we have all our items
-            val = await conn.fetchval("SELECT COUNT(*) FROM items")
-            print(f"registered {val} items")
+            cur.execute("SELECT COUNT(*) FROM pgstac.items")
+            val = cur.fetchone()[0]
             assert val == 163
 
-            await conn.close()
+    return test_db.connection.engine.url
 
-            await connect_to_db(app, settings)
-            async with AsyncClient(app=app, base_url="http://test") as client:
-                yield client
-            await close_db_connection(app)
 
-        finally:
-            print()
-            print("Getting rid of test database")
-            conn = await asyncpg.connect(dsn=defaut_dsn)
-            await conn.execute("DROP DATABASE pgstactestdb;")
-            await conn.close()
+@pytest.fixture(autouse=True)
+def app(database_url, monkeypatch):
+    """Create app with connection to the pytest database."""
+    monkeypatch.setenv("AWS_ACCESS_KEY_ID", "jqt")
+    monkeypatch.setenv("AWS_SECRET_ACCESS_KEY", "rde")
+    monkeypatch.setenv("AWS_DEFAULT_REGION", "us-west-2")
+    monkeypatch.setenv("AWS_REGION", "us-west-2")
+    monkeypatch.delenv("AWS_PROFILE", raising=False)
+    monkeypatch.setenv("TITILER_PGSTAC_CACHE_DISABLE", "TRUE")
+    monkeypatch.setenv("TITILER_PGSTAC_API_DEBUG", "TRUE")
+
+    monkeypatch.setenv("DATABASE_URL", str(database_url))
+
+    from titiler.pgstac.main import app
+
+    with TestClient(app) as app:
+        yield app

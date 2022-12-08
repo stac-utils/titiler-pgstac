@@ -6,9 +6,8 @@ from typing import Dict
 from psycopg import OperationalError
 from psycopg_pool import PoolTimeout
 
-from titiler.core.dependencies import TileMatrixSetName, TMSParams
 from titiler.core.errors import DEFAULT_STATUS_CODES, add_exception_handlers
-from titiler.core.factory import MultiBaseTilerFactory, TMSFactory
+from titiler.core.factory import AlgorithmFactory, MultiBaseTilerFactory, TMSFactory
 from titiler.core.middleware import (
     CacheControlMiddleware,
     LoggerMiddleware,
@@ -72,24 +71,39 @@ if settings.debug:
 else:
     optional_headers = []
 
-
+###############################################################################
+# MOSAIC Endpoints
 mosaic = MosaicTilerFactory(
-    optional_headers=optional_headers, router_prefix="/mosaic", add_statistics=True
+    optional_headers=optional_headers,
+    router_prefix="/mosaic",
+    add_statistics=True,
+    add_map_viewer=True,
 )
 app.include_router(mosaic.router, tags=["Mosaic"], prefix="/mosaic")
 
+###############################################################################
+# STAC Item Endpoints
 stac = MultiBaseTilerFactory(
     reader=PgSTACReader,
     path_dependency=ItemPathParams,
     optional_headers=optional_headers,
     router_prefix="/stac",
 )
-app.include_router(stac.router, tags=["Items"], prefix="/stac")
+app.include_router(stac.router, tags=["Item"], prefix="/stac")
 
-tms = TMSFactory(supported_tms=TileMatrixSetName, tms_dependency=TMSParams)
-app.include_router(tms.router, tags=["TileMatrixSets"])
+###############################################################################
+# Tiling Schemes Endpoints
+tms = TMSFactory()
+app.include_router(tms.router, tags=["Tiling Schemes"])
+
+###############################################################################
+# Algorithms Endpoints
+algorithms = AlgorithmFactory()
+app.include_router(algorithms.router, tags=["Algorithms"])
 
 
+###############################################################################
+# Health Check Endpoint
 @app.get("/healthz", description="Health Check", tags=["Health Check"])
 def ping(
     timeout: int = Query(1, description="Timeout getting SQL connection from the pool.")

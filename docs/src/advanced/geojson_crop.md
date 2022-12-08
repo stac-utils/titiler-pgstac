@@ -53,7 +53,13 @@ class MosaicTilerFactory(TitilerPgSTACFactory.MosaicTilerFactory):
             PixelSelectionMethod.first, description="Pixel selection method."
         ),
         max_size: int = Query(1024, description="Maximum image size to read onto."),
-        postprocess_params=Depends(self.process_dependency),
+        post_process=Depends(self.process_dependency),
+        rescale: Optional[List[Tuple[float, ...]]] = Depends(RescalingParams),
+        color_formula: Optional[str] = Query(
+            None,
+            title="Color Formula",
+            description="rio-color formula (info: https://github.com/mapbox/rio-color)",
+        ),
         colormap=Depends(self.colormap_dependency),
         render_params=Depends(self.render_dependency),
         pgstac_params: PgSTACParams = Depends(),
@@ -74,7 +80,7 @@ class MosaicTilerFactory(TitilerPgSTACFactory.MosaicTilerFactory):
                     mosaic_read = t.from_start
                     timings.append(("mosaicread", round(mosaic_read * 1000, 2)))
 
-                    data, _ = src_dst.feature(
+                    image, _ = src_dst.feature(
                         geojson.dict(exclude_none=True),
                         pixel_selection=pixel_selection.method(),
                         threads=threads,
@@ -86,12 +92,19 @@ class MosaicTilerFactory(TitilerPgSTACFactory.MosaicTilerFactory):
 
         timings.append(("dataread", round(t.elapsed * 1000, 2)))
 
-        if not format:
-            format = ImageType.jpeg if data.mask.all() else ImageType.png
-
         with Timer() as t:
-            image = data.post_process(**postprocess_params)
+            if post_process:
+                image = post_process(image)
+
+            if rescale:
+                image.rescale(rescale)
+
+            if color_formula:
+                image.apply_color_formula(color_formula)
         timings.append(("postprocess", round(t.elapsed * 1000, 2)))
+
+        if not format:
+            format = ImageType.jpeg if image.mask.all() else ImageType.png
 
         with Timer() as t:
             content = image.render(

@@ -1,5 +1,7 @@
 """API settings."""
 
+from typing import Any, Dict, Optional
+
 import pydantic
 
 
@@ -34,11 +36,13 @@ class PostgresSettings(pydantic.BaseSettings):
         postgres_dbname: database name.
     """
 
-    postgres_user: str
-    postgres_pass: str
-    postgres_host: str
-    postgres_port: str
-    postgres_dbname: str
+    postgres_user: Optional[str]
+    postgres_pass: Optional[str]
+    postgres_host: Optional[str]
+    postgres_port: Optional[str]
+    postgres_dbname: Optional[str]
+
+    database_url: Optional[pydantic.PostgresDsn] = None
 
     # see https://www.psycopg.org/psycopg3/docs/api/pool.html#the-connectionpool-class for options
     db_min_conn_size: int = 1  # The minimum number of connection the pool will hold
@@ -56,10 +60,20 @@ class PostgresSettings(pydantic.BaseSettings):
 
         env_file = ".env"
 
-    @property
-    def connection_string(self):
-        """Create reader psql connection string."""
-        return f"postgresql://{self.postgres_user}:{self.postgres_pass}@{self.postgres_host}:{self.postgres_port}/{self.postgres_dbname}"
+    @pydantic.validator("database_url", pre=True)
+    def assemble_db_connection(cls, v: Optional[str], values: Dict[str, Any]) -> Any:
+        """Validate database config."""
+        if isinstance(v, str):
+            return v
+
+        return pydantic.PostgresDsn.build(
+            scheme="postgresql",
+            user=values.get("postgres_user"),
+            password=values.get("postgres_pass"),
+            host=values.get("postgres_host", ""),
+            port=values.get("postgres_port", 5432),
+            path=f"/{values.get('postgres_dbname') or ''}",
+        )
 
 
 class CacheSettings(pydantic.BaseSettings):

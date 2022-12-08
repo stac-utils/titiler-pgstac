@@ -11,9 +11,10 @@ The `Item` endpoints are created using TiTiler's [MultiBaseTilerFactory](https:/
 | `GET`  | `/stac/asset_statistics`                                             | JSON ([Statistics][multistats_model])            | return per asset statistics
 | `GET`  | `/stac/statistics`                                                   | JSON ([Statistics][stats_model])                 | return assets statistics (merged)
 | `POST` | `/stac/statistics`                                                   | GeoJSON ([Statistics][multistats_geojson_model]) | return assets statistics for a GeoJSON (merged)
-| `GET`  | `/stac/tiles/[{TileMatrixSetId}]/{z}/{x}/{y}[@{scale}x][.{format}]`  | image/bin                                        | create a web map tile image from assets
-| `GET`  | `/stac/[{TileMatrixSetId}]/tilejson.json`                            | JSON ([TileJSON][tilejson_model])                | return a Mapbox TileJSON document
-| `GET`  | `/stac/{TileMatrixSetId}/WMTSCapabilities.xml`                       | XML                                              | return OGC WMTS Get Capabilities
+| `GET`  | `/stac/tiles[/{TileMatrixSetId}]/{z}/{x}/{y}[@{scale}x][.{format}]`  | image/bin                                        | create a web map tile image from assets
+| `GET`  | `/stac[/{TileMatrixSetId}]/tilejson.json`                            | JSON ([TileJSON][tilejson_model])                | return a Mapbox TileJSON document
+| `GET`  | `/stac[/{TileMatrixSetId}]/WMTSCapabilities.xml`                       | XML                                              | return OGC WMTS Get Capabilities
+| `GET`  | `/stac[/{TileMatrixSetId}]/map`                                      | HTML                                             | simple map viewer
 | `GET`  | `/stac/point/{lon},{lat}`                                            | JSON ([Point][multipoint_model])                 | return pixel values from assets
 | `GET`  | `/stac/preview[.{format}]`                                           | image/bin                                        | create a preview image from assets
 | `GET`  | `/stac/crop/{minx},{miny},{maxx},{maxy}[/{width}x{height}].{format}` | image/bin                                        | create an image from part of assets
@@ -21,7 +22,7 @@ The `Item` endpoints are created using TiTiler's [MultiBaseTilerFactory](https:/
 
 ### Tiles
 
-`:endpoint:/stac/tiles/[{TileMatrixSetId}]/{z}/{x}/{y}[@{scale}x][.{format}]`
+`:endpoint:/stac/tiles[/{TileMatrixSetId}]/{z}/{x}/{y}[@{scale}x][.{format}]`
 
 - PathParams:
     - **TileMatrixSetId** (str): TileMatrixSet name, default is `WebMercatorQuad`. **Optional**
@@ -35,12 +36,14 @@ The `Item` endpoints are created using TiTiler's [MultiBaseTilerFactory](https:/
     - **collection** (str): STAC Collection ID. **Required**
     - **item** (str): STAC Item ID. **Required**
     - **assets** (array[str]): asset names.
-    - **expression** (str): rio-tiler's math expression with asset names (e.g `Asset1/Asset2`).
+    - **expression** (str): rio-tiler's math expression with asset names (e.g `Asset1_b1/Asset2_b1`).
+    - **asset_as_band** (bool): tell rio-tiler that each asset is a 1 band dataset, so expression `Asset1/Asset2` can be passed.
     - **asset_bidx** (array[str]): Per asset band math expression (e.g `Asset1|1;2;3`).
-    - **asset_expression** (array[str]): Per asset band math expression (e.g `Asset1|b1\*b2`).
     - **nodata** (str, int, float): Overwrite internal Nodata value.
     - **unscale** (bool): Apply dataset internal Scale/Offset.
     - **resampling** (str): rasterio resampling method. Default is `nearest`.
+    - **algorithm** (str): Custom algorithm name (e.g `hillshade`).
+    - **algorithm_params** (str): JSON encoded algorithm parameters.
     - **rescale** (array[str]): Comma (',') delimited Min,Max range (e.g `rescale=0,1000`, `rescale=0,1000&rescale=0,3000&rescale=0,2000`).
     - **color_formula** (str): rio-color formula.
     - **colormap** (str): JSON encoded custom Colormap.
@@ -56,7 +59,7 @@ Example:
 - `https://myendpoint/stac/tiles/1/2/3?collection=mycollection&item=oneitem&assets=B01&assets=B00`
 - `https://myendpoint/stac/tiles/1/2/3.jpg?collection=mycollection&item=oneitem&assets=B01`
 - `https://myendpoint/stac/tiles/WorldCRS84Quad/1/2/3@2x.png?collection=mycollection&item=oneitem&assets=B01`
-- `https://myendpoint/stac/tiles/WorldCRS84Quad/1/2/3?collection=mycollection&item=oneitem&expression=B01/B02&rescale=0,1000&colormap_name=cfastie`
+- `https://myendpoint/stac/tiles/WorldCRS84Quad/1/2/3?collection=mycollection&item=oneitem&expression=B01/B02&rescale=0,1000&colormap_name=cfastie&asset_as_band=True`
 
 ### Preview
 
@@ -69,14 +72,16 @@ Example:
     - **collection** (str): STAC Collection ID. **Required**
     - **item** (str): STAC Item ID. **Required**
     - **assets** (array[str]): asset names.
-    - **expression** (str): rio-tiler's math expression with asset names (e.g `Asset1/Asset2`).
+    - **expression** (str): rio-tiler's math expression with asset names (e.g `Asset1_b1/Asset2_b1`).
+    - **asset_as_band** (bool): tell rio-tiler that each asset is a 1 band dataset, so expression `Asset1/Asset2` can be passed.
     - **asset_bidx** (array[str]): Per asset band math expression (e.g `Asset1|1;2;3`).
-    - **asset_expression** (array[str]): Per asset band math expression (e.g `Asset1|b1\*b2`).
     - **max_size** (int): Max image size, default is 1024.
     - **height** (int): Force output image height.
     - **width** (int): Force output image width.
     - **nodata** (str, int, float): Overwrite internal Nodata value.
     - **unscale** (bool): Apply dataset internal Scale/Offset.
+    - **algorithm** (str): Custom algorithm name (e.g `hillshade`).
+    - **algorithm_params** (str): JSON encoded algorithm parameters.
     - **resampling** (str): rasterio resampling method. Default is `nearest`.
     - **rescale** (array[str]): Comma (',') delimited Min,Max range (e.g `rescale=0,1000`, `rescale=0,1000&rescale=0,3000&rescale=0,2000`).
     - **color_formula** (str): rio-color formula.
@@ -110,12 +115,14 @@ Example:
     - **collection** (str): STAC Collection ID. **Required**
     - **item** (str): STAC Item ID. **Required**
     - **assets** (array[str]): asset names.
-    - **expression** (str): rio-tiler's math expression with asset names (e.g `Asset1/Asset2`).
+    - **expression** (str): rio-tiler's math expression with asset names (e.g `Asset1_b1/Asset2_b1`).
+    - **asset_as_band** (bool): tell rio-tiler that each asset is a 1 band dataset, so expression `Asset1/Asset2` can be passed.
     - **asset_bidx** (array[str]): Per asset band math expression (e.g `Asset1|1;2;3`).
-    - **asset_expression** (array[str]): Per asset band math expression (e.g `Asset1|b1\*b2`).
     - **max_size** (int): Max image size, default is 1024.
     - **nodata** (str, int, float): Overwrite internal Nodata value.
     - **unscale** (bool): Apply dataset internal Scale/Offset.
+    - **algorithm** (str): Custom algorithm name (e.g `hillshade`).
+    - **algorithm_params** (str): JSON encoded algorithm parameters.
     - **resampling** (str): rasterio resampling method. Default is `nearest`.
     - **rescale** (array[str]): Comma (',') delimited Min,Max range (e.g `rescale=0,1000`, `rescale=0,1000&rescale=0,3000&rescale=0,2000`).
     - **color_formula** (str): rio-color formula.
@@ -147,13 +154,15 @@ Example:
     - **collection** (str): STAC Collection ID. **Required**
     - **item** (str): STAC Item ID. **Required**
     - **assets** (array[str]): asset names.
-    - **expression** (str): rio-tiler's math expression with asset names (e.g `Asset1/Asset2`).
+    - **expression** (str): rio-tiler's math expression with asset names (e.g `Asset1_b1/Asset2_b1`).
+    - **asset_as_band** (bool): tell rio-tiler that each asset is a 1 band dataset, so expression `Asset1/Asset2` can be passed.
     - **asset_bidx** (array[str]): Per asset band math expression (e.g `Asset1|1;2;3`).
-    - **asset_expression** (array[str]): Per asset band math expression (e.g `Asset1|b1\*b2`).
     - **max_size** (int): Max image size, default is 1024.
     - **nodata** (str, int, float): Overwrite internal Nodata value.
     - **unscale** (bool): Apply dataset internal Scale/Offset.
     - **resampling** (str): rasterio resampling method. Default is `nearest`.
+    - **algorithm** (str): Custom algorithm name (e.g `hillshade`).
+    - **algorithm_params** (str): JSON encoded algorithm parameters.
     - **rescale** (array[str]): Comma (',') delimited Min,Max range (e.g `rescale=0,1000`, `rescale=0,1000&rescale=0,3000&rescale=0,2000`).
     - **color_formula** (str): rio-color formula.
     - **colormap** (str): JSON encoded custom Colormap.
@@ -182,9 +191,9 @@ Example:
     - **collection** (str): STAC Collection ID. **Required**
     - **item** (str): STAC Item ID. **Required**
     - **assets** (array[str]): asset names.
-    - **expression** (str): rio-tiler's math expression with asset names (e.g `Asset1/Asset2`).
+    - **expression** (str): rio-tiler's math expression with asset names (e.g `Asset1_b1/Asset2_b1`).
+    - **asset_as_band** (bool): tell rio-tiler that each asset is a 1 band dataset, so expression `Asset1/Asset2` can be passed.
     - **asset_bidx** (array[str]): Per asset band math expression (e.g `Asset1|1;2;3`).
-    - **asset_expression** (array[str]): Per asset band math expression (e.g `Asset1|b1\*b2`).
     - **nodata** (str, int, float): Overwrite internal Nodata value.
     - **unscale** (bool): Apply dataset internal Scale/Offset.
     - **resampling** (str): rasterio resampling method. Default is `nearest`.
@@ -198,7 +207,7 @@ Example:
 
 ### TilesJSON
 
-`:endpoint:/stac/[{TileMatrixSetId}]/tilejson.json` tileJSON document
+`:endpoint:/stac[/{TileMatrixSetId}]/tilejson.json` tileJSON document
 
 - PathParams:
     - **TileMatrixSetId**: TileMatrixSet name, default is `WebMercatorQuad`.
@@ -207,9 +216,9 @@ Example:
     - **collection** (str): STAC Collection ID. **Required**
     - **item** (str): STAC Item ID. **Required**
     - **assets** (array[str]): asset names.
-    - **expression** (str): rio-tiler's math expression with asset names (e.g `Asset1/Asset2`).
+    - **expression** (str): rio-tiler's math expression with asset names (e.g `Asset1_b1/Asset2_b1`).
+    - **asset_as_band** (bool): tell rio-tiler that each asset is a 1 band dataset, so expression `Asset1/Asset2` can be passed.
     - **asset_bidx** (array[str]): Per asset band math expression (e.g `Asset1|1;2;3`).
-    - **asset_expression** (array[str]): Per asset band math expression (e.g `Asset1|b1\*b2`).
     - **tile_format** (str): Output image format, default is set to None and will be either JPEG or PNG depending on masked value.
     - **tile_scale** (int): Tile size scale, default is set to 1 (256x256).
     - **minzoom** (int): Overwrite default minzoom.
@@ -217,6 +226,8 @@ Example:
     - **nodata** (str, int, float): Overwrite internal Nodata value.
     - **unscale** (bool): Apply dataset internal Scale/Offset.
     - **resampling** (str): rasterio resampling method. Default is `nearest`.
+    - **algorithm** (str): Custom algorithm name (e.g `hillshade`).
+    - **algorithm_params** (str): JSON encoded algorithm parameters.
     - **rescale** (array[str]): Comma (',') delimited Min,Max range (e.g `rescale=0,1000`, `rescale=0,1000&rescale=0,3000&rescale=0,2000`).
     - **color_formula** (str): rio-color formula.
     - **colormap** (str): JSON encoded custom Colormap.
@@ -231,7 +242,7 @@ Example:
 
 - `https://myendpoint/stac/tilejson.json?url=https://somewhere.com/item.json&assets=B01`
 - `https://myendpoint/stac/tilejson.json?url=https://somewhere.com/item.json&assets=B01&tile_format=png`
-- `https://myendpoint/stac/WorldCRS84Quad/tilejson.json?url=https://somewhere.com/item.json&tile_scale=2&expression=B01/B02`
+- `https://myendpoint/stac/WorldCRS84Quad/tilejson.json?url=https://somewhere.com/item.json&tile_scale=2&expression=B01/B02&asset_as_band=True`
 
 ### Bounds
 
@@ -309,10 +320,10 @@ Example:
 - QueryParams:
     - **collection** (str): STAC Collection ID. **Required**
     - **item** (str): STAC Item ID. **Required**
-    - **assets** (array[str]): asset names. Default to all available assets.
-    - **expression** (str): rio-tiler's math expression with asset names (e.g `Asset1/Asset2`).
+    - **assets** (array[str]): asset names.
+    - **expression** (str): rio-tiler's math expression with asset names (e.g `Asset1_b1/Asset2_b1`).
+    - **asset_as_band** (bool): tell rio-tiler that each asset is a 1 band dataset, so expression `Asset1/Asset2` can be passed.
     - **asset_bidx** (array[str]): Per asset band math expression (e.g `Asset1|1;2;3`).
-    - **asset_expression** (array[str]): Per asset band math expression (e.g `Asset1|b1\*b2`).
     - **max_size** (int): Max image size from which to calculate statistics, default is 1024.
     - **height** (int): Force image height from which to calculate statistics.
     - **width** (int): Force image width from which to calculate statistics.
@@ -338,9 +349,10 @@ Example:
 - QueryParams:
     - **collection** (str): STAC Collection ID. **Required**
     - **item** (str): STAC Item ID. **Required**
-    - **assets** (array[str]): asset names. Default to all available assets.
+    - **assets** (array[str]): asset names.
+    - **expression** (str): rio-tiler's math expression with asset names (e.g `Asset1_b1/Asset2_b1`).
+    - **asset_as_band** (bool): tell rio-tiler that each asset is a 1 band dataset, so expression `Asset1/Asset2` can be passed.
     - **asset_bidx** (array[str]): Per asset band math expression (e.g `Asset1|1;2;3`).
-    - **asset_expression** (array[str]): Per asset band math expression (e.g `Asset1|b1\*b2`).
     - **max_size** (int): Max image size from which to calculate statistics, default is 1024.
     - **height** (int): Force image height from which to calculate statistics.
     - **width** (int): Force image width from which to calculate statistics.
