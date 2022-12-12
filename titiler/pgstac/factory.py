@@ -365,11 +365,13 @@ class MosaicTilerFactory(BaseTilerFactory):
     def _map_routes(self):  # noqa: C901
         """Register /map endpoint."""
 
-        @self.router.get("/map", response_class=HTMLResponse)
-        @self.router.get("/{TileMatrixSetId}/map", response_class=HTMLResponse)
+        @self.router.get("/{searchid}/map", response_class=HTMLResponse)
+        @self.router.get(
+            "/{searchid}/{TileMatrixSetId}/map", response_class=HTMLResponse
+        )
         def map_viewer(
             request: Request,
-            src_path=Depends(self.path_dependency),
+            searchid=Depends(self.path_dependency),
             TileMatrixSetId: Literal["WebMercatorQuad"] = Query(
                 "WebMercatorQuad",
                 description="TileMatrixSet Name (default: 'WebMercatorQuad')",
@@ -414,8 +416,10 @@ class MosaicTilerFactory(BaseTilerFactory):
             reader_params=Depends(self.reader_dependency),  # noqa
             env=Depends(self.environment_dependency),  # noqa
         ):
-            """Return TileJSON document for a dataset."""
-            tilejson_url = self.url_for(request, "tilejson")
+            """Return a simple map viewer."""
+            tilejson_url = self.url_for(
+                request, "tilejson", searchid=searchid, TileMatrixSetId=TileMatrixSetId
+            )
             if request.query_params._list:
                 tilejson_url += f"?{urlencode(request.query_params._list)}"
 
@@ -431,12 +435,14 @@ class MosaicTilerFactory(BaseTilerFactory):
     def _wmts_routes(self):  # noqa: C901
         """Add wmts endpoint."""
 
-        @self.router.get("/WMTSCapabilities.xml", response_class=XMLResponse)
+        @self.router.get("/{searchid}/WMTSCapabilities.xml", response_class=XMLResponse)
         @self.router.get(
-            "/{TileMatrixSetId}/WMTSCapabilities.xml", response_class=XMLResponse
+            "/{searchid}/{TileMatrixSetId}/WMTSCapabilities.xml",
+            response_class=XMLResponse,
         )
         def wmts(
             request: Request,
+            searchid=Depends(self.path_dependency),
             TileMatrixSetId: Literal[tuple(self.supported_tms.list())] = Query(
                 self.default_tms,
                 description=f"TileMatrixSet Name (default: '{self.default_tms}')",
@@ -483,7 +489,18 @@ class MosaicTilerFactory(BaseTilerFactory):
             env=Depends(self.environment_dependency),  # noqa
         ):
             """OGC WMTS endpoint."""
+            with request.app.state.dbpool.connection() as conn:
+                with conn.cursor(row_factory=class_row(model.Search)) as cursor:
+                    cursor.execute(
+                        "SELECT * FROM searches WHERE hash=%s;",
+                        (searchid,),
+                    )
+                    search_info = cursor.fetchone()
+                    if not search_info:
+                        raise MosaicNotFoundError(f"SearchId `{searchid}` not found")
+
             route_params = {
+                "searchid": searchid,
                 "z": "{TileMatrix}",
                 "x": "{TileCol}",
                 "y": "{TileRow}",
@@ -511,16 +528,12 @@ class MosaicTilerFactory(BaseTilerFactory):
                 tiles_url += f"?{urlencode(qs)}"
 
             tms = self.supported_tms.get(TileMatrixSetId)
-            with rasterio.Env(**env):
-                with self.reader(
-                    src_path,
-                    reader=self.dataset_reader,
-                    reader_options={**reader_params},
-                    **backend_params,
-                ) as src_dst:
-                    bounds = src_dst.geographic_bounds
-                    minzoom = minzoom if minzoom is not None else src_dst.minzoom
-                    maxzoom = maxzoom if maxzoom is not None else src_dst.maxzoom
+            minzoom = _first_value([minzoom, search_info.metadata.minzoom], tms.minzoom)
+            maxzoom = _first_value([maxzoom, search_info.metadata.maxzoom], tms.maxzoom)
+            bounds = _first_value(
+                [search_info.input_search.get("bbox"), search_info.metadata.bounds],
+                tms.bbox,
+            )
 
             tileMatrix = []
             for zoom in range(minzoom, maxzoom + 1):

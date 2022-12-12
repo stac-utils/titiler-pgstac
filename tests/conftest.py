@@ -91,5 +91,9 @@ def app(database_url, monkeypatch):
 
     from titiler.pgstac.main import app
 
+    # Remove middlewares https://github.com/encode/starlette/issues/472
+    app.user_middleware = []
+    app.middleware_stack = app.build_middleware_stack()
+
     with TestClient(app) as app:
         yield app

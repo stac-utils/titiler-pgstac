@@ -1,7 +1,9 @@
 """Test titiler.pgstac Mosaic endpoints."""
 
+import io
 from unittest.mock import patch
 
+import rasterio
 from rasterio.crs import CRS
 
 from .conftest import mock_rasterio_open, parse_img
@@ -245,6 +247,37 @@ def test_tiles(rio, app):
     assert response.status_code == 404
     resp = response.json()
     assert resp["detail"] == "SearchId `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa` not found"
+
+
+def test_wmts(app):
+    """Create wmts document."""
+    # missing assets
+    response = app.get(f"/mosaic/{search_no_bbox}/WMTSCapabilities.xml")
+    assert response.status_code == 400
+    assert (
+        response.json()["detail"]
+        == "assets must be defined either via expression or assets options."
+    )
+
+    response = app.get(f"/mosaic/{search_no_bbox}/WMTSCapabilities.xml?assets=cog")
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "application/xml"
+
+    # Validate it's a good WMTS
+    with rasterio.open(io.BytesIO(response.content)) as src:
+        assert src.crs == "epsg:3857"
+        assert src.profile["driver"] == "WMTS"
+
+    response = app.get(
+        f"/mosaic/{search_no_bbox}/WorldCRS84Quad/WMTSCapabilities.xml?assets=cog"
+    )
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "application/xml"
+
+    # Validate it's a good WMTS
+    with rasterio.open(io.BytesIO(response.content)) as src:
+        assert src.crs == "OGC:CRS84"
+        assert src.profile["driver"] == "WMTS"
 
 
 @patch("rio_tiler.io.rasterio.rasterio")

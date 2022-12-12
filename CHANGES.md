@@ -4,11 +4,13 @@
 
 * add python 3.10 and 3.11 support
 * update to rio-tiler 4.1
+* add `/{searchid}/map` endpoint to the `MosaicTilerFactory` (added when `add_map_viewer` is set to `True`)
+* add `/{searchid}/WMTSCapabilities.xml` OGC WMTS endpoint to the `MosaicTilerFactory`
 
 **breaking changes**
 
 * remove python 3.7 support
-* update titiler requirement to `>=0.9.0`
+* update titiler requirement to `>=0.10.0`
 * replace `connection_string` by `database_url` in `settings.PostgresSettings`. We can now directly set `DATABASE_URL` environment variable.
 
 ## 0.1.0 (20222-06-27)
