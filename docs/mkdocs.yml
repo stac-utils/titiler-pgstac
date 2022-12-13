@@ -24,6 +24,7 @@ nav:
   - Tiler Factories: "tiler_factories.md"
   - Advanced usage:
     - Mosaic metadata specification: "advanced/metadata.md"
+    - Mosaic list: "advanced/mosaic_list.md"
     - Custom search model: "advanced/custom_search.md"
     - Custom TileJSON endpoint : "advanced/custom_tilejson.md"
     - Custom feature crop endpoint: "advanced/geojson_crop.md"
