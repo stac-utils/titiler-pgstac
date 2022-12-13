@@ -4,6 +4,7 @@ The `titiler.pgstac` package comes with a full FastAPI application with Mosaic a
 | ------ | --------------------------------------------------------------------------|-----------------------------------|--------------
 | `POST` | `/mosaic/register`                                                               | JSON ([Register][register_model]) | Register **Search** query
 | `GET`  | `/mosaic/{searchid}/info`                                                        | JSON ([Info][info_model])         | Return **Search** query infos
+| `GET`  | `/mosaic/list`                                                                   | JSON ([Infos][infos_model])       | Return list of **Search** entries
 | `GET`  | `/mosaic/{searchid}[/{TileMatrixSetId}]/{z}/{x}/{Y}/assets`                      | JSON                              | Return a list of assets which overlap a given tile
 | `GET`  | `/mosaic/{searchid}/{lon},{lat}/assets`                                          | JSON                              | Return a list of assets which overlap a given point
 | `GET`  | `/mosaic/tiles/{searchid}[/{TileMatrixSetId}]/{z}/{x}/{y}[@{scale}x][.{format}]` | image/bin                         | Create a web map tile image for a search query and a tile index

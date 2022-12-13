@@ -78,6 +78,7 @@ mosaic = MosaicTilerFactory(
     router_prefix="/mosaic",
     add_statistics=True,
     add_map_viewer=True,
+    add_mosaic_list=True,
 )
 app.include_router(mosaic.router, tags=["Mosaic"], prefix="/mosaic")
 

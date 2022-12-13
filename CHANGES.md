@@ -6,6 +6,7 @@
 * update to rio-tiler 4.1
 * add `/{searchid}/map` endpoint to the `MosaicTilerFactory` (added when `add_map_viewer` is set to `True`)
 * add `/{searchid}/WMTSCapabilities.xml` OGC WMTS endpoint to the `MosaicTilerFactory`
+* add `/list` to the `MosaicTilerFactory` to list available mosaics (added when `add_mosaic_list` is set to `True`)
 
 **breaking changes**
 

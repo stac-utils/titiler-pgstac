@@ -1,6 +1,7 @@
 """Test titiler.pgstac Mosaic endpoints."""
 
 import io
+from datetime import datetime
 from unittest.mock import patch
 
 import rasterio
@@ -529,3 +530,100 @@ def test_statistics(rio, app):
     assert response.status_code == 404
     resp = response.json()
     assert resp["detail"] == "SearchId `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa` not found"
+
+
+def test_mosaic_list(app):
+    """Test list mosaic."""
+    response = app.get("/mosaic/list")
+    assert response.status_code == 200
+    resp = response.json()
+    assert ["searches", "links", "context"] == list(resp)
+    assert resp["context"] == {"returned": 5, "limit": 10, "matched": 5}
+    assert len(resp["searches"]) == 5
+    assert len(resp["links"]) == 1
+
+    response = app.get("/mosaic/list?limit=1")
+    assert response.status_code == 200
+    resp = response.json()
+    assert ["searches", "links", "context"] == list(resp)
+    assert resp["context"] == {"returned": 1, "limit": 1, "matched": 5}
+    assert len(resp["searches"]) == 1
+    assert len(resp["links"]) == 2
+
+    response = app.get("/mosaic/list?limit=1&offset=1")
+    assert response.status_code == 200
+    resp = response.json()
+    assert ["searches", "links", "context"] == list(resp)
+    assert resp["context"] == {"returned": 1, "limit": 1, "matched": 5}
+    assert len(resp["searches"]) == 1
+    assert len(resp["links"]) == 3
+
+    query = {
+        "filter": {
+            "op": "=",
+            "args": [{"property": "collection"}, "noaa-emergency-response"],
+        },
+        "metadata": {"data": "noaa", "num": 2},
+    }
+    response = app.post("/mosaic/register", json=query)
+
+    query = {
+        "filter": {
+            "op": "=",
+            "args": [{"property": "collection"}, "noaa-emergency-response"],
+        },
+        "metadata": {"data": "noaa", "num": 1},
+    }
+    response = app.post("/mosaic/register", json=query)
+
+    query = {
+        "filter": {
+            "op": "=",
+            "args": [{"property": "collection"}, "noaa-emergency-response"],
+        },
+        "metadata": {"data": "noaa", "num": 3},
+    }
+    response = app.post("/mosaic/register", json=query)
+
+    response = app.get("/mosaic/list?data=noaa")
+    assert response.status_code == 200
+    resp = response.json()
+    assert ["searches", "links", "context"] == list(resp)
+    assert resp["context"] == {"returned": 3, "limit": 10, "matched": 3}
+    assert len(resp["searches"]) == 3
+    assert [s["search"]["metadata"]["num"] for s in resp["searches"]] == [2, 1, 3]
+
+    response = app.get("/mosaic/list?data=noaa&sortby=%2Bnum")
+    assert response.status_code == 200
+    resp = response.json()
+    assert [s["search"]["metadata"]["num"] for s in resp["searches"]] == [1, 2, 3]
+
+    response = app.get("/mosaic/list?data=noaa&sortby=num")
+    assert response.status_code == 200
+    resp = response.json()
+    assert [s["search"]["metadata"]["num"] for s in resp["searches"]] == [1, 2, 3]
+
+    response = app.get("/mosaic/list?data=noaa&sortby=-num")
+    assert response.status_code == 200
+    resp = response.json()
+    assert [s["search"]["metadata"]["num"] for s in resp["searches"]] == [3, 2, 1]
+
+    response = app.get("/mosaic/list?sortby=lastused")
+    assert response.status_code == 200
+    resp = response.json()
+    assert resp["context"] == {"returned": 8, "limit": 10, "matched": 8}
+    dates = [
+        datetime.strptime(s["search"]["lastused"][0:-6], "%Y-%m-%dT%H:%M:%S.%f")
+        for s in resp["searches"]
+    ]
+    assert dates[0] < dates[-1]
+
+    response = app.get("/mosaic/list?sortby=-lastused")
+    assert response.status_code == 200
+    resp = response.json()
+    assert resp["context"] == {"returned": 8, "limit": 10, "matched": 8}
+    dates = [
+        datetime.strptime(s["search"]["lastused"][0:-6], "%Y-%m-%dT%H:%M:%S.%f")
+        for s in resp["searches"]
+    ]
+    assert dates[0] > dates[-1]
