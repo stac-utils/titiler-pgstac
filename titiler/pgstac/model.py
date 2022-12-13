@@ -238,3 +238,28 @@ class Info(BaseModel):
 
     search: Search
     links: Optional[List[Link]]
+
+
+class Context(BaseModel):
+    """Context Model."""
+
+    returned: int
+    limit: Optional[int]
+    matched: Optional[int]
+
+    @validator("limit")
+    def validate_limit(cls, v, values):
+        """validate limit."""
+        if values["returned"] > v:
+            raise ValueError(
+                "Number of returned items must be less than or equal to the limit"
+            )
+        return v
+
+
+class Infos(BaseModel):
+    """Response model for /list endpoint."""
+
+    searches: List[Info]
+    links: Optional[List[Link]]
+    context: Context
