@@ -135,29 +135,29 @@ class MosaicTilerFactory(BaseTilerFactory):
     def _tiles_routes(self) -> None:
         """register tiles routes."""
 
-        @self.router.get("/tiles/{searchid}/{z}/{x}/{y}", **img_endpoint_params)
+        @self.router.get("/{searchid}/tiles/{z}/{x}/{y}", **img_endpoint_params)
         @self.router.get(
-            "/tiles/{searchid}/{z}/{x}/{y}.{format}", **img_endpoint_params
+            "/{searchid}/tiles/{z}/{x}/{y}.{format}", **img_endpoint_params
         )
         @self.router.get(
-            "/tiles/{searchid}/{z}/{x}/{y}@{scale}x", **img_endpoint_params
+            "/{searchid}/tiles/{z}/{x}/{y}@{scale}x", **img_endpoint_params
         )
         @self.router.get(
-            "/tiles/{searchid}/{z}/{x}/{y}@{scale}x.{format}", **img_endpoint_params
+            "/{searchid}/tiles/{z}/{x}/{y}@{scale}x.{format}", **img_endpoint_params
         )
         @self.router.get(
-            "/tiles/{searchid}/{TileMatrixSetId}/{z}/{x}/{y}", **img_endpoint_params
+            "/{searchid}/tiles/{TileMatrixSetId}/{z}/{x}/{y}", **img_endpoint_params
         )
         @self.router.get(
-            "/tiles/{searchid}/{TileMatrixSetId}/{z}/{x}/{y}.{format}",
+            "/{searchid}/tiles/{TileMatrixSetId}/{z}/{x}/{y}.{format}",
             **img_endpoint_params,
         )
         @self.router.get(
-            "/tiles/{searchid}/{TileMatrixSetId}/{z}/{x}/{y}@{scale}x",
+            "/{searchid}/tiles/{TileMatrixSetId}/{z}/{x}/{y}@{scale}x",
             **img_endpoint_params,
         )
         @self.router.get(
-            "/tiles/{searchid}/{TileMatrixSetId}/{z}/{x}/{y}@{scale}x.{format}",
+            "/{searchid}/tiles/{TileMatrixSetId}/{z}/{x}/{y}@{scale}x.{format}",
             **img_endpoint_params,
         )
         def tile(
