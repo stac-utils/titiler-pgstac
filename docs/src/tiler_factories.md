@@ -37,7 +37,7 @@ app.include_router(mosaic.router)
 
 ## Item
 
-For the `single STAC item` endpoints we use TiTiler's [`MultiBaseTilerFactory`]() with a custom [`path_dependency`]() to use `item` and `collection` query parameter (instead of the default `url`).
+For the `single STAC item` endpoints we use TiTiler's [`MultiBaseTilerFactory`]() with a custom [`path_dependency`]() to use `item` and `collection` path parameter (instead of the default `url` query param).
 
 This custom `path_dependency` will connect to PgSTAC directly to fetch the STAC Item and pass it to a custom [Reader]() based on [`rio_tiler.io.MultiBaseReader`]().
 
@@ -63,8 +63,12 @@ async def shutdown_event() -> None:
     """Close database connection."""
     await close_db_connection(app)
 
-item = MultiBaseTilerFactory(reader=PgSTACReader, path_dependency=ItemPathParams)
-app.include_router(item.router)
+item = MultiBaseTilerFactory(
+    reader=PgSTACReader,
+    path_dependency=ItemPathParams,
+    router_prefix="/collections/{collection_id}/items/{item_id}",
+)
+app.include_router(item.router, prefix="/collections/{collection_id}/items/{item_id}")
 ```
 
 [tilejson_model]: https://github.com/developmentseed/titiler/blob/2335048a407f17127099cbbc6c14e1328852d619/src/titiler/core/titiler/core/models/mapbox.py#L16-L38

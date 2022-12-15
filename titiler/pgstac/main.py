@@ -88,9 +88,11 @@ stac = MultiBaseTilerFactory(
     reader=PgSTACReader,
     path_dependency=ItemPathParams,
     optional_headers=optional_headers,
-    router_prefix="/stac",
+    router_prefix="/collections/{collection_id}/items/{item_id}",
 )
-app.include_router(stac.router, tags=["Item"], prefix="/stac")
+app.include_router(
+    stac.router, tags=["Item"], prefix="/collections/{collection_id}/items/{item_id}"
+)
 
 ###############################################################################
 # Tiling Schemes Endpoints

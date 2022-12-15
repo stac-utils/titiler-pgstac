@@ -11,22 +11,14 @@ def test_stac_items(rio, app):
     rio.open = mock_rasterio_open
 
     response = app.get(
-        "/stac/info",
-        params={
-            "collection": "noaa-emergency-response",
-            "item": "20200307aC0853900w361030",
-        },
+        "/collections/noaa-emergency-response/items/20200307aC0853900w361030/info",
     )
     assert response.status_code == 200
     resp = response.json()
     assert resp["cog"]
 
     response = app.get(
-        "/stac/info",
-        params={
-            "collection": "noaa-emergency-response",
-            "item": "20200307aC0853900w361",
-        },
+        "/collections/noaa-emergency-response/items/20200307aC0853900w361/info",
     )
     assert response.status_code == 404
     assert (
@@ -35,10 +27,8 @@ def test_stac_items(rio, app):
     )
 
     response = app.get(
-        "/stac/asset_statistics",
+        "/collections/noaa-emergency-response/items/20200307aC0853900w361030/asset_statistics",
         params={
-            "collection": "noaa-emergency-response",
-            "item": "20200307aC0853900w361030",
             "assets": "cog",
         },
     )

@@ -1,5 +1,18 @@
 # Release Notes
 
+## 0.3.0 (TBD)
+
+**breaking changes**
+
+* Use `/collections/{collection_id}/items/{item_id}` prefix for **Item** endpoint.
+```
+# Before
+{endpoint}/stac/info?collection=collection1&item=item1
+
+# Now
+{endpoint}/collections/collection1/items/item1/info
+```
+
 ## 0.2.0 (2022-12-13)
 
 * add python 3.10 and 3.11 support
