@@ -104,8 +104,8 @@ def get_stac_item(pool: ConnectionPool, collection: str, item: str) -> Dict:
 
 def ItemPathParams(
     request: Request,
-    collection: str = Query(..., description="STAC Collection ID"),
-    item: str = Query(..., description="STAC Item ID"),
+    collection_id: str = Path(..., description="STAC Collection ID"),
+    item_id: str = Path(..., description="STAC Item ID"),
 ) -> Dict:
     """STAC Item dependency."""
-    return get_stac_item(request.app.state.dbpool, collection, item)
+    return get_stac_item(request.app.state.dbpool, collection_id, item_id)
