@@ -442,11 +442,14 @@ class MosaicTilerFactory(BaseTilerFactory):
             if request.query_params._list:
                 tilejson_url += f"?{urlencode(request.query_params._list)}"
 
+            tms = self.supported_tms.get(TileMatrixSetId)
             return templates.TemplateResponse(
                 name="index.html",
                 context={
                     "request": request,
                     "tilejson_endpoint": tilejson_url,
+                    "tms": tms,
+                    "resolutions": [tms._resolution(matrix) for matrix in tms],
                 },
                 media_type="text/html",
             )

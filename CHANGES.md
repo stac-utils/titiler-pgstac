@@ -22,6 +22,10 @@
     {endpoint}/mosaic/20200307aC0853900w361030/tiles/0/0/0
     ```
 
+## 0.2.1 (2022-12-15)
+
+* update titiler requirement to `>=0.10.1,<0.11` and fix `/map` endpoint (to accept multiple TMS)
+
 ## 0.2.0 (2022-12-13)
 
 * add python 3.10 and 3.11 support
