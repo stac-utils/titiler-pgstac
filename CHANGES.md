@@ -1,6 +1,6 @@
 # Release Notes
 
-## 0.3.0 (TBD)
+## 0.3.0 (2022-12-16)
 
 **breaking changes**
 
