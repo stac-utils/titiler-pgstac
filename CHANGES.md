@@ -1,5 +1,9 @@
 # Release Notes
 
+## 0.3.1 (2022-12-16)
+
+* update Type information for `dependencies.get_stac_item` (backported from 2.2)
+
 ## 0.3.0 (2022-12-16)
 
 **breaking changes**
@@ -21,6 +25,10 @@
     # Now
     {endpoint}/mosaic/20200307aC0853900w361030/tiles/0/0/0
     ```
+
+## 0.2.2 (2022-12-16)
+
+* update Type information for `dependencies.get_stac_item`
 
 ## 0.2.1 (2022-12-15)
 

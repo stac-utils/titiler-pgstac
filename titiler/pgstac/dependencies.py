@@ -1,7 +1,7 @@
 """titiler-pgstac dependencies."""
 
 from dataclasses import dataclass, field
-from typing import Dict, Optional, Tuple
+from typing import Optional, Tuple
 
 import pystac
 from cachetools import TTLCache, cached
@@ -82,7 +82,7 @@ class PgSTACParams(DefaultDependency):
     TTLCache(maxsize=cache_config.maxsize, ttl=cache_config.ttl),
     key=lambda pool, collection, item: hashkey(collection, item),
 )
-def get_stac_item(pool: ConnectionPool, collection: str, item: str) -> Dict:
+def get_stac_item(pool: ConnectionPool, collection: str, item: str) -> pystac.Item:
     """Get STAC Item from PGStac."""
     search = model.PgSTACSearch(ids=[item], collections=[collection])
     with pool.connection() as conn:
@@ -106,6 +106,6 @@ def ItemPathParams(
     request: Request,
     collection_id: str = Path(..., description="STAC Collection ID"),
     item_id: str = Path(..., description="STAC Item ID"),
-) -> Dict:
+) -> pystac.Item:
     """STAC Item dependency."""
     return get_stac_item(request.app.state.dbpool, collection_id, item_id)
