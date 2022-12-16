@@ -191,9 +191,21 @@ def test_tiles(rio, app):
     z, x, y = 15, 8589, 12849
 
     # missing assets
+    response = app.get(f"/mosaic/{search_no_bbox}/tiles/{z}/{x}/{y}")
+    assert response.status_code == 400
+
+    # Deprecated
     response = app.get(f"/mosaic/tiles/{search_no_bbox}/{z}/{x}/{y}")
     assert response.status_code == 400
 
+    response = app.get(f"/mosaic/{search_no_bbox}/tiles/{z}/{x}/{y}?assets=cog")
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "image/jpeg"
+    meta = parse_img(response.content)
+    assert meta["width"] == 256
+    assert meta["height"] == 256
+
+    # Deprecated
     response = app.get(f"/mosaic/tiles/{search_no_bbox}/{z}/{x}/{y}?assets=cog")
     assert response.status_code == 200
     assert response.headers["content-type"] == "image/jpeg"
@@ -202,7 +214,7 @@ def test_tiles(rio, app):
     assert meta["height"] == 256
 
     response = app.get(
-        f"/mosaic/tiles/{search_no_bbox}/{z}/{x}/{y}?assets=cog&buffer=0.5"
+        f"/mosaic/{search_no_bbox}/tiles/{z}/{x}/{y}?assets=cog&buffer=0.5"
     )
     assert response.status_code == 200
     assert response.headers["content-type"] == "image/jpeg"
@@ -210,6 +222,14 @@ def test_tiles(rio, app):
     assert meta["width"] == 257
     assert meta["height"] == 257
 
+    response = app.get(f"/mosaic/{search_no_bbox}/tiles/{z}/{x}/{y}.png?assets=cog")
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "image/png"
+    meta = parse_img(response.content)
+    assert meta["width"] == 256
+    assert meta["height"] == 256
+
+    # Deprecated
     response = app.get(f"/mosaic/tiles/{search_no_bbox}/{z}/{x}/{y}.png?assets=cog")
     assert response.status_code == 200
     assert response.headers["content-type"] == "image/png"
@@ -218,9 +238,20 @@ def test_tiles(rio, app):
     assert meta["height"] == 256
 
     # tile is outside mosaic bbox, it should return 404 (NoAssetFoundError)
-    response = app.get(f"/mosaic/tiles/{search_bbox}/{z}/{x}/{y}?assets=cog")
+    response = app.get(f"/mosaic/{search_bbox}/tiles/{z}/{x}/{y}?assets=cog")
     assert response.status_code == 404
 
+    response = app.get(
+        f"/mosaic/{search_no_bbox}/tiles/WebMercatorQuad/{z}/{x}/{y}.tif?assets=cog"
+    )
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "image/tiff; application=geotiff"
+    meta = parse_img(response.content)
+    assert meta["crs"] == CRS.from_epsg(3857)
+    assert meta["width"] == 256
+    assert meta["height"] == 256
+
+    # Deprecated
     response = app.get(
         f"/mosaic/tiles/{search_no_bbox}/WebMercatorQuad/{z}/{x}/{y}.tif?assets=cog"
     )
@@ -232,7 +263,7 @@ def test_tiles(rio, app):
     assert meta["height"] == 256
 
     response = app.get(
-        f"/mosaic/tiles/{search_no_bbox}/WorldCRS84Quad/18/137421/78424.tif?assets=cog"
+        f"/mosaic/{search_no_bbox}/tiles/WorldCRS84Quad/18/137421/78424.tif?assets=cog"
     )
     assert response.status_code == 200
     assert response.headers["content-type"] == "image/tiff; application=geotiff"
@@ -242,6 +273,14 @@ def test_tiles(rio, app):
     assert meta["height"] == 256
 
     # searchId not found
+    response = app.get(
+        "/mosaic/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/tiles/0/0/0?assets=cog"
+    )
+    assert response.status_code == 404
+    resp = response.json()
+    assert resp["detail"] == "SearchId `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa` not found"
+
+    # deprecated
     response = app.get(
         "/mosaic/tiles/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/0/0/0?assets=cog"
     )
@@ -336,10 +375,14 @@ def test_cql2(rio, app):
     assert resp["minzoom"] == 0
     assert resp["maxzoom"] == 24
     assert round(resp["bounds"][0]) == -180
-    assert "?assets=cog" in resp["tiles"][0]
+    # Make sure we return a tilejson with the `/{searchid}/tiles/{tms}` format
+    assert (
+        f"/mosaic/{cql2_id}/tiles/WebMercatorQuad/{{z}}/{{x}}/{{y}}@1x?assets=cog"
+        in resp["tiles"][0]
+    )
 
     z, x, y = 15, 8589, 12849
-    response = app.get(f"/mosaic/tiles/{cql2_id}/{z}/{x}/{y}?assets=cog")
+    response = app.get(f"/mosaic/{cql2_id}/tiles/{z}/{x}/{y}?assets=cog")
     assert response.status_code == 200
     assert response.headers["content-type"] == "image/jpeg"
     meta = parse_img(response.content)
@@ -423,7 +466,7 @@ def test_cql2_with_geometry(rio, app):
 
     # tile is outside the geometry filter
     z, x, y = 15, 8589, 12849
-    response = app.get(f"/mosaic/tiles/{cql2_id}/{z}/{x}/{y}?assets=cog")
+    response = app.get(f"/mosaic/{cql2_id}/tiles/{z}/{x}/{y}?assets=cog")
     assert response.status_code == 404
 
 
