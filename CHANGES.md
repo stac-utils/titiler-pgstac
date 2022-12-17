@@ -1,5 +1,9 @@
 # Release Notes
 
+## Unreleased
+
+* update titiler requirement to `0.10.2`
+
 ## 0.3.1 (2022-12-16)
 
 * update Type information for `dependencies.get_stac_item` (backported from 2.2)

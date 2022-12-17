@@ -49,3 +49,29 @@ def test_stac_items(rio, app):
     assert response.status_code == 200
     resp = response.json()
     assert resp["cog"]
+
+    response = app.get(
+        "/collections/noaa-emergency-response/items/20200307aC0853900w361030/tilejson.json",
+        params={
+            "assets": "cog",
+        },
+    )
+    assert response.status_code == 200
+    resp = response.json()
+    assert (
+        "collections/noaa-emergency-response/items/20200307aC0853900w361030/tiles/WebMercatorQuad"
+        in resp["tiles"][0]
+    )
+
+    response = app.get(
+        "/collections/noaa-emergency-response/items/20200307aC0853900w361030/WGS1984Quad/tilejson.json",
+        params={
+            "assets": "cog",
+        },
+    )
+    assert response.status_code == 200
+    resp = response.json()
+    assert (
+        "collections/noaa-emergency-response/items/20200307aC0853900w361030/tiles/WGS1984Quad"
+        in resp["tiles"][0]
+    )
