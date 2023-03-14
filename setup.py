@@ -10,6 +10,8 @@ inst_reqs = [
     "titiler.mosaic>=0.10.2,<0.11",
     "geojson-pydantic>=0.4,<0.5",
     "stac-pydantic==2.0.*",
+    "fastapi>=0.87,<0.92",
+    "starlette>=0.21.0,<0.25",
 ]
 extra_reqs = {
     "dev": ["pre-commit"],
