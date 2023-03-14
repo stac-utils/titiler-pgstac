@@ -1,5 +1,9 @@
 # Release Notes
 
+## 0.2.3 (2023-03-14)
+
+* fix maximum version of FastAPI to 0.92 (to avoid breaking change of starlette >0.25)
+
 ## 0.2.2 (2022-12-16)
 
 * update Type information for `dependencies.get_stac_item`
