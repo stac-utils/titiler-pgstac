@@ -1,8 +1,9 @@
 # Release Notes
 
-## Unreleased
+## 0.3.2 (2023-03-14)
 
 * update titiler requirement to `0.10.2`
+* fix maximum version of FastAPI to 0.92 (to avoid breaking change of starlette >0.25)
 
 ## 0.3.1 (2022-12-16)
 
@@ -29,6 +30,10 @@
     # Now
     {endpoint}/mosaic/20200307aC0853900w361030/tiles/0/0/0
     ```
+
+## 0.2.3 (2023-03-14)
+
+* fix maximum version of FastAPI to 0.92 (to avoid breaking change of starlette >0.25)
 
 ## 0.2.2 (2022-12-16)
 
