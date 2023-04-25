@@ -20,7 +20,7 @@ extra_reqs = {
         "pytest-cov",
         "pytest-asyncio",
         "httpx",
-        "pypgstac>=0.6,<0.7",
+        "pypgstac>=0.6,<0.8",
         "psycopg2",
         "pytest-pgsql",
     ],
