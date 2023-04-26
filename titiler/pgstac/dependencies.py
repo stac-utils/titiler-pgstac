@@ -6,16 +6,14 @@ from typing import Optional, Tuple
 import pystac
 from cachetools import TTLCache, cached
 from cachetools.keys import hashkey
+from fastapi import HTTPException, Path, Query
 from psycopg.rows import dict_row
 from psycopg_pool import ConnectionPool
+from starlette.requests import Request
 
 from titiler.core.dependencies import DefaultDependency
 from titiler.pgstac import model
 from titiler.pgstac.settings import CacheSettings
-
-from fastapi import HTTPException, Path, Query
-
-from starlette.requests import Request
 
 cache_config = CacheSettings()
 
@@ -78,7 +76,7 @@ class PgSTACParams(DefaultDependency):
     )
 
 
-@cached(
+@cached(  # type: ignore
     TTLCache(maxsize=cache_config.maxsize, ttl=cache_config.ttl),
     key=lambda pool, collection, item: hashkey(collection, item),
 )

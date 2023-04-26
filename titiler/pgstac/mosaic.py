@@ -187,7 +187,7 @@ class PGSTACBackend(BaseBackend):
         """Retrieve assets for bbox."""
         return self.get_assets(Polygon.from_bounds(xmin, ymin, xmax, ymax), **kwargs)
 
-    @cached(
+    @cached(  # type: ignore
         TTLCache(maxsize=cache_config.maxsize, ttl=cache_config.ttl),
         key=lambda self, geom, **kwargs: hashkey(self.input, str(geom), **kwargs),
     )
@@ -231,7 +231,9 @@ class PGSTACBackend(BaseBackend):
                 except pgErrors.RaiseException as e:
                     # Catch Invalid SearchId and raise specific Error
                     if f"Search with Query Hash {self.input} Not Found" in str(e):
-                        raise MosaicNotFoundError(f"SearchId `{self.input}` not found")
+                        raise MosaicNotFoundError(
+                            f"SearchId `{self.input}` not found"
+                        ) from e
                     else:
                         raise e
 
