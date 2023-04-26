@@ -3,8 +3,10 @@
 import logging
 from typing import Dict
 
+from fastapi import FastAPI, Query
 from psycopg import OperationalError
 from psycopg_pool import PoolTimeout
+from starlette.middleware.cors import CORSMiddleware
 
 from titiler.core.errors import DEFAULT_STATUS_CODES, add_exception_handlers
 from titiler.core.factory import AlgorithmFactory, MultiBaseTilerFactory, TMSFactory
@@ -21,10 +23,6 @@ from titiler.pgstac.dependencies import ItemPathParams
 from titiler.pgstac.factory import MosaicTilerFactory
 from titiler.pgstac.reader import PgSTACReader
 from titiler.pgstac.settings import ApiSettings
-
-from fastapi import FastAPI, Query
-
-from starlette.middleware.cors import CORSMiddleware
 
 logging.getLogger("botocore.credentials").disabled = True
 logging.getLogger("botocore.utils").disabled = True

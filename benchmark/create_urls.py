@@ -131,7 +131,7 @@ with open("urls.txt", "w") as fin:
     fin.write("EXT=pbf\n")
     for zoom in range(0, maxzoom + 1):
         rows_for_zoom = int(OUTPUT_ROWS * distribution[zoom] / total_weight)
-        for sample in range(rows_for_zoom):
+        for _sample in range(rows_for_zoom):
             rand = random.randrange(totals[zoom])
             i = bisect.bisect(ranges[zoom], rand) - 1
             fin.write(f"$(PROT)://$(HOST):$(PORT)/$(PATH){tiles[zoom][i]}.$(EXT)\n")

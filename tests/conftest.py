@@ -11,7 +11,6 @@ from pypgstac.db import PgstacDB
 from pypgstac.load import Loader
 from pypgstac.migrate import Migrate
 from rasterio.io import MemoryFile
-
 from starlette.testclient import TestClient
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "fixtures")
