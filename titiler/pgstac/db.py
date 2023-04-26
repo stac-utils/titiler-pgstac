@@ -2,11 +2,10 @@
 
 from typing import Optional
 
+from fastapi import FastAPI
 from psycopg_pool import ConnectionPool
 
 from titiler.pgstac.settings import PostgresSettings
-
-from fastapi import FastAPI
 
 
 async def connect_to_db(

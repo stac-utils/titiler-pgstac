@@ -21,12 +21,16 @@ from urllib.parse import urlencode
 import rasterio
 from cogeo_mosaic.backends import BaseBackend
 from cogeo_mosaic.errors import MosaicNotFoundError
+from fastapi import Body, Depends, Path, Query
 from geojson_pydantic import Feature, FeatureCollection
 from psycopg import sql
 from psycopg.rows import class_row
 from rio_tiler.constants import MAX_THREADS
 from rio_tiler.models import BandStatistics
 from rio_tiler.utils import get_array_statistics
+from starlette.datastructures import QueryParams
+from starlette.requests import Request
+from starlette.responses import HTMLResponse, Response
 
 from titiler.core.dependencies import (
     AssetsBidxExprParams,
@@ -50,14 +54,8 @@ from titiler.pgstac.dependencies import (
 )
 from titiler.pgstac.mosaic import PGSTACBackend
 
-from fastapi import Body, Depends, Path, Query
 
-from starlette.datastructures import QueryParams
-from starlette.requests import Request
-from starlette.responses import HTMLResponse, Response
-
-
-def _first_value(values: List[Any], default: Any = None):
+def _first_value(values: List[Any], default: Any = None) -> Any:
     """Return the first not None value."""
     return next(filter(lambda x: x is not None, values), default)
 
@@ -558,7 +556,7 @@ class MosaicTilerFactory(BaseTilerFactory):
             )
 
             tileMatrix = []
-            for zoom in range(minzoom, maxzoom + 1):
+            for zoom in range(minzoom, maxzoom + 1):  # type: ignore
                 matrix = tms.matrix(zoom)
                 tm = f"""
                         <TileMatrix>

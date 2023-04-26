@@ -7,6 +7,7 @@ from psycopg_pool import PoolTimeout
 
 
 def test_database_online(app):
+    """check health endpoints."""
     response = app.get("/healthz")
     assert response.status_code == 200
     resp = response.json()
@@ -14,6 +15,7 @@ def test_database_online(app):
 
 
 def test_database_offline(app):
+    """check health endpoints."""
     with patch("psycopg.Connection.execute") as mock_execute:
         mock_execute.side_effect = OperationalError
         response = app.get("/healthz")
