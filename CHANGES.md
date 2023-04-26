@@ -1,5 +1,10 @@
 # Release Notes
 
+## Next
+
+* update python packaging/build system to `pdm-pep517`
+* use `Ruff` for lint
+
 ## 0.3.2 (2023-03-14)
 
 * update titiler requirement to `0.10.2`
