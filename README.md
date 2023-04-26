@@ -8,12 +8,12 @@
       <img src="https://github.com/developmentseed/titiler/workflows/CI/badge.svg" alt="Test">
   </a>
   <a href="https://codecov.io/gh/stac-utils/titiler-pgstac" target="_blank">
-      <img src="https://codecov.io/gh/stac-utils/titiler-pgstac/branch/master/graph/badge.svg" alt="Coverage">
+      <img src="https://codecov.io/gh/stac-utils/titiler-pgstac/branch/main/graph/badge.svg" alt="Coverage">
   </a>
   <a href="https://pypi.org/project/titiler.pgstac" target="_blank">
       <img src="https://img.shields.io/pypi/v/titiler.pgstac?color=%2334D058&label=pypi%20package" alt="Package version">
   </a>
-  <a href="https://github.com/stac-utils/titiler-pgstac/blob/master/LICENSE" target="_blank">
+  <a href="https://github.com/stac-utils/titiler-pgstac/blob/main/LICENSE" target="_blank">
       <img src="https://img.shields.io/github/license/stac-utils/titiler-pgstac.svg" alt="License">
   </a>
 </p>
@@ -103,11 +103,11 @@ $ docker-compose up --build tiler-uvicorn
 
 ## Contribution & Development
 
-See [CONTRIBUTING.md](https://github.com//stac-utils/titiler-pgstac/blob/master/CONTRIBUTING.md)
+See [CONTRIBUTING.md](https://github.com//stac-utils/titiler-pgstac/blob/main/CONTRIBUTING.md)
 
 ## License
 
-See [LICENSE](https://github.com//stac-utils/titiler-pgstac/blob/master/LICENSE)
+See [LICENSE](https://github.com//stac-utils/titiler-pgstac/blob/main/LICENSE)
 
 ## Authors
 
@@ -115,4 +115,4 @@ See [contributors](https://github.com/stac-utils/titiler-pgstac/graphs/contribut
 
 ## Changes
 
-See [CHANGES.md](https://github.com/stac-utils/titiler-pgstac/blob/master/CHANGES.md).
+See [CHANGES.md](https://github.com/stac-utils/titiler-pgstac/blob/main/CHANGES.md).

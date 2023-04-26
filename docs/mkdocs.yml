@@ -6,7 +6,7 @@ site_dir: 'build'
 
 repo_name: "stac-utils/titiler-pgstac"
 repo_url: "https://github.com/stac-utils/titiler-pgstac"
-edit_uri: "blob/master/docs/"
+edit_uri: "blob/main/docs/"
 site_url: "https://stac-utils.github.io/titiler-pgstac/"
 
 extra:
