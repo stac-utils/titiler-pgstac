@@ -27,7 +27,6 @@ from rio_tiler.mosaic import mosaic_reader
 from rio_tiler.tasks import multi_values
 from rio_tiler.types import AssetInfo, BBox
 
-# from titiler.pgstac.db import ExecuteOrRetry
 from titiler.pgstac.settings import CacheSettings, RetrySettings
 from titiler.pgstac.utils import retry
 
