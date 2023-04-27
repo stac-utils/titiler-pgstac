@@ -7,15 +7,18 @@ import pystac
 from cachetools import TTLCache, cached
 from cachetools.keys import hashkey
 from fastapi import HTTPException, Path, Query
+from psycopg import errors as pgErrors
 from psycopg.rows import dict_row
 from psycopg_pool import ConnectionPool
 from starlette.requests import Request
 
 from titiler.core.dependencies import DefaultDependency
 from titiler.pgstac import model
-from titiler.pgstac.settings import CacheSettings
+from titiler.pgstac.settings import CacheSettings, RetrySettings
+from titiler.pgstac.utils import retry
 
 cache_config = CacheSettings()
+retry_config = RetrySettings()
 
 
 def PathParams(searchid: str = Path(..., description="Search Id")) -> str:
@@ -79,6 +82,14 @@ class PgSTACParams(DefaultDependency):
 @cached(  # type: ignore
     TTLCache(maxsize=cache_config.maxsize, ttl=cache_config.ttl),
     key=lambda pool, collection, item: hashkey(collection, item),
+)
+@retry(
+    tries=retry_config.retry,
+    delay=retry_config.delay,
+    exceptions=(
+        pgErrors.OperationalError,
+        pgErrors.InterfaceError,
+    ),
 )
 def get_stac_item(pool: ConnectionPool, collection: str, item: str) -> pystac.Item:
     """Get STAC Item from PGStac."""

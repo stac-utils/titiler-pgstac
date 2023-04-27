@@ -8,12 +8,12 @@ ENV CURL_CA_BUNDLE /etc/ssl/certs/ca-certificates.crt
 WORKDIR /tmp
 
 COPY titiler/ titiler/
-COPY setup.py setup.py
-COPY setup.cfg setup.cfg
+COPY pyproject.toml pyproject.toml
 COPY README.md README.md
+COPY LICENSE LICENSE
 
 RUN pip install --no-cache-dir --upgrade .["psycopg-binary"]
-RUN rm -rf titiler/ setup.py setup.cfg README.md
+RUN rm -rf titiler/ pyproject.toml README.md LICENSE
 
 ENV MODULE_NAME titiler.pgstac.main
 ENV VARIABLE_NAME app

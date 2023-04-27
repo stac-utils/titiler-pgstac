@@ -1,9 +1,10 @@
 # Release Notes
 
-## Next
+## 0.3.4 (2023-04-27)
 
 * update python packaging/build system to `pdm-pep517`
 * use `Ruff` for lint
+* add retry mechanism on Database connection issues for `PGSTACBackend.get_assets()` and `get_stac_item` methods (back ported from 0.2.4)
 
 ## 0.3.2 (2023-03-14)
 
@@ -12,7 +13,7 @@
 
 ## 0.3.1 (2022-12-16)
 
-* update Type information for `dependencies.get_stac_item` (backported from 2.2)
+* update Type information for `dependencies.get_stac_item` (back ported from 0.2.2)
 
 ## 0.3.0 (2022-12-16)
 
@@ -35,6 +36,9 @@
     # Now
     {endpoint}/mosaic/20200307aC0853900w361030/tiles/0/0/0
     ```
+## 0.2.4 (2023-04-27)
+
+* add retry mechanism on Database connection issues for `PGSTACBackend.get_assets()` and `get_stac_item` methods
 
 ## 0.2.3 (2023-03-14)
 

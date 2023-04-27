@@ -27,9 +27,11 @@ from rio_tiler.mosaic import mosaic_reader
 from rio_tiler.tasks import multi_values
 from rio_tiler.types import AssetInfo, BBox
 
-from titiler.pgstac.settings import CacheSettings
+from titiler.pgstac.settings import CacheSettings, RetrySettings
+from titiler.pgstac.utils import retry
 
 cache_config = CacheSettings()
+retry_config = RetrySettings()
 
 
 @attr.s
@@ -191,6 +193,14 @@ class PGSTACBackend(BaseBackend):
         TTLCache(maxsize=cache_config.maxsize, ttl=cache_config.ttl),
         key=lambda self, geom, **kwargs: hashkey(self.input, str(geom), **kwargs),
     )
+    @retry(
+        tries=retry_config.retry,
+        delay=retry_config.delay,
+        exceptions=(
+            pgErrors.OperationalError,
+            pgErrors.InterfaceError,
+        ),
+    )
     def get_assets(
         self,
         geom: Geometry,
@@ -228,6 +238,8 @@ class PGSTACBackend(BaseBackend):
                             skipcovered,
                         ),
                     )
+                    resp = cursor.fetchone()[0]
+
                 except pgErrors.RaiseException as e:
                     # Catch Invalid SearchId and raise specific Error
                     if f"Search with Query Hash {self.input} Not Found" in str(e):
@@ -236,8 +248,6 @@ class PGSTACBackend(BaseBackend):
                         ) from e
                     else:
                         raise e
-
-                resp = cursor.fetchone()[0]
 
         return resp.get("features", [])
 
