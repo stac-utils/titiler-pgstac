@@ -18,7 +18,7 @@ from titiler.pgstac.settings import CacheSettings, RetrySettings
 from titiler.pgstac.utils import retry
 
 cache_config = CacheSettings()
-retry_setting = RetrySettings()
+retry_config = RetrySettings()
 
 
 def PathParams(searchid: str = Path(..., description="Search Id")) -> str:
@@ -84,8 +84,8 @@ class PgSTACParams(DefaultDependency):
     key=lambda pool, collection, item: hashkey(collection, item),
 )
 @retry(
-    tries=retry_setting.retry,
-    delay=retry_setting.delay,
+    tries=retry_config.retry,
+    delay=retry_config.delay,
     exceptions=(
         pgErrors.OperationalError,
         pgErrors.InterfaceError,
