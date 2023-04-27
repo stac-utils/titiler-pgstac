@@ -28,9 +28,10 @@ from rio_tiler.tasks import multi_values
 from rio_tiler.types import AssetInfo, BBox
 
 # from titiler.pgstac.db import ExecuteOrRetry
-from titiler.pgstac.settings import CacheSettings
+from titiler.pgstac.settings import CacheSettings, RetrySettings
 from titiler.pgstac.utils import retry
 
+retry_setting = RetrySettings()
 cache_config = CacheSettings()
 
 
@@ -193,7 +194,14 @@ class PGSTACBackend(BaseBackend):
         TTLCache(maxsize=cache_config.maxsize, ttl=cache_config.ttl),
         key=lambda self, geom, **kwargs: hashkey(self.input, str(geom), **kwargs),
     )
-    @retry(tries=3, exceptions=pgErrors.OperationalError)
+    @retry(
+        tries=retry_setting.retry,
+        delay=retry_setting.delay,
+        exceptions=(
+            pgErrors.OperationalError,
+            pgErrors.InterfaceError,
+        ),
+    )
     def get_assets(
         self,
         geom: Geometry,

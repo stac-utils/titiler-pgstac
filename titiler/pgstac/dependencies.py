@@ -14,10 +14,11 @@ from starlette.requests import Request
 
 from titiler.core.dependencies import DefaultDependency
 from titiler.pgstac import model
-from titiler.pgstac.settings import CacheSettings
+from titiler.pgstac.settings import CacheSettings, RetrySettings
 from titiler.pgstac.utils import retry
 
 cache_config = CacheSettings()
+retry_setting = RetrySettings()
 
 
 def PathParams(searchid: str = Path(..., description="Search Id")) -> str:
@@ -82,7 +83,14 @@ class PgSTACParams(DefaultDependency):
     TTLCache(maxsize=cache_config.maxsize, ttl=cache_config.ttl),
     key=lambda pool, collection, item: hashkey(collection, item),
 )
-@retry(tries=3, exceptions=pgErrors.OperationalError)
+@retry(
+    tries=retry_setting.retry,
+    delay=retry_setting.delay,
+    exceptions=(
+        pgErrors.OperationalError,
+        pgErrors.InterfaceError,
+    ),
+)
 def get_stac_item(pool: ConnectionPool, collection: str, item: str) -> pystac.Item:
     """Get STAC Item from PGStac."""
     search = model.PgSTACSearch(ids=[item], collections=[collection])
