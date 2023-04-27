@@ -30,8 +30,8 @@ from rio_tiler.types import AssetInfo, BBox
 from titiler.pgstac.settings import CacheSettings, RetrySettings
 from titiler.pgstac.utils import retry
 
-retry_setting = RetrySettings()
 cache_config = CacheSettings()
+retry_config = RetrySettings()
 
 
 @attr.s
@@ -194,8 +194,8 @@ class PGSTACBackend(BaseBackend):
         key=lambda self, geom, **kwargs: hashkey(self.input, str(geom), **kwargs),
     )
     @retry(
-        tries=retry_setting.retry,
-        delay=retry_setting.delay,
+        tries=retry_config.retry,
+        delay=retry_config.delay,
         exceptions=(
             pgErrors.OperationalError,
             pgErrors.InterfaceError,
