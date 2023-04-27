@@ -1,5 +1,9 @@
 # Release Notes
 
+## 0.2.4 (2023-04-27)
+
+* add retry mechanism on Database connection issues for `PGSTACBackend.get_assets()` and `get_stac_item` methods
+
 ## 0.2.3 (2023-03-14)
 
 * fix maximum version of FastAPI to 0.92 (to avoid breaking change of starlette >0.25)
