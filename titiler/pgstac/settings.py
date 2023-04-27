@@ -3,7 +3,14 @@
 from functools import lru_cache
 from typing import Any, Dict, Optional
 
-from pydantic import BaseSettings, PostgresDsn, conint, root_validator, validator
+from pydantic import (
+    BaseSettings,
+    PostgresDsn,
+    confloat,
+    conint,
+    root_validator,
+    validator,
+)
 
 
 class ApiSettings(BaseSettings):
@@ -108,7 +115,7 @@ class _RetrySettings(BaseSettings):
     """Retry settings"""
 
     retry: conint(ge=0) = 3  # type: ignore[valid-type]
-    delay: conint(ge=0) = 0  # type: ignore[valid-type]
+    delay: confloat(ge=0) = 0.0  # type: ignore[valid-type]
 
     class Config:
         """model config"""
