@@ -27,8 +27,9 @@ from rio_tiler.mosaic import mosaic_reader
 from rio_tiler.tasks import multi_values
 from rio_tiler.types import AssetInfo, BBox
 
-from titiler.pgstac.db import execute_query
+# from titiler.pgstac.db import ExecuteOrRetry
 from titiler.pgstac.settings import CacheSettings
+from titiler.pgstac.utils import retry
 
 cache_config = CacheSettings()
 
@@ -192,6 +193,7 @@ class PGSTACBackend(BaseBackend):
         TTLCache(maxsize=cache_config.maxsize, ttl=cache_config.ttl),
         key=lambda self, geom, **kwargs: hashkey(self.input, str(geom), **kwargs),
     )
+    @retry(tries=3, exceptions=pgErrors.OperationalError)
     def get_assets(
         self,
         geom: Geometry,
@@ -213,29 +215,32 @@ class PGSTACBackend(BaseBackend):
         exitwhenfull = True if exitwhenfull is None else exitwhenfull
         skipcovered = True if skipcovered is None else skipcovered
 
-        try:
-            with execute_query(
-                self.pool,
-                query="SELECT * FROM geojsonsearch(%s, %s, %s, %s, %s, %s, %s, %s);",
-                params=(
-                    geom.json(exclude_none=True),
-                    self.input,
-                    json.dumps(fields),
-                    scan_limit,
-                    items_limit,
-                    f"{time_limit} seconds",
-                    exitwhenfull,
-                    skipcovered,
-                ),
-            ) as cursor:
-                resp = cursor.fetchone()[0]
+        with self.pool.connection() as conn:
+            with conn.cursor() as cursor:
+                try:
+                    cursor.execute(
+                        "SELECT * FROM geojsonsearch(%s, %s, %s, %s, %s, %s, %s, %s);",
+                        (
+                            geom.json(exclude_none=True),
+                            self.input,
+                            json.dumps(fields),
+                            scan_limit,
+                            items_limit,
+                            f"{time_limit} seconds",
+                            exitwhenfull,
+                            skipcovered,
+                        ),
+                    )
+                    resp = cursor.fetchone()[0]
 
-        except pgErrors.ProgrammingError as e:
-            # Catch Invalid SearchId and raise specific Error
-            if f"Search with Query Hash {self.input} Not Found" in str(e):
-                raise MosaicNotFoundError(f"SearchId `{self.input}` not found") from e
-            else:
-                raise e
+                except pgErrors.RaiseException as e:
+                    # Catch Invalid SearchId and raise specific Error
+                    if f"Search with Query Hash {self.input} Not Found" in str(e):
+                        raise MosaicNotFoundError(
+                            f"SearchId `{self.input}` not found"
+                        ) from e
+                    else:
+                        raise e
 
         return resp.get("features", [])
 
