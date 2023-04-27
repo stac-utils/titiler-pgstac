@@ -1,6 +1,6 @@
 # Release Notes
 
-## 0.3.4 (2023-04-27)
+## 0.3.3 (2023-04-27)
 
 * update python packaging/build system to `pdm-pep517`
 * use `Ruff` for lint
