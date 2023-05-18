@@ -39,7 +39,7 @@ from titiler.core.dependencies import (
     RescalingParams,
     StatisticsParams,
 )
-from titiler.core.factory import BaseTilerFactory, img_endpoint_params, templates
+from titiler.core.factory import BaseTilerFactory, img_endpoint_params
 from titiler.core.models.mapbox import TileJSON
 from titiler.core.models.responses import MultiBaseStatisticsGeoJSON
 from titiler.core.resources.enums import ImageType, MediaType, OptionalHeader
@@ -479,7 +479,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                 tilejson_url += f"?{urlencode(request.query_params._list)}"
 
             tms = self.supported_tms.get(TileMatrixSetId)
-            return templates.TemplateResponse(
+            return self.templates.TemplateResponse(
                 name="index.html",
                 context={
                     "request": request,
@@ -608,7 +608,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                         </TileMatrix>"""
                 tileMatrix.append(tm)
 
-            return templates.TemplateResponse(
+            return self.templates.TemplateResponse(
                 "wmts.xml",
                 {
                     "request": request,
