@@ -194,19 +194,7 @@ def test_tiles(rio, app):
     response = app.get(f"/mosaic/{search_no_bbox}/tiles/{z}/{x}/{y}")
     assert response.status_code == 400
 
-    # Deprecated
-    response = app.get(f"/mosaic/tiles/{search_no_bbox}/{z}/{x}/{y}")
-    assert response.status_code == 400
-
     response = app.get(f"/mosaic/{search_no_bbox}/tiles/{z}/{x}/{y}?assets=cog")
-    assert response.status_code == 200
-    assert response.headers["content-type"] == "image/jpeg"
-    meta = parse_img(response.content)
-    assert meta["width"] == 256
-    assert meta["height"] == 256
-
-    # Deprecated
-    response = app.get(f"/mosaic/tiles/{search_no_bbox}/{z}/{x}/{y}?assets=cog")
     assert response.status_code == 200
     assert response.headers["content-type"] == "image/jpeg"
     meta = parse_img(response.content)
@@ -229,31 +217,12 @@ def test_tiles(rio, app):
     assert meta["width"] == 256
     assert meta["height"] == 256
 
-    # Deprecated
-    response = app.get(f"/mosaic/tiles/{search_no_bbox}/{z}/{x}/{y}.png?assets=cog")
-    assert response.status_code == 200
-    assert response.headers["content-type"] == "image/png"
-    meta = parse_img(response.content)
-    assert meta["width"] == 256
-    assert meta["height"] == 256
-
     # tile is outside mosaic bbox, it should return 404 (NoAssetFoundError)
     response = app.get(f"/mosaic/{search_bbox}/tiles/{z}/{x}/{y}?assets=cog")
     assert response.status_code == 404
 
     response = app.get(
         f"/mosaic/{search_no_bbox}/tiles/WebMercatorQuad/{z}/{x}/{y}.tif?assets=cog"
-    )
-    assert response.status_code == 200
-    assert response.headers["content-type"] == "image/tiff; application=geotiff"
-    meta = parse_img(response.content)
-    assert meta["crs"] == CRS.from_epsg(3857)
-    assert meta["width"] == 256
-    assert meta["height"] == 256
-
-    # Deprecated
-    response = app.get(
-        f"/mosaic/tiles/{search_no_bbox}/WebMercatorQuad/{z}/{x}/{y}.tif?assets=cog"
     )
     assert response.status_code == 200
     assert response.headers["content-type"] == "image/tiff; application=geotiff"
@@ -275,14 +244,6 @@ def test_tiles(rio, app):
     # searchId not found
     response = app.get(
         "/mosaic/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/tiles/0/0/0?assets=cog"
-    )
-    assert response.status_code == 404
-    resp = response.json()
-    assert resp["detail"] == "SearchId `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa` not found"
-
-    # deprecated
-    response = app.get(
-        "/mosaic/tiles/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/0/0/0?assets=cog"
     )
     assert response.status_code == 404
     resp = response.json()

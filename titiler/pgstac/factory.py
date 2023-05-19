@@ -2,7 +2,6 @@
 
 import os
 import re
-import time
 from dataclasses import dataclass
 from typing import (
     Any,
@@ -21,7 +20,7 @@ from urllib.parse import urlencode
 import rasterio
 from cogeo_mosaic.backends import BaseBackend
 from cogeo_mosaic.errors import MosaicNotFoundError
-from fastapi import Body, Depends, Path, Query
+from fastapi import Body, Depends, HTTPException, Path, Query
 from geojson_pydantic import Feature, FeatureCollection
 from psycopg import sql
 from psycopg.rows import class_row
@@ -36,10 +35,9 @@ from titiler.core.dependencies import (
     AssetsBidxExprParams,
     DefaultDependency,
     HistogramParams,
-    RescalingParams,
     StatisticsParams,
 )
-from titiler.core.factory import BaseTilerFactory, img_endpoint_params, templates
+from titiler.core.factory import BaseTilerFactory, img_endpoint_params
 from titiler.core.models.mapbox import TileJSON
 from titiler.core.models.responses import MultiBaseStatisticsGeoJSON
 from titiler.core.resources.enums import ImageType, MediaType, OptionalHeader
@@ -58,33 +56,6 @@ from titiler.pgstac.mosaic import PGSTACBackend
 def _first_value(values: List[Any], default: Any = None):
     """Return the first not None value."""
     return next(filter(lambda x: x is not None, values), default)
-
-
-# This code is copied from marblecutter
-#  https://github.com/mojodna/marblecutter/blob/master/marblecutter/stats.py
-# License:
-# Original work Copyright 2016 Stamen Design
-# Modified work Copyright 2016-2017 Seth Fitzsimmons
-# Modified work Copyright 2016 American Red Cross
-# Modified work Copyright 2016-2017 Humanitarian OpenStreetMap Team
-# Modified work Copyright 2017 Mapzen
-class Timer(object):
-    """Time a code block."""
-
-    def __enter__(self):
-        """Starts timer."""
-        self.start = time.time()
-        return self
-
-    def __exit__(self, ty, val, tb):
-        """Stops timer."""
-        self.end = time.time()
-        self.elapsed = self.end - self.start
-
-    @property
-    def from_start(self):
-        """Return time elapsed from start."""
-        return time.time() - self.start
 
 
 @dataclass
@@ -133,44 +104,6 @@ class MosaicTilerFactory(BaseTilerFactory):
     def _tiles_routes(self) -> None:
         """register tiles routes."""
 
-        @self.router.get(
-            "/tiles/{searchid}/{z}/{x}/{y}", **img_endpoint_params, deprecated=True
-        )
-        @self.router.get(
-            "/tiles/{searchid}/{z}/{x}/{y}.{format}",
-            **img_endpoint_params,
-            deprecated=True,
-        )
-        @self.router.get(
-            "/tiles/{searchid}/{z}/{x}/{y}@{scale}x",
-            **img_endpoint_params,
-            deprecated=True,
-        )
-        @self.router.get(
-            "/tiles/{searchid}/{z}/{x}/{y}@{scale}x.{format}",
-            **img_endpoint_params,
-            deprecated=True,
-        )
-        @self.router.get(
-            "/tiles/{searchid}/{TileMatrixSetId}/{z}/{x}/{y}",
-            **img_endpoint_params,
-            deprecated=True,
-        )
-        @self.router.get(
-            "/tiles/{searchid}/{TileMatrixSetId}/{z}/{x}/{y}.{format}",
-            **img_endpoint_params,
-            deprecated=True,
-        )
-        @self.router.get(
-            "/tiles/{searchid}/{TileMatrixSetId}/{z}/{x}/{y}@{scale}x",
-            **img_endpoint_params,
-            deprecated=True,
-        )
-        @self.router.get(
-            "/tiles/{searchid}/{TileMatrixSetId}/{z}/{x}/{y}@{scale}x.{format}",
-            **img_endpoint_params,
-            deprecated=True,
-        )
         @self.router.get("/{searchid}/tiles/{z}/{x}/{y}", **img_endpoint_params)
         @self.router.get(
             "/{searchid}/tiles/{z}/{x}/{y}.{format}", **img_endpoint_params
@@ -224,7 +157,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                 description="Buffer on each side of the given tile. It must be a multiple of `0.5`. Output **tilesize** will be expanded to `tilesize + 2 * buffer` (e.g 0.5 = 257x257, 1.0 = 258x258).",
             ),
             post_process=Depends(self.process_dependency),
-            rescale: Optional[List[Tuple[float, ...]]] = Depends(RescalingParams),
+            rescale=Depends(self.rescale_dependency),
             color_formula: Optional[str] = Query(
                 None,
                 title="Color Formula",
@@ -238,64 +171,64 @@ class MosaicTilerFactory(BaseTilerFactory):
             env=Depends(self.environment_dependency),
         ):
             """Create map tile."""
-            timings = []
             headers: Dict[str, str] = {}
 
             tms = self.supported_tms.get(TileMatrixSetId)
 
             threads = int(os.getenv("MOSAIC_CONCURRENCY", MAX_THREADS))
-            with Timer() as t:
-                with rasterio.Env(**env):
-                    with self.reader(
-                        searchid,
-                        tms=tms,
-                        reader_options={**reader_params},
-                        **backend_params,
-                    ) as src_dst:
-                        mosaic_read = t.from_start
-                        timings.append(("mosaicread", round(mosaic_read * 1000, 2)))
 
-                        image, assets = src_dst.tile(
-                            x,
-                            y,
-                            z,
-                            pixel_selection=pixel_selection.method(),
-                            tilesize=scale * 256,
-                            threads=threads,
-                            buffer=buffer,
-                            **layer_params,
-                            **dataset_params,
-                            **pgstac_params,
+            strict_zoom = str(os.getenv("MOSAIC_STRICT_ZOOM", False)).lower() in [
+                "true",
+                "yes",
+            ]
+
+            with rasterio.Env(**env):
+                with self.reader(
+                    searchid,
+                    tms=tms,
+                    reader_options={**reader_params},
+                    **backend_params,
+                ) as src_dst:
+
+                    if strict_zoom and (z < src_dst.minzoom or z > src_dst.maxzoom):
+                        raise HTTPException(
+                            400,
+                            f"Invalid ZOOM level {z}. Should be between {src_dst.minzoom} and {src_dst.maxzoom}",
                         )
-            timings.append(("dataread", round((t.elapsed - mosaic_read) * 1000, 2)))
 
-            with Timer() as t:
-                if post_process:
-                    image = post_process(image)
+                    image, assets = src_dst.tile(
+                        x,
+                        y,
+                        z,
+                        tilesize=scale * 256,
+                        buffer=buffer,
+                        pixel_selection=pixel_selection.method(),
+                        threads=threads,
+                        **layer_params,
+                        **dataset_params,
+                        **pgstac_params,
+                    )
 
-                if rescale:
-                    image.rescale(rescale)
+            if post_process:
+                image = post_process(image)
 
-                if color_formula:
-                    image.apply_color_formula(color_formula)
-            timings.append(("postprocess", round(t.elapsed * 1000, 2)))
+            if rescale:
+                image.rescale(rescale)
+
+            if color_formula:
+                image.apply_color_formula(color_formula)
+
+            if colormap:
+                image = image.apply_colormap(colormap)
 
             if not format:
                 format = ImageType.jpeg if image.mask.all() else ImageType.png
 
-            with Timer() as t:
-                content = image.render(
-                    img_format=format.driver,
-                    colormap=colormap,
-                    **format.profile,
-                    **render_params,
-                )
-            timings.append(("format", round(t.elapsed * 1000, 2)))
-
-            if OptionalHeader.server_timing in self.optional_headers:
-                headers["Server-Timing"] = ", ".join(
-                    [f"{name};dur={time}" for (name, time) in timings]
-                )
+            content = image.render(
+                img_format=format.driver,
+                **format.profile,
+                **render_params,
+            )
 
             if OptionalHeader.x_assets in self.optional_headers:
                 ids = [x["id"] for x in assets]
@@ -350,9 +283,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                 description="Buffer on each side of the given tile. It must be a multiple of `0.5`. Output **tilesize** will be expanded to `tilesize + 2 * buffer` (e.g 0.5 = 257x257, 1.0 = 258x258).",
             ),  # noqa
             post_process=Depends(self.process_dependency),  # noqa
-            rescale: Optional[List[Tuple[float, ...]]] = Depends(
-                RescalingParams
-            ),  # noqa
+            rescale=Depends(self.rescale_dependency),  # noqa
             color_formula: Optional[str] = Query(
                 None,
                 title="Color Formula",
@@ -385,6 +316,7 @@ class MosaicTilerFactory(BaseTilerFactory):
             }
             if tile_format:
                 route_params["format"] = tile_format.value
+
             tiles_url = self.url_for(request, "tile", **route_params)
 
             qs_key_to_remove = [
@@ -427,10 +359,10 @@ class MosaicTilerFactory(BaseTilerFactory):
         def map_viewer(
             request: Request,
             searchid=Depends(self.path_dependency),
-            TileMatrixSetId: Literal["WebMercatorQuad"] = Query(
-                "WebMercatorQuad",
-                description="TileMatrixSet Name (default: 'WebMercatorQuad')",
-            ),  # noqa
+            TileMatrixSetId: Literal[tuple(self.supported_tms.list())] = Query(  # type: ignore
+                self.default_tms,
+                description=f"TileMatrixSet Name (default: '{self.default_tms}')",
+            ),
             tile_format: Optional[ImageType] = Query(
                 None, description="Output image type. Default is auto."
             ),  # noqa
@@ -456,9 +388,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                 description="Buffer on each side of the given tile. It must be a multiple of `0.5`. Output **tilesize** will be expanded to `tilesize + 2 * buffer` (e.g 0.5 = 257x257, 1.0 = 258x258).",
             ),  # noqa
             post_process=Depends(self.process_dependency),  # noqa
-            rescale: Optional[List[Tuple[float, ...]]] = Depends(
-                RescalingParams
-            ),  # noqa
+            rescale=Depends(self.rescale_dependency),  # noqa
             color_formula: Optional[str] = Query(
                 None,
                 title="Color Formula",
@@ -479,7 +409,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                 tilejson_url += f"?{urlencode(request.query_params._list)}"
 
             tms = self.supported_tms.get(TileMatrixSetId)
-            return templates.TemplateResponse(
+            return self.templates.TemplateResponse(
                 name="index.html",
                 context={
                     "request": request,
@@ -531,9 +461,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                 description="Buffer on each side of the given tile. It must be a multiple of `0.5`. Output **tilesize** will be expanded to `tilesize + 2 * buffer` (e.g 0.5 = 257x257, 1.0 = 258x258).",
             ),  # noqa
             post_process=Depends(self.process_dependency),  # noqa
-            rescale: Optional[List[Tuple[float, ...]]] = Depends(
-                RescalingParams
-            ),  # noqa
+            rescale=Depends(self.rescale_dependency),  # noqa
             color_formula: Optional[str] = Query(
                 None,
                 title="Color Formula",
@@ -608,7 +536,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                         </TileMatrix>"""
                 tileMatrix.append(tm)
 
-            return templates.TemplateResponse(
+            return self.templates.TemplateResponse(
                 "wmts.xml",
                 {
                     "request": request,
@@ -629,9 +557,20 @@ class MosaicTilerFactory(BaseTilerFactory):
         @self.router.get(
             "/{searchid}/{z}/{x}/{y}/assets",
             responses={200: {"description": "Return list of assets"}},
+            deprecated=True,
         )
         @self.router.get(
             "/{searchid}/{TileMatrixSetId}/{z}/{x}/{y}/assets",
+            responses={200: {"description": "Return list of assets"}},
+            response_model=List[Dict],
+            deprecated=True,
+        )
+        @self.router.get(
+            "/{searchid}/tiles/{z}/{x}/{y}/assets",
+            responses={200: {"description": "Return list of assets"}},
+        )
+        @self.router.get(
+            "/{searchid}/tiles/{TileMatrixSetId}/{z}/{x}/{y}/assets",
             responses={200: {"description": "Return list of assets"}},
             response_model=List[Dict],
         )
@@ -953,7 +892,7 @@ class MosaicTilerFactory(BaseTilerFactory):
             """Get Statistics from a geojson feature or featureCollection."""
             fc = geojson
             if isinstance(fc, Feature):
-                fc = FeatureCollection(features=[geojson])
+                fc = FeatureCollection(type="FeatureCollection", features=[geojson])
 
             threads = int(os.getenv("MOSAIC_CONCURRENCY", MAX_THREADS))
 

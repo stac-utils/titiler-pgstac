@@ -176,7 +176,7 @@ class PGSTACBackend(BaseBackend):
         # are set to `False`
         # ref: https://github.com/stac-utils/pgstac/pull/52
         kwargs.update(**{"exitwhenfull": False, "skipcovered": False})
-        return self.get_assets(Point(coordinates=(lng, lat)), **kwargs)
+        return self.get_assets(Point(type="Point", coordinates=(lng, lat)), **kwargs)
 
     def assets_for_bbox(
         self,
