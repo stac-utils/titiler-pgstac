@@ -1,5 +1,14 @@
 # Release Notes
 
+## 4.0.0 (TBD)
+
+* remove deprecated `/tiles/{searchid}/...` endpoints (replaced with `/{searchid}/tiles/...`)
+* depreciate `/{searchid}/{z}/{x}/{y}/assets` endpoints and add `/{searchid}/tiles/{z}/{x}/{y}/assets`
+* update minimum titiler requirement to `>=0.11.6`
+* remove timing headers
+* add `strict_zoom` option (controled with `MOSAIC_STRICT_ZOOM` environment variable) to raise (or not) error when fetching tile outside mosaic min/max zoom range
+
+
 ## 0.3.3 (2023-04-27)
 
 * update python packaging/build system to `pdm-pep517`
