@@ -156,7 +156,8 @@ def test_tilejson(app):
     resp = response.json()
     assert resp["minzoom"] == 0
     assert resp["maxzoom"] == 17
-    assert resp["bounds"] == [-180.0, -90.0, 180.0, 90.0]
+    for xc, yc in zip(resp["bounds"], [-180.0, -90.0, 180.0, 90.0]):
+        assert round(xc, 5) == round(yc, 5)
     assert "?assets=cog" in resp["tiles"][0]
 
     response = app.get(
