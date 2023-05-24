@@ -5,9 +5,10 @@ The `titiler.pgstac` package comes with a full FastAPI application with Mosaic a
 | `POST` | `/mosaic/register`                                                               | JSON ([Register][register_model]) | Register **Search** query
 | `GET`  | `/mosaic/{searchid}/info`                                                        | JSON ([Info][info_model])         | Return **Search** query infos
 | `GET`  | `/mosaic/list`                                                                   | JSON ([Infos][infos_model])       | Return list of **Search** entries with `Mosaic` type
-| `GET`  | `/mosaic/{searchid}[/{TileMatrixSetId}]/{z}/{x}/{Y}/assets`                      | JSON                              | Return a list of assets which overlap a given tile
 | `GET`  | `/mosaic/{searchid}/{lon},{lat}/assets`                                          | JSON                              | Return a list of assets which overlap a given point
-| `GET`  | `/mosaic/tiles/{searchid}[/{TileMatrixSetId}]/{z}/{x}/{y}[@{scale}x][.{format}]` | image/bin                         | Create a web map tile image for a search query and a tile index
+| `GET`  | `/mosaic/{searchid}[/{TileMatrixSetId}]/{z}/{x}/{Y}/assets` **DEPRECATED**       | JSON                              | Return a list of assets which overlap a given tile
+| `GET`  | `/mosaic/{searchid}/tiles[/{TileMatrixSetId}]/{z}/{x}/{Y}/assets`                | JSON                              | Return a list of assets which overlap a given tile
+| `GET`  | `/mosaic/{searchid}/tiles[/{TileMatrixSetId}]/{z}/{x}/{y}[@{scale}x][.{format}]` | image/bin                         | Create a web map tile image for a search query and a tile index
 | `GET`  | `/mosaic/{searchid}[/{TileMatrixSetId}]/tilejson.json`                           | JSON ([TileJSON][tilejson_model]) | Return a Mapbox TileJSON document
 | `GET`  | `/mosaic/{searchid}[/{TileMatrixSetId}]/WMTSCapabilities.xml`                    | XML                               | return OGC WMTS Get Capabilities
 | `GET`  | `/mosaic/{searchid}[/{TileMatrixSetId}]/map`                                     | HTML                              | simple map viewer
@@ -176,7 +177,7 @@ Example:
 
 ### Tiles
 
-`:endpoint:/mosaic/tiles/{searchid}[/{TileMatrixSetId}]/{z}/{x}/{y}[@{scale}x][.{format}]`
+`:endpoint:/mosaic/{searchid}/tiles[/{TileMatrixSetId}]/{z}/{x}/{y}[@{scale}x][.{format}]`
 
 - PathParams:
     - **searchid**: search query hashkey.
@@ -214,10 +215,10 @@ Example:
 
 Example:
 
-- `https://myendpoint/mosaic/tiles/f1ed59f0a6ad91ed80ae79b7b52bc707/1/2/3?assets=B01`
-- `https://myendpoint/mosaic/tiles/f1ed59f0a6ad91ed80ae79b7b52bc707/1/2/3.jpg?assets=B01`
-- `https://myendpoint/mosaic/tiles/f1ed59f0a6ad91ed80ae79b7b52bc707/WorldCRS84Quad/1/2/3@2x.png?assets=B01&assets=B02&assets=B03`
-- `https://myendpoint/mosaic/tiles/f1ed59f0a6ad91ed80ae79b7b52bc707/WorldCRS84Quad/1/2/3?assets=B01&rescale=0,1000&colormap_name=cfastie`
+- `https://myendpoint/mosaic/f1ed59f0a6ad91ed80ae79b7b52bc707/tiles/1/2/3?assets=B01`
+- `https://myendpoint/mosaic/f1ed59f0a6ad91ed80ae79b7b52bc707/tiles/1/2/3.jpg?assets=B01`
+- `https://myendpoint/mosaic/f1ed59f0a6ad91ed80ae79b7b52bc707/tiles/WorldCRS84Quad/1/2/3@2x.png?assets=B01&assets=B02&assets=B03`
+- `https://myendpoint/mosaic/f1ed59f0a6ad91ed80ae79b7b52bc707/tiles/WorldCRS84Quad/1/2/3?assets=B01&rescale=0,1000&colormap_name=cfastie`
 
 ### TilesJSON
 
@@ -307,7 +308,7 @@ Example:
 
 ### Assets
 
-`:endpoint:/mosaic/{searchid}/[{TileMatrixSetId}]/{z}/{x}/{y}/assets`
+`:endpoint:/mosaic/{searchid}/tiles/[{TileMatrixSetId}]/{z}/{x}/{y}/assets`
 
 - PathParams:
     - **searchid**: search query hashkey.
@@ -325,7 +326,7 @@ Example:
 
 Example:
 
-- `https://myendpoint/mosaic/f1ed59f0a6ad91ed80ae79b7b52bc707/0/0/0/assets`
+- `https://myendpoint/mosaic/f1ed59f0a6ad91ed80ae79b7b52bc707/tiles/0/0/0/assets`
 
 `:endpoint:/mosaic/{searchid}/{lon},{lat}/assets`
 

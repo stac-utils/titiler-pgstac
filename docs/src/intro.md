@@ -217,7 +217,7 @@ On each `Tile` request, the tiler api is going to call the PgSTAC [`geometrysear
 **Example**
 
 ```bash
-curl 'http://127.0.0.1:8081/mosaic/tiles/f1ed59f0a6ad91ed80ae79b7b52bc707/8/40/102.png?assets=B01&rescale=0,16000 > 8-40-102.png
+curl 'http://127.0.0.1:8081/mosaic/f1ed59f0a6ad91ed80ae79b7b52bc707/tiles/8/40/102.png?assets=B01&rescale=0,16000 > 8-40-102.png
 ```
 
 ## Items
