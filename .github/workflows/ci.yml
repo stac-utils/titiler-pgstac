@@ -196,13 +196,13 @@ jobs:
         id: image
         run: |
           if [ ${{ matrix.image-version }} = 'uvicorn' ]; then
-            echo "name=titiler-pgstac-uvicorn" >> $GITHUB_OUTPUT
+            echo "name=titiler-pgstac:uvicorn-" >> $GITHUB_OUTPUT
           else
-            echo "name=titiler-pgstac" >> $GITHUB_OUTPUT
+            echo "name=titiler-pgstac:" >> $GITHUB_OUTPUT
           fi
 
-      # Push `latest` when commiting to main
-      - name: Build and push uvicorn
+      # Push `latest` when comiting to main
+      - name: Build and push latest
         if: github.ref == 'refs/heads/main'
         uses: docker/build-push-action@v2
         with:
@@ -211,10 +211,10 @@ jobs:
           file: Dockerfile.${{ matrix.image-version }}
           push: true
           tags: |
-            ghcr.io/stac-utils/${{ steps.image.outputs.name }}:latest
+            ghcr.io/stac-utils/${{ steps.image.outputs.name }}latest
 
       # Push `{VERSION}` when pushing a new tag
-      - name: Build and push
+      - name: Build and push tag
         if: startsWith(github.event.ref, 'refs/tags') || github.event_name == 'release'
         uses: docker/build-push-action@v2
         with:
@@ -223,4 +223,4 @@ jobs:
           file: Dockerfile.${{ matrix.image-version }}
           push: true
           tags: |
-            ghcr.io/stac-utils/${{ steps.image.outputs.name }}:${{ steps.tag.outputs.tag }}
+            ghcr.io/stac-utils/${{ steps.image.outputs.name }}${{ steps.tag.outputs.tag }}
