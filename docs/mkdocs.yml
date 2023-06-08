@@ -30,6 +30,7 @@ nav:
     - Custom feature crop endpoint: "advanced/geojson_crop.md"
   - Examples:
     - demo: "notebooks/demo.ipynb"
+  - Performance Benchmarks: benchmark.html
   - Development - Contributing: "contributing.md"
   - Release notes: "release-notes.md"
 

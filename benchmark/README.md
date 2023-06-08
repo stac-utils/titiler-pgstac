@@ -20,13 +20,13 @@ $ uvicorn titiler.pgstac.main:app --port 8081
 ## Get Mosaic ID
 
 ```bash
-$ curl -X 'POST' 'http://127.0.0.1:8081/register' \-H 'accept: application/json' \-H 'Content-Type: application/json' \
+$ curl -X 'POST' 'http://127.0.0.1:8081/mosaic/register' \-H 'accept: application/json' \-H 'Content-Type: application/json' \
 -d '{"collections":["world"]}' | jq
 
 >>> {
   "searchid": "a813b9d9afdb8ee44eb42ecdbe245e41",
-  "metadata": "http://127.0.0.1:8081/a813b9d9afdb8ee44eb42ecdbe245e41/info",
-  "tiles": "http://127.0.0.1:8081/a813b9d9afdb8ee44eb42ecdbe245e41/tilejson.json"
+  "metadata": "http://127.0.0.1:8081/mosaic/a813b9d9afdb8ee44eb42ecdbe245e41/info",
+  "tiles": "http://127.0.0.1:8081/mosaic/a813b9d9afdb8ee44eb42ecdbe245e41/tilejson.json"
 }
 ```
 
@@ -42,7 +42,7 @@ $ python -m create_urls --maxzoom 6
 PROT=http
 HOST=localhost
 PORT=8081
-PATH=tiles/a813b9d9afdb8ee44eb42ecdbe245e41/WebMercatorQuad/
+PATH=mosaic/a813b9d9afdb8ee44eb42ecdbe245e41/tiles/WebMercatorQuad/
 $(PROT)://$(HOST):$(PORT)/$(PATH)0/0/0?assets=asset
 ...
 ```
