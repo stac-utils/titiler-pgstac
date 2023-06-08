@@ -1,7 +1,7 @@
 PROT=http
 HOST=localhost
 PORT=8081
-PATH=tiles/656ad9c29fe267e584314dfe93781ebb/WebMercatorQuad/
+PATH=mosaic/656ad9c29fe267e584314dfe93781ebb/tiles/WebMercatorQuad/
 $(PROT)://$(HOST):$(PORT)/$(PATH)0/0/0?assets=asset
 $(PROT)://$(HOST):$(PORT)/$(PATH)0/0/0?assets=asset
 $(PROT)://$(HOST):$(PORT)/$(PATH)0/0/0?assets=asset

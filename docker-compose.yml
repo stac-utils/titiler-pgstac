@@ -53,6 +53,8 @@ services:
       # AWS S3 endpoint config
       # - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       # - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    volumes:
+      - ./benchmark:/tmp/benchmark
     depends_on:
       - database
 
@@ -109,13 +111,15 @@ services:
       # AWS S3 endpoint config
       # - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       # - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    volumes:
+      - ./benchmark:/tmp/benchmark
     depends_on:
       - database
 
   database:
     container_name: stac-db
     platform: linux/amd64
-    image: ghcr.io/stac-utils/pgstac:v0.7.4
+    image: ghcr.io/stac-utils/pgstac:v${PGSTAC_VERSION-0.7.9}
     environment:
       - POSTGRES_USER=username
       - POSTGRES_PASSWORD=password
