@@ -62,7 +62,6 @@ jobs:
 
   benchmark:
     needs: [tests]
-    # if: github.ref == 'refs/heads/main' || startsWith(github.event.ref, 'refs/tags') || github.event_name == 'release'
     runs-on: ubuntu-20.04
     env:
       PGSTAC_VERSION: '0.7.9'
@@ -112,7 +111,7 @@ jobs:
           tool: 'pytest'
           output-file-path: output.json
           alert-threshold: '130%'
-          comment-on-alert: false
+          comment-on-alert: true
           fail-on-alert: false
           # GitHub API token to make a commit comment
           github-token: ${{ secrets.GITHUB_TOKEN }}
