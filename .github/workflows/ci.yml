@@ -89,7 +89,7 @@ jobs:
 
       - name: Install python dependencies
         run: |
-          python -m pip install pypgstac==${{ env.PGSTAC_VERSION }} psycopg[pool]
+          python -m pip install pypgstac==${{ env.PGSTAC_VERSION }} psycopg[pool] httpx pytest pytest-benchmark
 
       - name: Ingest Stac Items/Collection
         run: |
