@@ -75,7 +75,7 @@ mosaic = MosaicTilerFactory(
     optional_headers=optional_headers,
     router_prefix="/mosaic",
     add_statistics=True,
-    add_map_viewer=True,
+    add_viewer=True,
     add_mosaic_list=True,
 )
 app.include_router(mosaic.router, tags=["Mosaic"], prefix="/mosaic")
@@ -87,6 +87,7 @@ stac = MultiBaseTilerFactory(
     path_dependency=ItemPathParams,
     optional_headers=optional_headers,
     router_prefix="/collections/{collection_id}/items/{item_id}",
+    add_viewer=True,
 )
 app.include_router(
     stac.router, tags=["Item"], prefix="/collections/{collection_id}/items/{item_id}"

@@ -632,3 +632,12 @@ def test_mosaic_list(app):
         for s in resp["searches"]
     ]
     assert dates[0] > dates[-1]
+
+
+def test_map(app):
+    """test /map endpoint."""
+    response = app.get(f"/mosaic/{search_bbox}/map")
+    assert response.status_code == 400
+
+    response = app.get(f"/mosaic/{search_bbox}/map", params={"assets": "cog"})
+    assert response.status_code == 200

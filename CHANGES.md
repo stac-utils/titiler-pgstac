@@ -1,5 +1,11 @@
 # Release Notes
 
+## 0.4.1 (2023-06-21)
+
+* update `titiler` requirement to `>=0.11.7`
+* fix `/map` endpoint template name
+* rename `add_map_viewer` to `add_viewer` option in `MosaicTilerFactory` for consistency with `titiler's` options
+
 ## 0.4.0 (2023-05-22)
 
 * remove deprecated `/tiles/{searchid}/...` endpoints (replaced with `/{searchid}/tiles/...`)
