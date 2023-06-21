@@ -80,7 +80,7 @@ class MosaicTilerFactory(BaseTilerFactory):
     # Add/Remove some endpoints
     add_statistics: bool = False
 
-    add_map_viewer: bool = False
+    add_viewer: bool = False
 
     add_mosaic_list: bool = False
 
@@ -98,7 +98,7 @@ class MosaicTilerFactory(BaseTilerFactory):
         if self.add_statistics:
             self._statistics_routes()
 
-        if self.add_map_viewer:
+        if self.add_viewer:
             self._map_routes()
 
     def _tiles_routes(self) -> None:
@@ -410,7 +410,7 @@ class MosaicTilerFactory(BaseTilerFactory):
 
             tms = self.supported_tms.get(TileMatrixSetId)
             return self.templates.TemplateResponse(
-                name="index.html",
+                name="map.html",
                 context={
                     "request": request,
                     "tilejson_endpoint": tilejson_url,

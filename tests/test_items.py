@@ -75,3 +75,16 @@ def test_stac_items(rio, app):
         "collections/noaa-emergency-response/items/20200307aC0853900w361030/tiles/WGS1984Quad"
         in resp["tiles"][0]
     )
+
+    response = app.get(
+        "/collections/noaa-emergency-response/items/20200307aC0853900w361030/map",
+    )
+    assert response.status_code == 400
+
+    response = app.get(
+        "/collections/noaa-emergency-response/items/20200307aC0853900w361030/map",
+        params={
+            "assets": "cog",
+        },
+    )
+    assert response.status_code == 200

@@ -13,7 +13,7 @@ The `Item` endpoints are created using TiTiler's [MultiBaseTilerFactory](https:/
 | `POST` | `/collections/{collection_id}/items/{item_id}/statistics`                                                   | GeoJSON ([Statistics][multistats_geojson_model]) | return assets statistics for a GeoJSON (merged)
 | `GET`  | `/collections/{collection_id}/items/{item_id}/tiles[/{TileMatrixSetId}]/{z}/{x}/{y}[@{scale}x][.{format}]`  | image/bin                                        | create a web map tile image from assets
 | `GET`  | `/collections/{collection_id}/items/{item_id}[/{TileMatrixSetId}]/tilejson.json`                            | JSON ([TileJSON][tilejson_model])                | return a Mapbox TileJSON document
-| `GET`  | `/collections/{collection_id}/items/{item_id}[/{TileMatrixSetId}]/WMTSCapabilities.xml`                       | XML                                              | return OGC WMTS Get Capabilities
+| `GET`  | `/collections/{collection_id}/items/{item_id}[/{TileMatrixSetId}]/WMTSCapabilities.xml`                     | XML                                              | return OGC WMTS Get Capabilities
 | `GET`  | `/collections/{collection_id}/items/{item_id}[/{TileMatrixSetId}]/map`                                      | HTML                                             | simple map viewer
 | `GET`  | `/collections/{collection_id}/items/{item_id}/point/{lon},{lat}`                                            | JSON ([Point][multipoint_model])                 | return pixel values from assets
 | `GET`  | `/collections/{collection_id}/items/{item_id}/preview[.{format}]`                                           | image/bin                                        | create a preview image from assets

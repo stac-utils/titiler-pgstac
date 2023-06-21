@@ -29,7 +29,7 @@ app.include_router(mosaic.router)
 | `POST` | `/register`                                                               | JSON ([Register][register_model]) | Register **Search** query
 | `GET`  | `/{searchid}/info`                                                        | JSON ([Info][info_model])         | Return **Search** query infos
 | `GET`  | `/{searchid}/{lon},{lat}/assets`                                          | JSON                              | Return a list of assets which overlap a given point
-| `GET`  | `/{searchid}/tiles[/{TileMatrixSetId}]/{z}/{x}/{Y}/assets`                      | JSON                              | Return a list of assets which overlap a given tile
+| `GET`  | `/{searchid}/tiles[/{TileMatrixSetId}]/{z}/{x}/{Y}/assets`                | JSON                              | Return a list of assets which overlap a given tile
 | `GET`  | `/{searchid}/tiles[/{TileMatrixSetId}]/{z}/{x}/{y}[@{scale}x][.{format}]` | image/bin                         | Create a web map tile image for a search query and a tile index
 | `GET`  | `/{searchid}[/{TileMatrixSetId}]/tilejson.json`                           | JSON ([TileJSON][tilejson_model]) | Return a Mapbox TileJSON document
 | `GET`  | `/{searchid}[/{TileMatrixSetId}]/WMTSCapabilities.xml`                    | XML                               | return OGC WMTS Get Capabilities
