@@ -36,6 +36,7 @@ settings = ApiSettings()
 
 app = FastAPI(title=settings.name, version=titiler_pgstac_version)
 
+
 @app.on_event("startup")
 async def startup_event() -> None:
     """Connect to database on startup."""
@@ -78,13 +79,16 @@ class ProxyHeaderMiddleware:
     async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
         """Call from stac-fastapi framework."""
         if scope["type"] == "http":
+            proto: str
+            domain: str
+            port: int
             proto, domain, port = self._get_forwarded_url_parts(scope)
             scope["scheme"] = proto
             if domain is not None:
                 port_suffix = ""
                 if port is not None:
                     if (proto == "http" and port != HTTP_PORT) or (
-                            proto == "https" and port != HTTPS_PORT
+                        proto == "https" and port != HTTPS_PORT
                     ):
                         port_suffix = f":{port}"
                 scope["headers"] = self._replace_header_value_by_name(
@@ -95,8 +99,8 @@ class ProxyHeaderMiddleware:
         await self.app(scope, receive, send)
 
     def _get_forwarded_url_parts(self, scope: Scope) -> Tuple[str]:
-        proto = scope.get("scheme", "http")
-        header_host = self._get_header_value_by_name(scope, "host")
+        proto: str = scope.get("scheme", "http")
+        header_host: str = self._get_header_value_by_name(scope, "host")
         if header_host is None:
             domain, port = scope.get("server")
         else:
@@ -123,8 +127,12 @@ class ProxyHeaderMiddleware:
                             # ignore ports that are not valid integers
                             pass
         else:
-            proto = self._get_header_value_by_name(scope, "x-forwarded-proto", proto)
-            port_str = self._get_header_value_by_name(scope, "x-forwarded-port", port)
+            proto: str = self._get_header_value_by_name(
+                scope, "x-forwarded-proto", proto
+            )
+            port_str: str = self._get_header_value_by_name(
+                scope, "x-forwarded-port", port
+            )
             try:
                 port = int(port_str) if port_str is not None else None
             except ValueError:
@@ -134,7 +142,7 @@ class ProxyHeaderMiddleware:
         return (proto, domain, port)
 
     def _get_header_value_by_name(
-            self, scope: Scope, header_name: str, default_value: str = None
+        self, scope: Scope, header_name: str, default_value: str = None
     ) -> str:
         headers = scope["headers"]
         candidates = [
@@ -144,7 +152,7 @@ class ProxyHeaderMiddleware:
 
     @staticmethod
     def _replace_header_value_by_name(
-            scope: Scope, header_name: str, new_value: str
+        scope: Scope, header_name: str, new_value: str
     ) -> List[Tuple[str]]:
         return [
             (name, value)
@@ -203,7 +211,7 @@ app.include_router(algorithms.router, tags=["Algorithms"])
 # Health Check Endpoint
 @app.get("/healthz", description="Health Check", tags=["Health Check"])
 def ping(
-        timeout: int = Query(1, description="Timeout getting SQL connection from the pool.")
+    timeout: int = Query(1, description="Timeout getting SQL connection from the pool.")
 ) -> Dict:
     """Health check."""
     try:
