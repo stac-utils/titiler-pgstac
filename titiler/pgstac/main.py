@@ -79,10 +79,7 @@ class ProxyHeaderMiddleware:
     async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
         """Call from stac-fastapi framework."""
         if scope["type"] == "http":
-            proto: str
-            domain: str
-            port: int
-            proto, domain, port = self._get_forwarded_url_parts(scope)
+            proto: str; domain: str; port: int = self._get_forwarded_url_parts(scope)
             scope["scheme"] = proto
             if domain is not None:
                 port_suffix = ""
