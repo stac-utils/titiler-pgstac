@@ -30,7 +30,23 @@ logging.getLogger("rio-tiler").setLevel(logging.ERROR)
 
 settings = ApiSettings()
 
-app = FastAPI(title=settings.name, version=titiler_pgstac_version)
+app = FastAPI(
+    title=settings.name,
+    openapi_url="/api",
+    docs_url="/api.html",
+    description="""Dynamic Raster Tiler with PgSTAC backend.
+
+---
+
+**Documentation**: <a href="https://stac-utils.github.io/titiler-pgstac/" target="_blank">https://stac-utils.github.io/titiler-pgstac/</a>
+
+**Source Code**: <a href="https://github.com/stac-utils/titiler-pgstac" target="_blank">https://github.com/stac-utils/titiler-pgstac</a>
+
+---
+    """,
+    version=titiler_pgstac_version,
+    root_path=settings.root_path,
+)
 
 
 @app.on_event("startup")

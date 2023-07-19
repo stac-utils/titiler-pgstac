@@ -10,6 +10,8 @@
 * remove deprecated `/{searchid}/{z}/{x}/{y}/assets` endpoints
 * remove `stac-pydantic` dependency
 * replace Enum's with `Literal` types
+* add optional `root_path` setting to specify a url path prefix to use when running the app behind a reverse proxy
+* use /api and /api.html for documentation (instead of /openapi.json and /docs)
 
 ## 0.4.1 (2023-06-21)
 
