@@ -2,6 +2,7 @@
 
 import os
 import re
+import sys
 from dataclasses import dataclass
 from typing import (
     Any,
@@ -24,15 +25,16 @@ from fastapi import Body, Depends, HTTPException, Path, Query
 from geojson_pydantic import Feature, FeatureCollection
 from psycopg import sql
 from psycopg.rows import class_row
-from rio_tiler.constants import MAX_THREADS
-from rio_tiler.models import BandStatistics
-from rio_tiler.utils import get_array_statistics
+from pydantic import conint
+from rio_tiler.constants import MAX_THREADS, WGS84_CRS
+from rio_tiler.mosaic.methods.base import MosaicMethodBase
 from starlette.datastructures import QueryParams
 from starlette.requests import Request
 from starlette.responses import HTMLResponse, Response
 
 from titiler.core.dependencies import (
     AssetsBidxExprParams,
+    CoordCRSParams,
     DefaultDependency,
     HistogramParams,
     StatisticsParams,
@@ -42,15 +44,21 @@ from titiler.core.models.mapbox import TileJSON
 from titiler.core.models.responses import MultiBaseStatisticsGeoJSON
 from titiler.core.resources.enums import ImageType, MediaType, OptionalHeader
 from titiler.core.resources.responses import GeoJSONResponse, XMLResponse
-from titiler.mosaic.resources.enums import PixelSelectionMethod
+from titiler.mosaic.factory import PixelSelectionParams
 from titiler.pgstac import model
 from titiler.pgstac.dependencies import (
     BackendParams,
     PathParams,
     PgSTACParams,
     SearchParams,
+    TileParams,
 )
 from titiler.pgstac.mosaic import PGSTACBackend
+
+if sys.version_info >= (3, 9):
+    from typing import Annotated  # pylint: disable=no-name-in-module
+else:
+    from typing_extensions import Annotated
 
 
 def _first_value(values: List[Any], default: Any = None):
@@ -75,6 +83,8 @@ class MosaicTilerFactory(BaseTilerFactory):
         ..., Tuple[model.PgSTACSearch, model.Metadata]
     ] = SearchParams
 
+    pixel_selection_dependency: Callable[..., MosaicMethodBase] = PixelSelectionParams
+
     backend_dependency: Type[DefaultDependency] = BackendParams
 
     # Add/Remove some endpoints
@@ -90,10 +100,12 @@ class MosaicTilerFactory(BaseTilerFactory):
         if self.add_mosaic_list:
             self._search_list_routes()
 
+        # NOTE: `assets` route HAVE TO be registered before `tiles` routes
+        self._assets_routes()
+
         self._tiles_routes()
         self._tilejson_routes()
         self._wmts_routes()
-        self._assets_routes()
 
         if self.add_statistics:
             self._statistics_routes()
@@ -115,54 +127,55 @@ class MosaicTilerFactory(BaseTilerFactory):
             "/{searchid}/tiles/{z}/{x}/{y}@{scale}x.{format}", **img_endpoint_params
         )
         @self.router.get(
-            "/{searchid}/tiles/{TileMatrixSetId}/{z}/{x}/{y}", **img_endpoint_params
+            "/{searchid}/tiles/{tileMatrixSetId}/{z}/{x}/{y}", **img_endpoint_params
         )
         @self.router.get(
-            "/{searchid}/tiles/{TileMatrixSetId}/{z}/{x}/{y}.{format}",
+            "/{searchid}/tiles/{tileMatrixSetId}/{z}/{x}/{y}.{format}",
             **img_endpoint_params,
         )
         @self.router.get(
-            "/{searchid}/tiles/{TileMatrixSetId}/{z}/{x}/{y}@{scale}x",
+            "/{searchid}/tiles/{tileMatrixSetId}/{z}/{x}/{y}@{scale}x",
             **img_endpoint_params,
         )
         @self.router.get(
-            "/{searchid}/tiles/{TileMatrixSetId}/{z}/{x}/{y}@{scale}x.{format}",
+            "/{searchid}/tiles/{tileMatrixSetId}/{z}/{x}/{y}@{scale}x.{format}",
             **img_endpoint_params,
         )
         def tile(
             searchid=Depends(self.path_dependency),
-            z: int = Path(..., ge=0, le=30, description="Tile's zoom level"),
-            x: int = Path(..., description="Tile's column"),
-            y: int = Path(..., description="Tile's row"),
-            TileMatrixSetId: Literal[tuple(self.supported_tms.list())] = Query(  # type: ignore
-                self.default_tms,
-                description=f"TileMatrixSet Name (default: '{self.default_tms}')",
-            ),
-            scale: int = Query(
-                1, gt=0, lt=4, description="Tile size scale. 1=256x256, 2=512x512..."
-            ),
-            format: ImageType = Query(
-                None, description="Output image type. Default is auto."
-            ),
+            tile=Depends(TileParams),
+            tileMatrixSetId: Annotated[  # type: ignore
+                Literal[tuple(self.supported_tms.list())],
+                f"Identifier selecting one of the TileMatrixSetId supported (default: '{self.default_tms}')",
+            ] = self.default_tms,
+            scale: Annotated[  # type: ignore
+                Optional[conint(gt=0, le=4)],
+                "Tile size scale. 1=256x256, 2=512x512...",
+            ] = None,
+            format: Annotated[
+                ImageType,
+                "Default will be automatically defined if the output image needs a mask (png) or not (jpeg).",
+            ] = None,
             layer_params=Depends(self.layer_dependency),
             dataset_params=Depends(self.dataset_dependency),
-            pixel_selection: PixelSelectionMethod = Query(
-                PixelSelectionMethod.first, description="Pixel selection method."
-            ),
-            buffer: Optional[float] = Query(
-                None,
-                gt=0,
-                alias="buffer",
-                title="Tile buffer.",
-                description="Buffer on each side of the given tile. It must be a multiple of `0.5`. Output **tilesize** will be expanded to `tilesize + 2 * buffer` (e.g 0.5 = 257x257, 1.0 = 258x258).",
-            ),
+            pixel_selection=Depends(self.pixel_selection_dependency),
+            buffer: Annotated[
+                Optional[float],
+                Query(
+                    gt=0,
+                    title="Tile buffer.",
+                    description="Buffer on each side of the given tile. It must be a multiple of `0.5`. Output **tilesize** will be expanded to `tilesize + 2 * buffer` (e.g 0.5 = 257x257, 1.0 = 258x258).",
+                ),
+            ] = None,
             post_process=Depends(self.process_dependency),
             rescale=Depends(self.rescale_dependency),
-            color_formula: Optional[str] = Query(
-                None,
-                title="Color Formula",
-                description="rio-color formula (info: https://github.com/mapbox/rio-color)",
-            ),
+            color_formula: Annotated[
+                Optional[str],
+                Query(
+                    title="Color Formula",
+                    description="rio-color formula (info: https://github.com/mapbox/rio-color)",
+                ),
+            ] = None,
             colormap=Depends(self.colormap_dependency),
             render_params=Depends(self.render_dependency),
             pgstac_params: PgSTACParams = Depends(),
@@ -171,17 +184,16 @@ class MosaicTilerFactory(BaseTilerFactory):
             env=Depends(self.environment_dependency),
         ):
             """Create map tile."""
-            headers: Dict[str, str] = {}
-
-            tms = self.supported_tms.get(TileMatrixSetId)
-
             threads = int(os.getenv("MOSAIC_CONCURRENCY", MAX_THREADS))
+
+            scale = scale or 1
 
             strict_zoom = str(os.getenv("MOSAIC_STRICT_ZOOM", False)).lower() in [
                 "true",
                 "yes",
             ]
 
+            tms = self.supported_tms.get(tileMatrixSetId)
             with rasterio.Env(**env):
                 with self.reader(
                     searchid,
@@ -190,19 +202,21 @@ class MosaicTilerFactory(BaseTilerFactory):
                     **backend_params,
                 ) as src_dst:
 
-                    if strict_zoom and (z < src_dst.minzoom or z > src_dst.maxzoom):
+                    if strict_zoom and (
+                        tile.z < src_dst.minzoom or tile.z > src_dst.maxzoom
+                    ):
                         raise HTTPException(
                             400,
-                            f"Invalid ZOOM level {z}. Should be between {src_dst.minzoom} and {src_dst.maxzoom}",
+                            f"Invalid ZOOM level {tile.z}. Should be between {src_dst.minzoom} and {src_dst.maxzoom}",
                         )
 
                     image, assets = src_dst.tile(
-                        x,
-                        y,
-                        z,
+                        tile.x,
+                        tile.y,
+                        tile.z,
                         tilesize=scale * 256,
                         buffer=buffer,
-                        pixel_selection=pixel_selection.method(),
+                        pixel_selection=pixel_selection,
                         threads=threads,
                         **layer_params,
                         **dataset_params,
@@ -230,6 +244,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                 **render_params,
             )
 
+            headers: Dict[str, str] = {}
             if OptionalHeader.x_assets in self.optional_headers:
                 ids = [x["id"] for x in assets]
                 headers["X-Assets"] = ",".join(ids)
@@ -246,7 +261,7 @@ class MosaicTilerFactory(BaseTilerFactory):
             response_model_exclude_none=True,
         )
         @self.router.get(
-            "/{searchid}/{TileMatrixSetId}/tilejson.json",
+            "/{searchid}/{tileMatrixSetId}/tilejson.json",
             response_model=TileJSON,
             responses={200: {"description": "Return a tilejson"}},
             response_model_exclude_none=True,
@@ -254,46 +269,55 @@ class MosaicTilerFactory(BaseTilerFactory):
         def tilejson(
             request: Request,
             searchid=Depends(self.path_dependency),
-            TileMatrixSetId: Literal[tuple(self.supported_tms.list())] = Query(  # type: ignore
-                self.default_tms,
-                description=f"TileMatrixSet Name (default: '{self.default_tms}')",
-            ),
-            tile_format: Optional[ImageType] = Query(
-                None, description="Output image type. Default is auto."
-            ),
-            tile_scale: int = Query(
-                1, gt=0, lt=4, description="Tile size scale. 1=256x256, 2=512x512..."
-            ),
-            minzoom: Optional[int] = Query(
-                None, description="Overwrite default minzoom."
-            ),
-            maxzoom: Optional[int] = Query(
-                None, description="Overwrite default maxzoom."
-            ),
-            layer_params=Depends(self.layer_dependency),  # noqa
-            dataset_params=Depends(self.dataset_dependency),  # noqa
-            pixel_selection: PixelSelectionMethod = Query(
-                PixelSelectionMethod.first, description="Pixel selection method."
-            ),  # noqa
-            buffer: Optional[float] = Query(
-                None,
-                gt=0,
-                alias="buffer",
-                title="Tile buffer.",
-                description="Buffer on each side of the given tile. It must be a multiple of `0.5`. Output **tilesize** will be expanded to `tilesize + 2 * buffer` (e.g 0.5 = 257x257, 1.0 = 258x258).",
-            ),  # noqa
-            post_process=Depends(self.process_dependency),  # noqa
-            rescale=Depends(self.rescale_dependency),  # noqa
-            color_formula: Optional[str] = Query(
-                None,
-                title="Color Formula",
-                description="rio-color formula (info: https://github.com/mapbox/rio-color)",
-            ),  # noqa
-            colormap=Depends(self.colormap_dependency),  # noqa
-            render_params=Depends(self.render_dependency),  # noqa
-            pgstac_params: PgSTACParams = Depends(),  # noqa
-            backend_params=Depends(self.backend_dependency),  # noqa
-            reader_params=Depends(self.reader_dependency),  # noqa
+            tileMatrixSetId: Annotated[  # type: ignore
+                Literal[tuple(self.supported_tms.list())],
+                f"Identifier selecting one of the TileMatrixSetId supported (default: '{self.default_tms}')",
+            ] = self.default_tms,
+            tile_format: Annotated[
+                Optional[ImageType],
+                Query(
+                    description="Default will be automatically defined if the output image needs a mask (png) or not (jpeg).",
+                ),
+            ] = None,
+            tile_scale: Annotated[
+                Optional[int],
+                Query(
+                    gt=0, lt=4, description="Tile size scale. 1=256x256, 2=512x512..."
+                ),
+            ] = None,
+            minzoom: Annotated[
+                Optional[int],
+                Query(description="Overwrite default minzoom."),
+            ] = None,
+            maxzoom: Annotated[
+                Optional[int],
+                Query(description="Overwrite default maxzoom."),
+            ] = None,
+            layer_params=Depends(self.layer_dependency),
+            dataset_params=Depends(self.dataset_dependency),
+            pixel_selection=Depends(self.pixel_selection_dependency),
+            buffer: Annotated[
+                Optional[float],
+                Query(
+                    gt=0,
+                    title="Tile buffer.",
+                    description="Buffer on each side of the given tile. It must be a multiple of `0.5`. Output **tilesize** will be expanded to `tilesize + 2 * buffer` (e.g 0.5 = 257x257, 1.0 = 258x258).",
+                ),
+            ] = None,
+            post_process=Depends(self.process_dependency),
+            rescale=Depends(self.rescale_dependency),
+            color_formula: Annotated[
+                Optional[str],
+                Query(
+                    title="Color Formula",
+                    description="rio-color formula (info: https://github.com/mapbox/rio-color)",
+                ),
+            ] = None,
+            colormap=Depends(self.colormap_dependency),
+            render_params=Depends(self.render_dependency),
+            pgstac_params: PgSTACParams = Depends(),
+            backend_params=Depends(self.backend_dependency),
+            reader_params=Depends(self.reader_dependency),
         ):
             """Return TileJSON document for a SearchId."""
             with request.app.state.dbpool.connection() as conn:
@@ -311,9 +335,10 @@ class MosaicTilerFactory(BaseTilerFactory):
                 "z": "{z}",
                 "x": "{x}",
                 "y": "{y}",
-                "scale": tile_scale,
-                "TileMatrixSetId": TileMatrixSetId,
+                "tileMatrixSetId": tileMatrixSetId,
             }
+            if tile_scale:
+                route_params["scale"] = tile_scale
             if tile_format:
                 route_params["format"] = tile_format.value
 
@@ -334,7 +359,7 @@ class MosaicTilerFactory(BaseTilerFactory):
             if qs:
                 tiles_url += f"?{urlencode(qs)}"
 
-            tms = self.supported_tms.get(TileMatrixSetId)
+            tms = self.supported_tms.get(tileMatrixSetId)
             minzoom = _first_value([minzoom, search_info.metadata.minzoom], tms.minzoom)
             maxzoom = _first_value([maxzoom, search_info.metadata.maxzoom], tms.maxzoom)
             bounds = _first_value(
@@ -354,61 +379,70 @@ class MosaicTilerFactory(BaseTilerFactory):
 
         @self.router.get("/{searchid}/map", response_class=HTMLResponse)
         @self.router.get(
-            "/{searchid}/{TileMatrixSetId}/map", response_class=HTMLResponse
+            "/{searchid}/{tileMatrixSetId}/map", response_class=HTMLResponse
         )
         def map_viewer(
             request: Request,
             searchid=Depends(self.path_dependency),
-            TileMatrixSetId: Literal[tuple(self.supported_tms.list())] = Query(  # type: ignore
-                self.default_tms,
-                description=f"TileMatrixSet Name (default: '{self.default_tms}')",
-            ),
-            tile_format: Optional[ImageType] = Query(
-                None, description="Output image type. Default is auto."
-            ),  # noqa
-            tile_scale: int = Query(
-                1, gt=0, lt=4, description="Tile size scale. 1=256x256, 2=512x512..."
-            ),  # noqa
-            minzoom: Optional[int] = Query(
-                None, description="Overwrite default minzoom."
-            ),  # noqa
-            maxzoom: Optional[int] = Query(
-                None, description="Overwrite default maxzoom."
-            ),  # noqa
-            layer_params=Depends(self.layer_dependency),  # noqa
-            dataset_params=Depends(self.dataset_dependency),  # noqa
-            pixel_selection: PixelSelectionMethod = Query(
-                PixelSelectionMethod.first, description="Pixel selection method."
-            ),  # noqa
-            buffer: Optional[float] = Query(
-                None,
-                gt=0,
-                alias="buffer",
-                title="Tile buffer.",
-                description="Buffer on each side of the given tile. It must be a multiple of `0.5`. Output **tilesize** will be expanded to `tilesize + 2 * buffer` (e.g 0.5 = 257x257, 1.0 = 258x258).",
-            ),  # noqa
-            post_process=Depends(self.process_dependency),  # noqa
-            rescale=Depends(self.rescale_dependency),  # noqa
-            color_formula: Optional[str] = Query(
-                None,
-                title="Color Formula",
-                description="rio-color formula (info: https://github.com/mapbox/rio-color)",
-            ),  # noqa
-            colormap=Depends(self.colormap_dependency),  # noqa
-            render_params=Depends(self.render_dependency),  # noqa
-            pgstac_params: PgSTACParams = Depends(),  # noqa
-            backend_params=Depends(self.backend_dependency),  # noqa
-            reader_params=Depends(self.reader_dependency),  # noqa
-            env=Depends(self.environment_dependency),  # noqa
+            tileMatrixSetId: Annotated[
+                Literal[tuple(self.supported_tms.list())],
+                f"Identifier selecting one of the TileMatrixSetId supported (default: '{self.default_tms}')",
+            ] = self.default_tms,
+            tile_format: Annotated[
+                Optional[ImageType],
+                Query(
+                    description="Default will be automatically defined if the output image needs a mask (png) or not (jpeg).",
+                ),
+            ] = None,
+            tile_scale: Annotated[
+                Optional[int],
+                Query(
+                    gt=0, lt=4, description="Tile size scale. 1=256x256, 2=512x512..."
+                ),
+            ] = None,
+            minzoom: Annotated[
+                Optional[int],
+                Query(description="Overwrite default minzoom."),
+            ] = None,
+            maxzoom: Annotated[
+                Optional[int],
+                Query(description="Overwrite default maxzoom."),
+            ] = None,
+            layer_params=Depends(self.layer_dependency),
+            dataset_params=Depends(self.dataset_dependency),
+            pixel_selection=Depends(self.pixel_selection_dependency),
+            buffer: Annotated[
+                Optional[float],
+                Query(
+                    gt=0,
+                    title="Tile buffer.",
+                    description="Buffer on each side of the given tile. It must be a multiple of `0.5`. Output **tilesize** will be expanded to `tilesize + 2 * buffer` (e.g 0.5 = 257x257, 1.0 = 258x258).",
+                ),
+            ] = None,
+            post_process=Depends(self.process_dependency),
+            rescale=Depends(self.rescale_dependency),
+            color_formula: Annotated[
+                Optional[str],
+                Query(
+                    title="Color Formula",
+                    description="rio-color formula (info: https://github.com/mapbox/rio-color)",
+                ),
+            ] = None,
+            colormap=Depends(self.colormap_dependency),
+            render_params=Depends(self.render_dependency),
+            pgstac_params: PgSTACParams = Depends(),
+            backend_params=Depends(self.backend_dependency),
+            reader_params=Depends(self.reader_dependency),
+            env=Depends(self.environment_dependency),
         ):
             """Return a simple map viewer."""
             tilejson_url = self.url_for(
-                request, "tilejson", searchid=searchid, TileMatrixSetId=TileMatrixSetId
+                request, "tilejson", searchid=searchid, tileMatrixSetId=tileMatrixSetId
             )
             if request.query_params._list:
                 tilejson_url += f"?{urlencode(request.query_params._list)}"
 
-            tms = self.supported_tms.get(TileMatrixSetId)
+            tms = self.supported_tms.get(tileMatrixSetId)
             return self.templates.TemplateResponse(
                 name="map.html",
                 context={
@@ -425,54 +459,61 @@ class MosaicTilerFactory(BaseTilerFactory):
 
         @self.router.get("/{searchid}/WMTSCapabilities.xml", response_class=XMLResponse)
         @self.router.get(
-            "/{searchid}/{TileMatrixSetId}/WMTSCapabilities.xml",
+            "/{searchid}/{tileMatrixSetId}/WMTSCapabilities.xml",
             response_class=XMLResponse,
         )
         def wmts(
             request: Request,
             searchid=Depends(self.path_dependency),
-            TileMatrixSetId: Literal[tuple(self.supported_tms.list())] = Query(
-                self.default_tms,
-                description=f"TileMatrixSet Name (default: '{self.default_tms}')",
-            ),  # noqa
+            tileMatrixSetId: Annotated[
+                Literal[tuple(self.supported_tms.list())],
+                f"Identifier selecting one of the TileMatrixSetId supported (default: '{self.default_tms}')",
+            ] = self.default_tms,
             src_path=Depends(self.path_dependency),
-            tile_format: ImageType = Query(
-                ImageType.png, description="Output image type. Default is png."
-            ),
-            tile_scale: int = Query(
-                1, gt=0, lt=4, description="Tile size scale. 1=256x256, 2=512x512..."
-            ),
-            minzoom: Optional[int] = Query(
-                None, description="Overwrite default minzoom."
-            ),
-            maxzoom: Optional[int] = Query(
-                None, description="Overwrite default maxzoom."
-            ),
-            layer_params=Depends(self.layer_dependency),  # noqa
-            dataset_params=Depends(self.dataset_dependency),  # noqa
-            pixel_selection: PixelSelectionMethod = Query(
-                PixelSelectionMethod.first, description="Pixel selection method."
-            ),  # noqa
-            buffer: Optional[float] = Query(
-                None,
-                gt=0,
-                alias="buffer",
-                title="Tile buffer.",
-                description="Buffer on each side of the given tile. It must be a multiple of `0.5`. Output **tilesize** will be expanded to `tilesize + 2 * buffer` (e.g 0.5 = 257x257, 1.0 = 258x258).",
-            ),  # noqa
-            post_process=Depends(self.process_dependency),  # noqa
-            rescale=Depends(self.rescale_dependency),  # noqa
-            color_formula: Optional[str] = Query(
-                None,
-                title="Color Formula",
-                description="rio-color formula (info: https://github.com/mapbox/rio-color)",
-            ),  # noqa
-            colormap=Depends(self.colormap_dependency),  # noqa
-            render_params=Depends(self.render_dependency),  # noqa
-            pgstac_params: PgSTACParams = Depends(),  # noqa
-            backend_params=Depends(self.backend_dependency),  # noqa
-            reader_params=Depends(self.reader_dependency),  # noqa
-            env=Depends(self.environment_dependency),  # noqa
+            tile_format: Annotated[
+                ImageType,
+                Query(description="Output image type. Default is png."),
+            ] = ImageType.png,
+            tile_scale: Annotated[
+                int,
+                Query(
+                    gt=0, lt=4, description="Tile size scale. 1=256x256, 2=512x512..."
+                ),
+            ] = 1,
+            minzoom: Annotated[
+                Optional[int],
+                Query(description="Overwrite default minzoom."),
+            ] = None,
+            maxzoom: Annotated[
+                Optional[int],
+                Query(description="Overwrite default maxzoom."),
+            ] = None,
+            layer_params=Depends(self.layer_dependency),
+            dataset_params=Depends(self.dataset_dependency),
+            pixel_selection=Depends(self.pixel_selection_dependency),
+            buffer: Annotated[
+                Optional[float],
+                Query(
+                    gt=0,
+                    title="Tile buffer.",
+                    description="Buffer on each side of the given tile. It must be a multiple of `0.5`. Output **tilesize** will be expanded to `tilesize + 2 * buffer` (e.g 0.5 = 257x257, 1.0 = 258x258).",
+                ),
+            ] = None,
+            post_process=Depends(self.process_dependency),
+            rescale=Depends(self.rescale_dependency),
+            color_formula: Annotated[
+                Optional[str],
+                Query(
+                    title="Color Formula",
+                    description="rio-color formula (info: https://github.com/mapbox/rio-color)",
+                ),
+            ] = None,
+            colormap=Depends(self.colormap_dependency),
+            render_params=Depends(self.render_dependency),
+            pgstac_params: PgSTACParams = Depends(),
+            backend_params=Depends(self.backend_dependency),
+            reader_params=Depends(self.reader_dependency),
+            env=Depends(self.environment_dependency),
         ):
             """OGC WMTS endpoint."""
             with request.app.state.dbpool.connection() as conn:
@@ -492,7 +533,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                 "y": "{TileRow}",
                 "scale": tile_scale,
                 "format": tile_format.value,
-                "TileMatrixSetId": TileMatrixSetId,
+                "tileMatrixSetId": tileMatrixSetId,
             }
             tiles_url = self.url_for(request, "tile", **route_params)
 
@@ -513,7 +554,7 @@ class MosaicTilerFactory(BaseTilerFactory):
             if qs:
                 tiles_url += f"?{urlencode(qs)}"
 
-            tms = self.supported_tms.get(TileMatrixSetId)
+            tms = self.supported_tms.get(tileMatrixSetId)
             minzoom = _first_value([minzoom, search_info.metadata.minzoom], tms.minzoom)
             maxzoom = _first_value([maxzoom, search_info.metadata.maxzoom], tms.maxzoom)
             bounds = _first_value(
@@ -526,9 +567,9 @@ class MosaicTilerFactory(BaseTilerFactory):
                 matrix = tms.matrix(zoom)
                 tm = f"""
                         <TileMatrix>
-                            <ows:Identifier>{matrix.identifier}</ows:Identifier>
+                            <ows:Identifier>{matrix.id}</ows:Identifier>
                             <ScaleDenominator>{matrix.scaleDenominator}</ScaleDenominator>
-                            <TopLeftCorner>{matrix.topLeftCorner[0]} {matrix.topLeftCorner[1]}</TopLeftCorner>
+                            <TopLeftCorner>{matrix.pointOfOrigin[0]} {matrix.pointOfOrigin[1]}</TopLeftCorner>
                             <TileWidth>{matrix.tileWidth}</TileWidth>
                             <TileHeight>{matrix.tileHeight}</TileHeight>
                             <MatrixWidth>{matrix.matrixWidth}</MatrixWidth>
@@ -555,48 +596,34 @@ class MosaicTilerFactory(BaseTilerFactory):
         """Register assets routes."""
 
         @self.router.get(
-            "/{searchid}/{z}/{x}/{y}/assets",
-            responses={200: {"description": "Return list of assets"}},
-            deprecated=True,
-        )
-        @self.router.get(
-            "/{searchid}/{TileMatrixSetId}/{z}/{x}/{y}/assets",
-            responses={200: {"description": "Return list of assets"}},
-            response_model=List[Dict],
-            deprecated=True,
-        )
-        @self.router.get(
             "/{searchid}/tiles/{z}/{x}/{y}/assets",
             responses={200: {"description": "Return list of assets"}},
         )
         @self.router.get(
-            "/{searchid}/tiles/{TileMatrixSetId}/{z}/{x}/{y}/assets",
+            "/{searchid}/tiles/{tileMatrixSetId}/{z}/{x}/{y}/assets",
             responses={200: {"description": "Return list of assets"}},
             response_model=List[Dict],
         )
         def assets_for_tile(
             searchid=Depends(self.path_dependency),
-            z: int = Path(..., ge=0, le=30, description="Tiles's zoom level"),
-            x: int = Path(..., description="Tiles's column"),
-            y: int = Path(..., description="Tiles's row"),
-            TileMatrixSetId: Literal[tuple(self.supported_tms.list())] = Query(  # type: ignore
-                self.default_tms,
-                description=f"TileMatrixSet Name (default: '{self.default_tms}')",
-            ),
+            tile=Depends(TileParams),
+            tileMatrixSetId: Annotated[
+                Literal[tuple(self.supported_tms.list())],
+                f"Identifier selecting one of the TileMatrixSetId supported (default: '{self.default_tms}')",
+            ] = self.default_tms,
             pgstac_params: PgSTACParams = Depends(),
             backend_params=Depends(self.backend_dependency),
             reader_params=Depends(self.reader_dependency),
         ):
             """Return a list of assets which overlap a given tile"""
-            tms = self.supported_tms.get(TileMatrixSetId)
-
+            tms = self.supported_tms.get(tileMatrixSetId)
             with self.reader(
                 searchid,
                 tms=tms,
                 reader_options={**reader_params},
                 **backend_params,
             ) as src_dst:
-                return src_dst.assets_for_tile(x, y, z, **pgstac_params)
+                return src_dst.assets_for_tile(tile.x, tile.y, tile.z, **pgstac_params)
 
         @self.router.get(
             "/{searchid}/{lon},{lat}/assets",
@@ -604,9 +631,10 @@ class MosaicTilerFactory(BaseTilerFactory):
             response_model=List[Dict],
         )
         def assets_for_point(
+            lon: Annotated[float, Path(description="Longitude")],
+            lat: Annotated[float, Path(description="Latitude")],
             searchid=Depends(self.path_dependency),
-            lon: float = Path(..., description="Longitude"),
-            lat: float = Path(..., description="Latitude"),
+            coord_crs=Depends(CoordCRSParams),
             pgstac_params: PgSTACParams = Depends(),
             backend_params=Depends(self.backend_dependency),
             reader_params=Depends(self.reader_dependency),
@@ -617,7 +645,12 @@ class MosaicTilerFactory(BaseTilerFactory):
                 reader_options={**reader_params},
                 **backend_params,
             ) as src_dst:
-                return src_dst.assets_for_point(lon, lat, **pgstac_params)
+                return src_dst.assets_for_point(
+                    lon,
+                    lat,
+                    coord_crs=coord_crs or WGS84_CRS,
+                    **pgstac_params,
+                )
 
     def _search_routes(self) -> None:
         """register search routes."""
@@ -707,21 +740,27 @@ class MosaicTilerFactory(BaseTilerFactory):
         )
         def list_mosaic(
             request: Request,
-            limit: int = Query(
-                10,
-                ge=1,
-                le=1000,
-                description="Page size limit",
-            ),
-            offset: int = Query(
-                0,
-                ge=0,
-                description="Page offset",
-            ),
-            sortby: Optional[str] = Query(
-                None,
-                description="Sort the response items by a property (ascending (default) or descending).",
-            ),
+            limit: Annotated[
+                int,
+                Query(
+                    ge=1,
+                    le=1000,
+                    description="Page size limit",
+                ),
+            ] = 10,
+            offset: Annotated[
+                int,
+                Query(
+                    ge=0,
+                    description="Page offset",
+                ),
+            ] = 0,
+            sortby: Annotated[
+                Optional[str],
+                Query(
+                    description="Sort the response items by a property (ascending (default) or descending).",
+                ),
+            ] = None,
         ):
             """List a Search query."""
             # Default filter to only return `metadata->type == 'mosaic'`
@@ -872,16 +911,18 @@ class MosaicTilerFactory(BaseTilerFactory):
             },
         )
         def geojson_statistics(
-            geojson: Union[FeatureCollection, Feature] = Body(
-                ..., description="GeoJSON Feature or FeatureCollection."
-            ),
+            geojson: Annotated[
+                Union[FeatureCollection, Feature],
+                Body(description="GeoJSON Feature or FeatureCollection."),
+            ],
             searchid=Depends(self.path_dependency),
+            coord_crs=Depends(CoordCRSParams),
             layer_params=Depends(self.layer_dependency),
             dataset_params=Depends(self.dataset_dependency),
-            pixel_selection: PixelSelectionMethod = Query(
-                PixelSelectionMethod.first, description="Pixel selection method."
-            ),
-            max_size: int = Query(1024, description="Maximum image size to read onto."),
+            pixel_selection=Depends(self.pixel_selection_dependency),
+            max_size: Annotated[
+                int, Query(description="Maximum image size to read onto.")
+            ] = 1024,
             stats_params=Depends(self.stats_dependency),
             histogram_params=Depends(self.histogram_dependency),
             pgstac_params: PgSTACParams = Depends(),
@@ -905,7 +946,8 @@ class MosaicTilerFactory(BaseTilerFactory):
                     for feature in fc:
                         data, _ = src_dst.feature(
                             feature.dict(exclude_none=True),
-                            pixel_selection=pixel_selection.method(),
+                            shape_crs=coord_crs or WGS84_CRS,
+                            pixel_selection=pixel_selection,
                             threads=threads,
                             max_size=max_size,
                             **layer_params,
@@ -913,22 +955,11 @@ class MosaicTilerFactory(BaseTilerFactory):
                             **pgstac_params,
                         )
 
-                        stats = get_array_statistics(
-                            data.as_masked(),
-                            **stats_params,
-                            **histogram_params,
+                        stats = data.statistics(
+                            **stats_params, hist_options={**histogram_params}
                         )
 
                         feature.properties = feature.properties or {}
-                        feature.properties.update(
-                            {
-                                "statistics": {
-                                    f"{data.band_names[ix]}": BandStatistics(
-                                        **stats[ix]
-                                    )
-                                    for ix in range(len(stats))
-                                }
-                            }
-                        )
+                        feature.properties.update({"statistics": stats})
 
             return fc.features[0] if isinstance(geojson, Feature) else fc
