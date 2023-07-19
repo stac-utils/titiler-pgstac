@@ -13,8 +13,9 @@ from pydantic import BaseModel, Field, root_validator, validator
 
 from titiler.core.resources.enums import MediaType
 
+# ref: https://github.com/stac-api-extensions/query
 # TODO: add "startsWith", "endsWith", "contains", "in"
-Operator = Literal["eq", "ne", "lt", "lte", "gt", "gte"]
+Operator = Literal["eq", "neq", "lt", "lte", "gt", "gte"]
 
 # ref: https://github.com/radiantearth/stac-api-spec/tree/master/fragments/filter#get-query-parameters-and-post-json-fields
 FilterLang = Literal["cql-json", "cql-text", "cql2-json"]
