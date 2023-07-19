@@ -4,70 +4,29 @@ Titiler.pgstac models.
 Note: This is mostly a copy of https://github.com/stac-utils/stac-fastapi/blob/master/stac_fastapi/pgstac/stac_fastapi/pgstac/types/search.py
 """
 
-import operator
 from datetime import datetime
-from enum import Enum, auto
-from types import DynamicClassAttribute
-from typing import Any, Callable, Dict, List, Optional, Union
+from typing import Any, Dict, List, Literal, Optional
 
-from geojson_pydantic.geometries import (
-    LineString,
-    MultiLineString,
-    MultiPoint,
-    MultiPolygon,
-    Point,
-    Polygon,
-)
+from geojson_pydantic.geometries import Geometry
+from geojson_pydantic.types import BBox
 from pydantic import BaseModel, Field, root_validator, validator
-from stac_pydantic.shared import BBox
-from stac_pydantic.utils import AutoValueEnum
 
 from titiler.core.resources.enums import MediaType
 
+# ref: https://github.com/stac-api-extensions/query
+# TODO: add "startsWith", "endsWith", "contains", "in"
+Operator = Literal["eq", "neq", "lt", "lte", "gt", "gte"]
 
-class FilterLang(str, Enum):
-    """filter language.
+# ref: https://github.com/radiantearth/stac-api-spec/tree/master/fragments/filter#get-query-parameters-and-post-json-fields
+FilterLang = Literal["cql-json", "cql-text", "cql2-json"]
 
-    ref: https://github.com/radiantearth/stac-api-spec/tree/master/fragments/filter#get-query-parameters-and-post-json-fields
-    """
-
-    cql_json = "cql-json"
-    cql_text = "cql-text"
-    cql2_json = "cql2-json"
-
-
-class Operator(str, AutoValueEnum):
-    """Defines the set of operators supported by the API."""
-
-    eq = auto()
-    ne = auto()
-    lt = auto()
-    lte = auto()
-    gt = auto()
-    gte = auto()
-    # TODO: These are defined in the spec but aren't currently implemented by the api
-    # startsWith = auto()
-    # endsWith = auto()
-    # contains = auto()
-    # in = auto()
-
-    @DynamicClassAttribute
-    def operator(self) -> Callable[[Any, Any], bool]:
-        """Return python operator."""
-        return getattr(operator, self._value_)
-
-
-class SearchType(str, Enum):
-    """Search type."""
-
-    mosaic = "mosaic"
-    search = "search"
+SearchType = Literal["mosaic", "search"]
 
 
 class Metadata(BaseModel):
     """Metadata Model."""
 
-    type: SearchType = SearchType.mosaic
+    type: SearchType = "mosaic"
 
     # WGS84 bounds
     bounds: Optional[BBox]
@@ -100,7 +59,6 @@ class Metadata(BaseModel):
     class Config:
         """Config for model."""
 
-        use_enum_values = True
         extra = "allow"
 
 
@@ -115,9 +73,7 @@ class PgSTACSearch(BaseModel):
     collections: Optional[List[str]] = None
     ids: Optional[List[str]] = None
     bbox: Optional[BBox]
-    intersects: Optional[
-        Union[Point, MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon]
-    ]
+    intersects: Optional[Geometry]
     query: Optional[Dict[str, Dict[Operator, Any]]]
     filter: Optional[Dict]
     datetime: Optional[str] = None
@@ -202,7 +158,7 @@ class Search(BaseModel):
     def validate_metadata(cls, v):
         """Set SearchType.search when not present in metadata."""
         if "type" not in v:
-            v["type"] = SearchType.search.name
+            v["type"] = "search"
 
         return v
 
