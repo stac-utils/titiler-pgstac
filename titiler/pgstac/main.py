@@ -3,10 +3,14 @@
 import logging
 from typing import Dict
 
+import jinja2
 from fastapi import FastAPI, Query
 from psycopg import OperationalError
 from psycopg_pool import PoolTimeout
 from starlette.middleware.cors import CORSMiddleware
+from starlette.requests import Request
+from starlette.responses import HTMLResponse
+from starlette.templating import Jinja2Templates
 
 from titiler.core.errors import DEFAULT_STATUS_CODES, add_exception_handlers
 from titiler.core.factory import AlgorithmFactory, MultiBaseTilerFactory, TMSFactory
@@ -27,6 +31,12 @@ from titiler.pgstac.settings import ApiSettings
 logging.getLogger("botocore.credentials").disabled = True
 logging.getLogger("botocore.utils").disabled = True
 logging.getLogger("rio-tiler").setLevel(logging.ERROR)
+
+templates = Jinja2Templates(
+    directory="",
+    loader=jinja2.ChoiceLoader([jinja2.PackageLoader(__package__, "templates")]),
+)  # type:ignore
+
 
 settings = ApiSettings()
 
@@ -135,3 +145,94 @@ def ping(
         db_online = False
 
     return {"database_online": db_online}
+
+
+###############################################################################
+# Landing Page
+@app.get("/", response_class=HTMLResponse)
+def landing(request: Request):
+    """Get landing page."""
+    data = {
+        "title": "TiTiler-PgSTACr",
+        "links": [
+            {
+                "title": "Landing page",
+                "href": str(request.url_for("landing")),
+                "type": "text/html",
+                "rel": "self",
+            },
+            {
+                "title": "the API definition (JSON)",
+                "href": str(request.url_for("openapi")),
+                "type": "application/vnd.oai.openapi+json;version=3.0",
+                "rel": "service-desc",
+            },
+            {
+                "title": "the API documentation",
+                "href": str(request.url_for("swagger_ui_html")),
+                "type": "text/html",
+                "rel": "service-doc",
+            },
+            {
+                "title": "Mosaic List (JSON)",
+                "href": mosaic.url_for(request, "list_mosaic"),
+                "type": "application/json",
+                "rel": "data",
+            },
+            {
+                "title": "Mosaic Metadata (template URL)",
+                "href": mosaic.url_for(request, "info_search", searchid="{searchid}"),
+                "type": "application/json",
+                "rel": "data",
+            },
+            {
+                "title": "Mosaic viewer (template URL)",
+                "href": mosaic.url_for(request, "map_viewer", searchid="{searchid}"),
+                "type": "text/html",
+                "rel": "data",
+            },
+            {
+                "title": "TiTiler-PgSTAC Documentation (external link)",
+                "href": "https://stac-utils.github.io/titiler-pgstac/",
+                "type": "text/html",
+                "rel": "doc",
+            },
+            {
+                "title": "TiTiler-PgSTAC source code (external link)",
+                "href": "https://github.com/stac-utils/titiler-pgstac",
+                "type": "text/html",
+                "rel": "doc",
+            },
+        ],
+    }
+
+    urlpath = request.url.path
+    crumbs = []
+    baseurl = str(request.base_url).rstrip("/")
+
+    crumbpath = str(baseurl)
+    for crumb in urlpath.split("/"):
+        crumbpath = crumbpath.rstrip("/")
+        part = crumb
+        if part is None or part == "":
+            part = "Home"
+        crumbpath += f"/{crumb}"
+        crumbs.append({"url": crumbpath.rstrip("/"), "part": part.capitalize()})
+
+    return templates.TemplateResponse(
+        "index.html",
+        {
+            "request": request,
+            "response": data,
+            "template": {
+                "api_root": baseurl,
+                "params": request.query_params,
+                "title": "TiTiler-PgSTAC",
+            },
+            "crumbs": crumbs,
+            "url": str(request.url),
+            "baseurl": baseurl,
+            "urlpath": str(request.url.path),
+            "urlparams": str(request.url.query),
+        },
+    )
