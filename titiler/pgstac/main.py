@@ -1,13 +1,15 @@
 """TiTiler+PgSTAC FastAPI application."""
 
 import logging
-from typing import Dict
-
+import re
 from fastapi import FastAPI, Query
+from fastapi.openapi.utils import get_openapi
+from http.client import HTTP_PORT, HTTPS_PORT
 from psycopg import OperationalError
 from psycopg_pool import PoolTimeout
 from starlette.middleware.cors import CORSMiddleware
-
+from starlette.middleware.cors import CORSMiddleware as _CORSMiddleware
+from starlette.types import ASGIApp, Receive, Scope, Send
 from titiler.core.errors import DEFAULT_STATUS_CODES, add_exception_handlers
 from titiler.core.factory import AlgorithmFactory, MultiBaseTilerFactory, TMSFactory
 from titiler.core.middleware import (
@@ -17,6 +19,8 @@ from titiler.core.middleware import (
 )
 from titiler.core.resources.enums import OptionalHeader
 from titiler.mosaic.errors import MOSAIC_STATUS_CODES
+from typing import Dict, Tuple, List
+
 from titiler.pgstac import __version__ as titiler_pgstac_version
 from titiler.pgstac.db import close_db_connection, connect_to_db
 from titiler.pgstac.dependencies import ItemPathParams
@@ -48,7 +52,6 @@ async def shutdown_event() -> None:
 add_exception_handlers(app, DEFAULT_STATUS_CODES)
 add_exception_handlers(app, MOSAIC_STATUS_CODES)
 
-
 # Set all CORS enabled origins
 if settings.cors_origins:
     app.add_middleware(
@@ -59,7 +62,104 @@ if settings.cors_origins:
         allow_headers=["*"],
     )
 
+
+class ProxyHeaderMiddleware:
+    """
+    Account for forwarding headers when deriving base URL.
+
+    Prioritise standard Forwarded header, look for non-standard X-Forwarded-* if missing.
+    Default to what can be derived from the URL if no headers provided.
+    Middleware updates the host header that is interpreted by starlette when deriving Request.base_url.
+    """
+
+    def __init__(self, app: ASGIApp):
+        """Create proxy header middleware."""
+        self.app = app
+
+    async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
+        """Call from stac-fastapi framework."""
+        if scope["type"] == "http":
+            proto: str; domain: str; port: int = self._get_forwarded_url_parts(scope)
+            scope["scheme"] = proto
+            if domain is not None:
+                port_suffix = ""
+                if port is not None:
+                    if (proto == "http" and port != HTTP_PORT) or (
+                        proto == "https" and port != HTTPS_PORT
+                    ):
+                        port_suffix = f":{port}"
+                scope["headers"] = self._replace_header_value_by_name(
+                    scope,
+                    "host",
+                    f"{domain}{port_suffix}",
+                )
+        await self.app(scope, receive, send)
+
+    def _get_forwarded_url_parts(self, scope: Scope) -> Tuple[str]:
+        proto: str = scope.get("scheme", "http")
+        header_host: str = self._get_header_value_by_name(scope, "host")
+        if header_host is None:
+            domain, port = scope.get("server")
+        else:
+            header_host_parts = header_host.split(":")
+            if len(header_host_parts) == 2:
+                domain, port = header_host_parts
+            else:
+                domain = header_host_parts[0]
+                port = None
+        forwarded = self._get_header_value_by_name(scope, "forwarded")
+        if forwarded is not None:
+            parts = forwarded.split(";")
+            for part in parts:
+                if len(part) > 0 and re.search("=", part):
+                    key, value = part.split("=")
+                    if key == "proto":
+                        proto = value
+                    elif key == "host":
+                        host_parts = value.split(":")
+                        domain = host_parts[0]
+                        try:
+                            port = int(host_parts[1]) if len(host_parts) == 2 else None
+                        except ValueError:
+                            # ignore ports that are not valid integers
+                            pass
+        else:
+            proto: str = self._get_header_value_by_name(
+                scope, "x-forwarded-proto", proto
+            )
+            port_str: str = self._get_header_value_by_name(
+                scope, "x-forwarded-port", port
+            )
+            try:
+                port = int(port_str) if port_str is not None else None
+            except ValueError:
+                # ignore ports that are not valid integers
+                pass
+
+        return (proto, domain, port)
+
+    def _get_header_value_by_name(
+        self, scope: Scope, header_name: str, default_value: str = None
+    ) -> str:
+        headers = scope["headers"]
+        candidates = [
+            value.decode() for key, value in headers if key.decode() == header_name
+        ]
+        return candidates[0] if len(candidates) == 1 else default_value
+
+    @staticmethod
+    def _replace_header_value_by_name(
+        scope: Scope, header_name: str, new_value: str
+    ) -> List[Tuple[str]]:
+        return [
+            (name, value)
+            for name, value in scope["headers"]
+            if name.decode() != header_name
+        ] + [(str.encode(header_name), str.encode(new_value))]
+
+
 app.add_middleware(CacheControlMiddleware, cachecontrol=settings.cachecontrol)
+app.add_middleware(ProxyHeaderMiddleware)
 if settings.debug:
     app.add_middleware(TotalTimeMiddleware)
     app.add_middleware(LoggerMiddleware)
