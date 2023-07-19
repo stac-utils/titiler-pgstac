@@ -1,5 +1,14 @@
 # Release Notes
 
+## 0.5.0 (TBD)
+
+* update `titiler` requirement to `>=0.12.0,<0.13`
+* use `Annotated` Type for Query/Path parameters
+* replace variable `TileMatrixSetId` by `tileMatrixSetId`
+* add `pixel_selection_dependency` attribute to the `MosaicTilerFactory`
+* re-order endpoints in `MosaicTilerFactory` to avoid conflicts between `tiles` and `assets` endpoints
+* remove deprecater `/{searchid}/{z}/{x}/{y}/assets` endpoints
+
 ## 0.4.1 (2023-06-21)
 
 * update `titiler` requirement to `>=0.11.7`

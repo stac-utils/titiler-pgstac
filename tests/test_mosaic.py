@@ -72,6 +72,15 @@ def test_assets_for_point(app):
     resp = response.json()
     assert len(resp) == 2
 
+    # with coord-crs
+    response = app.get(
+        f"/mosaic/{search_bbox}/-9517816.46282489,4322990.432036275/assets",
+        params={"coord-crs": "epsg:3857"},
+    )
+    assert response.status_code == 200
+    resp = response.json()
+    assert len(resp) == 2
+
     # no assets found outside the mosaic bbox
     response = app.get(f"/mosaic/{search_bbox}/-85.6358,36.1624/assets")
     assert response.status_code == 200
@@ -87,7 +96,7 @@ def test_assets_for_point(app):
 
 def test_assets_for_tile(app):
     """Get assets for a Tile."""
-    response = app.get(f"/mosaic/{search_no_bbox}/15/8589/12849/assets")
+    response = app.get(f"/mosaic/{search_no_bbox}/tiles/15/8589/12849/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 1
@@ -95,19 +104,39 @@ def test_assets_for_tile(app):
     assert resp[0]["id"] == "20200307aC0853900w361030"
 
     # make sure we can find assets when having both bbox and geometry
-    response = app.get(f"/mosaic/{search_bbox}/15/8601/12849/assets")
+    response = app.get(f"/mosaic/{search_bbox}/tiles/15/8601/12849/assets")
+    assert response.status_code == 200
+    resp = response.json()
+    assert len(resp) == 2
+
+    response = app.get(
+        f"/mosaic/{search_bbox}/tiles/WebMercatorQuad/15/8601/12849/assets"
+    )
+    assert response.status_code == 200
+    resp = response.json()
+    assert len(resp) == 2
+
+    # With WGS1994Quad TMS
+    response = app.get(f"/mosaic/{search_bbox}/tiles/WGS1984Quad/14/8601/4901/assets")
+    assert response.status_code == 200
+    resp = response.json()
+    assert len(resp) == 4
+
+    response = app.get(f"/mosaic/{search_bbox}/tiles/15/8601/12849/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 2
 
     # no assets found outside the query bbox
-    response = app.get(f"/mosaic/{search_bbox}/15/8589/12849/assets")
+    response = app.get(f"/mosaic/{search_bbox}/tiles/15/8589/12849/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 0
 
     # searchId not found
-    response = app.get("/mosaic/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/15/8589/12849/assets")
+    response = app.get(
+        "/mosaic/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/tiles/15/8589/12849/assets"
+    )
     assert response.status_code == 404
     resp = response.json()
     assert resp["detail"] == "SearchId `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa` not found"
@@ -155,7 +184,7 @@ def test_tilejson(app):
     assert response.status_code == 200
     resp = response.json()
     assert resp["minzoom"] == 0
-    assert resp["maxzoom"] == 17
+    assert resp["maxzoom"] == 23
     for xc, yc in zip(resp["bounds"], [-180.0, -90.0, 180.0, 90.0]):
         assert round(xc, 5) == round(yc, 5)
     assert "?assets=cog" in resp["tiles"][0]
@@ -322,7 +351,7 @@ def test_cql2(rio, app):
     assert list(resp[0]) == ["id", "bbox", "assets", "collection"]
     assert resp[0]["id"] == "20200307aC0853900w361030"
 
-    response = app.get(f"/mosaic/{cql2_id}/15/8589/12849/assets")
+    response = app.get(f"/mosaic/{cql2_id}/tiles/15/8589/12849/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 1
@@ -339,7 +368,7 @@ def test_cql2(rio, app):
     assert round(resp["bounds"][0]) == -180
     # Make sure we return a tilejson with the `/{searchid}/tiles/{tms}` format
     assert (
-        f"/mosaic/{cql2_id}/tiles/WebMercatorQuad/{{z}}/{{x}}/{{y}}@1x?assets=cog"
+        f"/mosaic/{cql2_id}/tiles/WebMercatorQuad/{{z}}/{{x}}/{{y}}?assets=cog"
         in resp["tiles"][0]
     )
 
@@ -403,7 +432,7 @@ def test_cql2_with_geometry(rio, app):
     assert search["metadata"] == {"type": "mosaic"}
 
     # make sure we can find assets when having both geometry filter and geometry
-    response = app.get(f"/mosaic/{cql2_id}/15/8601/12849/assets")
+    response = app.get(f"/mosaic/{cql2_id}/tiles/15/8601/12849/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 2
@@ -415,13 +444,13 @@ def test_cql2_with_geometry(rio, app):
     assert len(resp) == 0
 
     # make sure we can find assets when having both geometry filter and geometry
-    response = app.get(f"/mosaic/{cql2_id}/15/8601/12849/assets")
+    response = app.get(f"/mosaic/{cql2_id}/tiles/15/8601/12849/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 2
 
     # tile is outside the geometry filter
-    response = app.get(f"/mosaic/{cql2_id}/15/8589/12849/assets")
+    response = app.get(f"/mosaic/{cql2_id}/tiles/15/8589/12849/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 0

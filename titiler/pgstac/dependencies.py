@@ -1,8 +1,10 @@
 """titiler-pgstac dependencies."""
 
+import sys
 from dataclasses import dataclass, field
 from typing import Optional, Tuple
 
+import morecantile
 import pystac
 from cachetools import TTLCache, cached
 from cachetools.keys import hashkey
@@ -17,12 +19,23 @@ from titiler.pgstac import model
 from titiler.pgstac.settings import CacheSettings, RetrySettings
 from titiler.pgstac.utils import retry
 
+if sys.version_info >= (3, 9):
+    from typing import Annotated  # pylint: disable=no-name-in-module
+else:
+    from typing_extensions import Annotated
+
+
 cache_config = CacheSettings()
 retry_config = RetrySettings()
 
 
-def PathParams(searchid: str = Path(..., description="Search Id")) -> str:
-    """SearcId"""
+def PathParams(
+    searchid: Annotated[
+        str,
+        Path(description="Search Id (pgSTAC Search Hash)"),
+    ]
+) -> str:
+    """SearchId"""
     return searchid
 
 
@@ -57,26 +70,36 @@ class BackendParams(DefaultDependency):
 class PgSTACParams(DefaultDependency):
     """PgSTAC parameters."""
 
-    scan_limit: Optional[int] = Query(
-        None,
-        description="Return as soon as we scan N items (defaults to 10000 in PgSTAC).",
-    )
-    items_limit: Optional[int] = Query(
-        None,
-        description="Return as soon as we have N items per geometry (defaults to 100 in PgSTAC).",
-    )
-    time_limit: Optional[int] = Query(
-        None,
-        description="Return after N seconds to avoid long requests (defaults to 5 in PgSTAC).",
-    )
-    exitwhenfull: Optional[bool] = Query(
-        None,
-        description="Return as soon as the geometry is fully covered (defaults to True in PgSTAC).",
-    )
-    skipcovered: Optional[bool] = Query(
-        None,
-        description="Skip any items that would show up completely under the previous items (defaults to True in PgSTAC).",
-    )
+    scan_limit: Annotated[
+        Optional[int],
+        Query(
+            description="Return as soon as we scan N items (defaults to 10000 in PgSTAC).",
+        ),
+    ] = None
+    items_limit: Annotated[
+        Optional[int],
+        Query(
+            description="Return as soon as we have N items per geometry (defaults to 100 in PgSTAC).",
+        ),
+    ] = None
+    time_limit: Annotated[
+        Optional[int],
+        Query(
+            description="Return after N seconds to avoid long requests (defaults to 5 in PgSTAC).",
+        ),
+    ] = None
+    exitwhenfull: Annotated[
+        Optional[bool],
+        Query(
+            description="Return as soon as the geometry is fully covered (defaults to True in PgSTAC).",
+        ),
+    ] = None
+    skipcovered: Annotated[
+        Optional[bool],
+        Query(
+            description="Skip any items that would show up completely under the previous items (defaults to True in PgSTAC).",
+        ),
+    ] = None
 
 
 @cached(  # type: ignore
@@ -113,8 +136,35 @@ def get_stac_item(pool: ConnectionPool, collection: str, item: str) -> pystac.It
 
 def ItemPathParams(
     request: Request,
-    collection_id: str = Path(..., description="STAC Collection ID"),
-    item_id: str = Path(..., description="STAC Item ID"),
+    collection_id: Annotated[
+        str,
+        Path(description="STAC Collection Identifier"),
+    ],
+    item_id: Annotated[str, Path(description="STAC Item Identifier")],
 ) -> pystac.Item:
     """STAC Item dependency."""
     return get_stac_item(request.app.state.dbpool, collection_id, item_id)
+
+
+def TileParams(
+    z: Annotated[
+        int,
+        Path(
+            description="Identifier (Z) selecting one of the scales defined in the TileMatrixSet and representing the scaleDenominator the tile.",
+        ),
+    ],
+    x: Annotated[
+        int,
+        Path(
+            description="Column (X) index of the tile on the selected TileMatrix. It cannot exceed the MatrixHeight-1 for the selected TileMatrix.",
+        ),
+    ],
+    y: Annotated[
+        int,
+        Path(
+            description="Row (Y) index of the tile on the selected TileMatrix. It cannot exceed the MatrixWidth-1 for the selected TileMatrix.",
+        ),
+    ],
+) -> morecantile.Tile:
+    """Tile parameters."""
+    return morecantile.Tile(x, y, z)

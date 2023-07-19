@@ -4,9 +4,9 @@
 
 By default the main application (`titiler.pgstac.main.app`) provides two sets of endpoints:
 
-- `/mosaic`: Dynamic mosaic tiler based on STAC Queries
+- `/mosaic/{searchid}`: Dynamic mosaic tiler based on STAC Search Queries
 
-- `/stac`: Dynamic tiler for single STAC item (stored in PgSTAC)
+- `/collections/{collection_id}/items/{item_id}`: Dynamic tiler for single STAC item (stored in PgSTAC)
 
 ## Mosaic
 
@@ -222,12 +222,12 @@ curl 'http://127.0.0.1:8081/mosaic/f1ed59f0a6ad91ed80ae79b7b52bc707/tiles/8/40/1
 
 ## Items
 
-Set of endpoints created using TiTiler's [`MultiBaseTilerFactory`]() but with `item` and `collection` query parameter (instead of the default `url`).
+Set of endpoints created using TiTiler's [`MultiBaseTilerFactory`]() but with `item` and `collection` path parameter (instead of the `url=` query parameter).
 
 **example**
 
 ```bash
-curl http://127.0.0.1:8081/stac/info?collection=landsat-c2l2-sr&item=LC08_L1TP_028004_20171002_20171018_01_A1
+curl http://127.0.0.1:8081/collections/landsat-c2l2-sr/items/LC08_L1TP_028004_20171002_20171018_01_A1
 ```
 
 See full list of [endpoints](../item_endpoints)

@@ -67,23 +67,31 @@ class PgSTACReader(MultiBaseReader):
         return self.tms.maxzoom
 
     def _get_asset_info(self, asset: str) -> AssetInfo:
-        """Validate asset names and return asset's url.
-
-        Args:
-            asset (str): STAC asset name.
-
-        Returns:
-            str: STAC asset href.
-
-        """
+        """Validate asset names and return asset's info."""
         if asset not in self.assets:
-            raise InvalidAssetName(f"{asset} is not valid")
+            raise InvalidAssetName(
+                f"{asset} is not valid. Should be one of {self.assets}"
+            )
 
         asset_info = self.input.assets[asset]
-        info = AssetInfo(url=asset_info.get_absolute_href())
+        extras = asset_info.extra_fields
+
+        info = AssetInfo(
+            url=asset_info.get_absolute_href(),
+            metadata=extras,
+        )
 
         if "file:header_size" in asset_info.extra_fields:
             h = asset_info.extra_fields["file:header_size"]
             info["env"] = {"GDAL_INGESTED_BYTES_AT_OPEN": h}
+
+        if bands := extras.get("raster:bands"):
+            stats = [
+                (b["statistics"]["minimum"], b["statistics"]["maximum"])
+                for b in bands
+                if {"minimum", "maximum"}.issubset(b.get("statistics", {}))
+            ]
+            if len(stats) == len(bands):
+                info["dataset_statistics"] = stats
 
         return info

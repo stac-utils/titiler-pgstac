@@ -24,16 +24,18 @@ mosaic = MosaicTilerFactory()
 app.include_router(mosaic.router)
 ```
 
-| Method | URL                                                                       | Output                            | Description
-| ------ | --------------------------------------------------------------------------|-----------------------------------|--------------
-| `POST` | `/register`                                                               | JSON ([Register][register_model]) | Register **Search** query
-| `GET`  | `/{searchid}/info`                                                        | JSON ([Info][info_model])         | Return **Search** query infos
-| `GET`  | `/{searchid}/{lon},{lat}/assets`                                          | JSON                              | Return a list of assets which overlap a given point
-| `GET`  | `/{searchid}/tiles[/{TileMatrixSetId}]/{z}/{x}/{Y}/assets`                | JSON                              | Return a list of assets which overlap a given tile
-| `GET`  | `/{searchid}/tiles[/{TileMatrixSetId}]/{z}/{x}/{y}[@{scale}x][.{format}]` | image/bin                         | Create a web map tile image for a search query and a tile index
-| `GET`  | `/{searchid}[/{TileMatrixSetId}]/tilejson.json`                           | JSON ([TileJSON][tilejson_model]) | Return a Mapbox TileJSON document
-| `GET`  | `/{searchid}[/{TileMatrixSetId}]/WMTSCapabilities.xml`                    | XML                               | return OGC WMTS Get Capabilities
-| `GET`  | `/{searchid}[/{TileMatrixSetId}]/map`                                     | HTML                              | simple map viewer
+| Method | URL                                                                       | Output                                  | Description
+| ------ | --------------------------------------------------------------------------|---------------------------------------- |--------------
+| `POST` | `/register`                                                               | JSON ([Register][register_model])       | Register **Search** query  **OPTIONAL**
+| `GET`  | `/list`                                                                   | JSON ([Info][info_model])               | Return **Search** query infos  **OPTIONAL**
+| `GET`  | `/{searchid}/info`                                                        | JSON ([Infos][infos_model])             | Return list of **Search** entries with `Mosaic` type  **OPTIONAL**
+| `GET`  | `/{searchid}/{lon},{lat}/assets`                                          | JSON                                    | Return a list of assets which overlap a given point
+| `GET`  | `/{searchid}/tiles[/{TileMatrixSetId}]/{z}/{x}/{Y}/assets`                | JSON                                    | Return a list of assets which overlap a given tile
+| `GET`  | `/{searchid}/tiles[/{TileMatrixSetId}]/{z}/{x}/{y}[@{scale}x][.{format}]` | image/bin                               | Create a web map tile image for a search query and a tile index
+| `GET`  | `/{searchid}[/{TileMatrixSetId}]/tilejson.json`                           | JSON ([TileJSON][tilejson_model])       | Return a Mapbox TileJSON document
+| `GET`  | `/{searchid}[/{TileMatrixSetId}]/WMTSCapabilities.xml`                    | XML                                     | return OGC WMTS Get Capabilities
+| `GET`  | `/{searchid}[/{TileMatrixSetId}]/map`                                     | HTML                                    | simple map viewer **OPTIONAL**
+| `POST` | `/{searchid}/statistics`                                                  | GeoJSON ([Statistics][statitics_model]) | Return statistics for geojson features **OPTIONAL**
 
 ## Item
 
@@ -73,4 +75,6 @@ app.include_router(item.router, prefix="/collections/{collection_id}/items/{item
 
 [tilejson_model]: https://github.com/developmentseed/titiler/blob/2335048a407f17127099cbbc6c14e1328852d619/src/titiler/core/titiler/core/models/mapbox.py#L16-L38
 [info_model]: https://github.com/stac-utils/titiler-pgstac/blob/047315da8851a974660032ca45f219db2c3a8d54/titiler/pgstac/model.py#L236-L240
+[infos_model]: https://github.com/stac-utils/titiler-pgstac/blob/4f569fee1946f853be9b9149cb4dd2fd5c62b110/titiler/pgstac/model.py#L260-L265
 [register_model]: https://github.com/stac-utils/titiler-pgstac/blob/047315da8851a974660032ca45f219db2c3a8d54/titiler/pgstac/model.py#L229-L233
+[statitics_model]: https://github.com/developmentseed/titiler/blob/17cdff2f0ddf08dbd9a47c2140b13c4bbcc30b6d/src/titiler/core/titiler/core/models/responses.py#L49-L52
