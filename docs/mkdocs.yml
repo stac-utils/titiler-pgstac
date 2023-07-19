@@ -40,8 +40,12 @@ plugins:
       include_source: True
 
 theme:
+  palette:
+    primary: teal
+    scheme: default
   name: material
-
+  favicon: img/favicon.ico
+  logo: img/logo.png
 
 # https://github.com/kylebarron/cogeo-mosaic/blob/mkdocs/mkdocs.yml#L50-L75
 markdown_extensions:
