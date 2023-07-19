@@ -19,6 +19,7 @@ class ApiSettings(BaseSettings):
     name: str = "titiler-pgstac"
     cors_origins: str = "*"
     cachecontrol: str = "public, max-age=3600"
+    root_path: str = ""
     debug: bool = False
 
     @validator("cors_origins")
