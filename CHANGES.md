@@ -7,7 +7,9 @@
 * replace variable `TileMatrixSetId` by `tileMatrixSetId`
 * add `pixel_selection_dependency` attribute to the `MosaicTilerFactory`
 * re-order endpoints in `MosaicTilerFactory` to avoid conflicts between `tiles` and `assets` endpoints
-* remove deprecater `/{searchid}/{z}/{x}/{y}/assets` endpoints
+* remove deprecated `/{searchid}/{z}/{x}/{y}/assets` endpoints
+* remove `stac-pydantic` dependency
+* replace Enum's with `Literal` types
 
 ## 0.4.1 (2023-06-21)
 
