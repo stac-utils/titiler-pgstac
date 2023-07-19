@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>{{ template.title }}</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css" />
+    <style>
+      html { position: relative; min-height: 100%; }
+      body { padding-top: 5rem; margin-bottom: 40px; }
+      #page { padding: 1.5rem 1.5rem; }
+      .navbar { border-bottom: 8px solid #3333A4; }
+      .navbar-brand { font-size: 2rem; color: #3333A4 !important; text-shadow: 2px 2px 4px #ccc; }
+      .json-link { font-weight: normal; }
+      .devseed {
+        position: absolute;
+        right: 10px;
+        bottom: 5px;
+        display: inline;
+      }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://files.dnr.state.mn.us/lib/bootstrap4/javascripts/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-md navbar-light fixed-top bg-light">
+      <a href="{{ template.api_root }}/" style="width: auto;height: auto;">
+        <img width=40 src="data:image/png;base64,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" alt="TiTiler-PgSTAC">
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbar">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="{{ template.api_root }}" id="links" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Links</a>
+            <div class="dropdown-menu" aria-labelledby="account">
+              <a class="dropdown-item" href="{{ template.api_root }}/">Home</a>
+              <a class="dropdown-item" href="{{ template.api_root }}/api.html">API Documentation</a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <main role="main" class="container-fluid">
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb bg-light">
+    {% for crumb in crumbs %}
+      {% if not loop.last %}
+    <li class="breadcrumb-item"><a href="{{ crumb.url }}/">{{ crumb.part }}</a></li>
+      {% else %}<li class="breadcrumb-item active" aria-current="page">{{ crumb.part }}</li>
+      {% endif %}
+    {% endfor %}
+  </ol>
+</nav>
+
+<pre style=" font-size:10px; text-align: center;" >
+  __/\\\\\\\\\\\\\\\________/\\\\\\\\\\\\\\\________/\\\\\\____________________________________________/\\\\\\\\\\\\\____________________/\\\\\\\\\\\____/\\\\\\\\\\\\\\\_____/\\\\\\\\\___________/\\\\\\\\\_
+  _\///////\\\/////________\///////\\\/////________\////\\\___________________________________________\/\\\/////////\\\________________/\\\/////////\\\_\///////\\\/////____/\\\\\\\\\\\\\______/\\\////////__
+   _______\/\\\________/\\\_______\/\\\________/\\\____\/\\\___________________________________________\/\\\_______\/\\\___/\\\\\\\\___\//\\\______\///________\/\\\________/\\\/////////\\\___/\\\/___________
+    _______\/\\\_______\///________\/\\\_______\///_____\/\\\________/\\\\\\\\___/\\/\\\\\\\____________\/\\\\\\\\\\\\\/___/\\\////\\\___\////\\\_______________\/\\\_______\/\\\_______\/\\\__/\\\_____________
+     _______\/\\\________/\\\_______\/\\\________/\\\____\/\\\______/\\\/////\\\_\/\\\/////\\\___________\/\\\/////////____\//\\\\\\\\\______\////\\\____________\/\\\_______\/\\\\\\\\\\\\\\\_\/\\\_____________
+      _______\/\\\_______\/\\\_______\/\\\_______\/\\\____\/\\\_____/\\\\\\\\\\\__\/\\\___\///____________\/\\\______________\///////\\\_________\////\\\_________\/\\\_______\/\\\/////////\\\_\//\\\____________
+       _______\/\\\_______\/\\\_______\/\\\_______\/\\\____\/\\\____\//\\///////___\/\\\___________________\/\\\______________/\\_____\\\__/\\\______\//\\\________\/\\\_______\/\\\_______\/\\\__\///\\\__________
+        _______\/\\\_______\/\\\_______\/\\\_______\/\\\__/\\\\\\\\\__\//\\\\\\\\\\_\/\\\___________________\/\\\_____________\//\\\\\\\\__\///\\\\\\\\\\\/_________\/\\\_______\/\\\_______\/\\\____\////\\\\\\\\\_
+         _______\///________\///________\///________\///__\/////////____\//////////__\///____________________\///_______________\////////_____\///////////___________\///________\///________\///________\/////////__
+
+</pre>
+<p>
+  {{ response.description }}
+</p>
+
+<h2>Links</h2>
+<ul>
+{% for link in response.links %}
+  <li> <a href="{{ link.href }}">{{ link.title }}</a></li>
+{% endfor %}
+</ul>
+
+</div>
+</main>
+</body>
+</html>
+
