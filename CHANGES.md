@@ -8,6 +8,7 @@
 * remove `stac-pydantic` dependency
 * add optional `root_path` setting to specify a url path prefix to use when running the app behind a reverse proxy
 * add landing page `/`
+* use `lifespan` option instead of deprecated `@app.on_event` method to initiate/close DB connection
 
 **breaking changes**
 
