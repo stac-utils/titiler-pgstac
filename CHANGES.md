@@ -1,6 +1,6 @@
 # Release Notes
 
-## 0.5.0 (TBD)
+## 0.5.0 (2023-07-20)
 
 * update `titiler` requirement to `>=0.12.0,<0.13`
 * use `Annotated` Type for Query/Path parameters
