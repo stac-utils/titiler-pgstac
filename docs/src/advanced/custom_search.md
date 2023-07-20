@@ -1,6 +1,6 @@
 Even though `TiTiler.PgSTAC` includes default FastAPI application,
 it also can be used like a library if you want to extend or
-override default behaviour.
+override default behavior.
 
 Let's look at one such example. Imagine that we use JSON Web Token (JWT)
 based approach for authorization and every token contains information
@@ -19,6 +19,8 @@ We want our application to take this information into account while
 registering a search query. It can be done in the following way:
 
 ```python
+from contextlib import asynccontextmanager
+
 from typing import Tuple
 import json
 import jwt
@@ -27,9 +29,18 @@ from fastapi.security.utils import get_authorization_scheme_param
 from starlette.requests import Request
 from titiler.pgstac.factory import MosaicTilerFactory
 from titiler.pgstac.model import RegisterMosaic, Metadata, PgSTACSearch
+from titiler.pgstac.db import close_db_connection, connect_to_db
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """FastAPI Lifespan."""
+    # Create Connection Pool
+    await connect_to_db(app, settings=postgres_settings)
+    yield
+    # Close the Connection Pool
+    await close_db_connection(app)
 
-app = FastAPI()
+app = FastAPI(lifespan=lifespan)
 
 AREAS = {
     "zone_A": {"type": "Point", "coordinates": [-41.93, -12.76]},

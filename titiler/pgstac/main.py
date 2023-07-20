@@ -1,6 +1,7 @@
 """TiTiler+PgSTAC FastAPI application."""
 
 import logging
+from contextlib import asynccontextmanager
 from typing import Dict
 
 import jinja2
@@ -26,7 +27,7 @@ from titiler.pgstac.db import close_db_connection, connect_to_db
 from titiler.pgstac.dependencies import ItemPathParams
 from titiler.pgstac.factory import MosaicTilerFactory
 from titiler.pgstac.reader import PgSTACReader
-from titiler.pgstac.settings import ApiSettings
+from titiler.pgstac.settings import ApiSettings, PostgresSettings
 
 logging.getLogger("botocore.credentials").disabled = True
 logging.getLogger("botocore.utils").disabled = True
@@ -38,7 +39,19 @@ templates = Jinja2Templates(
 )  # type:ignore
 
 
+postgres_settings = PostgresSettings()
 settings = ApiSettings()
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """FastAPI Lifespan."""
+    # Create Connection Pool
+    await connect_to_db(app, settings=postgres_settings)
+    yield
+    # Close the Connection Pool
+    await close_db_connection(app)
+
 
 app = FastAPI(
     title=settings.name,
@@ -56,20 +69,8 @@ app = FastAPI(
     """,
     version=titiler_pgstac_version,
     root_path=settings.root_path,
+    lifespan=lifespan,
 )
-
-
-@app.on_event("startup")
-async def startup_event() -> None:
-    """Connect to database on startup."""
-    await connect_to_db(app)
-
-
-@app.on_event("shutdown")
-async def shutdown_event() -> None:
-    """Close database connection."""
-    await close_db_connection(app)
-
 
 add_exception_handlers(app, DEFAULT_STATUS_CODES)
 add_exception_handlers(app, MOSAIC_STATUS_CODES)

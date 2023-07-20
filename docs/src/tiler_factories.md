@@ -4,21 +4,23 @@
 
 ```python
 # Minimal PgSTAC Mosaic Application
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from titiler.pgstac.db import close_db_connection, connect_to_db
 from titiler.pgstac.factory import MosaicTilerFactory
 
-app = FastAPI()
-
-@app.on_event("startup")
-async def startup_event() -> None:
-    """Connect to database on startup."""
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """FastAPI Lifespan."""
+    # Create Connection Pool
     await connect_to_db(app)
-
-@app.on_event("shutdown")
-async def shutdown_event() -> None:
-    """Close database connection."""
+    yield
+    # Close the Connection Pool
     await close_db_connection(app)
+
+
+app = FastAPI(lifespan=lifespan)
 
 mosaic = MosaicTilerFactory()
 app.include_router(mosaic.router)
@@ -45,6 +47,8 @@ This custom `path_dependency` will connect to PgSTAC directly to fetch the STAC 
 
 ```python
 # Minimal PgSTAC Item Application
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 
 from titiler.core.factory import MultiBaseTilerFactory
@@ -53,17 +57,18 @@ from titiler.pgstac.db import close_db_connection, connect_to_db
 from titiler.pgstac.dependencies import ItemPathParams
 from titiler.pgstac.reader import PgSTACReader
 
-app = FastAPI()
 
-@app.on_event("startup")
-async def startup_event() -> None:
-    """Connect to database on startup."""
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """FastAPI Lifespan."""
+    # Create Connection Pool
     await connect_to_db(app)
-
-@app.on_event("shutdown")
-async def shutdown_event() -> None:
-    """Close database connection."""
+    yield
+    # Close the Connection Pool
     await close_db_connection(app)
+
+
+app = FastAPI(lifespan=lifespan)
 
 item = MultiBaseTilerFactory(
     reader=PgSTACReader,
