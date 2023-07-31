@@ -9,7 +9,14 @@ from typing import Any, Dict, List, Literal, Optional
 
 from geojson_pydantic.geometries import Geometry
 from geojson_pydantic.types import BBox
-from pydantic import BaseModel, Field, root_validator, validator
+from pydantic import (
+    BaseModel,
+    Field,
+    FieldValidationInfo,
+    field_validator,
+    model_validator,
+)
+from typing_extensions import Annotated
 
 from titiler.core.resources.enums import MediaType
 
@@ -20,26 +27,24 @@ Operator = Literal["eq", "neq", "lt", "lte", "gt", "gte"]
 # ref: https://github.com/radiantearth/stac-api-spec/tree/master/fragments/filter#get-query-parameters-and-post-json-fields
 FilterLang = Literal["cql-json", "cql-text", "cql2-json"]
 
-SearchType = Literal["mosaic", "search"]
-
 
 class Metadata(BaseModel):
     """Metadata Model."""
 
-    type: SearchType = "mosaic"
+    type: Literal["mosaic", "search"] = "mosaic"
 
     # WGS84 bounds
-    bounds: Optional[BBox]
+    bounds: Optional[BBox] = None
 
     # Min/Max zoom for WebMercatorQuad TMS
-    minzoom: Optional[int]
-    maxzoom: Optional[int]
+    minzoom: Optional[int] = None
+    maxzoom: Optional[int] = None
 
     # Name
-    name: Optional[str]
+    name: Optional[str] = None
 
     # List of available assets
-    assets: Optional[List[str]]
+    assets: Optional[List[str]] = None
 
     # Set of default configuration
     # e.g
@@ -54,12 +59,9 @@ class Metadata(BaseModel):
     #         "colormap_name": "viridis"
     #     }
     # }
-    defaults: Optional[Dict[str, Any]]
+    defaults: Optional[Dict[str, Any]] = None
 
-    class Config:
-        """Config for model."""
-
-        extra = "allow"
+    model_config = {"extra": "allow"}
 
 
 class PgSTACSearch(BaseModel):
@@ -72,38 +74,35 @@ class PgSTACSearch(BaseModel):
 
     collections: Optional[List[str]] = None
     ids: Optional[List[str]] = None
-    bbox: Optional[BBox]
-    intersects: Optional[Geometry]
-    query: Optional[Dict[str, Dict[Operator, Any]]]
-    filter: Optional[Dict]
+    bbox: Optional[BBox] = None
+    intersects: Optional[Geometry] = None
+    query: Optional[Dict[str, Dict[Operator, Any]]] = None
+    filter: Optional[Dict] = None
     datetime: Optional[str] = None
-    sortby: Any
-    filter_lang: Optional[FilterLang] = Field(None, alias="filter-lang")
+    sortby: Optional[Any] = None
+    filter_lang: Optional[FilterLang] = Field(default=None, alias="filter-lang")
 
-    class Config:
-        """Config for model."""
+    model_config = {"extra": "allow"}
 
-        use_enum_values = True
-        extra = "allow"
-
-    @root_validator(pre=True)
+    @model_validator(mode="before")
     def validate_query_fields(cls, values: Dict) -> Dict:
         """Pgstac does not require the base validator for query fields."""
         return values
 
-    @validator("datetime")
+    @field_validator("datetime")
     def validate_datetime(cls, v):
         """Pgstac does not require the base validator for datetime."""
         return v
 
-    @validator("intersects")
-    def validate_spatial(cls, v, values):
+    @field_validator("intersects")
+    def validate_spatial(cls, v: Optional[Geometry], info: FieldValidationInfo):
         """Make sure bbox is not used with Intersects."""
-        if v and values["bbox"]:
+        if v and info.data["bbox"]:
             raise ValueError("intersects and bbox parameters are mutually exclusive")
+
         return v
 
-    @validator("bbox")
+    @field_validator("bbox")
     def validate_bbox(cls, v: BBox):
         """Validate BBOX."""
         if v:
@@ -137,7 +136,7 @@ class PgSTACSearch(BaseModel):
 class RegisterMosaic(PgSTACSearch):
     """Model of /register endpoint input."""
 
-    metadata: Metadata = Field(default_factory=Metadata)
+    metadata: Annotated[Metadata, Field(default_factory=Metadata)]
 
 
 class Search(BaseModel):
@@ -154,7 +153,7 @@ class Search(BaseModel):
     usecount: int
     metadata: Metadata
 
-    @validator("metadata", pre=True)
+    @field_validator("metadata", mode="before")
     def validate_metadata(cls, v):
         """Set SearchType.search when not present in metadata."""
         if "type" not in v:
@@ -169,47 +168,45 @@ class Link(BaseModel):
     Ref: http://schemas.opengis.net/ogcapi/features/part1/1.0/openapi/schemas/link.yaml
     """
 
-    rel: Optional[str]
-    title: Optional[str]
+    rel: Optional[str] = None
+    title: Optional[str] = None
     type: Optional[MediaType] = MediaType.json
     href: str
-    hreflang: Optional[str]
-    length: Optional[int]
+    hreflang: Optional[str] = None
+    length: Optional[int] = None
 
-    class Config:
-        """Link model configuration."""
-
-        use_enum_values = True
+    model_config = {"use_enum_values": True}
 
 
 class RegisterResponse(BaseModel):
     """Response model for /register endpoint."""
 
     searchid: str
-    links: Optional[List[Link]]
+    links: Optional[List[Link]] = None
 
 
 class Info(BaseModel):
     """Response model for /info endpoint."""
 
     search: Search
-    links: Optional[List[Link]]
+    links: Optional[List[Link]] = None
 
 
 class Context(BaseModel):
     """Context Model."""
 
     returned: int
-    limit: Optional[int]
-    matched: Optional[int]
+    limit: Optional[int] = None
+    matched: Optional[int] = None
 
-    @validator("limit")
-    def validate_limit(cls, v, values):
+    @field_validator("limit")
+    def validate_limit(cls, v, info: FieldValidationInfo):
         """validate limit."""
-        if values["returned"] > v:
+        if info.data["returned"] > v:
             raise ValueError(
                 "Number of returned items must be less than or equal to the limit"
             )
+
         return v
 
 
@@ -217,5 +214,5 @@ class Infos(BaseModel):
     """Response model for /list endpoint."""
 
     searches: List[Info]
-    links: Optional[List[Link]]
+    links: Optional[List[Link]] = None
     context: Context

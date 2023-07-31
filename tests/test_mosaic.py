@@ -647,7 +647,7 @@ def test_mosaic_list(app):
     resp = response.json()
     assert resp["context"] == {"returned": 8, "limit": 10, "matched": 8}
     dates = [
-        datetime.strptime(s["search"]["lastused"][0:-6], "%Y-%m-%dT%H:%M:%S.%f")
+        datetime.strptime(s["search"]["lastused"], "%Y-%m-%dT%H:%M:%S.%fZ")
         for s in resp["searches"]
     ]
     assert dates[0] < dates[-1]
@@ -657,7 +657,7 @@ def test_mosaic_list(app):
     resp = response.json()
     assert resp["context"] == {"returned": 8, "limit": 10, "matched": 8}
     dates = [
-        datetime.strptime(s["search"]["lastused"][0:-6], "%Y-%m-%dT%H:%M:%S.%f")
+        datetime.strptime(s["search"]["lastused"], "%Y-%m-%dT%H:%M:%S.%fZ")
         for s in resp["searches"]
     ]
     assert dates[0] > dates[-1]
