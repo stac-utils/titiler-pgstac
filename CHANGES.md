@@ -1,5 +1,9 @@
 # Release Notes
 
+## 0.5.1 (2023-08-03)
+
+* add `python-dotenv` requirement
+
 ## 0.5.0 (2023-07-20)
 
 * update `titiler` requirement to `>=0.12.0,<0.13`
