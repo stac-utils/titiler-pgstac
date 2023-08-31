@@ -678,6 +678,22 @@ class MosaicTilerFactory(BaseTilerFactory):
                     )
                     search_info = cursor.fetchone()
 
+            layer_links = []
+            if search_info.metadata.defaults:
+                layer_links = [
+                    model.Link(
+                        title=f"TileJSON link for `{name}` layer.",
+                        rel="tilejson",
+                        href=self.url_for(
+                            request,
+                            "tilejson",
+                            searchid=search_info.id,
+                        )
+                        + f"?{urlencode(values, doseq=True)}",
+                    )
+                    for name, values in search_info.metadata.defaults.items()
+                ]
+
             return model.RegisterResponse(
                 searchid=search_info.id,
                 links=[
@@ -691,6 +707,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                         rel="tilejson",
                         href=self.url_for(request, "tilejson", searchid=search_info.id),
                     ),
+                    *layer_links,
                 ],
             )
 
@@ -713,6 +730,22 @@ class MosaicTilerFactory(BaseTilerFactory):
             if not search_info:
                 raise MosaicNotFoundError(f"SearchId `{searchid}` not found")
 
+            layer_links = []
+            if search_info.metadata.defaults:
+                layer_links = [
+                    model.Link(
+                        title=f"TileJSON link for `{name}` layer.",
+                        rel="tilejson",
+                        href=self.url_for(
+                            request,
+                            "tilejson",
+                            searchid=search_info.id,
+                        )
+                        + f"?{urlencode(values, doseq=True)}",
+                    )
+                    for name, values in search_info.metadata.defaults.items()
+                ]
+
             return model.Info(
                 search=search_info,
                 links=[
@@ -723,9 +756,11 @@ class MosaicTilerFactory(BaseTilerFactory):
                         ),
                     ),
                     model.Link(
+                        title="Templated link for TileJSON",
                         rel="tilejson",
                         href=self.url_for(request, "tilejson", searchid=search_info.id),
                     ),
+                    *layer_links,
                 ],
             )
 

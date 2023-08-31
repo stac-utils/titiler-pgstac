@@ -1,5 +1,9 @@
 # Release Notes
 
+## 0,5,2 (TDB)
+
+* add `tilejson` URL links for `defaults layers` defined in mosaic's metadata in `/mosaic/register` and `/mosaic/{mosaic_id}/info` response
+
 ## 0.5.1 (2023-08-03)
 
 * add `python-dotenv` requirement
