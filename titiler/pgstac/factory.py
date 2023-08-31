@@ -18,6 +18,7 @@ from typing import (
 )
 from urllib.parse import urlencode
 
+import jinja2
 import rasterio
 from cogeo_mosaic.backends import BaseBackend
 from cogeo_mosaic.errors import MosaicNotFoundError
@@ -32,6 +33,7 @@ from starlette.datastructures import QueryParams
 from starlette.requests import Request
 from starlette.responses import HTMLResponse, Response
 from starlette.routing import NoMatchFound
+from starlette.templating import Jinja2Templates
 
 from titiler.core.dependencies import (
     AssetsBidxExprParams,
@@ -67,6 +69,17 @@ def _first_value(values: List[Any], default: Any = None):
     return next(filter(lambda x: x is not None, values), default)
 
 
+DEFAULT_TEMPLATES = Jinja2Templates(
+    directory="",
+    loader=jinja2.ChoiceLoader(
+        [
+            jinja2.PackageLoader(__package__, "templates"),
+            jinja2.PackageLoader("titiler.core", "templates"),
+        ]
+    ),
+)  # type:ignore
+
+
 @dataclass
 class MosaicTilerFactory(BaseTilerFactory):
     """Custom MosaicTiler for PgSTAC Mosaic Backend."""
@@ -94,6 +107,8 @@ class MosaicTilerFactory(BaseTilerFactory):
     add_viewer: bool = False
 
     add_mosaic_list: bool = False
+
+    templates: Jinja2Templates = DEFAULT_TEMPLATES
 
     def register_routes(self) -> None:
         """This Method register routes to the router."""
@@ -489,32 +504,6 @@ class MosaicTilerFactory(BaseTilerFactory):
                 Optional[int],
                 Query(description="Overwrite default maxzoom."),
             ] = None,
-            layer_params=Depends(self.layer_dependency),
-            dataset_params=Depends(self.dataset_dependency),
-            pixel_selection=Depends(self.pixel_selection_dependency),
-            buffer: Annotated[
-                Optional[float],
-                Query(
-                    gt=0,
-                    title="Tile buffer.",
-                    description="Buffer on each side of the given tile. It must be a multiple of `0.5`. Output **tilesize** will be expanded to `tilesize + 2 * buffer` (e.g 0.5 = 257x257, 1.0 = 258x258).",
-                ),
-            ] = None,
-            post_process=Depends(self.process_dependency),
-            rescale=Depends(self.rescale_dependency),
-            color_formula: Annotated[
-                Optional[str],
-                Query(
-                    title="Color Formula",
-                    description="rio-color formula (info: https://github.com/mapbox/rio-color)",
-                ),
-            ] = None,
-            colormap=Depends(self.colormap_dependency),
-            render_params=Depends(self.render_dependency),
-            pgstac_params: PgSTACParams = Depends(),
-            backend_params=Depends(self.backend_dependency),
-            reader_params=Depends(self.reader_dependency),
-            env=Depends(self.environment_dependency),
         ):
             """OGC WMTS endpoint."""
             with request.app.state.dbpool.connection() as conn:
@@ -538,6 +527,16 @@ class MosaicTilerFactory(BaseTilerFactory):
             }
             tiles_url = self.url_for(request, "tile", **route_params)
 
+            layers: List[Dict[str, Any]] = []
+            if search_info.metadata.defaults:
+                for name, values in search_info.metadata.defaults.items():
+                    layers.append(
+                        {
+                            "name": name,
+                            "endpoint": tiles_url + f"?{urlencode(values, doseq=True)}",
+                        }
+                    )
+
             qs_key_to_remove = [
                 "tilematrixsetid",
                 "tile_format",
@@ -554,10 +553,27 @@ class MosaicTilerFactory(BaseTilerFactory):
             ]
             if qs:
                 tiles_url += f"?{urlencode(qs)}"
+            layers.append({"name": "default", "endpoint": tiles_url})
 
             tms = self.supported_tms.get(tileMatrixSetId)
-            minzoom = _first_value([minzoom, search_info.metadata.minzoom], tms.minzoom)
-            maxzoom = _first_value([maxzoom, search_info.metadata.maxzoom], tms.maxzoom)
+            minzoom = _first_value(
+                [
+                    minzoom,
+                    search_info.metadata.minzoom
+                    if tileMatrixSetId == self.default_tms
+                    else None,
+                ],
+                tms.minzoom,
+            )
+            maxzoom = _first_value(
+                [
+                    maxzoom,
+                    search_info.metadata.maxzoom
+                    if tileMatrixSetId == self.default_tms
+                    else None,
+                ],
+                tms.maxzoom,
+            )
             bounds = _first_value(
                 [search_info.input_search.get("bbox"), search_info.metadata.bounds],
                 tms.bbox,
@@ -582,12 +598,11 @@ class MosaicTilerFactory(BaseTilerFactory):
                 "wmts.xml",
                 {
                     "request": request,
-                    "tiles_endpoint": tiles_url,
+                    "title": search_info.metadata.name or searchid,
                     "bounds": bounds,
                     "tileMatrix": tileMatrix,
                     "tms": tms,
-                    "title": "Mosaic",
-                    "layer_name": "mosaic",
+                    "layers": layers,
                     "media_type": tile_format.mediatype,
                 },
                 media_type=MediaType.xml.value,
