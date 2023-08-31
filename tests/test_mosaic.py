@@ -21,7 +21,12 @@ def test_register(app):
     resp = response.json()
     assert resp["searchid"] == search_no_bbox
     assert resp["links"]
-    assert [link["rel"] for link in resp["links"]] == ["metadata", "tilejson"]
+    assert [link["rel"] for link in resp["links"]] == [
+        "metadata",
+        "tilejson",
+        "map",
+        "wmts",
+    ]
 
     query = {
         "collections": ["noaa-emergency-response"],
@@ -34,7 +39,12 @@ def test_register(app):
     resp = response.json()
     assert resp["searchid"] == search_bbox
     assert resp["links"]
-    assert [link["rel"] for link in resp["links"]] == ["metadata", "tilejson"]
+    assert [link["rel"] for link in resp["links"]] == [
+        "metadata",
+        "tilejson",
+        "map",
+        "wmts",
+    ]
 
 
 def test_info(app):
@@ -532,9 +542,9 @@ def test_query_with_metadata(app):
     resp = response.json()
     assert resp["searchid"]
     assert (
-        len(resp["links"]) == 4
-    )  # info, tilejson, tilejson for one_band, tilejson for three_bands
-    link = resp["links"][2]
+        len(resp["links"]) == 6
+    )  # info, tilejson, map, wmts tilejson for one_band, tilejson for three_bands
+    link = resp["links"][-2]
     assert link["title"] == "TileJSON link for `one_band` layer."
     assert "asset_bidx=1" in link["href"]
     assert "assets=cog" in link["href"]
