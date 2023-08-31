@@ -31,6 +31,7 @@ from rio_tiler.mosaic.methods.base import MosaicMethodBase
 from starlette.datastructures import QueryParams
 from starlette.requests import Request
 from starlette.responses import HTMLResponse, Response
+from starlette.routing import NoMatchFound
 
 from titiler.core.dependencies import (
     AssetsBidxExprParams,
@@ -652,7 +653,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                     **pgstac_params,
                 )
 
-    def _search_routes(self) -> None:
+    def _search_routes(self) -> None:  # noqa: C901
         """register search routes."""
 
         @self.router.post(
@@ -678,21 +679,59 @@ class MosaicTilerFactory(BaseTilerFactory):
                     )
                     search_info = cursor.fetchone()
 
-            return model.RegisterResponse(
-                searchid=search_info.id,
-                links=[
+            links: List[model.Link] = [
+                model.Link(
+                    rel="metadata",
+                    title="Mosaic metadata",
+                    href=self.url_for(request, "info_search", searchid=search_info.id),
+                ),
+                model.Link(
+                    rel="tilejson",
+                    title="Link for TileJSON",
+                    href=self.url_for(request, "tilejson", searchid=search_info.id),
+                ),
+            ]
+
+            try:
+                links.append(
                     model.Link(
-                        rel="metadata",
+                        rel="map",
+                        title="Link for Map viewer",
                         href=self.url_for(
-                            request, "info_search", searchid=search_info.id
+                            request, "map_viewer", searchid=search_info.id
                         ),
-                    ),
+                    )
+                )
+            except NoMatchFound:
+                pass
+
+            try:
+                links.append(
                     model.Link(
-                        rel="tilejson",
-                        href=self.url_for(request, "tilejson", searchid=search_info.id),
-                    ),
-                ],
-            )
+                        rel="wmts",
+                        title="Link for WMTS",
+                        href=self.url_for(request, "wmts", searchid=search_info.id),
+                    )
+                )
+            except NoMatchFound:
+                pass
+
+            if search_info.metadata.defaults:
+                for name, values in search_info.metadata.defaults.items():
+                    links.append(
+                        model.Link(
+                            title=f"TileJSON link for `{name}` layer.",
+                            rel="tilejson",
+                            href=self.url_for(
+                                request,
+                                "tilejson",
+                                searchid=search_info.id,
+                            )
+                            + f"?{urlencode(values, doseq=True)}",
+                        )
+                    )
+
+            return model.RegisterResponse(searchid=search_info.id, links=links)
 
         @self.router.get(
             "/{searchid}/info",
@@ -713,21 +752,59 @@ class MosaicTilerFactory(BaseTilerFactory):
             if not search_info:
                 raise MosaicNotFoundError(f"SearchId `{searchid}` not found")
 
-            return model.Info(
-                search=search_info,
-                links=[
+            links: List[model.Link] = [
+                model.Link(
+                    rel="self",
+                    title="Mosaic metadata",
+                    href=self.url_for(request, "info_search", searchid=search_info.id),
+                ),
+                model.Link(
+                    title="Link for TileJSON",
+                    rel="tilejson",
+                    href=self.url_for(request, "tilejson", searchid=search_info.id),
+                ),
+            ]
+
+            try:
+                links.append(
                     model.Link(
-                        rel="self",
+                        rel="map",
+                        title="Link for Map viewer",
                         href=self.url_for(
-                            request, "info_search", searchid=search_info.id
+                            request, "map_viewer", searchid=search_info.id
                         ),
-                    ),
+                    )
+                )
+            except NoMatchFound:
+                pass
+
+            try:
+                links.append(
                     model.Link(
-                        rel="tilejson",
-                        href=self.url_for(request, "tilejson", searchid=search_info.id),
-                    ),
-                ],
-            )
+                        rel="wmts",
+                        title="Link for WMTS",
+                        href=self.url_for(request, "wmts", searchid=search_info.id),
+                    )
+                )
+            except NoMatchFound:
+                pass
+
+            if search_info.metadata.defaults:
+                for name, values in search_info.metadata.defaults.items():
+                    links.append(
+                        model.Link(
+                            title=f"TileJSON link for `{name}` layer.",
+                            rel="tilejson",
+                            href=self.url_for(
+                                request,
+                                "tilejson",
+                                searchid=search_info.id,
+                            )
+                            + f"?{urlencode(values, doseq=True)}",
+                        )
+                    )
+
+            return model.Info(search=search_info, links=links)
 
     def _search_list_routes(self) -> None:
         """Add mosaic listing route."""
