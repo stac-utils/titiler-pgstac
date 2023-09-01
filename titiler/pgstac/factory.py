@@ -556,24 +556,8 @@ class MosaicTilerFactory(BaseTilerFactory):
             layers.append({"name": "default", "endpoint": tiles_url})
 
             tms = self.supported_tms.get(tileMatrixSetId)
-            minzoom = _first_value(
-                [
-                    minzoom,
-                    search_info.metadata.minzoom
-                    if tileMatrixSetId == self.default_tms
-                    else None,
-                ],
-                tms.minzoom,
-            )
-            maxzoom = _first_value(
-                [
-                    maxzoom,
-                    search_info.metadata.maxzoom
-                    if tileMatrixSetId == self.default_tms
-                    else None,
-                ],
-                tms.maxzoom,
-            )
+            minzoom = _first_value([minzoom, search_info.metadata.minzoom], tms.minzoom)
+            maxzoom = _first_value([maxzoom, search_info.metadata.maxzoom], tms.maxzoom)
             bounds = _first_value(
                 [search_info.input_search.get("bbox"), search_info.metadata.bounds],
                 tms.bbox,
