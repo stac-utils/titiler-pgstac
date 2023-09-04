@@ -557,16 +557,22 @@ class MosaicTilerFactory(BaseTilerFactory):
             if qs:
                 tiles_url += f"?{urlencode(qs)}"
 
+            # Checking if we can construct a valid tile URL
+            # Here we are only testing the `layer_dependency`, we cannot test the full /tiles endpoint dependency
+            # because there are some path parameters
+            # 1. `get_dependant` is used to get the query-parameters required by the `layer_dependency`
+            # 2. we use `request_params_to_args` to construct arguments needed to initiate the `layer_dependency` class
+            # 3. we initiate the `layer_dependency` and catch any errors
+            # 4. if there is no layers (from mosaic metadata) we raise the caught error
+            # 5. if there no errors we then add a default `layer` to the layers stack
             dep = get_dependant(path="", call=self.layer_dependency)
             query_values, _ = request_params_to_args(dep.query_params, QueryParams(qs))
-
             try:
                 _ = self.layer_dependency(**query_values)
-
             except Exception as e:
                 if not layers:
                     raise e
-
+            else:
                 layers.append({"name": "default", "endpoint": tiles_url})
 
             tms = self.supported_tms.get(tileMatrixSetId)
