@@ -23,6 +23,7 @@ import rasterio
 from cogeo_mosaic.backends import BaseBackend
 from cogeo_mosaic.errors import MosaicNotFoundError
 from fastapi import Body, Depends, HTTPException, Path, Query
+from fastapi.dependencies.utils import get_dependant, request_params_to_args
 from geojson_pydantic import Feature, FeatureCollection
 from psycopg import sql
 from psycopg.rows import class_row
@@ -478,7 +479,7 @@ class MosaicTilerFactory(BaseTilerFactory):
             "/{searchid}/{tileMatrixSetId}/WMTSCapabilities.xml",
             response_class=XMLResponse,
         )
-        def wmts(
+        async def wmts(
             request: Request,
             searchid=Depends(self.path_dependency),
             tileMatrixSetId: Annotated[
@@ -525,7 +526,9 @@ class MosaicTilerFactory(BaseTilerFactory):
                 "format": tile_format.value,
                 "tileMatrixSetId": tileMatrixSetId,
             }
-            tiles_url = self.url_for(request, "tile", **route_params)
+
+            # `route_params.copy()` this can be removed after titiler>=0.13.2 update
+            tiles_url = self.url_for(request, "tile", **route_params.copy())
 
             layers: List[Dict[str, Any]] = []
             if search_info.metadata.defaults:
@@ -553,7 +556,18 @@ class MosaicTilerFactory(BaseTilerFactory):
             ]
             if qs:
                 tiles_url += f"?{urlencode(qs)}"
-            layers.append({"name": "default", "endpoint": tiles_url})
+
+            dep = get_dependant(path="", call=self.layer_dependency)
+            query_values, _ = request_params_to_args(dep.query_params, QueryParams(qs))
+
+            try:
+                _ = self.layer_dependency(**query_values)
+
+            except Exception as e:
+                if not layers:
+                    raise e
+
+                layers.append({"name": "default", "endpoint": tiles_url})
 
             tms = self.supported_tms.get(tileMatrixSetId)
             minzoom = _first_value([minzoom, search_info.metadata.minzoom], tms.minzoom)
