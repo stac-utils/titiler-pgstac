@@ -487,9 +487,9 @@ def test_query_with_metadata(app):
     assert resp["searchid"]
     assert resp["links"]
 
-    cql2_id = resp["searchid"]
+    mosaic_id = resp["searchid"]
 
-    response = app.get(f"/mosaic/{cql2_id}/info")
+    response = app.get(f"/mosaic/{mosaic_id}/info")
     assert response.status_code == 200
     resp = response.json()
     assert resp["search"]
@@ -508,7 +508,7 @@ def test_query_with_metadata(app):
         "maxzoom": 2,
     }
 
-    response = app.get(f"/mosaic/{cql2_id}/tilejson.json?assets=cog")
+    response = app.get(f"/mosaic/{mosaic_id}/tilejson.json?assets=cog")
     assert response.status_code == 200
     resp = response.json()
     assert resp["minzoom"] == 1
@@ -545,9 +545,58 @@ def test_query_with_metadata(app):
         len(resp["links"]) == 6
     )  # info, tilejson, map, wmts tilejson for one_band, tilejson for three_bands
     link = resp["links"][-2]
+
+    mosaic_id_metadata = resp["searchid"]
+
     assert link["title"] == "TileJSON link for `one_band` layer."
     assert "asset_bidx=1" in link["href"]
     assert "assets=cog" in link["href"]
+
+    # Test WMTS
+    # 1. missing assets and no metadata layers
+    response = app.get(f"/mosaic/{mosaic_id}/WMTSCapabilities.xml")
+    assert response.status_code == 400
+    assert (
+        response.json()["detail"]
+        == "assets must be defined either via expression or assets options."
+    )
+
+    # 2. assets and no metadata layers
+    response = app.get(
+        f"/mosaic/{mosaic_id}/WMTSCapabilities.xml", params={"assets": "cog"}
+    )
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "application/xml"
+
+    with rasterio.open(io.BytesIO(response.content)) as src:
+        assert src.crs == "epsg:3857"
+        assert src.profile["driver"] == "WMTS"
+        assert not src.subdatasets
+
+    # 3. no assets and metadata layers
+    response = app.get(f"/mosaic/{mosaic_id_metadata}/WMTSCapabilities.xml")
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "application/xml"
+
+    with rasterio.open(io.BytesIO(response.content)) as src:
+        assert src.profile["driver"] == "WMTS"
+        assert len(src.subdatasets) == 2
+        assert src.subdatasets[0].endswith(",layer=one_band")
+        assert src.subdatasets[1].endswith(",layer=three_bands")
+
+    # 4. assets and metadata layers
+    response = app.get(
+        f"/mosaic/{mosaic_id_metadata}/WMTSCapabilities.xml", params={"assets": "cog"}
+    )
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "application/xml"
+
+    with rasterio.open(io.BytesIO(response.content)) as src:
+        assert src.profile["driver"] == "WMTS"
+        assert len(src.subdatasets) == 3
+        assert src.subdatasets[0].endswith(",layer=one_band")
+        assert src.subdatasets[1].endswith(",layer=three_bands")
+        assert src.subdatasets[2].endswith(",layer=default")
 
 
 @patch("rio_tiler.io.rasterio.rasterio")
