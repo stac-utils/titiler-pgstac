@@ -125,10 +125,10 @@ class MosaicTilerFactory(BaseTilerFactory):
         """
         for dependency in dependencies:
             dep = get_dependant(path="", call=dependency)
-            query_values, _ = request_params_to_args(dep.query_params, query_params)
-
-            # call the dependency with the query-parameters values
-            _ = dependency(**query_values)
+            if dep.query_params:
+                # call the dependency with the query-parameters values
+                query_values, _ = request_params_to_args(dep.query_params, query_params)
+                _ = dependency(**query_values)
 
         return
 
@@ -562,6 +562,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                 self.render_dependency,
                 PgSTACParams,
                 self.reader_dependency,
+                self.backend_dependency,
             ]
 
             layers: List[Dict[str, Any]] = []
@@ -791,6 +792,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                     self.render_dependency,
                     PgSTACParams,
                     self.reader_dependency,
+                    self.backend_dependency,
                 ]
 
                 for name, values in search_info.metadata.defaults.items():
