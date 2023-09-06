@@ -16,11 +16,12 @@ The `titiler.pgstac` package comes with a full FastAPI application with Mosaic a
 
 `:endpoint:/mosaic/register - [POST]`
 
-- **Body**: A valid STAC Search query (see: https://github.com/radiantearth/stac-api-spec/tree/master/item-search)
+- **Body** (a combination of Search+Metadata): A JSON body composed of a valid **STAC Search** query (see: https://github.com/radiantearth/stac-api-spec/tree/master/item-search) and Mosaic's metadata.
 
 ```json
 // titiler-pgstac search body example
 {
+  // STAC search query
   "collections": [
     "string"
   ],
@@ -28,16 +29,16 @@ The `titiler.pgstac` package comes with a full FastAPI application with Mosaic a
     "string"
   ],
   "bbox": [
-    "string",
-    "string",
-    "string",
-    "string"
+    "number",
+    "number",
+    "number",
+    "number"
   ],
   "intersects": {
     "type": "Point",
     "coordinates": [
-      "string",
-      "string"
+      "number",
+      "number"
     ]
   },
   "query": {
@@ -49,19 +50,21 @@ The `titiler.pgstac` package comes with a full FastAPI application with Mosaic a
   "datetime": "string",
   "sortby": "string",
   "filter-lang": "cql-json",
+  // titiler-pgstac mosaic metadata
   "metadata": {
     "type": "mosaic",
     "bounds": [
-      "string",
-      "string",
-      "string",
-      "string"
+      "number",
+      "number",
+      "number",
+      "number"
     ],
-    "minzoom": 0,
-    "maxzoom": 0,
+    "minzoom": "number",
+    "maxzoom": "number",
     "name": "string",
     "assets": [
-      "string"
+      "string",
+      "string",
     ],
     "defaults": {}
   }
@@ -271,32 +274,14 @@ Example:
     - **TileMatrixSetId**: TileMatrixSet name, default is `WebMercatorQuad`. OPTIONAL
 
 - QueryParams:
-    - **tile_format**: Output image format, default is set to None and will be either JPEG or PNG depending on masked value.
+    - **tile_format**: Output image format, default is set to PNG.
     - **tile_scale**: Tile size scale, default is set to 1 (256x256). OPTIONAL
     - **minzoom**: Overwrite default minzoom. OPTIONAL
     - **maxzoom**: Overwrite default maxzoom. OPTIONAL
-    - **expression** (str): rio-tiler's math expression with asset names (e.g `Asset1_b1/Asset2_b1`).
-    - **asset_as_band** (bool): tell rio-tiler that each asset is a 1 band dataset, so expression `Asset1/Asset2` can be passed.
-    - **asset_bidx** (array[str]): Per asset band math expression (e.g `Asset1|1;2;3`).
-    - **nodata** (str, int, float): Overwrite internal Nodata value.
-    - **unscale** (bool): Apply dataset internal Scale/Offset.
-    - **resampling** (str): rasterio resampling method. Default is `nearest`.
-    - **algorithm** (str): Custom algorithm name (e.g `hillshade`).
-    - **algorithm_params** (str): JSON encoded algorithm parameters.
-    - **rescale** (array[str]): Comma (',') delimited Min,Max range (e.g `rescale=0,1000`, `rescale=0,1000&rescale=0,3000&rescale=0,2000`).
-    - **color_formula** (str): rio-color formula.
-    - **colormap** (str): JSON encoded custom Colormap.
-    - **colormap_name** (str): rio-tiler color map name.
-    - **return_mask** (bool): Add mask to the output data. Default is True.
-    - **buffer** (float): Add buffer on each side of the tile (e.g 0.5 = 257x257, 1.0 = 258x258).
-    - **scan_limit** (int): Return as soon as we scan N items, Default is 10,000 in PgSTAC.
-    - **items_limit** (int): Return as soon as we have N items per geometry, Default is 100 in PgSTAC.
-    - **time_limit** (int): Return after N seconds to avoid long requests, Default is 5sec in PgSTAC.
-    - **exitwhenfull** (bool): Return as soon as the geometry is fully covered, Default is `True` in PgSTAC.
-    - **skipcovered** (bool): Skip any items that would show up completely under the previous items, Default is `True` in PgSTAC.
+
 
 !!! important
-    **assets** OR **expression** is required
+    additional query-parameters will be forwarded to the `tile` URL. If no `defaults` mosaic metadata, **assets** OR **expression** will be required
 
 Example:
 

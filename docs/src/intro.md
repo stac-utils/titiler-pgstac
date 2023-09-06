@@ -10,7 +10,9 @@ By default the main application (`titiler.pgstac.main.app`) provides two sets of
 
 ## Mosaic
 
-#### 1. Register a `Search` request (Mosaic)
+The goal of the `mosaic` endpoints is to use any [`search`](https://github.com/radiantearth/stac-api-spec/tree/master/item-search) query to create tiles. `titiler-pgstac` provides a set of endpoint to `register` and `list` the `search` queries.
+
+### Register a `Search` request
 
 ![](https://user-images.githubusercontent.com/10407788/132193537-0560016f-09bc-4a25-8a2a-eac9b50bc28a.png)
 
@@ -70,16 +72,16 @@ curl -X 'POST' 'http://127.0.0.1:8081/mosaic/register' \
 }
 ```
 
-##### 1.1 Get Mosaic metadata
+##### Mosaic metadata
 
 ```bash
 curl http://127.0.0.1:8081/mosaic/5063721f06957d6b2320326d82e90d1e/info | jq
 
 >> {
   "search": {
-    "hash": "5063721f06957d6b2320326d82e90d1e",
-    "search": {
-      "filter": {
+    "hash": "5063721f06957d6b2320326d82e90d1e",  # <-- this is the search/mosaic ID
+    "search": {  # <-- Summary of the search request
+      "filter": {  # <-- this is CQL2 filter associated with the search
         "op": "and",
         "args": [
           {
@@ -129,12 +131,12 @@ curl http://127.0.0.1:8081/mosaic/5063721f06957d6b2320326d82e90d1e/info | jq
         ]
       }
     },
-    "_where": "(  ( (collection_id = 'landsat-c2l2-sr') and st_intersects(geometry, '0103000020E610000001000000050000000000000000F05EC055F6687D502741400000000000F05EC02D553EA94A6943400000000000885DC02D553EA94A6943400000000000885DC055F6687D502741400000000000F05EC055F6687D50274140'::geometry) )  )  ",
+    "_where": "(  ( (collection_id = 'landsat-c2l2-sr') and st_intersects(geometry, '0103000020E610000001000000050000000000000000F05EC055F6687D502741400000000000F05EC02D553EA94A6943400000000000885DC02D553EA94A6943400000000000885DC055F6687D502741400000000000F05EC055F6687D50274140'::geometry) )  )  ",  # <-- internal pgstac WHERE expression
     "orderby": "datetime DESC, id DESC",
-    "lastused": "2022-03-03T11:44:55.878504+00:00",
-    "usecount": 2,
-    "metadata": {
-      "type": "mosaic"
+    "lastused": "2022-03-03T11:44:55.878504+00:00",  # <-- internal pgstac variable
+    "usecount": 2,  # <-- internal pgstac variable
+    "metadata": {  # <-- titiler-pgstac Mosaic Metadata
+      "type": "mosaic"  # <-- where using the `/mosaic/register` endpoint, titiler-pgstac will add `type=mosaic` to the metadata
     }
   },
   "links": [
@@ -199,7 +201,7 @@ curl http://127.0.0.1:8081/mosaic/f31d7de8a5ddfa3a80b9a9dd06378db1/info | jq '.s
 }
 ```
 
-#### 2. Fetch mosaic `Tiles`
+### Fetch mosaic `Tiles`
 
 When we have a `searchid` we can now call the dynamic tiler and ask for Map Tiles.
 

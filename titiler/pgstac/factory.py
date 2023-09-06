@@ -486,7 +486,6 @@ class MosaicTilerFactory(BaseTilerFactory):
                 Literal[tuple(self.supported_tms.list())],
                 f"Identifier selecting one of the TileMatrixSetId supported (default: '{self.default_tms}')",
             ] = self.default_tms,
-            src_path=Depends(self.path_dependency),
             tile_format: Annotated[
                 ImageType,
                 Query(description="Output image type. Default is png."),
