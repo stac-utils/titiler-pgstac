@@ -500,7 +500,7 @@ class MosaicTilerFactory(BaseTilerFactory):
             "/{searchid}/{tileMatrixSetId}/WMTSCapabilities.xml",
             response_class=XMLResponse,
         )
-        async def wmts(
+        def wmts(
             request: Request,
             searchid=Depends(self.path_dependency),
             tileMatrixSetId: Annotated[
