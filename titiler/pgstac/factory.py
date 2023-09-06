@@ -1,8 +1,8 @@
 """Custom MosaicTiler Factory for PgSTAC Mosaic Backend."""
-
 import os
 import re
 import sys
+import warnings
 from dataclasses import dataclass
 from typing import (
     Any,
@@ -573,7 +573,11 @@ class MosaicTilerFactory(BaseTilerFactory):
                             dependencies=tile_dependencies,
                             query_params=QueryParams(query_string),
                         )
-                    except Exception:
+                    except Exception as e:
+                        warnings.warn(
+                            f"Cannot construct URL for layer `{name}`: {repr(e)}",
+                            UserWarning,
+                        )
                         continue
 
                     layers.append(
@@ -775,7 +779,34 @@ class MosaicTilerFactory(BaseTilerFactory):
                 pass
 
             if search_info.metadata.defaults:
+                # List of dependencies a `/tile` URL should validate
+                # Note: Those dependencies should only require Query() inputs
+                tile_dependencies = [
+                    self.layer_dependency,
+                    self.dataset_dependency,
+                    self.pixel_selection_dependency,
+                    self.process_dependency,
+                    self.rescale_dependency,
+                    self.colormap_dependency,
+                    self.render_dependency,
+                    PgSTACParams,
+                    self.reader_dependency,
+                ]
+
                 for name, values in search_info.metadata.defaults.items():
+                    query_string = urlencode(values, doseq=True)
+                    try:
+                        self.check_query_params(
+                            dependencies=tile_dependencies,
+                            query_params=QueryParams(query_string),
+                        )
+                    except Exception as e:
+                        warnings.warn(
+                            f"Cannot construct URL for layer `{name}`: {repr(e)}",
+                            UserWarning,
+                        )
+                        continue
+
                     links.append(
                         model.Link(
                             title=f"TileJSON link for `{name}` layer.",
@@ -785,7 +816,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                                 "tilejson",
                                 searchid=search_info.id,
                             )
-                            + f"?{urlencode(values, doseq=True)}",
+                            + f"?{query_string}",
                         )
                     )
 

@@ -4,6 +4,7 @@ import io
 from datetime import datetime
 from unittest.mock import patch
 
+import pytest
 import rasterio
 from rasterio.crs import CRS
 
@@ -533,11 +534,16 @@ def test_query_with_metadata(app):
                     "assets": "cog",
                     "asset_bidx": "cog|1,2,3",
                 },
+                # missing `assets`
+                "bad_layer": {
+                    "asset_bidx": "cog|1,2,3",
+                },
             },
         },
     }
 
-    response = app.post("/mosaic/register", json=query)
+    with pytest.warns(UserWarning):
+        response = app.post("/mosaic/register", json=query)
     assert response.status_code == 200
     resp = response.json()
     assert resp["searchid"]
@@ -574,7 +580,8 @@ def test_query_with_metadata(app):
         assert not src.subdatasets
 
     # 3. no assets and metadata layers
-    response = app.get(f"/mosaic/{mosaic_id_metadata}/WMTSCapabilities.xml")
+    with pytest.warns(UserWarning):
+        response = app.get(f"/mosaic/{mosaic_id_metadata}/WMTSCapabilities.xml")
     assert response.status_code == 200
 
     assert response.headers["content-type"] == "application/xml"
@@ -586,9 +593,11 @@ def test_query_with_metadata(app):
         assert src.subdatasets[1].endswith(",layer=three_bands")
 
     # 4. assets and metadata layers
-    response = app.get(
-        f"/mosaic/{mosaic_id_metadata}/WMTSCapabilities.xml", params={"assets": "cog"}
-    )
+    with pytest.warns(UserWarning):
+        response = app.get(
+            f"/mosaic/{mosaic_id_metadata}/WMTSCapabilities.xml",
+            params={"assets": "cog"},
+        )
     assert response.status_code == 200
     assert response.headers["content-type"] == "application/xml"
 
