@@ -111,6 +111,27 @@ class MosaicTilerFactory(BaseTilerFactory):
 
     templates: Jinja2Templates = DEFAULT_TEMPLATES
 
+    def check_query_params(
+        self, *, dependencies: List[Callable], query_params: QueryParams
+    ) -> None:
+        """Check QueryParams for Query dependency.
+
+        1. `get_dependant` is used to get the query-parameters required by the `callable`
+        2. we use `request_params_to_args` to construct arguments needed to call the `callable`
+        3. we call the `callable` and catch any errors
+
+        Important: We assume the `callable` in not a co-routine
+
+        """
+        for dependency in dependencies:
+            dep = get_dependant(path="", call=dependency)
+            query_values, _ = request_params_to_args(dep.query_params, query_params)
+
+            # call the dependency with the query-parameters values
+            _ = dependency(**query_values)
+
+        return
+
     def register_routes(self) -> None:
         """This Method register routes to the router."""
         self._search_routes()
@@ -529,13 +550,36 @@ class MosaicTilerFactory(BaseTilerFactory):
             # `route_params.copy()` this can be removed after titiler>=0.13.2 update
             tiles_url = self.url_for(request, "tile", **route_params.copy())
 
+            # List of dependencies a `/tile` URL should validate
+            # Note: Those dependencies should only require Query() inputs
+            tile_dependencies = [
+                self.layer_dependency,
+                self.dataset_dependency,
+                self.pixel_selection_dependency,
+                self.process_dependency,
+                self.rescale_dependency,
+                self.colormap_dependency,
+                self.render_dependency,
+                PgSTACParams,
+                self.reader_dependency,
+            ]
+
             layers: List[Dict[str, Any]] = []
             if search_info.metadata.defaults:
                 for name, values in search_info.metadata.defaults.items():
+                    query_string = urlencode(values, doseq=True)
+                    try:
+                        self.check_query_params(
+                            dependencies=tile_dependencies,
+                            query_params=QueryParams(query_string),
+                        )
+                    except Exception:
+                        continue
+
                     layers.append(
                         {
                             "name": name,
-                            "endpoint": tiles_url + f"?{urlencode(values, doseq=True)}",
+                            "endpoint": tiles_url + f"?{query_string}",
                         }
                     )
 
@@ -557,17 +601,13 @@ class MosaicTilerFactory(BaseTilerFactory):
                 tiles_url += f"?{urlencode(qs)}"
 
             # Checking if we can construct a valid tile URL
-            # Here we are only testing the `layer_dependency`, we cannot test the full /tiles endpoint dependency
-            # because there are some path parameters
-            # 1. `get_dependant` is used to get the query-parameters required by the `layer_dependency`
-            # 2. we use `request_params_to_args` to construct arguments needed to initiate the `layer_dependency` class
-            # 3. we initiate the `layer_dependency` and catch any errors
-            # 4. if there is no layers (from mosaic metadata) we raise the caught error
-            # 5. if there no errors we then add a default `layer` to the layers stack
-            dep = get_dependant(path="", call=self.layer_dependency)
-            query_values, _ = request_params_to_args(dep.query_params, QueryParams(qs))
+            # 1. we use `check_query_params` to validate the query-parameter
+            # 2. if there is no layers (from mosaic metadata) we raise the caught error
+            # 3. if there no errors we then add a default `layer` to the layers stack
             try:
-                _ = self.layer_dependency(**query_values)
+                self.check_query_params(
+                    dependencies=tile_dependencies, query_params=QueryParams(qs)
+                )
             except Exception as e:
                 if not layers:
                     raise e

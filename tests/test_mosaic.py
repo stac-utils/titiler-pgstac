@@ -527,11 +527,11 @@ def test_query_with_metadata(app):
             "defaults": {
                 "one_band": {
                     "assets": "cog",
-                    "asset_bidx": 1,
+                    "asset_bidx": "cog|1",
                 },
                 "three_bands": {
                     "assets": "cog",
-                    "asset_bidx": [1, 2, 3],
+                    "asset_bidx": "cog|1,2,3",
                 },
             },
         },
@@ -549,7 +549,7 @@ def test_query_with_metadata(app):
     mosaic_id_metadata = resp["searchid"]
 
     assert link["title"] == "TileJSON link for `one_band` layer."
-    assert "asset_bidx=1" in link["href"]
+    assert "asset_bidx=cog%7C1" in link["href"]
     assert "assets=cog" in link["href"]
 
     # Test WMTS
@@ -576,6 +576,7 @@ def test_query_with_metadata(app):
     # 3. no assets and metadata layers
     response = app.get(f"/mosaic/{mosaic_id_metadata}/WMTSCapabilities.xml")
     assert response.status_code == 200
+
     assert response.headers["content-type"] == "application/xml"
 
     with rasterio.open(io.BytesIO(response.content)) as src:
