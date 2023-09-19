@@ -1,8 +1,39 @@
 # Release Notes
 
-## 0,5,2 (TDB)
+## 0.6.0 (TDB)
 
-* add `tilejson` URL links for `defaults layers` defined in mosaic's metadata in `/mosaic/register` and `/mosaic/{mosaic_id}/info` response
+* add `tilejson` URL links for `layers` defined in mosaic's metadata in `/mosaic/register` and `/mosaic/{mosaic_id}/info` response
+* support multiple `layers` in `/mosaic/{mosaic_id}/WMTSCapabilities.xml` endpoint created from mosaic's metadata
+
+**breaking change**
+
+* In `/mosaic/WMTSCapabilities.xml` we removed the query-parameters related to the `tile` endpoint (which are forwarded) so `?assets=` is no more required.
+The endpoint will still raise an error if there are no `layers` in the mosaic metadata and no required tile's parameters are passed.
+
+    ```python
+    # before
+    response = httpx.get("/mosaic/{mosaic_id}/WMTSCapabilities.xml")
+    assert response.status_code == 400
+
+    response = httpx.get("/mosaic/{mosaic_id}/WMTSCapabilities.xml?assets=cog")
+    assert response.status_code == 200
+
+    # now
+    # If the mosaic has `defaults` layers set in the metadata
+    # we will construct a WMTS document with multiple layers, so no need for the user to pass any `assets=`
+    response = httpx.get("/mosaic/{mosaic_id}/WMTSCapabilities.xml")
+    assert response.status_code == 200
+    with rasterio.open(io.BytesIO(response.content)) as src:
+        assert src.profile["driver"] == "WMTS"
+        assert len(src.subdatasets) == 2
+
+    # If the user pass any valid `tile` parameters, an additional layer will be added to the one from the metadata
+    response = httpx.get("/mosaic/{mosaic_id}/WMTSCapabilities.xml?assets=cog")
+    assert response.status_code == 200
+    with rasterio.open(io.BytesIO(response.content)) as src:
+        assert src.profile["driver"] == "WMTS"
+        assert len(src.subdatasets) == 3
+    ```
 
 ## 0.5.1 (2023-08-03)
 

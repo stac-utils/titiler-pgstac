@@ -1,8 +1,8 @@
 """Custom MosaicTiler Factory for PgSTAC Mosaic Backend."""
-
 import os
 import re
 import sys
+import warnings
 from dataclasses import dataclass
 from typing import (
     Any,
@@ -18,10 +18,12 @@ from typing import (
 )
 from urllib.parse import urlencode
 
+import jinja2
 import rasterio
 from cogeo_mosaic.backends import BaseBackend
 from cogeo_mosaic.errors import MosaicNotFoundError
 from fastapi import Body, Depends, HTTPException, Path, Query
+from fastapi.dependencies.utils import get_dependant, request_params_to_args
 from geojson_pydantic import Feature, FeatureCollection
 from psycopg import sql
 from psycopg.rows import class_row
@@ -32,6 +34,7 @@ from starlette.datastructures import QueryParams
 from starlette.requests import Request
 from starlette.responses import HTMLResponse, Response
 from starlette.routing import NoMatchFound
+from starlette.templating import Jinja2Templates
 
 from titiler.core.dependencies import (
     AssetsBidxExprParams,
@@ -67,6 +70,17 @@ def _first_value(values: List[Any], default: Any = None):
     return next(filter(lambda x: x is not None, values), default)
 
 
+DEFAULT_TEMPLATES = Jinja2Templates(
+    directory="",
+    loader=jinja2.ChoiceLoader(
+        [
+            jinja2.PackageLoader(__package__, "templates"),
+            jinja2.PackageLoader("titiler.core", "templates"),
+        ]
+    ),
+)  # type:ignore
+
+
 @dataclass
 class MosaicTilerFactory(BaseTilerFactory):
     """Custom MosaicTiler for PgSTAC Mosaic Backend."""
@@ -94,6 +108,29 @@ class MosaicTilerFactory(BaseTilerFactory):
     add_viewer: bool = False
 
     add_mosaic_list: bool = False
+
+    templates: Jinja2Templates = DEFAULT_TEMPLATES
+
+    def check_query_params(
+        self, *, dependencies: List[Callable], query_params: QueryParams
+    ) -> None:
+        """Check QueryParams for Query dependency.
+
+        1. `get_dependant` is used to get the query-parameters required by the `callable`
+        2. we use `request_params_to_args` to construct arguments needed to call the `callable`
+        3. we call the `callable` and catch any errors
+
+        Important: We assume the `callable` in not a co-routine
+
+        """
+        for dependency in dependencies:
+            dep = get_dependant(path="", call=dependency)
+            if dep.query_params:
+                # call the dependency with the query-parameters values
+                query_values, _ = request_params_to_args(dep.query_params, query_params)
+                _ = dependency(**query_values)
+
+        return
 
     def register_routes(self) -> None:
         """This Method register routes to the router."""
@@ -470,7 +507,6 @@ class MosaicTilerFactory(BaseTilerFactory):
                 Literal[tuple(self.supported_tms.list())],
                 f"Identifier selecting one of the TileMatrixSetId supported (default: '{self.default_tms}')",
             ] = self.default_tms,
-            src_path=Depends(self.path_dependency),
             tile_format: Annotated[
                 ImageType,
                 Query(description="Output image type. Default is png."),
@@ -489,32 +525,6 @@ class MosaicTilerFactory(BaseTilerFactory):
                 Optional[int],
                 Query(description="Overwrite default maxzoom."),
             ] = None,
-            layer_params=Depends(self.layer_dependency),
-            dataset_params=Depends(self.dataset_dependency),
-            pixel_selection=Depends(self.pixel_selection_dependency),
-            buffer: Annotated[
-                Optional[float],
-                Query(
-                    gt=0,
-                    title="Tile buffer.",
-                    description="Buffer on each side of the given tile. It must be a multiple of `0.5`. Output **tilesize** will be expanded to `tilesize + 2 * buffer` (e.g 0.5 = 257x257, 1.0 = 258x258).",
-                ),
-            ] = None,
-            post_process=Depends(self.process_dependency),
-            rescale=Depends(self.rescale_dependency),
-            color_formula: Annotated[
-                Optional[str],
-                Query(
-                    title="Color Formula",
-                    description="rio-color formula (info: https://github.com/mapbox/rio-color)",
-                ),
-            ] = None,
-            colormap=Depends(self.colormap_dependency),
-            render_params=Depends(self.render_dependency),
-            pgstac_params: PgSTACParams = Depends(),
-            backend_params=Depends(self.backend_dependency),
-            reader_params=Depends(self.reader_dependency),
-            env=Depends(self.environment_dependency),
         ):
             """OGC WMTS endpoint."""
             with request.app.state.dbpool.connection() as conn:
@@ -536,7 +546,47 @@ class MosaicTilerFactory(BaseTilerFactory):
                 "format": tile_format.value,
                 "tileMatrixSetId": tileMatrixSetId,
             }
-            tiles_url = self.url_for(request, "tile", **route_params)
+
+            # `route_params.copy()` this can be removed after titiler>=0.13.2 update
+            tiles_url = self.url_for(request, "tile", **route_params.copy())
+
+            # List of dependencies a `/tile` URL should validate
+            # Note: Those dependencies should only require Query() inputs
+            tile_dependencies = [
+                self.layer_dependency,
+                self.dataset_dependency,
+                self.pixel_selection_dependency,
+                self.process_dependency,
+                self.rescale_dependency,
+                self.colormap_dependency,
+                self.render_dependency,
+                PgSTACParams,
+                self.reader_dependency,
+                self.backend_dependency,
+            ]
+
+            layers: List[Dict[str, Any]] = []
+            if search_info.metadata.defaults:
+                for name, values in search_info.metadata.defaults.items():
+                    query_string = urlencode(values, doseq=True)
+                    try:
+                        self.check_query_params(
+                            dependencies=tile_dependencies,
+                            query_params=QueryParams(query_string),
+                        )
+                    except Exception as e:
+                        warnings.warn(
+                            f"Cannot construct URL for layer `{name}`: {repr(e)}",
+                            UserWarning,
+                        )
+                        continue
+
+                    layers.append(
+                        {
+                            "name": name,
+                            "endpoint": tiles_url + f"?{query_string}",
+                        }
+                    )
 
             qs_key_to_remove = [
                 "tilematrixsetid",
@@ -554,6 +604,20 @@ class MosaicTilerFactory(BaseTilerFactory):
             ]
             if qs:
                 tiles_url += f"?{urlencode(qs)}"
+
+            # Checking if we can construct a valid tile URL
+            # 1. we use `check_query_params` to validate the query-parameter
+            # 2. if there is no layers (from mosaic metadata) we raise the caught error
+            # 3. if there no errors we then add a default `layer` to the layers stack
+            try:
+                self.check_query_params(
+                    dependencies=tile_dependencies, query_params=QueryParams(qs)
+                )
+            except Exception as e:
+                if not layers:
+                    raise e
+            else:
+                layers.append({"name": "default", "endpoint": tiles_url})
 
             tms = self.supported_tms.get(tileMatrixSetId)
             minzoom = _first_value([minzoom, search_info.metadata.minzoom], tms.minzoom)
@@ -582,12 +646,11 @@ class MosaicTilerFactory(BaseTilerFactory):
                 "wmts.xml",
                 {
                     "request": request,
-                    "tiles_endpoint": tiles_url,
+                    "title": search_info.metadata.name or searchid,
                     "bounds": bounds,
                     "tileMatrix": tileMatrix,
                     "tms": tms,
-                    "title": "Mosaic",
-                    "layer_name": "mosaic",
+                    "layers": layers,
                     "media_type": tile_format.mediatype,
                 },
                 media_type=MediaType.xml.value,
@@ -717,7 +780,35 @@ class MosaicTilerFactory(BaseTilerFactory):
                 pass
 
             if search_info.metadata.defaults:
+                # List of dependencies a `/tile` URL should validate
+                # Note: Those dependencies should only require Query() inputs
+                tile_dependencies = [
+                    self.layer_dependency,
+                    self.dataset_dependency,
+                    self.pixel_selection_dependency,
+                    self.process_dependency,
+                    self.rescale_dependency,
+                    self.colormap_dependency,
+                    self.render_dependency,
+                    PgSTACParams,
+                    self.reader_dependency,
+                    self.backend_dependency,
+                ]
+
                 for name, values in search_info.metadata.defaults.items():
+                    query_string = urlencode(values, doseq=True)
+                    try:
+                        self.check_query_params(
+                            dependencies=tile_dependencies,
+                            query_params=QueryParams(query_string),
+                        )
+                    except Exception as e:
+                        warnings.warn(
+                            f"Cannot construct URL for layer `{name}`: {repr(e)}",
+                            UserWarning,
+                        )
+                        continue
+
                     links.append(
                         model.Link(
                             title=f"TileJSON link for `{name}` layer.",
@@ -727,7 +818,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                                 "tilejson",
                                 searchid=search_info.id,
                             )
-                            + f"?{urlencode(values, doseq=True)}",
+                            + f"?{query_string}",
                         )
                     )
 
