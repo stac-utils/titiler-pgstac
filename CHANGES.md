@@ -1,6 +1,6 @@
 # Release Notes
 
-## 0.6.0 (TDB)
+## 0.6.0 (2023-09-18)
 
 * add `tilejson` URL links for `layers` defined in mosaic's metadata in `/mosaic/register` and `/mosaic/{mosaic_id}/info` response
 * support multiple `layers` in `/mosaic/{mosaic_id}/WMTSCapabilities.xml` endpoint created from mosaic's metadata
