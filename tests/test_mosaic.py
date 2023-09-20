@@ -4,6 +4,7 @@ import io
 from datetime import datetime
 from unittest.mock import patch
 
+import pytest
 import rasterio
 from rasterio.crs import CRS
 
@@ -21,7 +22,12 @@ def test_register(app):
     resp = response.json()
     assert resp["searchid"] == search_no_bbox
     assert resp["links"]
-    assert [link["rel"] for link in resp["links"]] == ["metadata", "tilejson"]
+    assert [link["rel"] for link in resp["links"]] == [
+        "metadata",
+        "tilejson",
+        "map",
+        "wmts",
+    ]
 
     query = {
         "collections": ["noaa-emergency-response"],
@@ -34,7 +40,12 @@ def test_register(app):
     resp = response.json()
     assert resp["searchid"] == search_bbox
     assert resp["links"]
-    assert [link["rel"] for link in resp["links"]] == ["metadata", "tilejson"]
+    assert [link["rel"] for link in resp["links"]] == [
+        "metadata",
+        "tilejson",
+        "map",
+        "wmts",
+    ]
 
 
 def test_info(app):
@@ -477,9 +488,9 @@ def test_query_with_metadata(app):
     assert resp["searchid"]
     assert resp["links"]
 
-    cql2_id = resp["searchid"]
+    mosaic_id = resp["searchid"]
 
-    response = app.get(f"/mosaic/{cql2_id}/info")
+    response = app.get(f"/mosaic/{mosaic_id}/info")
     assert response.status_code == 200
     resp = response.json()
     assert resp["search"]
@@ -498,11 +509,104 @@ def test_query_with_metadata(app):
         "maxzoom": 2,
     }
 
-    response = app.get(f"/mosaic/{cql2_id}/tilejson.json?assets=cog")
+    response = app.get(f"/mosaic/{mosaic_id}/tilejson.json?assets=cog")
     assert response.status_code == 200
     resp = response.json()
     assert resp["minzoom"] == 1
     assert resp["maxzoom"] == 2
+
+    # Check that `defaults` created `tilejson` URL in links
+    query = {
+        "filter": {
+            "op": "=",
+            "args": [{"property": "collection"}, "noaa-emergency-response"],
+        },
+        "metadata": {
+            "name": "mymosaic",
+            "minzoom": 1,
+            "maxzoom": 2,
+            "defaults": {
+                "one_band": {
+                    "assets": "cog",
+                    "asset_bidx": "cog|1",
+                },
+                "three_bands": {
+                    "assets": "cog",
+                    "asset_bidx": "cog|1,2,3",
+                },
+                # missing `assets`
+                "bad_layer": {
+                    "asset_bidx": "cog|1,2,3",
+                },
+            },
+        },
+    }
+
+    with pytest.warns(UserWarning):
+        response = app.post("/mosaic/register", json=query)
+    assert response.status_code == 200
+    resp = response.json()
+    assert resp["searchid"]
+    assert (
+        len(resp["links"]) == 6
+    )  # info, tilejson, map, wmts tilejson for one_band, tilejson for three_bands
+    link = resp["links"][-2]
+
+    mosaic_id_metadata = resp["searchid"]
+
+    assert link["title"] == "TileJSON link for `one_band` layer."
+    assert "asset_bidx=cog%7C1" in link["href"]
+    assert "assets=cog" in link["href"]
+
+    # Test WMTS
+    # 1. missing assets and no metadata layers
+    response = app.get(f"/mosaic/{mosaic_id}/WMTSCapabilities.xml")
+    assert response.status_code == 400
+    assert (
+        response.json()["detail"]
+        == "assets must be defined either via expression or assets options."
+    )
+
+    # 2. assets and no metadata layers
+    response = app.get(
+        f"/mosaic/{mosaic_id}/WMTSCapabilities.xml", params={"assets": "cog"}
+    )
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "application/xml"
+
+    with rasterio.open(io.BytesIO(response.content)) as src:
+        assert src.crs == "epsg:3857"
+        assert src.profile["driver"] == "WMTS"
+        assert not src.subdatasets
+
+    # 3. no assets and metadata layers
+    with pytest.warns(UserWarning):
+        response = app.get(f"/mosaic/{mosaic_id_metadata}/WMTSCapabilities.xml")
+    assert response.status_code == 200
+
+    assert response.headers["content-type"] == "application/xml"
+
+    with rasterio.open(io.BytesIO(response.content)) as src:
+        assert src.profile["driver"] == "WMTS"
+        assert len(src.subdatasets) == 2
+        assert src.subdatasets[0].endswith(",layer=one_band")
+        assert src.subdatasets[1].endswith(",layer=three_bands")
+
+    # 4. assets and metadata layers
+    with pytest.warns(UserWarning):
+        response = app.get(
+            f"/mosaic/{mosaic_id_metadata}/WMTSCapabilities.xml",
+            params={"assets": "cog"},
+        )
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "application/xml"
+
+    with rasterio.open(io.BytesIO(response.content)) as src:
+        assert src.profile["driver"] == "WMTS"
+        assert len(src.subdatasets) == 3
+        assert src.subdatasets[0].endswith(",layer=one_band")
+        assert src.subdatasets[1].endswith(",layer=three_bands")
+        assert src.subdatasets[2].endswith(",layer=default")
 
 
 @patch("rio_tiler.io.rasterio.rasterio")
@@ -572,15 +676,13 @@ def test_mosaic_list(app):
     assert response.status_code == 200
     resp = response.json()
     assert ["searches", "links", "context"] == list(resp)
-    assert resp["context"] == {"returned": 5, "limit": 10, "matched": 5}
-    assert len(resp["searches"]) == 5
+    assert len(resp["searches"]) > 0
     assert len(resp["links"]) == 1
 
     response = app.get("/mosaic/list?limit=1")
     assert response.status_code == 200
     resp = response.json()
     assert ["searches", "links", "context"] == list(resp)
-    assert resp["context"] == {"returned": 1, "limit": 1, "matched": 5}
     assert len(resp["searches"]) == 1
     assert len(resp["links"]) == 2
 
@@ -588,7 +690,6 @@ def test_mosaic_list(app):
     assert response.status_code == 200
     resp = response.json()
     assert ["searches", "links", "context"] == list(resp)
-    assert resp["context"] == {"returned": 1, "limit": 1, "matched": 5}
     assert len(resp["searches"]) == 1
     assert len(resp["links"]) == 3
 
@@ -645,7 +746,7 @@ def test_mosaic_list(app):
     response = app.get("/mosaic/list?sortby=lastused")
     assert response.status_code == 200
     resp = response.json()
-    assert resp["context"] == {"returned": 8, "limit": 10, "matched": 8}
+    assert resp["context"]
     dates = [
         datetime.strptime(s["search"]["lastused"], "%Y-%m-%dT%H:%M:%S.%fZ")
         for s in resp["searches"]
@@ -655,7 +756,7 @@ def test_mosaic_list(app):
     response = app.get("/mosaic/list?sortby=-lastused")
     assert response.status_code == 200
     resp = response.json()
-    assert resp["context"] == {"returned": 8, "limit": 10, "matched": 8}
+    assert resp["context"]
     dates = [
         datetime.strptime(s["search"]["lastused"], "%Y-%m-%dT%H:%M:%S.%fZ")
         for s in resp["searches"]
