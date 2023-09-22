@@ -16,7 +16,7 @@ async def connect_to_db(
         settings = PostgresSettings()
 
     app.state.dbpool = ConnectionPool(
-        conninfo=settings.database_url,
+        conninfo=str(settings.database_url),
         min_size=settings.db_min_conn_size,
         max_size=settings.db_max_conn_size,
         max_waiting=settings.db_max_queries,

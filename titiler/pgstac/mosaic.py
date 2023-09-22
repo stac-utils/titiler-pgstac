@@ -4,7 +4,6 @@ import json
 from typing import Any, Dict, List, Optional, Tuple, Type
 
 import attr
-import morecantile
 import rasterio
 from cachetools import TTLCache, cached
 from cachetools.keys import hashkey
@@ -13,7 +12,7 @@ from cogeo_mosaic.errors import MosaicNotFoundError, NoAssetFoundError
 from cogeo_mosaic.mosaic import MosaicJSON
 from geojson_pydantic import Point, Polygon
 from geojson_pydantic.geometries import Geometry, parse_geometry_obj
-from morecantile import TileMatrixSet
+from morecantile import Tile, TileMatrixSet
 from psycopg import errors as pgErrors
 from psycopg_pool import ConnectionPool
 from rasterio.crs import CRS
@@ -153,7 +152,7 @@ class PGSTACBackend(BaseBackend):
             bounds=self.bounds,
             minzoom=self.minzoom,
             maxzoom=self.maxzoom,
-            tiles=[],
+            tiles={},
         )
 
     @minzoom.default
@@ -178,7 +177,7 @@ class PGSTACBackend(BaseBackend):
 
     def assets_for_tile(self, x: int, y: int, z: int, **kwargs: Any) -> List[Dict]:
         """Retrieve assets for tile."""
-        bbox = self.tms.bounds(morecantile.Tile(x, y, z))
+        bbox = self.tms.bounds(Tile(x, y, z))
         return self.get_assets(Polygon.from_bounds(*bbox), **kwargs)
 
     def assets_for_point(
@@ -262,7 +261,7 @@ class PGSTACBackend(BaseBackend):
                     cursor.execute(
                         "SELECT * FROM geojsonsearch(%s, %s, %s, %s, %s, %s, %s, %s);",
                         (
-                            geom.json(exclude_none=True),
+                            geom.model_dump_json(exclude_none=True),
                             self.input,
                             json.dumps(fields),
                             scan_limit,

@@ -17,13 +17,13 @@ repos:
         language_version: python
 
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: v0.0.238
+    rev: v0.0.290
     hooks:
       - id: ruff
         args: ["--fix"]
 
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.3.0
+    rev: v1.5.1
     hooks:
       - id: mypy
         language_version: python
@@ -31,3 +31,4 @@ repos:
         additional_dependencies:
         - types-cachetools
         - types-attrs
+        - pydantic~=2.0

@@ -1,6 +1,7 @@
 """``pytest`` configuration."""
 
 import os
+import warnings
 from typing import Any, Dict
 
 import psycopg
@@ -10,6 +11,7 @@ import rasterio
 from pypgstac.db import PgstacDB
 from pypgstac.load import Loader
 from pypgstac.migrate import Migrate
+from rasterio.errors import NotGeoreferencedWarning
 from rasterio.io import MemoryFile
 from starlette.testclient import TestClient
 
@@ -24,9 +26,15 @@ test_db = pytest_pgsql.TransactedPostgreSQLTestDB.create_fixture(
 
 def parse_img(content: bytes) -> Dict[Any, Any]:
     """Read tile image and return metadata."""
-    with MemoryFile(content) as mem:
-        with mem.open() as dst:
-            return dst.profile
+    with warnings.catch_warnings():
+        warnings.filterwarnings(
+            "ignore",
+            category=NotGeoreferencedWarning,
+            module="rasterio",
+        )
+        with MemoryFile(content) as mem:
+            with mem.open() as dst:
+                return dst.profile
 
 
 def mock_rasterio_open(asset):

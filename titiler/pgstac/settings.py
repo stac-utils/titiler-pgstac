@@ -1,16 +1,17 @@
 """API settings."""
 
 from functools import lru_cache
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 
 from pydantic import (
-    BaseSettings,
+    Field,
+    FieldValidationInfo,
     PostgresDsn,
-    confloat,
-    conint,
-    root_validator,
-    validator,
+    field_validator,
+    model_validator,
 )
+from pydantic_settings import BaseSettings
+from typing_extensions import Annotated
 
 
 class ApiSettings(BaseSettings):
@@ -22,16 +23,16 @@ class ApiSettings(BaseSettings):
     root_path: str = ""
     debug: bool = False
 
-    @validator("cors_origins")
+    model_config = {
+        "env_prefix": "TITILER_PGSTAC_API_",
+        "env_file": ".env",
+        "extra": "ignore",
+    }
+
+    @field_validator("cors_origins")
     def parse_cors_origin(cls, v):
         """Parse CORS origins."""
         return [origin.strip() for origin in v.split(",")]
-
-    class Config:
-        """model config"""
-
-        env_prefix = "TITILER_PGSTAC_API_"
-        env_file = ".env"
 
 
 class PostgresSettings(BaseSettings):
@@ -45,11 +46,11 @@ class PostgresSettings(BaseSettings):
         postgres_dbname: database name.
     """
 
-    postgres_user: Optional[str]
-    postgres_pass: Optional[str]
-    postgres_host: Optional[str]
-    postgres_port: Optional[str]
-    postgres_dbname: Optional[str]
+    postgres_user: Optional[str] = None
+    postgres_pass: Optional[str] = None
+    postgres_host: Optional[str] = None
+    postgres_port: Optional[int] = None
+    postgres_dbname: Optional[str] = None
 
     database_url: Optional[PostgresDsn] = None
 
@@ -64,24 +65,21 @@ class PostgresSettings(BaseSettings):
         3  # Number of background worker threads used to maintain the pool state
     )
 
-    class Config:
-        """model config"""
+    model_config = {"env_file": ".env", "extra": "ignore"}
 
-        env_file = ".env"
-
-    @validator("database_url", pre=True)
-    def assemble_db_connection(cls, v: Optional[str], values: Dict[str, Any]) -> Any:
+    @field_validator("database_url", mode="before")
+    def assemble_db_connection(cls, v: Optional[str], info: FieldValidationInfo) -> Any:
         """Validate database config."""
         if isinstance(v, str):
             return v
 
         return PostgresDsn.build(
             scheme="postgresql",
-            user=values.get("postgres_user"),
-            password=values.get("postgres_pass"),
-            host=values.get("postgres_host", ""),
-            port=values.get("postgres_port", 5432),
-            path=f"/{values.get('postgres_dbname') or ''}",
+            username=info.data.get("postgres_user"),
+            password=info.data.get("postgres_pass"),
+            host=info.data.get("postgres_host", ""),
+            port=info.data.get("postgres_port", 5432),
+            path=info.data.get("postgres_dbname", ""),
         )
 
 
@@ -97,32 +95,29 @@ class CacheSettings(BaseSettings):
     # Whether or not caching is enabled
     disable: bool = False
 
-    class Config:
-        """model config"""
+    model_config = {"env_prefix": "TITILER_PGSTAC_CACHE_", "env_file": ".env"}
 
-        env_prefix = "TITILER_PGSTAC_CACHE_"
-        env_file = ".env"
+    @model_validator(mode="after")
+    def check_enable(self):
+        """Check if cache is disabled."""
+        if self.disable:
+            self.ttl = 0
+            self.maxsize = 0
 
-    @root_validator
-    def check_enable(cls, values):
-        """Check if cache is desabled."""
-        if values.get("disable"):
-            values["ttl"] = 0
-            values["maxsize"] = 0
-        return values
+        return self
 
 
 class _RetrySettings(BaseSettings):
     """Retry settings"""
 
-    retry: conint(ge=0) = 3  # type: ignore[valid-type]
-    delay: confloat(ge=0) = 0.0  # type: ignore[valid-type]
+    retry: Annotated[int, Field(ge=0)] = 3
+    delay: Annotated[float, Field(ge=0.0)] = 0.0
 
-    class Config:
-        """model config"""
-
-        env_prefix = "TITILER_PGSTAC_API_"
-        env_file = ".env"
+    model_config = {
+        "env_prefix": "TITILER_PGSTAC_API_",
+        "env_file": ".env",
+        "extra": "ignore",
+    }
 
 
 @lru_cache()

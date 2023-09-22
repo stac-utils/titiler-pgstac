@@ -9,7 +9,7 @@ from titiler.pgstac.logger import logger
 def retry(
     tries: int,
     exceptions: Union[Type[Exception], Sequence[Type[Exception]]] = Exception,
-    delay: int = 0,
+    delay: float = 0.0,
 ):
     """Retry Decorator"""
 

@@ -64,7 +64,7 @@ jobs:
     needs: [tests]
     runs-on: ubuntu-20.04
     env:
-      PGSTAC_VERSION: '0.7.9'
+      PGSTAC_VERSION: '0.8.1'
     steps:
       - uses: actions/checkout@v3
 

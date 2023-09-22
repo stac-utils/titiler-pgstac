@@ -27,11 +27,11 @@ classifiers = [
     "Topic :: Scientific/Engineering :: GIS",
 ]
 dependencies = [
-    "titiler.core>=0.12.0,<0.13",
-    "titiler.mosaic>=0.12.0,<0.13",
-    "geojson-pydantic~=0.6",
-    "pydantic~=1.0",
-    "python-dotenv",
+    "titiler.core>=0.13.0,<0.14",
+    "titiler.mosaic>=0.13.0,<0.14",
+    "geojson-pydantic~=1.0",
+    "pydantic~=2.0",
+    "pydantic-settings~=2.0",
 ]
 dynamic = ["version"]
 
@@ -55,7 +55,7 @@ test = [
     "pytest-cov",
     "pytest-asyncio",
     "httpx",
-    "pypgstac>=0.6,<0.8",
+    "pypgstac>=0.8,<0.9",
     "psycopg2",
     "pytest-pgsql",
 ]

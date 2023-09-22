@@ -1,5 +1,14 @@
 # Release Notes
 
+## 0.7.0 (unreleased)
+
+- update requirements to switch to pydantic~=2.0
+  - titiler>=0.13.0,<0.14
+  - pydantic~=2.0
+  - pydantic-settings~=2.0
+  - geojson-pydantic~=1.0
+  - cogeo-mosaic>=7.0,<8.0
+
 ## 0.6.0 (2023-09-18)
 
 * add `tilejson` URL links for `layers` defined in mosaic's metadata in `/mosaic/register` and `/mosaic/{mosaic_id}/info` response

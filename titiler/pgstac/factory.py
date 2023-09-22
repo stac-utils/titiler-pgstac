@@ -1,7 +1,6 @@
 """Custom MosaicTiler Factory for PgSTAC Mosaic Backend."""
 import os
 import re
-import sys
 import warnings
 from dataclasses import dataclass
 from typing import (
@@ -35,6 +34,7 @@ from starlette.requests import Request
 from starlette.responses import HTMLResponse, Response
 from starlette.routing import NoMatchFound
 from starlette.templating import Jinja2Templates
+from typing_extensions import Annotated
 
 from titiler.core.dependencies import (
     AssetsBidxExprParams,
@@ -58,11 +58,6 @@ from titiler.pgstac.dependencies import (
     TileParams,
 )
 from titiler.pgstac.mosaic import PGSTACBackend
-
-if sys.version_info >= (3, 9):
-    from typing import Annotated  # pylint: disable=no-name-in-module
-else:
-    from typing_extensions import Annotated
 
 
 def _first_value(values: List[Any], default: Any = None):
@@ -578,6 +573,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                         warnings.warn(
                             f"Cannot construct URL for layer `{name}`: {repr(e)}",
                             UserWarning,
+                            stacklevel=2,
                         )
                         continue
 
@@ -736,8 +732,8 @@ class MosaicTilerFactory(BaseTilerFactory):
                     cursor.execute(
                         "SELECT * FROM search_query(%s, _metadata => %s);",
                         (
-                            search.json(by_alias=True, exclude_none=True),
-                            metadata.json(exclude_none=True),
+                            search.model_dump_json(by_alias=True, exclude_none=True),
+                            metadata.model_dump_json(exclude_none=True),
                         ),
                     )
                     search_info = cursor.fetchone()
@@ -806,6 +802,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                         warnings.warn(
                             f"Cannot construct URL for layer `{name}`: {repr(e)}",
                             UserWarning,
+                            stacklevel=2,
                         )
                         continue
 
@@ -1113,7 +1110,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                 ) as src_dst:
                     for feature in fc:
                         data, _ = src_dst.feature(
-                            feature.dict(exclude_none=True),
+                            feature.model_dump(exclude_none=True),
                             shape_crs=coord_crs or WGS84_CRS,
                             pixel_selection=pixel_selection,
                             threads=threads,
