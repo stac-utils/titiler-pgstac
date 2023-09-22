@@ -49,7 +49,7 @@ class PostgresSettings(BaseSettings):
     postgres_user: Optional[str] = None
     postgres_pass: Optional[str] = None
     postgres_host: Optional[str] = None
-    postgres_port: Optional[str] = None
+    postgres_port: Optional[int] = None
     postgres_dbname: Optional[str] = None
 
     database_url: Optional[PostgresDsn] = None
@@ -79,7 +79,7 @@ class PostgresSettings(BaseSettings):
             password=info.data.get("postgres_pass"),
             host=info.data.get("postgres_host", ""),
             port=info.data.get("postgres_port", 5432),
-            path=f"/{info.data.get('postgres_dbname') or ''}",
+            path=info.data.get("postgres_dbname", ""),
         )
 
 
