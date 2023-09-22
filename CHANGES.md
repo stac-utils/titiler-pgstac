@@ -3,11 +3,17 @@
 ## 0.7.0 (unreleased)
 
 - update requirements to switch to pydantic~=2.0
-  - titiler>=0.13.0,<0.14
   - pydantic~=2.0
   - pydantic-settings~=2.0
   - geojson-pydantic~=1.0
   - cogeo-mosaic>=7.0,<8.0
+
+- update titiler requirement to `>=0.14.0,<0.15`
+
+    - replace `-` by `_` in query parameters
+
+        * coord-crs -> coord_crs
+        * dst-crs -> dst_crs
 
 ## 0.6.0 (2023-09-18)
 
