@@ -86,7 +86,7 @@ def test_assets_for_point(app):
     # with coord-crs
     response = app.get(
         f"/mosaic/{search_bbox}/-9517816.46282489,4322990.432036275/assets",
-        params={"coord-crs": "epsg:3857"},
+        params={"coord_crs": "epsg:3857"},
     )
     assert response.status_code == 200
     resp = response.json()

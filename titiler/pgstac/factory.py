@@ -38,6 +38,8 @@ from typing_extensions import Annotated
 
 from titiler.core.dependencies import (
     AssetsBidxExprParams,
+    BufferParams,
+    ColorFormulaParams,
     CoordCRSParams,
     DefaultDependency,
     HistogramParams,
@@ -48,6 +50,7 @@ from titiler.core.models.mapbox import TileJSON
 from titiler.core.models.responses import MultiBaseStatisticsGeoJSON
 from titiler.core.resources.enums import ImageType, MediaType, OptionalHeader
 from titiler.core.resources.responses import GeoJSONResponse, XMLResponse
+from titiler.core.utils import render_image
 from titiler.mosaic.factory import PixelSelectionParams
 from titiler.pgstac import model
 from titiler.pgstac.dependencies import (
@@ -192,23 +195,10 @@ class MosaicTilerFactory(BaseTilerFactory):
             layer_params=Depends(self.layer_dependency),
             dataset_params=Depends(self.dataset_dependency),
             pixel_selection=Depends(self.pixel_selection_dependency),
-            buffer: Annotated[
-                Optional[float],
-                Query(
-                    gt=0,
-                    title="Tile buffer.",
-                    description="Buffer on each side of the given tile. It must be a multiple of `0.5`. Output **tilesize** will be expanded to `tilesize + 2 * buffer` (e.g 0.5 = 257x257, 1.0 = 258x258).",
-                ),
-            ] = None,
+            buffer=Depends(BufferParams),
             post_process=Depends(self.process_dependency),
             rescale=Depends(self.rescale_dependency),
-            color_formula: Annotated[
-                Optional[str],
-                Query(
-                    title="Color Formula",
-                    description="rio-color formula (info: https://github.com/mapbox/rio-color)",
-                ),
-            ] = None,
+            color_formula=Depends(ColorFormulaParams),
             colormap=Depends(self.colormap_dependency),
             render_params=Depends(self.render_dependency),
             pgstac_params: PgSTACParams = Depends(),
@@ -265,15 +255,10 @@ class MosaicTilerFactory(BaseTilerFactory):
             if color_formula:
                 image.apply_color_formula(color_formula)
 
-            if colormap:
-                image = image.apply_colormap(colormap)
-
-            if not format:
-                format = ImageType.jpeg if image.mask.all() else ImageType.png
-
-            content = image.render(
-                img_format=format.driver,
-                **format.profile,
+            content, media_type = render_image(
+                image,
+                output_format=format,
+                colormap=colormap,
                 **render_params,
             )
 
@@ -282,7 +267,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                 ids = [x["id"] for x in assets]
                 headers["X-Assets"] = ",".join(ids)
 
-            return Response(content, media_type=format.mediatype, headers=headers)
+            return Response(content, media_type=media_type, headers=headers)
 
     def _tilejson_routes(self) -> None:
         """register tiles routes."""
@@ -329,23 +314,10 @@ class MosaicTilerFactory(BaseTilerFactory):
             layer_params=Depends(self.layer_dependency),
             dataset_params=Depends(self.dataset_dependency),
             pixel_selection=Depends(self.pixel_selection_dependency),
-            buffer: Annotated[
-                Optional[float],
-                Query(
-                    gt=0,
-                    title="Tile buffer.",
-                    description="Buffer on each side of the given tile. It must be a multiple of `0.5`. Output **tilesize** will be expanded to `tilesize + 2 * buffer` (e.g 0.5 = 257x257, 1.0 = 258x258).",
-                ),
-            ] = None,
+            buffer=Depends(BufferParams),
             post_process=Depends(self.process_dependency),
             rescale=Depends(self.rescale_dependency),
-            color_formula: Annotated[
-                Optional[str],
-                Query(
-                    title="Color Formula",
-                    description="rio-color formula (info: https://github.com/mapbox/rio-color)",
-                ),
-            ] = None,
+            color_formula=Depends(ColorFormulaParams),
             colormap=Depends(self.colormap_dependency),
             render_params=Depends(self.render_dependency),
             pgstac_params: PgSTACParams = Depends(),
@@ -444,23 +416,10 @@ class MosaicTilerFactory(BaseTilerFactory):
             layer_params=Depends(self.layer_dependency),
             dataset_params=Depends(self.dataset_dependency),
             pixel_selection=Depends(self.pixel_selection_dependency),
-            buffer: Annotated[
-                Optional[float],
-                Query(
-                    gt=0,
-                    title="Tile buffer.",
-                    description="Buffer on each side of the given tile. It must be a multiple of `0.5`. Output **tilesize** will be expanded to `tilesize + 2 * buffer` (e.g 0.5 = 257x257, 1.0 = 258x258).",
-                ),
-            ] = None,
+            buffer=Depends(BufferParams),
             post_process=Depends(self.process_dependency),
             rescale=Depends(self.rescale_dependency),
-            color_formula: Annotated[
-                Optional[str],
-                Query(
-                    title="Color Formula",
-                    description="rio-color formula (info: https://github.com/mapbox/rio-color)",
-                ),
-            ] = None,
+            color_formula=Depends(ColorFormulaParams),
             colormap=Depends(self.colormap_dependency),
             render_params=Depends(self.render_dependency),
             pgstac_params: PgSTACParams = Depends(),
