@@ -3,7 +3,7 @@
 ## 0.7.0 (2023-09-28)
 
 - update requirements to switch to pydantic~=2.0
-  - pydantic~=2.0
+  - pydantic>=2.4,<3.0
   - pydantic-settings~=2.0
   - geojson-pydantic~=1.0
   - cogeo-mosaic>=7.0,<8.0
