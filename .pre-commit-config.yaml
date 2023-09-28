@@ -31,4 +31,4 @@ repos:
         additional_dependencies:
         - types-cachetools
         - types-attrs
-        - pydantic~=2.0
+        - pydantic>=2.4

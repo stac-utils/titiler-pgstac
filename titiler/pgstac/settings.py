@@ -5,8 +5,8 @@ from typing import Any, Optional
 
 from pydantic import (
     Field,
-    FieldValidationInfo,
     PostgresDsn,
+    ValidationInfo,
     field_validator,
     model_validator,
 )
@@ -68,7 +68,7 @@ class PostgresSettings(BaseSettings):
     model_config = {"env_file": ".env", "extra": "ignore"}
 
     @field_validator("database_url", mode="before")
-    def assemble_db_connection(cls, v: Optional[str], info: FieldValidationInfo) -> Any:
+    def assemble_db_connection(cls, v: Optional[str], info: ValidationInfo) -> Any:
         """Validate database config."""
         if isinstance(v, str):
             return v

@@ -9,13 +9,7 @@ from typing import Any, Dict, List, Literal, Optional
 
 from geojson_pydantic.geometries import Geometry
 from geojson_pydantic.types import BBox
-from pydantic import (
-    BaseModel,
-    Field,
-    FieldValidationInfo,
-    field_validator,
-    model_validator,
-)
+from pydantic import BaseModel, Field, ValidationInfo, field_validator, model_validator
 from typing_extensions import Annotated
 
 from titiler.core.resources.enums import MediaType
@@ -95,7 +89,7 @@ class PgSTACSearch(BaseModel):
         return v
 
     @field_validator("intersects")
-    def validate_spatial(cls, v: Optional[Geometry], info: FieldValidationInfo):
+    def validate_spatial(cls, v: Optional[Geometry], info: ValidationInfo):
         """Make sure bbox is not used with Intersects."""
         if v and info.data["bbox"]:
             raise ValueError("intersects and bbox parameters are mutually exclusive")
@@ -200,7 +194,7 @@ class Context(BaseModel):
     matched: Optional[int] = None
 
     @field_validator("limit")
-    def validate_limit(cls, v, info: FieldValidationInfo):
+    def validate_limit(cls, v, info: ValidationInfo):
         """validate limit."""
         if info.data["returned"] > v:
             raise ValueError(
