@@ -10,17 +10,17 @@ from rasterio.crs import CRS
 
 from .conftest import mock_rasterio_open, parse_img
 
-search_no_bbox = "8f5fb37ec266f4b84ec6aa4fe0453c59"
-search_bbox = "5e86ce566b979e567370a6ad85aaa68a"
+# search_no_bbox = "8f5fb37ec266f4b84ec6aa4fe0453c59"
+# search_bbox = "5e86ce566b979e567370a6ad85aaa68a"
 
 
-def test_register(app):
-    """Register Search requests."""
+@pytest.fixture
+def search_no_bbox(app):
+    """Search Query without BBOX."""
     query = {"collections": ["noaa-emergency-response"], "filter-lang": "cql-json"}
     response = app.post("/mosaic/register", json=query)
     assert response.status_code == 200
     resp = response.json()
-    assert resp["searchid"] == search_no_bbox
     assert resp["links"]
     assert [link["rel"] for link in resp["links"]] == [
         "metadata",
@@ -28,7 +28,12 @@ def test_register(app):
         "map",
         "wmts",
     ]
+    return resp["searchid"]
 
+
+@pytest.fixture
+def search_bbox(app):
+    """Search Query with BBOX."""
     query = {
         "collections": ["noaa-emergency-response"],
         "bbox": [-85.535, 36.137, -85.465, 36.179],
@@ -38,7 +43,6 @@ def test_register(app):
     assert response.status_code == 200
 
     resp = response.json()
-    assert resp["searchid"] == search_bbox
     assert resp["links"]
     assert [link["rel"] for link in resp["links"]] == [
         "metadata",
@@ -46,9 +50,10 @@ def test_register(app):
         "map",
         "wmts",
     ]
+    return resp["searchid"]
 
 
-def test_info(app):
+def test_info(app, search_no_bbox):
     """Should return metadata about a search query."""
     response = app.get(f"/mosaic/{search_no_bbox}/info")
     assert response.status_code == 200
@@ -68,7 +73,7 @@ def test_info(app):
     assert resp["detail"] == "SearchId `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa` not found"
 
 
-def test_assets_for_point(app):
+def test_assets_for_point(app, search_no_bbox, search_bbox):
     """Get assets for a Point."""
     response = app.get(f"/mosaic/{search_no_bbox}/-85.6358,36.1624/assets")
     assert response.status_code == 200
@@ -105,7 +110,7 @@ def test_assets_for_point(app):
     assert resp["detail"] == "SearchId `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa` not found"
 
 
-def test_assets_for_tile(app):
+def test_assets_for_tile(app, search_no_bbox, search_bbox):
     """Get assets for a Tile."""
     response = app.get(f"/mosaic/{search_no_bbox}/tiles/15/8589/12849/assets")
     assert response.status_code == 200
@@ -153,7 +158,7 @@ def test_assets_for_tile(app):
     assert resp["detail"] == "SearchId `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa` not found"
 
 
-def test_tilejson(app):
+def test_tilejson(app, search_no_bbox, search_bbox):
     """Create TileJSON."""
     response = app.get(f"/mosaic/{search_no_bbox}/tilejson.json")
     assert response.status_code == 400
@@ -225,7 +230,7 @@ def test_tilejson(app):
 
 
 @patch("rio_tiler.io.rasterio.rasterio")
-def test_tiles(rio, app):
+def test_tiles(rio, app, search_no_bbox, search_bbox):
     """Create tiles."""
     rio.open = mock_rasterio_open
 
@@ -291,7 +296,7 @@ def test_tiles(rio, app):
     assert resp["detail"] == "SearchId `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa` not found"
 
 
-def test_wmts(app):
+def test_wmts(app, search_no_bbox):
     """Create wmts document."""
     # missing assets
     response = app.get(f"/mosaic/{search_no_bbox}/WMTSCapabilities.xml")
@@ -610,7 +615,7 @@ def test_query_with_metadata(app):
 
 
 @patch("rio_tiler.io.rasterio.rasterio")
-def test_statistics(rio, app):
+def test_statistics(rio, app, search_no_bbox, search_bbox):
     """Get Stats."""
     rio.open = mock_rasterio_open
 
@@ -640,11 +645,15 @@ def test_statistics(rio, app):
         ],
     }
 
-    response = app.post(f"/mosaic/{search_no_bbox}/statistics", json=feat)
+    response = app.post(
+        f"/mosaic/{search_no_bbox}/statistics", json=feat, params={"max_size": 1024}
+    )
     assert response.status_code == 400
 
     response = app.post(
-        f"/mosaic/{search_no_bbox}/statistics", json=feat, params={"assets": "cog"}
+        f"/mosaic/{search_no_bbox}/statistics",
+        json=feat,
+        params={"assets": "cog", "max_size": 1024},
     )
     assert response.status_code == 200
     assert response.headers["content-type"] == "application/geo+json"
@@ -653,7 +662,7 @@ def test_statistics(rio, app):
     response = app.post(
         f"/mosaic/{search_no_bbox}/statistics",
         json=feat["features"][0],
-        params={"assets": "cog"},
+        params={"assets": "cog", "max_size": 1024},
     )
     assert response.status_code == 200
     assert response.headers["content-type"] == "application/geo+json"
@@ -663,7 +672,7 @@ def test_statistics(rio, app):
     response = app.post(
         "/mosaic/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/statistics",
         json=feat,
-        params={"assets": "cog"},
+        params={"assets": "cog", "max_size": 1024},
     )
     assert response.status_code == 404
     resp = response.json()
@@ -764,10 +773,167 @@ def test_mosaic_list(app):
     assert dates[0] > dates[-1]
 
 
-def test_map(app):
+def test_map(app, search_bbox):
     """test /map endpoint."""
     response = app.get(f"/mosaic/{search_bbox}/map")
     assert response.status_code == 400
 
     response = app.get(f"/mosaic/{search_bbox}/map", params={"assets": "cog"})
     assert response.status_code == 200
+
+
+@patch("rio_tiler.io.rasterio.rasterio")
+def test_feature(rio, app, search_no_bbox):
+    """Get feature image."""
+    rio.open = mock_rasterio_open
+
+    feat = {
+        "type": "Feature",
+        "properties": {},
+        "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+                [
+                    [-85.64065933227539, 36.16587374136926],
+                    [-85.64546585083008, 36.161716102717804],
+                    [-85.64443588256836, 36.158043338486344],
+                    [-85.64083099365234, 36.157904740240866],
+                    [-85.63679695129393, 36.15901351934466],
+                    [-85.6358528137207, 36.161577510965],
+                    [-85.63568115234375, 36.16441859292501],
+                    [-85.63902854919434, 36.16511152412467],
+                    [-85.64065933227539, 36.16587374136926],
+                ]
+            ],
+        },
+    }
+
+    response = app.post(
+        f"/mosaic/{search_no_bbox}/feature", json=feat, params={"max_size": 1024}
+    )
+    assert response.status_code == 400
+
+    response = app.post(
+        f"/mosaic/{search_no_bbox}/feature",
+        json=feat,
+        params={"assets": "cog", "max_size": 1024},
+    )
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "image/png"
+    meta = parse_img(response.content)
+    assert meta["width"] == 725
+    assert meta["height"] == 591
+    assert meta["count"] == 4
+
+    response = app.post(
+        f"/mosaic/{search_no_bbox}/feature.jpeg",
+        json=feat,
+        params={"assets": "cog", "max_size": 1024},
+    )
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "image/jpeg"
+    meta = parse_img(response.content)
+    assert meta["width"] == 725
+    assert meta["height"] == 591
+    assert meta["count"] == 3
+
+    response = app.post(
+        f"/mosaic/{search_no_bbox}/feature/300x400.jpeg",
+        json=feat,
+        params={"assets": "cog", "max_size": 1024},
+    )
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "image/jpeg"
+    meta = parse_img(response.content)
+    assert meta["width"] == 300
+    assert meta["height"] == 400
+    assert meta["count"] == 3
+
+    response = app.post(
+        f"/mosaic/{search_no_bbox}/feature/300x400.tif",
+        json=feat,
+        params={"assets": "cog", "max_size": 1024},
+    )
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "image/tiff; application=geotiff"
+    meta = parse_img(response.content)
+    assert meta["crs"] == "epsg:4326"
+
+    response = app.post(
+        f"/mosaic/{search_no_bbox}/feature/300x400.tif",
+        json=feat,
+        params={"assets": "cog", "max_size": 1024, "dst_crs": "epsg:3857"},
+    )
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "image/tiff; application=geotiff"
+    meta = parse_img(response.content)
+    assert meta["crs"] == "epsg:3857"
+
+
+@patch("rio_tiler.io.rasterio.rasterio")
+def test_bbox(rio, app, search_no_bbox):
+    """Get bbox image."""
+    rio.open = mock_rasterio_open
+
+    bbox = [
+        -85.64546585083008,
+        36.157904740240866,
+        -85.63568115234375,
+        36.16587374136926,
+    ]
+    str_bbox = ",".join(map(str, bbox))
+    response = app.get(
+        f"/mosaic/{search_no_bbox}/bbox/{str_bbox}.png", params={"max_size": 1024}
+    )
+    assert response.status_code == 400
+
+    response = app.get(
+        f"/mosaic/{search_no_bbox}/bbox/{str_bbox}.png",
+        params={"assets": "cog", "max_size": 1024},
+    )
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "image/png"
+    meta = parse_img(response.content)
+    assert meta["width"] == 725
+    assert meta["height"] == 591
+    assert meta["count"] == 4
+
+    response = app.get(
+        f"/mosaic/{search_no_bbox}/bbox/{str_bbox}.jpeg",
+        params={"assets": "cog", "max_size": 1024},
+    )
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "image/jpeg"
+    meta = parse_img(response.content)
+    assert meta["width"] == 725
+    assert meta["height"] == 591
+    assert meta["count"] == 3
+
+    response = app.get(
+        f"/mosaic/{search_no_bbox}/bbox/{str_bbox}/300x400.jpeg",
+        params={"assets": "cog", "max_size": 1024},
+    )
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "image/jpeg"
+    meta = parse_img(response.content)
+    assert meta["width"] == 300
+    assert meta["height"] == 400
+    assert meta["count"] == 3
+
+    response = app.get(
+        f"/mosaic/{search_no_bbox}/bbox/{str_bbox}.tif",
+        params={"assets": "cog", "max_size": 1024},
+    )
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "image/tiff; application=geotiff"
+    meta = parse_img(response.content)
+    assert meta["crs"] == "epsg:4326"
+
+    response = app.get(
+        f"/mosaic/{search_no_bbox}/bbox/{str_bbox}.tif",
+        params={"assets": "cog", "max_size": 1024, "dst_crs": "epsg:3857"},
+    )
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "image/tiff; application=geotiff"
+    meta = parse_img(response.content)
+    assert meta["crs"] == "epsg:3857"

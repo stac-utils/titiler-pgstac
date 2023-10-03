@@ -1,16 +1,20 @@
 The `titiler.pgstac` package comes with a full FastAPI application with Mosaic and single STAC item support.
 
-| Method | URL                                                                       | Output                            | Description
-| ------ | --------------------------------------------------------------------------|-----------------------------------|--------------
-| `POST` | `/mosaic/register`                                                               | JSON ([Register][register_model]) | Register **Search** query
-| `GET`  | `/mosaic/{searchid}/info`                                                        | JSON ([Info][info_model])         | Return **Search** query infos
-| `GET`  | `/mosaic/list`                                                                   | JSON ([Infos][infos_model])       | Return list of **Search** entries with `Mosaic` type
-| `GET`  | `/mosaic/{searchid}/{lon},{lat}/assets`                                          | JSON                              | Return a list of assets which overlap a given point
-| `GET`  | `/mosaic/{searchid}/tiles[/{TileMatrixSetId}]/{z}/{x}/{Y}/assets`                | JSON                              | Return a list of assets which overlap a given tile
-| `GET`  | `/mosaic/{searchid}/tiles[/{TileMatrixSetId}]/{z}/{x}/{y}[@{scale}x][.{format}]` | image/bin                         | Create a web map tile image for a search query and a tile index
-| `GET`  | `/mosaic/{searchid}[/{TileMatrixSetId}]/tilejson.json`                           | JSON ([TileJSON][tilejson_model]) | Return a Mapbox TileJSON document
-| `GET`  | `/mosaic/{searchid}[/{TileMatrixSetId}]/WMTSCapabilities.xml`                    | XML                               | return OGC WMTS Get Capabilities
-| `GET`  | `/mosaic/{searchid}[/{TileMatrixSetId}]/map`                                     | HTML                              | simple map viewer
+| Method | URL                                                                              | Output                                  | Description
+| ------ | ---------------------------------------------------------------------------------|-----------------------------------------|--------------
+| `POST` | `/mosaic/register`                                                               | JSON ([Register][register_model])       | Register **Search** query
+| `GET`  | `/mosaic/{searchid}/info`                                                        | JSON ([Info][info_model])               | Return **Search** query infos
+| `GET`  | `/mosaic/list`                                                                   | JSON ([Infos][infos_model])             | Return list of **Search** entries with `Mosaic` type
+| `GET`  | `/mosaic/{searchid}/{lon},{lat}/assets`                                          | JSON                                    | Return a list of assets which overlap a given point
+| `GET`  | `/mosaic/{searchid}/tiles[/{TileMatrixSetId}]/{z}/{x}/{Y}/assets`                | JSON                                    | Return a list of assets which overlap a given tile
+| `GET`  | `/mosaic/{searchid}/tiles[/{TileMatrixSetId}]/{z}/{x}/{y}[@{scale}x][.{format}]` | image/bin                               | Create a web map tile image for a search query and a tile index
+| `GET`  | `/mosaic/{searchid}[/{TileMatrixSetId}]/tilejson.json`                           | JSON ([TileJSON][tilejson_model])       | Return a Mapbox TileJSON document
+| `GET`  | `/mosaic/{searchid}[/{TileMatrixSetId}]/WMTSCapabilities.xml`                    | XML                                     | return OGC WMTS Get Capabilities
+| `GET`  | `/mosaic/{searchid}[/{TileMatrixSetId}]/map`                                     | HTML                                    | simple map viewer
+| `POST` | `/mosaic/{searchid}/statistics`                                                  | GeoJSON ([Statistics][statitics_model]) | Return statistics for geojson features
+| `GET`  | `/mosaic/{searchid}/bbox/{minx},{miny},{maxx},{maxy}[/{width}x{height}].{format}`| image/bin                               | Create an image from part of a dataset
+| `POST` | `/mosaic/{searchid}/feature[/{width}x{height}][.{format}]`                       | image/bin                               | Create an image from a GeoJSON feature
+
 
 ### Register a Search Request
 
@@ -206,6 +210,7 @@ Example:
     - **colormap_name** (str): rio-tiler color map name.
     - **return_mask** (bool): Add mask to the output data. Default is True.
     - **buffer** (float): Add buffer on each side of the tile (e.g 0.5 = 257x257, 1.0 = 258x258).
+    - **pixel_selection** (str): Pixel selection method (https://cogeotiff.github.io/rio-tiler/mosaic/).
     - **scan_limit** (int): Return as soon as we scan N items, Default is 10,000 in PgSTAC.
     - **items_limit** (int): Return as soon as we have N items per geometry, Default is 100 in PgSTAC.
     - **time_limit** (int): Return after N seconds to avoid long requests, Default is 5sec in PgSTAC.
@@ -249,6 +254,7 @@ Example:
     - **colormap_name** (str): rio-tiler color map name.
     - **return_mask** (bool): Add mask to the output data. Default is True.
     - **buffer** (float): Add buffer on each side of the tile (e.g 0.5 = 257x257, 1.0 = 258x258).
+    - **pixel_selection** (str): Pixel selection method (https://cogeotiff.github.io/rio-tiler/mosaic/).
     - **scan_limit** (int): Return as soon as we scan N items, Default is 10,000 in PgSTAC.
     - **items_limit** (int): Return as soon as we have N items per geometry, Default is 100 in PgSTAC.
     - **time_limit** (int): Return after N seconds to avoid long requests, Default is 5sec in PgSTAC.
@@ -330,7 +336,141 @@ Example:
 
 - `https://myendpoint/mosaic/f1ed59f0a6ad91ed80ae79b7b52bc707/0.0,0.0/assets`
 
+### Statistics
+
+`:endpoint:/mosaic/{searchid}/statistics - [POST]`
+
+- Body:
+    - **feature** (JSON): A valid GeoJSON feature or FeatureCollection
+
+- QueryParams:
+    - **assets** (array[str]): asset names.
+    - **expression** (str): rio-tiler's math expression with asset names (e.g `Asset1_b1/Asset2_b1`).
+    - **asset_as_band** (bool): tell rio-tiler that each asset is a 1 band dataset, so expression `Asset1/Asset2` can be passed.
+    - **asset_bidx** (array[str]): Per asset band math expression (e.g `Asset1|1;2;3`).
+    - **coord_crs** (str): Coordinate Reference System of the input geometry. Default to `epsg:4326`.
+    - **dst_crs** (str): Output Coordinate Reference System. Default to `coord_crs`.
+    - **max_size** (int): Max image size from which to calculate statistics.
+    - **height** (int): Force image height from which to calculate statistics.
+    - **width** (int): Force image width from which to calculate statistics.
+    - **nodata**: Overwrite internal Nodata value. OPTIONAL
+    - **unscale** (bool): Apply dataset internal Scale/Offset.
+    - **resampling** (str): rasterio resampling method. Default is `nearest`.
+    - **algorithm** (str): Custom algorithm name (e.g `hillshade`).
+    - **algorithm_params** (str): JSON encoded algorithm parameters.
+    - **categorical** (bool): Return statistics for categorical dataset, default is false.
+    - **c** (array[float]): Pixels values for categories.
+    - **p** (array[int]): Percentile values.
+    - **histogram_bins** (str): Histogram bins.
+    - **histogram_range** (str): Comma (',') delimited Min,Max histogram bounds.
+    - **pixel_selection** (str): Pixel selection method (https://cogeotiff.github.io/rio-tiler/mosaic/).
+    - **scan_limit** (int): Return as soon as we scan N items, Default is 10,000 in PgSTAC.
+    - **items_limit** (int): Return as soon as we have N items per geometry, Default is 100 in PgSTAC.
+    - **time_limit** (int): Return after N seconds to avoid long requests, Default is 5sec in PgSTAC.
+    - **exitwhenfull** (bool): Return as soon as the geometry is fully covered, Default is `True` in PgSTAC.
+    - **skipcovered** (bool): Skip any items that would show up completely under the previous items, Default is `True` in PgSTAC.
+
+!!! important
+    if **height** and **width** are provided **max_size** will be ignored.
+
+Example:
+
+- `https://myendpoint/mosaic/f1ed59f0a6ad91ed80ae79b7b52bc707/statistics?assets=B01`
+
+### BBOX/Feature
+
+`:endpoint:/mosaic/{searchid}/bbox/{minx},{miny},{maxx},{maxy}.{format}`
+
+`:endpoint:/mosaic/{searchid}/bbox/{minx},{miny},{maxx},{maxy}/{width}x{height}.{format}`
+
+- PathParams:
+    - **searchid**: search query hashkey.
+    - **minx,miny,maxx,maxy** (str): Comma (',') delimited bounding box in WGS84.
+    - **format** (str): Output image format.
+    - **height** (int): Force output image height.
+    - **width** (int): Force output image width.
+
+- QueryParams:
+    - **assets** (array[str]): asset names.
+    - **expression** (str): rio-tiler's math expression with asset names (e.g `Asset1_b1/Asset2_b1`).
+    - **asset_as_band** (bool): tell rio-tiler that each asset is a 1 band dataset, so expression `Asset1/Asset2` can be passed.
+    - **asset_bidx** (array[str]): Per asset band math expression (e.g `Asset1|1;2;3`).
+    - **coord_crs** (str): Coordinate Reference System of the input coordinates. Default to `epsg:4326`.
+    - **dst_crs** (str): Output Coordinate Reference System. Default to `coord_crs`.
+    - **max_size** (int): Max image size.
+    - **nodata**: Overwrite internal Nodata value. OPTIONAL
+    - **unscale** (bool): Apply dataset internal Scale/Offset.
+    - **resampling** (str): rasterio resampling method. Default is `nearest`.
+    - **algorithm** (str): Custom algorithm name (e.g `hillshade`).
+    - **algorithm_params** (str): JSON encoded algorithm parameters.
+    - **rescale** (array[str]): Comma (',') delimited Min,Max range (e.g `rescale=0,1000`, `rescale=0,1000&rescale=0,3000&rescale=0,2000`).
+    - **color_formula** (str): rio-color formula.
+    - **colormap** (str): JSON encoded custom Colormap.
+    - **colormap_name** (str): rio-tiler color map name.
+    - **return_mask** (bool): Add mask to the output data. Default is True.
+    - **pixel_selection** (str): Pixel selection method (https://cogeotiff.github.io/rio-tiler/mosaic/).
+    - **scan_limit** (int): Return as soon as we scan N items, Default is 10,000 in PgSTAC.
+    - **items_limit** (int): Return as soon as we have N items per geometry, Default is 100 in PgSTAC.
+    - **time_limit** (int): Return after N seconds to avoid long requests, Default is 5sec in PgSTAC.
+    - **exitwhenfull** (bool): Return as soon as the geometry is fully covered, Default is `True` in PgSTAC.
+    - **skipcovered** (bool): Skip any items that would show up completely under the previous items, Default is `True` in PgSTAC.
+
+!!! important
+    if **height** and **width** are provided **max_size** will be ignored.
+
+Example:
+
+- `https://myendpoint/mosaic/f1ed59f0a6ad91ed80ae79b7b52bc707/bbox/0,0,10,10.png?assets=B01`
+- `https://myendpoint/mosaic/f1ed59f0a6ad91ed80ae79b7b52bc707/bbox/0,0,10,10/400x300.png?assets=B01`
+
+
+`:endpoint:/mosaic/{searchid}/feature[/{width}x{height}][].{format}] - [POST]`
+
+- Body:
+    - **feature** (JSON): A valid GeoJSON feature (Polygon or MultiPolygon)
+
+- PathParams:
+    - **height** (int): Force output image height. **Optional**
+    - **width** (int): Force output image width. **Optional**
+    - **format** (str): Output image format, default is set to None and will be either JPEG or PNG depending on masked value. **Optional**
+
+- QueryParams:
+    - **assets** (array[str]): asset names.
+    - **expression** (str): rio-tiler's math expression with asset names (e.g `Asset1_b1/Asset2_b1`).
+    - **asset_as_band** (bool): tell rio-tiler that each asset is a 1 band dataset, so expression `Asset1/Asset2` can be passed.
+    - **asset_bidx** (array[str]): Per asset band math expression (e.g `Asset1|1;2;3`).
+    - **coord_crs** (str): Coordinate Reference System of the input geometry. Default to `epsg:4326`.
+    - **dst_crs** (str): Output Coordinate Reference System. Default to `coord_crs`.
+    - **max_size** (int): Max image size.
+    - **nodata**: Overwrite internal Nodata value. OPTIONAL
+    - **unscale** (bool): Apply dataset internal Scale/Offset.
+    - **resampling** (str): rasterio resampling method. Default is `nearest`.
+    - **algorithm** (str): Custom algorithm name (e.g `hillshade`).
+    - **algorithm_params** (str): JSON encoded algorithm parameters.
+    - **rescale** (array[str]): Comma (',') delimited Min,Max range (e.g `rescale=0,1000`, `rescale=0,1000&rescale=0,3000&rescale=0,2000`).
+    - **color_formula** (str): rio-color formula.
+    - **colormap** (str): JSON encoded custom Colormap.
+    - **colormap_name** (str): rio-tiler color map name.
+    - **return_mask** (bool): Add mask to the output data. Default is True.
+    - **pixel_selection** (str): Pixel selection method (https://cogeotiff.github.io/rio-tiler/mosaic/).
+    - **scan_limit** (int): Return as soon as we scan N items, Default is 10,000 in PgSTAC.
+    - **items_limit** (int): Return as soon as we have N items per geometry, Default is 100 in PgSTAC.
+    - **time_limit** (int): Return after N seconds to avoid long requests, Default is 5sec in PgSTAC.
+    - **exitwhenfull** (bool): Return as soon as the geometry is fully covered, Default is `True` in PgSTAC.
+    - **skipcovered** (bool): Skip any items that would show up completely under the previous items, Default is `True` in PgSTAC.
+
+!!! important
+    if **height** and **width** are provided **max_size** will be ignored.
+
+Example:
+
+- `https://myendpoint/mosaic/f1ed59f0a6ad91ed80ae79b7b52bc707/feature?assets=B01`
+- `https://myendpoint/mosaic/f1ed59f0a6ad91ed80ae79b7b52bc707/feature.png?assets=B01f`
+- `https://myendpoint/mosaic/f1ed59f0a6ad91ed80ae79b7b52bc707/feature/100x100.png?assets=B01`
+
+
 [tilejson_model]: https://github.com/developmentseed/titiler/blob/2335048a407f17127099cbbc6c14e1328852d619/src/titiler/core/titiler/core/models/mapbox.py#L16-L38
 [info_model]: https://github.com/stac-utils/titiler-pgstac/blob/047315da8851a974660032ca45f219db2c3a8d54/titiler/pgstac/model.py#L236-L240
 [infos_model]: https://github.com/stac-utils/titiler-pgstac/blob/4f569fee1946f853be9b9149cb4dd2fd5c62b110/titiler/pgstac/model.py#L260-L265
 [register_model]: https://github.com/stac-utils/titiler-pgstac/blob/047315da8851a974660032ca45f219db2c3a8d54/titiler/pgstac/model.py#L229-L233
+[statitics_model]: https://github.com/developmentseed/titiler/blob/17cdff2f0ddf08dbd9a47c2140b13c4bbcc30b6d/src/titiler/core/titiler/core/models/responses.py#L49-L52

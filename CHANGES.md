@@ -1,14 +1,21 @@
 # Release Notes
 
+## 0.8.0 (TBD)
+
+* update titiler requirement to `>=0.14.0,<0.15`
+* remove `max_size` default for mosaic's `/statistics [POST]` endpoint  **breaking change**
+* add `/bbox` and `/feature [POST]` optional endpoints
+* add `img_part_dependency` attribute in `MosaicTilerFactory` (defaults to `titiler.code.dependencies.PartFeatureParams`)
+
 ## 0.7.0 (2023-09-28)
 
-- update requirements to switch to pydantic~=2.0
+* update requirements to switch to pydantic~=2.0
   - pydantic>=2.4,<3.0
   - pydantic-settings~=2.0
   - geojson-pydantic~=1.0
   - cogeo-mosaic>=7.0,<8.0
 
-- update titiler requirement to `>=0.14.0,<0.15`
+* update titiler requirement to `>=0.14.0,<0.15`
 
     - replace `-` by `_` in query parameters
 

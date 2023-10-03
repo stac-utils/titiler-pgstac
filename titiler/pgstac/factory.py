@@ -42,7 +42,9 @@ from titiler.core.dependencies import (
     ColorFormulaParams,
     CoordCRSParams,
     DefaultDependency,
+    DstCRSParams,
     HistogramParams,
+    PartFeatureParams,
     StatisticsParams,
 )
 from titiler.core.factory import BaseTilerFactory, img_endpoint_params
@@ -61,6 +63,12 @@ from titiler.pgstac.dependencies import (
     TileParams,
 )
 from titiler.pgstac.mosaic import PGSTACBackend
+
+MOSAIC_THREADS = int(os.getenv("MOSAIC_CONCURRENCY", MAX_THREADS))
+MOSAIC_STRICT_ZOOM = str(os.getenv("MOSAIC_STRICT_ZOOM", False)).lower() in [
+    "true",
+    "yes",
+]
 
 
 def _first_value(values: List[Any], default: Any = None):
@@ -91,6 +99,9 @@ class MosaicTilerFactory(BaseTilerFactory):
     stats_dependency: Type[DefaultDependency] = StatisticsParams
     histogram_dependency: Type[DefaultDependency] = HistogramParams
 
+    # Crop endpoints Dependencies
+    img_part_dependency: Type[DefaultDependency] = PartFeatureParams
+
     # Search dependency
     search_dependency: Callable[
         ..., Tuple[model.PgSTACSearch, model.Metadata]
@@ -102,10 +113,9 @@ class MosaicTilerFactory(BaseTilerFactory):
 
     # Add/Remove some endpoints
     add_statistics: bool = False
-
     add_viewer: bool = False
-
     add_mosaic_list: bool = False
+    add_part: bool = False
 
     templates: Jinja2Templates = DEFAULT_TEMPLATES
 
@@ -142,6 +152,9 @@ class MosaicTilerFactory(BaseTilerFactory):
         self._tiles_routes()
         self._tilejson_routes()
         self._wmts_routes()
+
+        if self.add_part:
+            self._part_routes()
 
         if self.add_statistics:
             self._statistics_routes()
@@ -207,14 +220,7 @@ class MosaicTilerFactory(BaseTilerFactory):
             env=Depends(self.environment_dependency),
         ):
             """Create map tile."""
-            threads = int(os.getenv("MOSAIC_CONCURRENCY", MAX_THREADS))
-
             scale = scale or 1
-
-            strict_zoom = str(os.getenv("MOSAIC_STRICT_ZOOM", False)).lower() in [
-                "true",
-                "yes",
-            ]
 
             tms = self.supported_tms.get(tileMatrixSetId)
             with rasterio.Env(**env):
@@ -225,7 +231,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                     **backend_params,
                 ) as src_dst:
 
-                    if strict_zoom and (
+                    if MOSAIC_STRICT_ZOOM and (
                         tile.z < src_dst.minzoom or tile.z > src_dst.maxzoom
                     ):
                         raise HTTPException(
@@ -240,7 +246,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                         tilesize=scale * 256,
                         buffer=buffer,
                         pixel_selection=pixel_selection,
-                        threads=threads,
+                        threads=MOSAIC_THREADS,
                         **layer_params,
                         **dataset_params,
                         **pgstac_params,
@@ -1041,12 +1047,11 @@ class MosaicTilerFactory(BaseTilerFactory):
             ],
             searchid=Depends(self.path_dependency),
             coord_crs=Depends(CoordCRSParams),
+            dst_crs=Depends(DstCRSParams),
             layer_params=Depends(self.layer_dependency),
             dataset_params=Depends(self.dataset_dependency),
+            image_params=Depends(self.img_part_dependency),
             pixel_selection=Depends(self.pixel_selection_dependency),
-            max_size: Annotated[
-                int, Query(description="Maximum image size to read onto.")
-            ] = 1024,
             stats_params=Depends(self.stats_dependency),
             histogram_params=Depends(self.histogram_dependency),
             pgstac_params: PgSTACParams = Depends(),
@@ -1059,8 +1064,6 @@ class MosaicTilerFactory(BaseTilerFactory):
             if isinstance(fc, Feature):
                 fc = FeatureCollection(type="FeatureCollection", features=[geojson])
 
-            threads = int(os.getenv("MOSAIC_CONCURRENCY", MAX_THREADS))
-
             with rasterio.Env(**env):
                 with self.reader(
                     searchid,
@@ -1068,22 +1071,187 @@ class MosaicTilerFactory(BaseTilerFactory):
                     **backend_params,
                 ) as src_dst:
                     for feature in fc:
+                        shape = feature.model_dump(exclude_none=True)
+
                         data, _ = src_dst.feature(
-                            feature.model_dump(exclude_none=True),
+                            shape,
                             shape_crs=coord_crs or WGS84_CRS,
+                            dst_crs=dst_crs,
                             pixel_selection=pixel_selection,
-                            threads=threads,
-                            max_size=max_size,
+                            threads=MOSAIC_THREADS,
+                            **image_params,
                             **layer_params,
                             **dataset_params,
                             **pgstac_params,
                         )
 
+                        coverage_array = data.get_coverage_array(
+                            shape,
+                            shape_crs=coord_crs or WGS84_CRS,
+                        )
+
                         stats = data.statistics(
-                            **stats_params, hist_options={**histogram_params}
+                            **stats_params,
+                            hist_options={**histogram_params},
+                            coverage=coverage_array,
                         )
 
                         feature.properties = feature.properties or {}
                         feature.properties.update({"statistics": stats})
 
             return fc.features[0] if isinstance(geojson, Feature) else fc
+
+    def _part_routes(self):  # noqa: C901
+        """Register /bbox and /feature endpoint."""
+
+        # GET endpoints
+        @self.router.get(
+            "/{searchid}/bbox/{minx},{miny},{maxx},{maxy}.{format}",
+            **img_endpoint_params,
+        )
+        @self.router.get(
+            "/{searchid}/bbox/{minx},{miny},{maxx},{maxy}/{width}x{height}.{format}",
+            **img_endpoint_params,
+        )
+        def bbox_image(
+            minx: Annotated[float, Path(description="Bounding box min X")],
+            miny: Annotated[float, Path(description="Bounding box min Y")],
+            maxx: Annotated[float, Path(description="Bounding box max X")],
+            maxy: Annotated[float, Path(description="Bounding box max Y")],
+            searchid=Depends(self.path_dependency),
+            format: Annotated[
+                ImageType,
+                "Default will be automatically defined if the output image needs a mask (png) or not (jpeg).",
+            ] = None,
+            coord_crs=Depends(CoordCRSParams),
+            dst_crs=Depends(DstCRSParams),
+            layer_params=Depends(self.layer_dependency),
+            dataset_params=Depends(self.dataset_dependency),
+            image_params=Depends(self.img_part_dependency),
+            pixel_selection=Depends(self.pixel_selection_dependency),
+            post_process=Depends(self.process_dependency),
+            rescale=Depends(self.rescale_dependency),
+            color_formula=Depends(ColorFormulaParams),
+            colormap=Depends(self.colormap_dependency),
+            render_params=Depends(self.render_dependency),
+            pgstac_params: PgSTACParams = Depends(),
+            backend_params=Depends(self.backend_dependency),
+            reader_params=Depends(self.reader_dependency),
+            env=Depends(self.environment_dependency),
+        ):
+            """Create image from a bbox."""
+            with rasterio.Env(**env):
+                with self.reader(
+                    searchid,
+                    reader_options={**reader_params},
+                    **backend_params,
+                ) as src_dst:
+                    image, assets = src_dst.part(
+                        [minx, miny, maxx, maxy],
+                        dst_crs=dst_crs,
+                        bounds_crs=coord_crs or WGS84_CRS,
+                        **layer_params,
+                        **image_params,
+                        **dataset_params,
+                    )
+                    dst_colormap = getattr(src_dst, "colormap", None)
+
+            if post_process:
+                image = post_process(image)
+
+            if rescale:
+                image.rescale(rescale)
+
+            if color_formula:
+                image.apply_color_formula(color_formula)
+
+            content, media_type = render_image(
+                image,
+                output_format=format,
+                colormap=colormap or dst_colormap,
+                **render_params,
+            )
+
+            headers: Dict[str, str] = {}
+            if OptionalHeader.x_assets in self.optional_headers:
+                ids = [x["id"] for x in assets]
+                headers["X-Assets"] = ",".join(ids)
+
+            return Response(content, media_type=media_type, headers=headers)
+
+        @self.router.post(
+            "/{searchid}/feature",
+            **img_endpoint_params,
+        )
+        @self.router.post(
+            "/{searchid}/feature.{format}",
+            **img_endpoint_params,
+        )
+        @self.router.post(
+            "/{searchid}/feature/{width}x{height}.{format}",
+            **img_endpoint_params,
+        )
+        def feature_image(
+            geojson: Annotated[Union[Feature], Body(description="GeoJSON Feature.")],
+            searchid=Depends(self.path_dependency),
+            format: Annotated[
+                ImageType,
+                "Default will be automatically defined if the output image needs a mask (png) or not (jpeg).",
+            ] = None,
+            coord_crs=Depends(CoordCRSParams),
+            dst_crs=Depends(DstCRSParams),
+            layer_params=Depends(self.layer_dependency),
+            dataset_params=Depends(self.dataset_dependency),
+            image_params=Depends(self.img_part_dependency),
+            pixel_selection=Depends(self.pixel_selection_dependency),
+            post_process=Depends(self.process_dependency),
+            rescale=Depends(self.rescale_dependency),
+            color_formula=Depends(ColorFormulaParams),
+            colormap=Depends(self.colormap_dependency),
+            render_params=Depends(self.render_dependency),
+            pgstac_params: PgSTACParams = Depends(),
+            backend_params=Depends(self.backend_dependency),
+            reader_params=Depends(self.reader_dependency),
+            env=Depends(self.environment_dependency),
+        ):
+            """Create image from a geojson feature."""
+            with rasterio.Env(**env):
+                with self.reader(
+                    searchid,
+                    reader_options={**reader_params},
+                    **backend_params,
+                ) as src_dst:
+                    image, assets = src_dst.feature(
+                        geojson.model_dump(exclude_none=True),
+                        dst_crs=dst_crs,
+                        shape_crs=coord_crs or WGS84_CRS,
+                        pixel_selection=pixel_selection,
+                        threads=MOSAIC_THREADS,
+                        **layer_params,
+                        **image_params,
+                        **dataset_params,
+                        **pgstac_params,
+                    )
+
+            if post_process:
+                image = post_process(image)
+
+            if rescale:
+                image.rescale(rescale)
+
+            if color_formula:
+                image.apply_color_formula(color_formula)
+
+            content, media_type = render_image(
+                image,
+                output_format=format,
+                colormap=colormap,
+                **render_params,
+            )
+
+            headers: Dict[str, str] = {}
+            if OptionalHeader.x_assets in self.optional_headers:
+                ids = [x["id"] for x in assets]
+                headers["X-Assets"] = ",".join(ids)
+
+            return Response(content, media_type=media_type, headers=headers)

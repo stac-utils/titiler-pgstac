@@ -104,6 +104,7 @@ mosaic = MosaicTilerFactory(
     add_statistics=True,
     add_viewer=True,
     add_mosaic_list=True,
+    add_part=True,
 )
 app.include_router(mosaic.router, tags=["Mosaic"], prefix="/mosaic")
 

@@ -374,6 +374,54 @@ class PGSTACBackend(BaseBackend):
 
         return list(multi_values(mosaic_assets, _reader, lon, lat, **kwargs).items())
 
+    def part(
+        self,
+        bbox: BBox,
+        dst_crs: Optional[CRS] = None,
+        bounds_crs: CRS = WGS84_CRS,
+        reverse: bool = False,
+        scan_limit: Optional[int] = None,
+        items_limit: Optional[int] = None,
+        time_limit: Optional[int] = None,
+        exitwhenfull: Optional[bool] = None,
+        skipcovered: Optional[bool] = None,
+        **kwargs: Any,
+    ) -> Tuple[ImageData, List[str]]:
+        """Create an Image from multiple items for a bbox."""
+        xmin, ymin, xmax, ymax = bbox
+
+        mosaic_assets = self.assets_for_bbox(
+            xmin,
+            ymin,
+            xmax,
+            ymax,
+            coord_crs=bounds_crs,
+            scan_limit=scan_limit,
+            items_limit=items_limit,
+            time_limit=time_limit,
+            exitwhenfull=exitwhenfull,
+            skipcovered=skipcovered,
+        )
+
+        if not mosaic_assets:
+            raise NoAssetFoundError("No assets found for bbox input")
+
+        if reverse:
+            mosaic_assets = list(reversed(mosaic_assets))
+
+        def _reader(item: Dict[str, Any], bbox: BBox, **kwargs: Any) -> ImageData:
+            with self.reader(item, **self.reader_options) as src_dst:
+                return src_dst.part(bbox, **kwargs)
+
+        return mosaic_reader(
+            mosaic_assets,
+            _reader,
+            bbox,
+            bounds_crs=bounds_crs,
+            dst_crs=dst_crs or bounds_crs,
+            **kwargs,
+        )
+
     def feature(
         self,
         shape: Dict,
@@ -407,7 +455,7 @@ class PGSTACBackend(BaseBackend):
         )
 
         if not mosaic_assets:
-            raise NoAssetFoundError("No assets found for tile input Geometry")
+            raise NoAssetFoundError("No assets found for Geometry")
 
         if reverse:
             mosaic_assets = list(reversed(mosaic_assets))

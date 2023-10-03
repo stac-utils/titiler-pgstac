@@ -35,9 +35,12 @@ app.include_router(mosaic.router)
 | `GET`  | `/{searchid}/tiles[/{TileMatrixSetId}]/{z}/{x}/{Y}/assets`                | JSON                                    | Return a list of assets which overlap a given tile
 | `GET`  | `/{searchid}/tiles[/{TileMatrixSetId}]/{z}/{x}/{y}[@{scale}x][.{format}]` | image/bin                               | Create a web map tile image for a search query and a tile index
 | `GET`  | `/{searchid}[/{TileMatrixSetId}]/tilejson.json`                           | JSON ([TileJSON][tilejson_model])       | Return a Mapbox TileJSON document
-| `GET`  | `/{searchid}[/{TileMatrixSetId}]/WMTSCapabilities.xml`                    | XML                                     | return OGC WMTS Get Capabilities
-| `GET`  | `/{searchid}[/{TileMatrixSetId}]/map`                                     | HTML                                    | simple map viewer **OPTIONAL**
+| `GET`  | `/{searchid}[/{TileMatrixSetId}]/WMTSCapabilities.xml`                    | XML                                     | Return OGC WMTS Get Capabilities
+| `GET`  | `/{searchid}[/{TileMatrixSetId}]/map`                                     | HTML                                    | Simple map viewer **OPTIONAL**
 | `POST` | `/{searchid}/statistics`                                                  | GeoJSON ([Statistics][statitics_model]) | Return statistics for geojson features **OPTIONAL**
+| `GET`  | `/{searchid}/bbox/{minx},{miny},{maxx},{maxy}[/{width}x{height}].{format}`| image/bin                               | Create an image from part of a dataset **OPTIONAL**
+| `POST` | `/{searchid}/feature[/{width}x{height}][.{format}]`                       | image/bin                               | Create an image from a GeoJSON feature **OPTIONAL**
+
 
 ## Item
 
