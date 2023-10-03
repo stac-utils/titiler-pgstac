@@ -100,6 +100,9 @@ class MosaicTilerFactory(BaseTilerFactory):
     histogram_dependency: Type[DefaultDependency] = HistogramParams
 
     # Crop endpoints Dependencies
+    # WARNINGS: `/bbox` and `/feature` endpoints should be used carefully because
+    # each request might need to open/read a lot of files if the user decide to
+    # submit large bbox/geojson. This will also depends on the STAC Items resolution.
     img_part_dependency: Type[DefaultDependency] = PartFeatureParams
 
     # Search dependency

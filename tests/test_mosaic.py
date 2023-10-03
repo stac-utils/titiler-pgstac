@@ -10,9 +10,6 @@ from rasterio.crs import CRS
 
 from .conftest import mock_rasterio_open, parse_img
 
-# search_no_bbox = "8f5fb37ec266f4b84ec6aa4fe0453c59"
-# search_bbox = "5e86ce566b979e567370a6ad85aaa68a"
-
 
 @pytest.fixture
 def search_no_bbox(app):
