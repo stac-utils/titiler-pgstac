@@ -6,6 +6,39 @@
 * remove `max_size` default for mosaic's `/statistics [POST]` endpoint  **breaking change**
 * add `/bbox` and `/feature [POST]` optional endpoints
 * add `img_part_dependency` attribute in `MosaicTilerFactory` (defaults to `titiler.code.dependencies.PartFeatureParams`)
+* move `/register`, `/list` and `/info` endpoints to tiler's extensions **breaking change**
+
+    ```python
+    # Before
+    from titiler.pgstac.factory import MosaicTilerFactory
+
+    app = FastAPI()
+    mosaic = MosaicTilerFactory(add_mosaic_list=True)
+    app.include_router(mosaic.router)
+
+    # Now
+    from titiler.pgstac.factory import MosaicTilerFactory
+    from titiler.pgstac.extensions import (
+        searchInfoExtension,
+        searchListExtension,
+        searchRegisterExtension,
+    )
+
+    app = FastAPI()
+    mosaic = MosaicTilerFactory(
+        extensions=[
+            searchRegisterExtension(),  # /register
+            searchInfoExtension(),  # /{searchid}/info
+            searchListExtension(),  # /list
+        ],
+    )
+    app.include_router(mosaic.router)
+    ```
+
+* remove `BackendParams` dependency **breaking change**
+* add `db_conn` dependency to initiate database connection
+* replace `pool: psycopg_pool.ConnectionPool` attribute by `connection: psycopg.Connection` in `PGSTACBackend` mosaic backend  **breaking change**
+
 
 ## 0.7.0 (2023-09-28)
 

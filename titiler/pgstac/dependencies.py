@@ -1,13 +1,14 @@
 """titiler-pgstac dependencies."""
 
-from dataclasses import dataclass, field
-from typing import Optional, Tuple
+from dataclasses import dataclass
+from typing import Generator, Optional, Tuple
 
 import morecantile
 import pystac
 from cachetools import TTLCache, cached
 from cachetools.keys import hashkey
 from fastapi import HTTPException, Path, Query
+from psycopg import Connection
 from psycopg import errors as pgErrors
 from psycopg.rows import dict_row
 from psycopg_pool import ConnectionPool
@@ -21,6 +22,12 @@ from titiler.pgstac.utils import retry
 
 cache_config = CacheSettings()
 retry_config = RetrySettings()
+
+
+def db_conn(request: Request) -> Generator[Connection, None, None]:
+    """Return database connection."""
+    with request.app.state.dbpool.connection() as conn:
+        yield conn
 
 
 def PathParams(
@@ -43,21 +50,6 @@ def SearchParams(
         by_alias=True,
     )
     return model.PgSTACSearch(**search), body.metadata
-
-
-@dataclass(init=False)
-class BackendParams(DefaultDependency):
-    """backend parameters."""
-
-    pool: ConnectionPool = field(init=False)
-
-    def __init__(self, request: Request):
-        """Initialize BackendParams
-
-        Note: Because we don't want `pool` to appear in the documentation we use a dataclass with a custom `__init__` method.
-        FastAPI will use the `__init__` method but will exclude Request in the documentation making `pool` an invisible dependency.
-        """
-        self.pool = request.app.state.dbpool
 
 
 @dataclass
