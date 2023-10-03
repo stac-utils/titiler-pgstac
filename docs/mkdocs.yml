@@ -27,7 +27,6 @@ nav:
     - Mosaic list: "advanced/mosaic_list.md"
     - Custom search model: "advanced/custom_search.md"
     - Custom TileJSON endpoint : "advanced/custom_tilejson.md"
-    - Custom feature crop endpoint: "advanced/geojson_crop.md"
   - Examples:
     - demo: "notebooks/demo.ipynb"
   - Performance Benchmarks: benchmark.html
