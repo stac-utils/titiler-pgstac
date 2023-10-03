@@ -38,6 +38,7 @@
 * remove `BackendParams` dependency **breaking change**
 * add `db_conn` dependency to initiate database connection
 * replace `pool: psycopg_pool.ConnectionPool` attribute by `connection: psycopg.Connection` in `PGSTACBackend` mosaic backend  **breaking change**
+* add `pgstac_dependency` in `MosaicTilerFactory` (defaults to `PgSTACParams`)
 
 
 ## 0.7.0 (2023-09-28)
