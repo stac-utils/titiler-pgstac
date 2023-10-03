@@ -13,8 +13,8 @@ from cogeo_mosaic.mosaic import MosaicJSON
 from geojson_pydantic import Point, Polygon
 from geojson_pydantic.geometries import Geometry, parse_geometry_obj
 from morecantile import Tile, TileMatrixSet
+from psycopg import Connection
 from psycopg import errors as pgErrors
-from psycopg_pool import ConnectionPool
 from rasterio.crs import CRS
 from rasterio.warp import transform, transform_bounds, transform_geom
 from rio_tiler.constants import WEB_MERCATOR_TMS, WGS84_CRS
@@ -118,8 +118,8 @@ class PGSTACBackend(BaseBackend):
     # Mosaic ID (hash)
     input: str = attr.ib()
 
-    # Connection POOL to the database
-    pool: ConnectionPool = attr.ib()
+    # Database Connection
+    connection: Connection = attr.ib()
 
     # Because we are not using mosaicjson we are not limited to the WebMercator TMS
     tms: TileMatrixSet = attr.ib(default=WEB_MERCATOR_TMS)
@@ -255,32 +255,31 @@ class PGSTACBackend(BaseBackend):
         exitwhenfull = True if exitwhenfull is None else exitwhenfull
         skipcovered = True if skipcovered is None else skipcovered
 
-        with self.pool.connection() as conn:
-            with conn.cursor() as cursor:
-                try:
-                    cursor.execute(
-                        "SELECT * FROM geojsonsearch(%s, %s, %s, %s, %s, %s, %s, %s);",
-                        (
-                            geom.model_dump_json(exclude_none=True),
-                            self.input,
-                            json.dumps(fields),
-                            scan_limit,
-                            items_limit,
-                            f"{time_limit} seconds",
-                            exitwhenfull,
-                            skipcovered,
-                        ),
-                    )
-                    resp = cursor.fetchone()[0]
+        with self.connection.cursor() as cursor:
+            try:
+                cursor.execute(
+                    "SELECT * FROM geojsonsearch(%s, %s, %s, %s, %s, %s, %s, %s);",
+                    (
+                        geom.model_dump_json(exclude_none=True),
+                        self.input,
+                        json.dumps(fields),
+                        scan_limit,
+                        items_limit,
+                        f"{time_limit} seconds",
+                        exitwhenfull,
+                        skipcovered,
+                    ),
+                )
+                resp = cursor.fetchone()[0]
 
-                except pgErrors.RaiseException as e:
-                    # Catch Invalid SearchId and raise specific Error
-                    if f"Search with Query Hash {self.input} Not Found" in str(e):
-                        raise MosaicNotFoundError(
-                            f"SearchId `{self.input}` not found"
-                        ) from e
-                    else:
-                        raise e
+            except pgErrors.RaiseException as e:
+                # Catch Invalid SearchId and raise specific Error
+                if f"Search with Query Hash {self.input} Not Found" in str(e):
+                    raise MosaicNotFoundError(
+                        f"SearchId `{self.input}` not found"
+                    ) from e
+                else:
+                    raise e
 
         return resp.get("features", [])
 

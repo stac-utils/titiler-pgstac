@@ -3,9 +3,26 @@
 ## 0.8.0 (TBD)
 
 * update titiler requirement to `>=0.14.0,<0.15`
+
 * remove `max_size` default for mosaic's `/statistics [POST]` endpoint  **breaking change**
+
 * add `/bbox` and `/feature [POST]` optional endpoints
+
 * add `img_part_dependency` attribute in `MosaicTilerFactory` (defaults to `titiler.code.dependencies.PartFeatureParams`)
+
+* move `/mosaic/register` and `/mosaic/list` endpoints to main application **breaking change**
+
+* rename `searchid` path parameter to `search_id` **breaking change**
+
+* remove `BackendParams` dependency **breaking change**
+
+* add `db_conn` dependency to initiate database connection
+
+* replace `pool: psycopg_pool.ConnectionPool` attribute by `connection: psycopg.Connection` in `PGSTACBackend` mosaic backend  **breaking change**
+
+* add `pgstac_dependency` in `MosaicTilerFactory` (defaults to `PgSTACParams`)
+
+* use global prefix `/mosaic/{search_id}` for mosaic's routes **breaking change**
 
 ## 0.7.0 (2023-09-28)
 
