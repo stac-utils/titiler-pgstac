@@ -1,6 +1,6 @@
 # Release Notes
 
-## 0.8.0 (TBD)
+## 0.8.0 (2023-10-06)
 
 * update titiler requirement to `>=0.14.0,<0.15`
 * remove `max_size` default for mosaic's `/statistics [POST]` endpoint  **breaking change**
