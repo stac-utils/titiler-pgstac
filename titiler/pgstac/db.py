@@ -25,6 +25,10 @@ async def connect_to_db(
         kwargs={"options": "-c search_path=pgstac,public -c application_name=pgstac"},
     )
 
+    # Make sure the pool is ready
+    # ref: https://www.psycopg.org/psycopg3/docs/advanced/pool.html#pool-startup-check
+    app.state.dbpool.wait()
+
 
 async def close_db_connection(app: FastAPI) -> None:
     """Close Pool."""

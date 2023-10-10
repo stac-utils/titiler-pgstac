@@ -1,5 +1,10 @@
 # Release Notes
 
+## Unrelease
+
+* add `pgstac_dependency` attribute in `MosaicTilerFactory` (defaults to `dependencies.PgSTACParams`)
+* add database's `pool` check in startup event
+
 ## 0.8.0 (2023-10-06)
 
 * update titiler requirement to `>=0.14.0,<0.15`
