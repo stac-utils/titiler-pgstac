@@ -112,6 +112,7 @@ class MosaicTilerFactory(BaseTilerFactory):
 
     pixel_selection_dependency: Callable[..., MosaicMethodBase] = PixelSelectionParams
 
+    pgstac_dependency: Type[DefaultDependency] = PgSTACParams
     backend_dependency: Type[DefaultDependency] = BackendParams
 
     # Add/Remove some endpoints
@@ -217,7 +218,7 @@ class MosaicTilerFactory(BaseTilerFactory):
             color_formula=Depends(ColorFormulaParams),
             colormap=Depends(self.colormap_dependency),
             render_params=Depends(self.render_dependency),
-            pgstac_params: PgSTACParams = Depends(),
+            pgstac_params=Depends(self.pgstac_dependency),
             backend_params=Depends(self.backend_dependency),
             reader_params=Depends(self.reader_dependency),
             env=Depends(self.environment_dependency),
@@ -329,7 +330,7 @@ class MosaicTilerFactory(BaseTilerFactory):
             color_formula=Depends(ColorFormulaParams),
             colormap=Depends(self.colormap_dependency),
             render_params=Depends(self.render_dependency),
-            pgstac_params: PgSTACParams = Depends(),
+            pgstac_params=Depends(self.pgstac_dependency),
             backend_params=Depends(self.backend_dependency),
             reader_params=Depends(self.reader_dependency),
         ):
@@ -431,7 +432,7 @@ class MosaicTilerFactory(BaseTilerFactory):
             color_formula=Depends(ColorFormulaParams),
             colormap=Depends(self.colormap_dependency),
             render_params=Depends(self.render_dependency),
-            pgstac_params: PgSTACParams = Depends(),
+            pgstac_params=Depends(self.pgstac_dependency),
             backend_params=Depends(self.backend_dependency),
             reader_params=Depends(self.reader_dependency),
             env=Depends(self.environment_dependency),
@@ -523,7 +524,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                 self.rescale_dependency,
                 self.colormap_dependency,
                 self.render_dependency,
-                PgSTACParams,
+                self.pgstac_dependency,
                 self.reader_dependency,
                 self.backend_dependency,
             ]
@@ -639,7 +640,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                 Literal[tuple(self.supported_tms.list())],
                 f"Identifier selecting one of the TileMatrixSetId supported (default: '{self.default_tms}')",
             ] = self.default_tms,
-            pgstac_params: PgSTACParams = Depends(),
+            pgstac_params=Depends(self.pgstac_dependency),
             backend_params=Depends(self.backend_dependency),
             reader_params=Depends(self.reader_dependency),
         ):
@@ -663,7 +664,7 @@ class MosaicTilerFactory(BaseTilerFactory):
             lat: Annotated[float, Path(description="Latitude")],
             searchid=Depends(self.path_dependency),
             coord_crs=Depends(CoordCRSParams),
-            pgstac_params: PgSTACParams = Depends(),
+            pgstac_params=Depends(self.pgstac_dependency),
             backend_params=Depends(self.backend_dependency),
             reader_params=Depends(self.reader_dependency),
         ):
@@ -754,7 +755,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                     self.rescale_dependency,
                     self.colormap_dependency,
                     self.render_dependency,
-                    PgSTACParams,
+                    self.pgstac_dependency,
                     self.reader_dependency,
                     self.backend_dependency,
                 ]
@@ -1057,7 +1058,7 @@ class MosaicTilerFactory(BaseTilerFactory):
             pixel_selection=Depends(self.pixel_selection_dependency),
             stats_params=Depends(self.stats_dependency),
             histogram_params=Depends(self.histogram_dependency),
-            pgstac_params: PgSTACParams = Depends(),
+            pgstac_params=Depends(self.pgstac_dependency),
             backend_params=Depends(self.backend_dependency),
             reader_params=Depends(self.reader_dependency),
             env=Depends(self.environment_dependency),
@@ -1137,7 +1138,7 @@ class MosaicTilerFactory(BaseTilerFactory):
             color_formula=Depends(ColorFormulaParams),
             colormap=Depends(self.colormap_dependency),
             render_params=Depends(self.render_dependency),
-            pgstac_params: PgSTACParams = Depends(),
+            pgstac_params=Depends(self.pgstac_dependency),
             backend_params=Depends(self.backend_dependency),
             reader_params=Depends(self.reader_dependency),
             env=Depends(self.environment_dependency),
@@ -1212,7 +1213,7 @@ class MosaicTilerFactory(BaseTilerFactory):
             color_formula=Depends(ColorFormulaParams),
             colormap=Depends(self.colormap_dependency),
             render_params=Depends(self.render_dependency),
-            pgstac_params: PgSTACParams = Depends(),
+            pgstac_params=Depends(self.pgstac_dependency),
             backend_params=Depends(self.backend_dependency),
             reader_params=Depends(self.reader_dependency),
             env=Depends(self.environment_dependency),
