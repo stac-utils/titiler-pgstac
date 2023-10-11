@@ -4,6 +4,8 @@
 
 * add `pgstac_dependency` attribute in `MosaicTilerFactory` (defaults to `dependencies.PgSTACParams`)
 * add database's `pool` check in startup event
+* rename `dependencies.PathParams` to `dependencies.SearchIdParams` **breaking change**
+* rename `searchid` path parameter to `search_id` **breaking change**
 
 ## 0.8.0 (2023-10-06)
 

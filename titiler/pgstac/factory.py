@@ -57,8 +57,8 @@ from titiler.mosaic.factory import PixelSelectionParams
 from titiler.pgstac import model
 from titiler.pgstac.dependencies import (
     BackendParams,
-    PathParams,
     PgSTACParams,
+    SearchIdParams,
     SearchParams,
     TileParams,
 )
@@ -92,7 +92,7 @@ class MosaicTilerFactory(BaseTilerFactory):
     """Custom MosaicTiler for PgSTAC Mosaic Backend."""
 
     reader: Type[BaseBackend] = PGSTACBackend
-    path_dependency: Callable[..., str] = PathParams
+    path_dependency: Callable[..., str] = SearchIdParams
     layer_dependency: Type[DefaultDependency] = AssetsBidxExprParams
 
     # Statistics/Histogram Dependencies
@@ -169,33 +169,33 @@ class MosaicTilerFactory(BaseTilerFactory):
     def _tiles_routes(self) -> None:
         """register tiles routes."""
 
-        @self.router.get("/{searchid}/tiles/{z}/{x}/{y}", **img_endpoint_params)
+        @self.router.get("/{search_id}/tiles/{z}/{x}/{y}", **img_endpoint_params)
         @self.router.get(
-            "/{searchid}/tiles/{z}/{x}/{y}.{format}", **img_endpoint_params
+            "/{search_id}/tiles/{z}/{x}/{y}.{format}", **img_endpoint_params
         )
         @self.router.get(
-            "/{searchid}/tiles/{z}/{x}/{y}@{scale}x", **img_endpoint_params
+            "/{search_id}/tiles/{z}/{x}/{y}@{scale}x", **img_endpoint_params
         )
         @self.router.get(
-            "/{searchid}/tiles/{z}/{x}/{y}@{scale}x.{format}", **img_endpoint_params
+            "/{search_id}/tiles/{z}/{x}/{y}@{scale}x.{format}", **img_endpoint_params
         )
         @self.router.get(
-            "/{searchid}/tiles/{tileMatrixSetId}/{z}/{x}/{y}", **img_endpoint_params
+            "/{search_id}/tiles/{tileMatrixSetId}/{z}/{x}/{y}", **img_endpoint_params
         )
         @self.router.get(
-            "/{searchid}/tiles/{tileMatrixSetId}/{z}/{x}/{y}.{format}",
+            "/{search_id}/tiles/{tileMatrixSetId}/{z}/{x}/{y}.{format}",
             **img_endpoint_params,
         )
         @self.router.get(
-            "/{searchid}/tiles/{tileMatrixSetId}/{z}/{x}/{y}@{scale}x",
+            "/{search_id}/tiles/{tileMatrixSetId}/{z}/{x}/{y}@{scale}x",
             **img_endpoint_params,
         )
         @self.router.get(
-            "/{searchid}/tiles/{tileMatrixSetId}/{z}/{x}/{y}@{scale}x.{format}",
+            "/{search_id}/tiles/{tileMatrixSetId}/{z}/{x}/{y}@{scale}x.{format}",
             **img_endpoint_params,
         )
         def tile(
-            searchid=Depends(self.path_dependency),
+            search_id=Depends(self.path_dependency),
             tile=Depends(TileParams),
             tileMatrixSetId: Annotated[  # type: ignore
                 Literal[tuple(self.supported_tms.list())],
@@ -229,7 +229,7 @@ class MosaicTilerFactory(BaseTilerFactory):
             tms = self.supported_tms.get(tileMatrixSetId)
             with rasterio.Env(**env):
                 with self.reader(
-                    searchid,
+                    search_id,
                     tms=tms,
                     reader_options={**reader_params},
                     **backend_params,
@@ -283,20 +283,20 @@ class MosaicTilerFactory(BaseTilerFactory):
         """register tiles routes."""
 
         @self.router.get(
-            "/{searchid}/tilejson.json",
+            "/{search_id}/tilejson.json",
             response_model=TileJSON,
             responses={200: {"description": "Return a tilejson"}},
             response_model_exclude_none=True,
         )
         @self.router.get(
-            "/{searchid}/{tileMatrixSetId}/tilejson.json",
+            "/{search_id}/{tileMatrixSetId}/tilejson.json",
             response_model=TileJSON,
             responses={200: {"description": "Return a tilejson"}},
             response_model_exclude_none=True,
         )
         def tilejson(
             request: Request,
-            searchid=Depends(self.path_dependency),
+            search_id=Depends(self.path_dependency),
             tileMatrixSetId: Annotated[  # type: ignore
                 Literal[tuple(self.supported_tms.list())],
                 f"Identifier selecting one of the TileMatrixSetId supported (default: '{self.default_tms}')",
@@ -334,19 +334,19 @@ class MosaicTilerFactory(BaseTilerFactory):
             backend_params=Depends(self.backend_dependency),
             reader_params=Depends(self.reader_dependency),
         ):
-            """Return TileJSON document for a SearchId."""
+            """Return TileJSON document for a search_id."""
             with request.app.state.dbpool.connection() as conn:
                 with conn.cursor(row_factory=class_row(model.Search)) as cursor:
                     cursor.execute(
                         "SELECT * FROM searches WHERE hash=%s;",
-                        (searchid,),
+                        (search_id,),
                     )
                     search_info = cursor.fetchone()
                     if not search_info:
-                        raise MosaicNotFoundError(f"SearchId `{searchid}` not found")
+                        raise MosaicNotFoundError(f"SearchId `{search_id}` not found")
 
             route_params = {
-                "searchid": search_info.id,
+                "search_id": search_info.id,
                 "z": "{z}",
                 "x": "{x}",
                 "y": "{y}",
@@ -392,13 +392,13 @@ class MosaicTilerFactory(BaseTilerFactory):
     def _map_routes(self):  # noqa: C901
         """Register /map endpoint."""
 
-        @self.router.get("/{searchid}/map", response_class=HTMLResponse)
+        @self.router.get("/{search_id}/map", response_class=HTMLResponse)
         @self.router.get(
-            "/{searchid}/{tileMatrixSetId}/map", response_class=HTMLResponse
+            "/{search_id}/{tileMatrixSetId}/map", response_class=HTMLResponse
         )
         def map_viewer(
             request: Request,
-            searchid=Depends(self.path_dependency),
+            search_id=Depends(self.path_dependency),
             tileMatrixSetId: Annotated[
                 Literal[tuple(self.supported_tms.list())],
                 f"Identifier selecting one of the TileMatrixSetId supported (default: '{self.default_tms}')",
@@ -439,7 +439,10 @@ class MosaicTilerFactory(BaseTilerFactory):
         ):
             """Return a simple map viewer."""
             tilejson_url = self.url_for(
-                request, "tilejson", searchid=searchid, tileMatrixSetId=tileMatrixSetId
+                request,
+                "tilejson",
+                search_id=search_id,
+                tileMatrixSetId=tileMatrixSetId,
             )
             if request.query_params._list:
                 tilejson_url += f"?{urlencode(request.query_params._list)}"
@@ -459,14 +462,16 @@ class MosaicTilerFactory(BaseTilerFactory):
     def _wmts_routes(self):  # noqa: C901
         """Add wmts endpoint."""
 
-        @self.router.get("/{searchid}/WMTSCapabilities.xml", response_class=XMLResponse)
         @self.router.get(
-            "/{searchid}/{tileMatrixSetId}/WMTSCapabilities.xml",
+            "/{search_id}/WMTSCapabilities.xml", response_class=XMLResponse
+        )
+        @self.router.get(
+            "/{search_id}/{tileMatrixSetId}/WMTSCapabilities.xml",
             response_class=XMLResponse,
         )
         def wmts(
             request: Request,
-            searchid=Depends(self.path_dependency),
+            search_id=Depends(self.path_dependency),
             tileMatrixSetId: Annotated[
                 Literal[tuple(self.supported_tms.list())],
                 f"Identifier selecting one of the TileMatrixSetId supported (default: '{self.default_tms}')",
@@ -495,14 +500,14 @@ class MosaicTilerFactory(BaseTilerFactory):
                 with conn.cursor(row_factory=class_row(model.Search)) as cursor:
                     cursor.execute(
                         "SELECT * FROM searches WHERE hash=%s;",
-                        (searchid,),
+                        (search_id,),
                     )
                     search_info = cursor.fetchone()
                     if not search_info:
-                        raise MosaicNotFoundError(f"SearchId `{searchid}` not found")
+                        raise MosaicNotFoundError(f"SearchId `{search_id}` not found")
 
             route_params = {
-                "searchid": searchid,
+                "search_id": search_id,
                 "z": "{TileMatrix}",
                 "x": "{TileCol}",
                 "y": "{TileRow}",
@@ -611,7 +616,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                 "wmts.xml",
                 {
                     "request": request,
-                    "title": search_info.metadata.name or searchid,
+                    "title": search_info.metadata.name or search_id,
                     "bounds": bounds,
                     "tileMatrix": tileMatrix,
                     "tms": tms,
@@ -625,16 +630,16 @@ class MosaicTilerFactory(BaseTilerFactory):
         """Register assets routes."""
 
         @self.router.get(
-            "/{searchid}/tiles/{z}/{x}/{y}/assets",
+            "/{search_id}/tiles/{z}/{x}/{y}/assets",
             responses={200: {"description": "Return list of assets"}},
         )
         @self.router.get(
-            "/{searchid}/tiles/{tileMatrixSetId}/{z}/{x}/{y}/assets",
+            "/{search_id}/tiles/{tileMatrixSetId}/{z}/{x}/{y}/assets",
             responses={200: {"description": "Return list of assets"}},
             response_model=List[Dict],
         )
         def assets_for_tile(
-            searchid=Depends(self.path_dependency),
+            search_id=Depends(self.path_dependency),
             tile=Depends(TileParams),
             tileMatrixSetId: Annotated[
                 Literal[tuple(self.supported_tms.list())],
@@ -647,7 +652,7 @@ class MosaicTilerFactory(BaseTilerFactory):
             """Return a list of assets which overlap a given tile"""
             tms = self.supported_tms.get(tileMatrixSetId)
             with self.reader(
-                searchid,
+                search_id,
                 tms=tms,
                 reader_options={**reader_params},
                 **backend_params,
@@ -655,14 +660,14 @@ class MosaicTilerFactory(BaseTilerFactory):
                 return src_dst.assets_for_tile(tile.x, tile.y, tile.z, **pgstac_params)
 
         @self.router.get(
-            "/{searchid}/{lon},{lat}/assets",
+            "/{search_id}/{lon},{lat}/assets",
             responses={200: {"description": "Return list of assets"}},
             response_model=List[Dict],
         )
         def assets_for_point(
             lon: Annotated[float, Path(description="Longitude")],
             lat: Annotated[float, Path(description="Latitude")],
-            searchid=Depends(self.path_dependency),
+            search_id=Depends(self.path_dependency),
             coord_crs=Depends(CoordCRSParams),
             pgstac_params=Depends(self.pgstac_dependency),
             backend_params=Depends(self.backend_dependency),
@@ -670,7 +675,7 @@ class MosaicTilerFactory(BaseTilerFactory):
         ):
             """Return a list of assets for a given point."""
             with self.reader(
-                searchid,
+                search_id,
                 reader_options={**reader_params},
                 **backend_params,
             ) as src_dst:
@@ -711,12 +716,12 @@ class MosaicTilerFactory(BaseTilerFactory):
                 model.Link(
                     rel="metadata",
                     title="Mosaic metadata",
-                    href=self.url_for(request, "info_search", searchid=search_info.id),
+                    href=self.url_for(request, "info_search", search_id=search_info.id),
                 ),
                 model.Link(
                     rel="tilejson",
                     title="Link for TileJSON",
-                    href=self.url_for(request, "tilejson", searchid=search_info.id),
+                    href=self.url_for(request, "tilejson", search_id=search_info.id),
                 ),
             ]
 
@@ -726,7 +731,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                         rel="map",
                         title="Link for Map viewer",
                         href=self.url_for(
-                            request, "map_viewer", searchid=search_info.id
+                            request, "map_viewer", search_id=search_info.id
                         ),
                     )
                 )
@@ -738,7 +743,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                     model.Link(
                         rel="wmts",
                         title="Link for WMTS",
-                        href=self.url_for(request, "wmts", searchid=search_info.id),
+                        href=self.url_for(request, "wmts", search_id=search_info.id),
                     )
                 )
             except NoMatchFound:
@@ -782,7 +787,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                             href=self.url_for(
                                 request,
                                 "tilejson",
-                                searchid=search_info.id,
+                                search_id=search_info.id,
                             )
                             + f"?{query_string}",
                         )
@@ -791,34 +796,34 @@ class MosaicTilerFactory(BaseTilerFactory):
             return model.RegisterResponse(searchid=search_info.id, links=links)
 
         @self.router.get(
-            "/{searchid}/info",
+            "/{search_id}/info",
             responses={200: {"description": "Get Search query metadata."}},
             response_model=model.Info,
             response_model_exclude_none=True,
         )
-        def info_search(request: Request, searchid=Depends(self.path_dependency)):
+        def info_search(request: Request, search_id=Depends(self.path_dependency)):
             """Get Search query metadata."""
             with request.app.state.dbpool.connection() as conn:
                 with conn.cursor(row_factory=class_row(model.Search)) as cursor:
                     cursor.execute(
                         "SELECT * FROM searches WHERE hash=%s;",
-                        (searchid,),
+                        (search_id,),
                     )
                     search_info = cursor.fetchone()
 
             if not search_info:
-                raise MosaicNotFoundError(f"SearchId `{searchid}` not found")
+                raise MosaicNotFoundError(f"SearchId `{search_id}` not found")
 
             links: List[model.Link] = [
                 model.Link(
                     rel="self",
                     title="Mosaic metadata",
-                    href=self.url_for(request, "info_search", searchid=search_info.id),
+                    href=self.url_for(request, "info_search", search_id=search_info.id),
                 ),
                 model.Link(
                     title="Link for TileJSON",
                     rel="tilejson",
-                    href=self.url_for(request, "tilejson", searchid=search_info.id),
+                    href=self.url_for(request, "tilejson", search_id=search_info.id),
                 ),
             ]
 
@@ -828,7 +833,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                         rel="map",
                         title="Link for Map viewer",
                         href=self.url_for(
-                            request, "map_viewer", searchid=search_info.id
+                            request, "map_viewer", search_id=search_info.id
                         ),
                     )
                 )
@@ -840,7 +845,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                     model.Link(
                         rel="wmts",
                         title="Link for WMTS",
-                        href=self.url_for(request, "wmts", searchid=search_info.id),
+                        href=self.url_for(request, "wmts", search_id=search_info.id),
                     )
                 )
             except NoMatchFound:
@@ -855,7 +860,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                             href=self.url_for(
                                 request,
                                 "tilejson",
-                                searchid=search_info.id,
+                                search_id=search_info.id,
                             )
                             + f"?{urlencode(values, doseq=True)}",
                         )
@@ -1008,13 +1013,13 @@ class MosaicTilerFactory(BaseTilerFactory):
                             model.Link(
                                 rel="metadata",
                                 href=self.url_for(
-                                    request, "info_search", searchid=search.id
+                                    request, "info_search", search_id=search.id
                                 ),
                             ),
                             model.Link(
                                 rel="tilejson",
                                 href=self.url_for(
-                                    request, "tilejson", searchid=search.id
+                                    request, "tilejson", search_id=search.id
                                 ),
                             ),
                         ],
@@ -1033,7 +1038,7 @@ class MosaicTilerFactory(BaseTilerFactory):
         """Register /statistics endpoint."""
 
         @self.router.post(
-            "/{searchid}/statistics",
+            "/{search_id}/statistics",
             response_model=MultiBaseStatisticsGeoJSON,
             response_model_exclude_none=True,
             response_class=GeoJSONResponse,
@@ -1049,7 +1054,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                 Union[FeatureCollection, Feature],
                 Body(description="GeoJSON Feature or FeatureCollection."),
             ],
-            searchid=Depends(self.path_dependency),
+            search_id=Depends(self.path_dependency),
             coord_crs=Depends(CoordCRSParams),
             dst_crs=Depends(DstCRSParams),
             layer_params=Depends(self.layer_dependency),
@@ -1070,7 +1075,7 @@ class MosaicTilerFactory(BaseTilerFactory):
 
             with rasterio.Env(**env):
                 with self.reader(
-                    searchid,
+                    search_id,
                     reader_options={**reader_params},
                     **backend_params,
                 ) as src_dst:
@@ -1110,11 +1115,11 @@ class MosaicTilerFactory(BaseTilerFactory):
 
         # GET endpoints
         @self.router.get(
-            "/{searchid}/bbox/{minx},{miny},{maxx},{maxy}.{format}",
+            "/{search_id}/bbox/{minx},{miny},{maxx},{maxy}.{format}",
             **img_endpoint_params,
         )
         @self.router.get(
-            "/{searchid}/bbox/{minx},{miny},{maxx},{maxy}/{width}x{height}.{format}",
+            "/{search_id}/bbox/{minx},{miny},{maxx},{maxy}/{width}x{height}.{format}",
             **img_endpoint_params,
         )
         def bbox_image(
@@ -1122,7 +1127,7 @@ class MosaicTilerFactory(BaseTilerFactory):
             miny: Annotated[float, Path(description="Bounding box min Y")],
             maxx: Annotated[float, Path(description="Bounding box max X")],
             maxy: Annotated[float, Path(description="Bounding box max Y")],
-            searchid=Depends(self.path_dependency),
+            search_id=Depends(self.path_dependency),
             format: Annotated[
                 ImageType,
                 "Default will be automatically defined if the output image needs a mask (png) or not (jpeg).",
@@ -1146,7 +1151,7 @@ class MosaicTilerFactory(BaseTilerFactory):
             """Create image from a bbox."""
             with rasterio.Env(**env):
                 with self.reader(
-                    searchid,
+                    search_id,
                     reader_options={**reader_params},
                     **backend_params,
                 ) as src_dst:
@@ -1184,20 +1189,20 @@ class MosaicTilerFactory(BaseTilerFactory):
             return Response(content, media_type=media_type, headers=headers)
 
         @self.router.post(
-            "/{searchid}/feature",
+            "/{search_id}/feature",
             **img_endpoint_params,
         )
         @self.router.post(
-            "/{searchid}/feature.{format}",
+            "/{search_id}/feature.{format}",
             **img_endpoint_params,
         )
         @self.router.post(
-            "/{searchid}/feature/{width}x{height}.{format}",
+            "/{search_id}/feature/{width}x{height}.{format}",
             **img_endpoint_params,
         )
         def feature_image(
             geojson: Annotated[Union[Feature], Body(description="GeoJSON Feature.")],
-            searchid=Depends(self.path_dependency),
+            search_id=Depends(self.path_dependency),
             format: Annotated[
                 ImageType,
                 "Default will be automatically defined if the output image needs a mask (png) or not (jpeg).",
@@ -1221,7 +1226,7 @@ class MosaicTilerFactory(BaseTilerFactory):
             """Create image from a geojson feature."""
             with rasterio.Env(**env):
                 with self.reader(
-                    searchid,
+                    search_id,
                     reader_options={**reader_params},
                     **backend_params,
                 ) as src_dst:

@@ -23,14 +23,14 @@ cache_config = CacheSettings()
 retry_config = RetrySettings()
 
 
-def PathParams(
-    searchid: Annotated[
+def SearchIdParams(
+    search_id: Annotated[
         str,
         Path(description="Search Id (pgSTAC Search Hash)"),
     ]
 ) -> str:
-    """SearchId"""
-    return searchid
+    """search_id"""
+    return search_id
 
 
 def SearchParams(

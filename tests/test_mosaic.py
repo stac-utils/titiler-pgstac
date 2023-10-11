@@ -379,7 +379,7 @@ def test_cql2(rio, app):
     assert resp["minzoom"] == 0
     assert resp["maxzoom"] == 24
     assert round(resp["bounds"][0]) == -180
-    # Make sure we return a tilejson with the `/{searchid}/tiles/{tms}` format
+    # Make sure we return a tilejson with the `/{search_id}/tiles/{tms}` format
     assert (
         f"/mosaic/{cql2_id}/tiles/WebMercatorQuad/{{z}}/{{x}}/{{y}}?assets=cog"
         in resp["tiles"][0]
