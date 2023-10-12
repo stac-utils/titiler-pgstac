@@ -17,4 +17,4 @@ def mosaic_id():
     assert response.status_code == 200
 
     resp = response.json()
-    return resp["searchid"]
+    return resp["id"]
