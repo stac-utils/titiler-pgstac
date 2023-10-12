@@ -175,7 +175,7 @@ class Link(BaseModel):
 class RegisterResponse(BaseModel):
     """Response model for /register endpoint."""
 
-    searchid: str
+    id: str
     links: Optional[List[Link]] = None
 
 

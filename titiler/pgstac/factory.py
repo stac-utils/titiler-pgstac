@@ -793,7 +793,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                         )
                     )
 
-            return model.RegisterResponse(searchid=search_info.id, links=links)
+            return model.RegisterResponse(id=search_info.id, links=links)
 
         @self.router.get(
             "/{search_id}/info",
