@@ -3,9 +3,24 @@
 ## Unrelease
 
 * add `pgstac_dependency` attribute in `MosaicTilerFactory` (defaults to `dependencies.PgSTACParams`)
+
 * add database's `pool` check in startup event
+
 * rename `dependencies.PathParams` to `dependencies.SearchIdParams` **breaking change**
+
 * rename `searchid` path parameter to `search_id` **breaking change**
+
+* in `model.RegisterResponse` (model used in `/register` endpoint) rename `searchid` by `id` **breaking change**
+
+    ```python
+    # before
+    resp = httpx.post("/mosaic/register", body={"collections": ["my-collection"], "filter-lang": "cql-json"})
+    assert resp.json()["searchid"]
+
+    # now
+    resp = httpx.post("/mosaic/register", body={"collections": ["my-collection"], "filter-lang": "cql-json"})
+    assert resp.json()["id"]
+    ```
 
 ## 0.8.0 (2023-10-06)
 

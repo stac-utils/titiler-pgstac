@@ -3,17 +3,17 @@ The `titiler.pgstac` package comes with a full FastAPI application with Mosaic a
 | Method | URL                                                                              | Output                                  | Description
 | ------ | ---------------------------------------------------------------------------------|-----------------------------------------|--------------
 | `POST` | `/mosaic/register`                                                               | JSON ([Register][register_model])       | Register **Search** query
-| `GET`  | `/mosaic/{searchid}/info`                                                        | JSON ([Info][info_model])               | Return **Search** query infos
+| `GET`  | `/mosaic/{search_id}/info`                                                        | JSON ([Info][info_model])               | Return **Search** query infos
 | `GET`  | `/mosaic/list`                                                                   | JSON ([Infos][infos_model])             | Return list of **Search** entries with `Mosaic` type
-| `GET`  | `/mosaic/{searchid}/{lon},{lat}/assets`                                          | JSON                                    | Return a list of assets which overlap a given point
-| `GET`  | `/mosaic/{searchid}/tiles[/{TileMatrixSetId}]/{z}/{x}/{Y}/assets`                | JSON                                    | Return a list of assets which overlap a given tile
-| `GET`  | `/mosaic/{searchid}/tiles[/{TileMatrixSetId}]/{z}/{x}/{y}[@{scale}x][.{format}]` | image/bin                               | Create a web map tile image for a search query and a tile index
-| `GET`  | `/mosaic/{searchid}[/{TileMatrixSetId}]/tilejson.json`                           | JSON ([TileJSON][tilejson_model])       | Return a Mapbox TileJSON document
-| `GET`  | `/mosaic/{searchid}[/{TileMatrixSetId}]/WMTSCapabilities.xml`                    | XML                                     | return OGC WMTS Get Capabilities
-| `GET`  | `/mosaic/{searchid}[/{TileMatrixSetId}]/map`                                     | HTML                                    | simple map viewer
-| `POST` | `/mosaic/{searchid}/statistics`                                                  | GeoJSON ([Statistics][statitics_model]) | Return statistics for geojson features
-| `GET`  | `/mosaic/{searchid}/bbox/{minx},{miny},{maxx},{maxy}[/{width}x{height}].{format}`| image/bin                               | Create an image from part of a dataset
-| `POST` | `/mosaic/{searchid}/feature[/{width}x{height}][.{format}]`                       | image/bin                               | Create an image from a GeoJSON feature
+| `GET`  | `/mosaic/{search_id}/{lon},{lat}/assets`                                          | JSON                                    | Return a list of assets which overlap a given point
+| `GET`  | `/mosaic/{search_id}/tiles[/{TileMatrixSetId}]/{z}/{x}/{Y}/assets`                | JSON                                    | Return a list of assets which overlap a given tile
+| `GET`  | `/mosaic/{search_id}/tiles[/{TileMatrixSetId}]/{z}/{x}/{y}[@{scale}x][.{format}]` | image/bin                               | Create a web map tile image for a search query and a tile index
+| `GET`  | `/mosaic/{search_id}[/{TileMatrixSetId}]/tilejson.json`                           | JSON ([TileJSON][tilejson_model])       | Return a Mapbox TileJSON document
+| `GET`  | `/mosaic/{search_id}[/{TileMatrixSetId}]/WMTSCapabilities.xml`                    | XML                                     | return OGC WMTS Get Capabilities
+| `GET`  | `/mosaic/{search_id}[/{TileMatrixSetId}]/map`                                     | HTML                                    | simple map viewer
+| `POST` | `/mosaic/{search_id}/statistics`                                                  | GeoJSON ([Statistics][statitics_model]) | Return statistics for geojson features
+| `GET`  | `/mosaic/{search_id}/bbox/{minx},{miny},{maxx},{maxy}[/{width}x{height}].{format}`| image/bin                               | Create an image from part of a dataset
+| `POST` | `/mosaic/{search_id}/feature[/{width}x{height}][.{format}]`                       | image/bin                               | Create an image from a GeoJSON feature
 
 
 ### Register a Search Request
@@ -86,7 +86,7 @@ Example:
 ```bash
 curl -X 'POST' 'http://127.0.0.1:8081/mosaic/register' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{"collections":["landsat-c2l2-sr"], "bbox":[-123.75,34.30714385628804,-118.125,38.82259097617712], "filter-lang": "cql-json"}' | jq
 >> {
-  "searchid": "5a1b82d38d53a5d200273cbada886bd7",
+  "id": "5a1b82d38d53a5d200273cbada886bd7",
   "links": [
     {
       "rel": "metadata",
@@ -110,10 +110,10 @@ curl -X 'POST' 'http://127.0.0.1:8081/mosaic/register' -H 'accept: application/j
 
 ### Search infos
 
-`:endpoint:/mosaic/{searchid}/info - [GET]`
+`:endpoint:/mosaic/{search_id}/info - [GET]`
 
 - PathParams:
-    - **searchid**: search query hashkey.
+    - **search_id**: search query hashkey.
 
 Example:
 
@@ -183,10 +183,10 @@ Example:
 
 ### Tiles
 
-`:endpoint:/mosaic/{searchid}/tiles[/{TileMatrixSetId}]/{z}/{x}/{y}[@{scale}x][.{format}]`
+`:endpoint:/mosaic/{search_id}/tiles[/{TileMatrixSetId}]/{z}/{x}/{y}[@{scale}x][.{format}]`
 
 - PathParams:
-    - **searchid**: search query hashkey.
+    - **search_id**: search query hashkey.
     - **TileMatrixSetId**: TileMatrixSet name, default is `WebMercatorQuad`. OPTIONAL
     - **z**: Tile's zoom level.
     - **x**: Tile's column.
@@ -229,10 +229,10 @@ Example:
 
 ### TilesJSON
 
-`:endpoint:/mosaic/{searchid}[/{TileMatrixSetId}]/tilejson.json`
+`:endpoint:/mosaic/{search_id}[/{TileMatrixSetId}]/tilejson.json`
 
 - PathParams:
-    - **searchid**: search query hashkey.
+    - **search_id**: search query hashkey.
     - **TileMatrixSetId**: TileMatrixSet name, default is `WebMercatorQuad`. OPTIONAL
 
 - QueryParams:
@@ -273,10 +273,10 @@ Example:
 
 ### WMTS
 
-`:endpoint:/mosaic/{searchid}[/{TileMatrixSetId}]/WMTSCapabilities.xml`
+`:endpoint:/mosaic/{search_id}[/{TileMatrixSetId}]/WMTSCapabilities.xml`
 
 - PathParams:
-    - **searchid**: search query hashkey.
+    - **search_id**: search query hashkey.
     - **TileMatrixSetId**: TileMatrixSet name, default is `WebMercatorQuad`. OPTIONAL
 
 - QueryParams:
@@ -298,10 +298,10 @@ Example:
 
 ### Assets
 
-`:endpoint:/mosaic/{searchid}/tiles/[{TileMatrixSetId}]/{z}/{x}/{y}/assets`
+`:endpoint:/mosaic/{search_id}/tiles/[{TileMatrixSetId}]/{z}/{x}/{y}/assets`
 
 - PathParams:
-    - **searchid**: search query hashkey.
+    - **search_id**: search query hashkey.
     - **TileMatrixSetId**: TileMatrixSet name, default is `WebMercatorQuad`. OPTIONAL
     - **z**: Tile's zoom level.
     - **x**: Tile's column.
@@ -318,10 +318,10 @@ Example:
 
 - `https://myendpoint/mosaic/f1ed59f0a6ad91ed80ae79b7b52bc707/tiles/0/0/0/assets`
 
-`:endpoint:/mosaic/{searchid}/{lon},{lat}/assets`
+`:endpoint:/mosaic/{search_id}/{lon},{lat}/assets`
 
 - PathParams:
-    - **searchid**: search query hashkey.
+    - **search_id**: search query hashkey.
     - **lon**: Longitude (in WGS84 CRS).
     - **lat**: Latitude (in WGS84 CRS).
 
@@ -338,7 +338,7 @@ Example:
 
 ### Statistics
 
-`:endpoint:/mosaic/{searchid}/statistics - [POST]`
+`:endpoint:/mosaic/{search_id}/statistics - [POST]`
 
 - Body:
     - **feature** (JSON): A valid GeoJSON feature or FeatureCollection
@@ -379,12 +379,12 @@ Example:
 
 ### BBOX/Feature
 
-`:endpoint:/mosaic/{searchid}/bbox/{minx},{miny},{maxx},{maxy}.{format}`
+`:endpoint:/mosaic/{search_id}/bbox/{minx},{miny},{maxx},{maxy}.{format}`
 
-`:endpoint:/mosaic/{searchid}/bbox/{minx},{miny},{maxx},{maxy}/{width}x{height}.{format}`
+`:endpoint:/mosaic/{search_id}/bbox/{minx},{miny},{maxx},{maxy}/{width}x{height}.{format}`
 
 - PathParams:
-    - **searchid**: search query hashkey.
+    - **search_id**: search query hashkey.
     - **minx,miny,maxx,maxy** (str): Comma (',') delimited bounding box in WGS84.
     - **format** (str): Output image format.
     - **height** (int): Force output image height.
@@ -424,7 +424,7 @@ Example:
 - `https://myendpoint/mosaic/f1ed59f0a6ad91ed80ae79b7b52bc707/bbox/0,0,10,10/400x300.png?assets=B01`
 
 
-`:endpoint:/mosaic/{searchid}/feature[/{width}x{height}][].{format}] - [POST]`
+`:endpoint:/mosaic/{search_id}/feature[/{width}x{height}][].{format}] - [POST]`
 
 - Body:
     - **feature** (JSON): A valid GeoJSON feature (Polygon or MultiPolygon)
