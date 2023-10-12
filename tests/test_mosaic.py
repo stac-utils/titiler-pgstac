@@ -25,7 +25,7 @@ def search_no_bbox(app):
         "map",
         "wmts",
     ]
-    return resp["searchid"]
+    return resp["id"]
 
 
 @pytest.fixture
@@ -47,7 +47,7 @@ def search_bbox(app):
         "map",
         "wmts",
     ]
-    return resp["searchid"]
+    return resp["id"]
 
 
 def test_info(app, search_no_bbox):
@@ -338,10 +338,10 @@ def test_cql2(rio, app):
     response = app.post("/mosaic/register", json=query)
     assert response.status_code == 200
     resp = response.json()
-    assert resp["searchid"]
+    assert resp["id"]
     assert resp["links"]
 
-    cql2_id = resp["searchid"]
+    cql2_id = resp["id"]
 
     response = app.get(f"/mosaic/{cql2_id}/info")
     assert response.status_code == 200
@@ -379,7 +379,7 @@ def test_cql2(rio, app):
     assert resp["minzoom"] == 0
     assert resp["maxzoom"] == 24
     assert round(resp["bounds"][0]) == -180
-    # Make sure we return a tilejson with the `/{searchid}/tiles/{tms}` format
+    # Make sure we return a tilejson with the `/{search_id}/tiles/{tms}` format
     assert (
         f"/mosaic/{cql2_id}/tiles/WebMercatorQuad/{{z}}/{{x}}/{{y}}?assets=cog"
         in resp["tiles"][0]
@@ -431,10 +431,10 @@ def test_cql2_with_geometry(rio, app):
     response = app.post("/mosaic/register", json=query)
     assert response.status_code == 200
     resp = response.json()
-    assert resp["searchid"]
+    assert resp["id"]
     assert resp["links"]
 
-    cql2_id = resp["searchid"]
+    cql2_id = resp["id"]
 
     response = app.get(f"/mosaic/{cql2_id}/info")
     assert response.status_code == 200
@@ -487,10 +487,10 @@ def test_query_with_metadata(app):
     response = app.post("/mosaic/register", json=query)
     assert response.status_code == 200
     resp = response.json()
-    assert resp["searchid"]
+    assert resp["id"]
     assert resp["links"]
 
-    mosaic_id = resp["searchid"]
+    mosaic_id = resp["id"]
 
     response = app.get(f"/mosaic/{mosaic_id}/info")
     assert response.status_code == 200
@@ -548,13 +548,13 @@ def test_query_with_metadata(app):
         response = app.post("/mosaic/register", json=query)
     assert response.status_code == 200
     resp = response.json()
-    assert resp["searchid"]
+    assert resp["id"]
     assert (
         len(resp["links"]) == 6
     )  # info, tilejson, map, wmts tilejson for one_band, tilejson for three_bands
     link = resp["links"][-2]
 
-    mosaic_id_metadata = resp["searchid"]
+    mosaic_id_metadata = resp["id"]
 
     assert link["title"] == "TileJSON link for `one_band` layer."
     assert "asset_bidx=cog%7C1" in link["href"]

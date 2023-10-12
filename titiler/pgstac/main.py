@@ -183,13 +183,13 @@ def landing(request: Request):
             },
             {
                 "title": "Mosaic Metadata (template URL)",
-                "href": mosaic.url_for(request, "info_search", searchid="{searchid}"),
+                "href": mosaic.url_for(request, "info_search", search_id="{search_id}"),
                 "type": "application/json",
                 "rel": "data",
             },
             {
                 "title": "Mosaic viewer (template URL)",
-                "href": mosaic.url_for(request, "map_viewer", searchid="{searchid}"),
+                "href": mosaic.url_for(request, "map_viewer", search_id="{search_id}"),
                 "type": "text/html",
                 "rel": "data",
             },

@@ -30,16 +30,16 @@ app.include_router(mosaic.router)
 | ------ | --------------------------------------------------------------------------|---------------------------------------- |--------------
 | `POST` | `/register`                                                               | JSON ([Register][register_model])       | Register **Search** query  **OPTIONAL**
 | `GET`  | `/list`                                                                   | JSON ([Info][info_model])               | Return **Search** query infos  **OPTIONAL**
-| `GET`  | `/{searchid}/info`                                                        | JSON ([Infos][infos_model])             | Return list of **Search** entries with `Mosaic` type  **OPTIONAL**
-| `GET`  | `/{searchid}/{lon},{lat}/assets`                                          | JSON                                    | Return a list of assets which overlap a given point
-| `GET`  | `/{searchid}/tiles[/{TileMatrixSetId}]/{z}/{x}/{Y}/assets`                | JSON                                    | Return a list of assets which overlap a given tile
-| `GET`  | `/{searchid}/tiles[/{TileMatrixSetId}]/{z}/{x}/{y}[@{scale}x][.{format}]` | image/bin                               | Create a web map tile image for a search query and a tile index
-| `GET`  | `/{searchid}[/{TileMatrixSetId}]/tilejson.json`                           | JSON ([TileJSON][tilejson_model])       | Return a Mapbox TileJSON document
-| `GET`  | `/{searchid}[/{TileMatrixSetId}]/WMTSCapabilities.xml`                    | XML                                     | Return OGC WMTS Get Capabilities
-| `GET`  | `/{searchid}[/{TileMatrixSetId}]/map`                                     | HTML                                    | Simple map viewer **OPTIONAL**
-| `POST` | `/{searchid}/statistics`                                                  | GeoJSON ([Statistics][statitics_model]) | Return statistics for geojson features **OPTIONAL**
-| `GET`  | `/{searchid}/bbox/{minx},{miny},{maxx},{maxy}[/{width}x{height}].{format}`| image/bin                               | Create an image from part of a dataset **OPTIONAL**
-| `POST` | `/{searchid}/feature[/{width}x{height}][.{format}]`                       | image/bin                               | Create an image from a GeoJSON feature **OPTIONAL**
+| `GET`  | `/{search_id}/info`                                                        | JSON ([Infos][infos_model])             | Return list of **Search** entries with `Mosaic` type  **OPTIONAL**
+| `GET`  | `/{search_id}/{lon},{lat}/assets`                                          | JSON                                    | Return a list of assets which overlap a given point
+| `GET`  | `/{search_id}/tiles[/{TileMatrixSetId}]/{z}/{x}/{Y}/assets`                | JSON                                    | Return a list of assets which overlap a given tile
+| `GET`  | `/{search_id}/tiles[/{TileMatrixSetId}]/{z}/{x}/{y}[@{scale}x][.{format}]` | image/bin                               | Create a web map tile image for a search query and a tile index
+| `GET`  | `/{search_id}[/{TileMatrixSetId}]/tilejson.json`                           | JSON ([TileJSON][tilejson_model])       | Return a Mapbox TileJSON document
+| `GET`  | `/{search_id}[/{TileMatrixSetId}]/WMTSCapabilities.xml`                    | XML                                     | Return OGC WMTS Get Capabilities
+| `GET`  | `/{search_id}[/{TileMatrixSetId}]/map`                                     | HTML                                    | Simple map viewer **OPTIONAL**
+| `POST` | `/{search_id}/statistics`                                                  | GeoJSON ([Statistics][statitics_model]) | Return statistics for geojson features **OPTIONAL**
+| `GET`  | `/{search_id}/bbox/{minx},{miny},{maxx},{maxy}[/{width}x{height}].{format}`| image/bin                               | Create an image from part of a dataset **OPTIONAL**
+| `POST` | `/{search_id}/feature[/{width}x{height}][.{format}]`                       | image/bin                               | Create an image from a GeoJSON feature **OPTIONAL**
 
 
 ## Item

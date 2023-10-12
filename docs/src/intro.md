@@ -8,22 +8,24 @@ By default the main application (`titiler.pgstac.main.app`) provides two sets of
 
 - `/collections/{collection_id}/items/{item_id}`: Dynamic tiler for single STAC item (stored in PgSTAC)
 
-## Mosaic
+## Virtual Mosaic
 
 The goal of the `mosaic` endpoints is to use any [`search`](https://github.com/radiantearth/stac-api-spec/tree/master/item-search) query to create tiles. `titiler-pgstac` provides a set of endpoint to `register` and `list` the `search` queries.
 
-### Register a `Search` request
+### Register a PgSTAC `Search` request
 
 ![](https://user-images.githubusercontent.com/10407788/132193537-0560016f-09bc-4a25-8a2a-eac9b50bc28a.png)
 
 !!! Important
-    In `TiTiler.PgSTAC` a STAC [`Search Query`](https://github.com/radiantearth/stac-api-spec/tree/master/item-search) is equivalent to a Mosaic.
+    In `TiTiler.PgSTAC` a STAC [`Search Query`](https://github.com/radiantearth/stac-api-spec/tree/master/item-search) is equivalent to a *Virtual Mosaic*.
 
 Before being able to create Map Tiles, the user needs to register a `Search Query` within the PgSTAC database (in the `searches` table). By default, `TiTiler.PgSTAC` has a `/mosaic/register (POST)` endpoint which will:
 
   - validate the search query (based on the STAC API specification [`item-search`]((https://github.com/radiantearth/stac-api-spec/tree/master/item-search)))
+
   - send the search query to the postgres database using the [`search_query`](https://github.com/stac-utils/pgstac/blob/76512ab50e1373e3f77c65843cf328cbe6dd0dec/sql/004_search.sql#L1000) PgSTAC function
-  - return a `searchid` (might be also called `mosaicid`).
+
+  - return a pgstac search identifier (`id`) (might be also called `mosaicid`).
 
 **Example**
 
@@ -34,7 +36,7 @@ curl -X 'POST' 'http://127.0.0.1:8081/mosaic/register' \
   -d '{"collections":["landsat-c2l2-sr"], "bbox":[-123.75,34.30714385628804,-118.125,38.82259097617712], "filter-lang": "cql-json"}' | jq
 
 >> {
-  "searchid": "5a1b82d38d53a5d200273cbada886bd7",
+  "id": "5a1b82d38d53a5d200273cbada886bd7",
   "links": [
     {
       "rel": "metadata",
@@ -56,7 +58,7 @@ curl -X 'POST' 'http://127.0.0.1:8081/mosaic/register' \
   -d '{"filter": {"op": "and", "args": [{"op": "=", "args": [{"property": "collection"}, "landsat-c2l2-sr"]}, {"op": "s_intersects", "args": [{"property": "geometry"}, {"coordinates": [[[-123.75, 34.30714385628804], [-123.75, 38.82259097617712], [-118.125, 38.82259097617712], [-118.125, 34.30714385628804], [-123.75, 34.30714385628804]]], "type": "Polygon"}]}]}}' | jq
 
 >> {
-  "searchid": "5063721f06957d6b2320326d82e90d1e",
+  "id": "5063721f06957d6b2320326d82e90d1e",
   "links": [
     {
       "rel": "metadata",
@@ -79,7 +81,7 @@ curl http://127.0.0.1:8081/mosaic/5063721f06957d6b2320326d82e90d1e/info | jq
 
 >> {
   "search": {
-    "hash": "5063721f06957d6b2320326d82e90d1e",  # <-- this is the search/mosaic ID
+    "hash": "5063721f06957d6b2320326d82e90d1e",  # <-- this is the search/mosaic identifier
     "search": {  # <-- Summary of the search request
       "filter": {  # <-- this is CQL2 filter associated with the search
         "op": "and",
@@ -163,7 +165,7 @@ curl -X 'POST' 'http://127.0.0.1:8081/mosaic/register' \
   -d '{"collections":["landsat-c2l2-sr"], "bbox":[-123.75,34.30714385628804,-118.125,38.82259097617712], "filter-lang": "cql-json", "metadata": {"minzoom": 8, "maxzoom": 13, "assets": ["B04", "B03", "B02"], "defaults": {"true_color": {"assets": ["B04", "B03", "B02"], "color_formula": "Gamma RGB 3.5 Saturation 1.7 Sigmoidal RGB 15 0.35"}}}}' | jq
 
 >> {
-  "searchid": "f31d7de8a5ddfa3a80b9a9dd06378db1",
+  "id": "f31d7de8a5ddfa3a80b9a9dd06378db1",
   "links": [
     {
       "rel": "metadata",
@@ -203,16 +205,16 @@ curl http://127.0.0.1:8081/mosaic/f31d7de8a5ddfa3a80b9a9dd06378db1/info | jq '.s
 
 ### Fetch mosaic `Tiles`
 
-When we have a `searchid` we can now call the dynamic tiler and ask for Map Tiles.
+When we have an **id** we can call the dynamic tiler and ask for Map Tiles.
 
 ![](https://user-images.githubusercontent.com/10407788/132197899-e79b3118-313b-45e7-a431-5d3034984459.png)
 
 **How it works**
 
-On each `Tile` request, the tiler api is going to call the PgSTAC [`geometrysearch`](https://github.com/stac-utils/pgstac/blob/76512ab50e1373e3f77c65843cf328cbe6dd0dec/sql/006_tilesearch.sql#L4) function with the `searchid` and the Tile geometry to get the list of STAC items ([code](https://github.com/stac-utils/titiler-pgstac/blob/0f2b5b4ba50bb3458237ab21cf9a154d7b811851/titiler/pgstac/mosaic.py#L238-L247)). Then based on the `assets` parameter, the tiler will construct the tile image ([code](https://github.com/stac-utils/titiler-pgstac/blob/0f2b5b4ba50bb3458237ab21cf9a154d7b811851/titiler/pgstac/mosaic.py#L257-L263)).
+On each `Tile` request, the tiler api is going to call the PgSTAC [`geometrysearch`](https://github.com/stac-utils/pgstac/blob/76512ab50e1373e3f77c65843cf328cbe6dd0dec/sql/006_tilesearch.sql#L4) function with the `id` and the `Tile geometry` to get the list of **STAC Items** ([code](https://github.com/stac-utils/titiler-pgstac/blob/0f2b5b4ba50bb3458237ab21cf9a154d7b811851/titiler/pgstac/mosaic.py#L238-L247)). Then based on the `assets` parameter, the tiler will construct the tile image ([code](https://github.com/stac-utils/titiler-pgstac/blob/0f2b5b4ba50bb3458237ab21cf9a154d7b811851/titiler/pgstac/mosaic.py#L257-L263)).
 
 !!! important
-  Because `Tiles` will be created from STAC items we HAVE TO pass **`assets={stac asset}`** option to the tile endpoint.
+  Because `Tiles` will be created from **STAC Items** we HAVE TO pass **`assets={stac asset}`** option to the tile endpoint to tell the tiler which **STAC assets** has to be used.
 
   See full list of [options](../mosaic_endpoints/#tiles)
 
@@ -222,14 +224,72 @@ On each `Tile` request, the tiler api is going to call the PgSTAC [`geometrysear
 curl 'http://127.0.0.1:8081/mosaic/f1ed59f0a6ad91ed80ae79b7b52bc707/tiles/8/40/102.png?assets=B01&rescale=0,16000 > 8-40-102.png
 ```
 
-## Items
+## Individual Item
 
-Set of endpoints created using TiTiler's [`MultiBaseTilerFactory`]() but with `item` and `collection` path parameter (instead of the `url=` query parameter).
+`titiler-pgstac` can also be used to access individual item stored in the PgSTAC database. By default the `titiler-pgstac` application will have a set of `/collections/{collection_id}/items/{item_id}/...` endpoints. The endpoints are created using [titiler.core.factory.MultiBaseTilerFactory](https://developmentseed.org/titiler/advanced/tiler_factories/#titilercorefactorymultibasetilerfactory) but using a custom `path_dependency` with `collection_id` and `item_id` path parameters instead of the STAC url as query parameter.
 
 **example**
 
 ```bash
-curl http://127.0.0.1:8081/collections/landsat-c2l2-sr/items/LC08_L1TP_028004_20171002_20171018_01_A1
+curl http://127.0.0.1:8081/collections/world/items/world_20000_5000/info | jq
+{
+  "asset": {
+    "bounds": [
+      153.5000000000667,
+      -76.83333333336668,
+      179.8333333334053,
+      6.4999999999833165
+    ],
+    "minzoom": 3,
+    "maxzoom": 6,
+    "band_metadata": [
+      [
+        "b1",
+        {}
+      ],
+      [
+        "b2",
+        {}
+      ],
+      [
+        "b3",
+        {}
+      ]
+    ],
+    "band_descriptions": [
+      [
+        "b1",
+        ""
+      ],
+      [
+        "b2",
+        ""
+      ],
+      [
+        "b3",
+        ""
+      ]
+    ],
+    "dtype": "uint8",
+    "nodata_type": "None",
+    "colorinterp": [
+      "red",
+      "green",
+      "blue"
+    ],
+    "driver": "GTiff",
+    "count": 3,
+    "width": 1580,
+    "height": 5000,
+    "overviews": [
+      2,
+      4,
+      8,
+      16
+    ]
+  }
+}
+
 ```
 
 See full list of [endpoints](../item_endpoints)
