@@ -686,354 +686,6 @@ class MosaicTilerFactory(BaseTilerFactory):
                     **pgstac_params,
                 )
 
-    def _search_routes(self) -> None:  # noqa: C901
-        """register search routes."""
-
-        @self.router.post(
-            "/register",
-            responses={200: {"description": "Register a Search."}},
-            response_model=model.RegisterResponse,
-            response_model_exclude_none=True,
-        )
-        def register_search(
-            request: Request, search_query=Depends(self.search_dependency)
-        ):
-            """Register a Search query."""
-            search, metadata = search_query
-
-            with request.app.state.dbpool.connection() as conn:
-                with conn.cursor(row_factory=class_row(model.Search)) as cursor:
-                    cursor.execute(
-                        "SELECT * FROM search_query(%s, _metadata => %s);",
-                        (
-                            search.model_dump_json(by_alias=True, exclude_none=True),
-                            metadata.model_dump_json(exclude_none=True),
-                        ),
-                    )
-                    search_info = cursor.fetchone()
-
-            links: List[model.Link] = [
-                model.Link(
-                    rel="metadata",
-                    title="Mosaic metadata",
-                    href=self.url_for(request, "info_search", search_id=search_info.id),
-                ),
-                model.Link(
-                    rel="tilejson",
-                    title="Link for TileJSON",
-                    href=self.url_for(request, "tilejson", search_id=search_info.id),
-                ),
-            ]
-
-            try:
-                links.append(
-                    model.Link(
-                        rel="map",
-                        title="Link for Map viewer",
-                        href=self.url_for(
-                            request, "map_viewer", search_id=search_info.id
-                        ),
-                    )
-                )
-            except NoMatchFound:
-                pass
-
-            try:
-                links.append(
-                    model.Link(
-                        rel="wmts",
-                        title="Link for WMTS",
-                        href=self.url_for(request, "wmts", search_id=search_info.id),
-                    )
-                )
-            except NoMatchFound:
-                pass
-
-            if search_info.metadata.defaults:
-                # List of dependencies a `/tile` URL should validate
-                # Note: Those dependencies should only require Query() inputs
-                tile_dependencies = [
-                    self.layer_dependency,
-                    self.dataset_dependency,
-                    self.pixel_selection_dependency,
-                    self.process_dependency,
-                    self.rescale_dependency,
-                    self.colormap_dependency,
-                    self.render_dependency,
-                    self.pgstac_dependency,
-                    self.reader_dependency,
-                    self.backend_dependency,
-                ]
-
-                for name, values in search_info.metadata.defaults.items():
-                    query_string = urlencode(values, doseq=True)
-                    try:
-                        self.check_query_params(
-                            dependencies=tile_dependencies,
-                            query_params=QueryParams(query_string),
-                        )
-                    except Exception as e:
-                        warnings.warn(
-                            f"Cannot construct URL for layer `{name}`: {repr(e)}",
-                            UserWarning,
-                            stacklevel=2,
-                        )
-                        continue
-
-                    links.append(
-                        model.Link(
-                            title=f"TileJSON link for `{name}` layer.",
-                            rel="tilejson",
-                            href=self.url_for(
-                                request,
-                                "tilejson",
-                                search_id=search_info.id,
-                            )
-                            + f"?{query_string}",
-                        )
-                    )
-
-            return model.RegisterResponse(id=search_info.id, links=links)
-
-        @self.router.get(
-            "/{search_id}/info",
-            responses={200: {"description": "Get Search query metadata."}},
-            response_model=model.Info,
-            response_model_exclude_none=True,
-        )
-        def info_search(request: Request, search_id=Depends(self.path_dependency)):
-            """Get Search query metadata."""
-            with request.app.state.dbpool.connection() as conn:
-                with conn.cursor(row_factory=class_row(model.Search)) as cursor:
-                    cursor.execute(
-                        "SELECT * FROM searches WHERE hash=%s;",
-                        (search_id,),
-                    )
-                    search_info = cursor.fetchone()
-
-            if not search_info:
-                raise MosaicNotFoundError(f"SearchId `{search_id}` not found")
-
-            links: List[model.Link] = [
-                model.Link(
-                    rel="self",
-                    title="Mosaic metadata",
-                    href=self.url_for(request, "info_search", search_id=search_info.id),
-                ),
-                model.Link(
-                    title="Link for TileJSON",
-                    rel="tilejson",
-                    href=self.url_for(request, "tilejson", search_id=search_info.id),
-                ),
-            ]
-
-            try:
-                links.append(
-                    model.Link(
-                        rel="map",
-                        title="Link for Map viewer",
-                        href=self.url_for(
-                            request, "map_viewer", search_id=search_info.id
-                        ),
-                    )
-                )
-            except NoMatchFound:
-                pass
-
-            try:
-                links.append(
-                    model.Link(
-                        rel="wmts",
-                        title="Link for WMTS",
-                        href=self.url_for(request, "wmts", search_id=search_info.id),
-                    )
-                )
-            except NoMatchFound:
-                pass
-
-            if search_info.metadata.defaults:
-                for name, values in search_info.metadata.defaults.items():
-                    links.append(
-                        model.Link(
-                            title=f"TileJSON link for `{name}` layer.",
-                            rel="tilejson",
-                            href=self.url_for(
-                                request,
-                                "tilejson",
-                                search_id=search_info.id,
-                            )
-                            + f"?{urlencode(values, doseq=True)}",
-                        )
-                    )
-
-            return model.Info(search=search_info, links=links)
-
-    def _search_list_routes(self) -> None:
-        """Add mosaic listing route."""
-
-        @self.router.get(
-            "/list",
-            responses={200: {"description": "List Mosaics in PgSTAC."}},
-            response_model=model.Infos,
-            response_model_exclude_none=True,
-        )
-        def list_mosaic(
-            request: Request,
-            limit: Annotated[
-                int,
-                Query(
-                    ge=1,
-                    le=1000,
-                    description="Page size limit",
-                ),
-            ] = 10,
-            offset: Annotated[
-                int,
-                Query(
-                    ge=0,
-                    description="Page offset",
-                ),
-            ] = 0,
-            sortby: Annotated[
-                Optional[str],
-                Query(
-                    description="Sort the response items by a property (ascending (default) or descending).",
-                ),
-            ] = None,
-        ):
-            """List a Search query."""
-            # Default filter to only return `metadata->type == 'mosaic'`
-            mosaic_filter = sql.SQL("metadata->>'type' = 'mosaic'")
-
-            # additional metadata property filter passed in query-parameters
-            # <propname>=val - filter for a metadata property. Multiple property filters are ANDed together.
-            qs_key_to_remove = ["limit", "offset", "sortby"]
-            additional_filter = [
-                sql.SQL("metadata->>{key} = {value}").format(
-                    key=sql.Literal(key), value=sql.Literal(value)
-                )
-                for (key, value) in request.query_params.items()
-                if key.lower() not in qs_key_to_remove
-            ]
-            filters = [
-                sql.SQL("WHERE"),
-                sql.SQL("AND ").join([mosaic_filter, *additional_filter]),
-            ]
-
-            def parse_sort_by(sortby: str) -> Generator[sql.Composable, None, None]:
-                """Parse SortBy expression."""
-                for s in sortby.split(","):
-                    parts = re.match(
-                        "^(?P<dir>[+-]?)(?P<prop>.*)$", s.lstrip()
-                    ).groupdict()  # type:ignore
-
-                    prop = parts["prop"]
-                    if parts["prop"] in ["lastused", "usecount"]:
-                        prop = sql.Identifier(prop)
-                    else:
-                        prop = sql.SQL("metadata->>{}").format(sql.Literal(prop))
-
-                    if parts["dir"] == "-":
-                        order = sql.SQL("{} DESC").format(prop)
-                    else:
-                        order = sql.SQL("{} ASC").format(prop)
-
-                    yield order
-
-            # sortby=[+|-]PROP - sort the response items by a property (ascending (default) or descending).
-            order_by = []
-            if sortby:
-                sort_expr = list(parse_sort_by(sortby))
-                if sort_expr:
-                    order_by = [
-                        sql.SQL("ORDER BY"),
-                        sql.SQL(", ").join(sort_expr),
-                    ]
-
-            with request.app.state.dbpool.connection() as conn:
-                with conn.cursor() as cursor:
-                    # Get Total Number of searches rows
-                    query = [
-                        sql.SQL("SELECT count(*) FROM searches"),
-                        *filters,
-                    ]
-                    cursor.execute(sql.SQL(" ").join(query))
-                    nb_items = int(cursor.fetchone()[0])
-
-                    # Get rows
-                    cursor.row_factory = class_row(model.Search)
-                    query = [
-                        sql.SQL("SELECT * FROM searches"),
-                        *filters,
-                        *order_by,
-                        sql.SQL("LIMIT %(limit)s OFFSET %(offset)s"),
-                    ]
-                    cursor.execute(
-                        sql.SQL(" ").join(query), {"limit": limit, "offset": offset}
-                    )
-                    searches_info = cursor.fetchall()
-
-            qs = QueryParams({**request.query_params, "limit": limit, "offset": offset})
-            links = [
-                model.Link(
-                    rel="self",
-                    href=self.url_for(request, "list_mosaic") + f"?{qs}",
-                ),
-            ]
-
-            if len(searches_info) < nb_items:
-                next_token = offset + len(searches_info)
-                qs = QueryParams(
-                    {**request.query_params, "limit": limit, "offset": next_token}
-                )
-                links.append(
-                    model.Link(
-                        rel="next",
-                        href=self.url_for(request, "list_mosaic") + f"?{qs}",
-                    ),
-                )
-
-            if offset > 0:
-                prev_token = offset - limit if (offset - limit) > 0 else 0
-                qs = QueryParams(
-                    {**request.query_params, "limit": limit, "offset": prev_token}
-                )
-                links.append(
-                    model.Link(
-                        rel="prev",
-                        href=self.url_for(request, "list_mosaic") + f"?{qs}",
-                    ),
-                )
-
-            return model.Infos(
-                searches=[
-                    model.Info(
-                        search=search,
-                        links=[
-                            model.Link(
-                                rel="metadata",
-                                href=self.url_for(
-                                    request, "info_search", search_id=search.id
-                                ),
-                            ),
-                            model.Link(
-                                rel="tilejson",
-                                href=self.url_for(
-                                    request, "tilejson", search_id=search.id
-                                ),
-                            ),
-                        ],
-                    )
-                    for search in searches_info
-                ],
-                links=links,
-                context=model.Context(
-                    returned=len(searches_info),
-                    matched=nb_items,
-                    limit=limit,
-                ),
-            )
-
     def _statistics_routes(self):
         """Register /statistics endpoint."""
 
@@ -1264,3 +916,278 @@ class MosaicTilerFactory(BaseTilerFactory):
                 headers["X-Assets"] = ",".join(ids)
 
             return Response(content, media_type=media_type, headers=headers)
+
+    def _search_routes(self) -> None:  # noqa: C901
+        """register search routes."""
+
+        @self.router.post(
+            "/register",
+            responses={200: {"description": "Register a Search."}},
+            response_model=model.RegisterResponse,
+            response_model_exclude_none=True,
+        )
+        def register_search(
+            request: Request, search_query=Depends(self.search_dependency)
+        ):
+            """Register a Search query."""
+            search, metadata = search_query
+
+            with request.app.state.dbpool.connection() as conn:
+                with conn.cursor(row_factory=class_row(model.Search)) as cursor:
+                    cursor.execute(
+                        "SELECT * FROM search_query(%s, _metadata => %s);",
+                        (
+                            search.model_dump_json(by_alias=True, exclude_none=True),
+                            metadata.model_dump_json(exclude_none=True),
+                        ),
+                    )
+                    search_info = cursor.fetchone()
+
+            links: List[model.Link] = [
+                model.Link(
+                    rel="metadata",
+                    title="Mosaic metadata",
+                    href=self.url_for(request, "info_search", search_id=search_info.id),
+                ),
+                model.Link(
+                    rel="tilejson",
+                    title="Link for TileJSON",
+                    href=self.url_for(request, "tilejson", search_id=search_info.id),
+                ),
+            ]
+
+            try:
+                links.append(
+                    model.Link(
+                        rel="map",
+                        title="Link for Map viewer",
+                        href=self.url_for(
+                            request, "map_viewer", search_id=search_info.id
+                        ),
+                    )
+                )
+            except NoMatchFound:
+                pass
+
+            try:
+                links.append(
+                    model.Link(
+                        rel="wmts",
+                        title="Link for WMTS",
+                        href=self.url_for(request, "wmts", search_id=search_info.id),
+                    )
+                )
+            except NoMatchFound:
+                pass
+
+            if search_info.metadata.defaults:
+                # List of dependencies a `/tile` URL should validate
+                # Note: Those dependencies should only require Query() inputs
+                tile_dependencies = [
+                    self.layer_dependency,
+                    self.dataset_dependency,
+                    self.pixel_selection_dependency,
+                    self.process_dependency,
+                    self.rescale_dependency,
+                    self.colormap_dependency,
+                    self.render_dependency,
+                    self.pgstac_dependency,
+                    self.reader_dependency,
+                    self.backend_dependency,
+                ]
+
+                for name, values in search_info.metadata.defaults.items():
+                    query_string = urlencode(values, doseq=True)
+                    try:
+                        self.check_query_params(
+                            dependencies=tile_dependencies,
+                            query_params=QueryParams(query_string),
+                        )
+                    except Exception as e:
+                        warnings.warn(
+                            f"Cannot construct URL for layer `{name}`: {repr(e)}",
+                            UserWarning,
+                            stacklevel=2,
+                        )
+                        continue
+
+                    links.append(
+                        model.Link(
+                            title=f"TileJSON link for `{name}` layer.",
+                            rel="tilejson",
+                            href=self.url_for(
+                                request,
+                                "tilejson",
+                                search_id=search_info.id,
+                            )
+                            + f"?{query_string}",
+                        )
+                    )
+
+            return model.RegisterResponse(id=search_info.id, links=links)
+
+    def _search_list_routes(self) -> None:
+        """Add mosaic listing route."""
+
+        @self.router.get(
+            "/list",
+            responses={200: {"description": "List Mosaics in PgSTAC."}},
+            response_model=model.Infos,
+            response_model_exclude_none=True,
+        )
+        def list_mosaic(
+            request: Request,
+            limit: Annotated[
+                int,
+                Query(
+                    ge=1,
+                    le=1000,
+                    description="Page size limit",
+                ),
+            ] = 10,
+            offset: Annotated[
+                int,
+                Query(
+                    ge=0,
+                    description="Page offset",
+                ),
+            ] = 0,
+            sortby: Annotated[
+                Optional[str],
+                Query(
+                    description="Sort the response items by a property (ascending (default) or descending).",
+                ),
+            ] = None,
+        ):
+            """List a Search query."""
+            # Default filter to only return `metadata->type == 'mosaic'`
+            mosaic_filter = sql.SQL("metadata->>'type' = 'mosaic'")
+
+            # additional metadata property filter passed in query-parameters
+            # <propname>=val - filter for a metadata property. Multiple property filters are ANDed together.
+            qs_key_to_remove = ["limit", "offset", "sortby"]
+            additional_filter = [
+                sql.SQL("metadata->>{key} = {value}").format(
+                    key=sql.Literal(key), value=sql.Literal(value)
+                )
+                for (key, value) in request.query_params.items()
+                if key.lower() not in qs_key_to_remove
+            ]
+            filters = [
+                sql.SQL("WHERE"),
+                sql.SQL("AND ").join([mosaic_filter, *additional_filter]),
+            ]
+
+            def parse_sort_by(sortby: str) -> Generator[sql.Composable, None, None]:
+                """Parse SortBy expression."""
+                for s in sortby.split(","):
+                    parts = re.match(
+                        "^(?P<dir>[+-]?)(?P<prop>.*)$", s.lstrip()
+                    ).groupdict()  # type:ignore
+
+                    prop = parts["prop"]
+                    if parts["prop"] in ["lastused", "usecount"]:
+                        prop = sql.Identifier(prop)
+                    else:
+                        prop = sql.SQL("metadata->>{}").format(sql.Literal(prop))
+
+                    if parts["dir"] == "-":
+                        order = sql.SQL("{} DESC").format(prop)
+                    else:
+                        order = sql.SQL("{} ASC").format(prop)
+
+                    yield order
+
+            # sortby=[+|-]PROP - sort the response items by a property (ascending (default) or descending).
+            order_by = []
+            if sortby:
+                sort_expr = list(parse_sort_by(sortby))
+                if sort_expr:
+                    order_by = [
+                        sql.SQL("ORDER BY"),
+                        sql.SQL(", ").join(sort_expr),
+                    ]
+
+            with request.app.state.dbpool.connection() as conn:
+                with conn.cursor() as cursor:
+                    # Get Total Number of searches rows
+                    query = [
+                        sql.SQL("SELECT count(*) FROM searches"),
+                        *filters,
+                    ]
+                    cursor.execute(sql.SQL(" ").join(query))
+                    nb_items = int(cursor.fetchone()[0])
+
+                    # Get rows
+                    cursor.row_factory = class_row(model.Search)
+                    query = [
+                        sql.SQL("SELECT * FROM searches"),
+                        *filters,
+                        *order_by,
+                        sql.SQL("LIMIT %(limit)s OFFSET %(offset)s"),
+                    ]
+                    cursor.execute(
+                        sql.SQL(" ").join(query), {"limit": limit, "offset": offset}
+                    )
+                    searches_info = cursor.fetchall()
+
+            qs = QueryParams({**request.query_params, "limit": limit, "offset": offset})
+            links = [
+                model.Link(
+                    rel="self",
+                    href=self.url_for(request, "list_mosaic") + f"?{qs}",
+                ),
+            ]
+
+            if len(searches_info) < nb_items:
+                next_token = offset + len(searches_info)
+                qs = QueryParams(
+                    {**request.query_params, "limit": limit, "offset": next_token}
+                )
+                links.append(
+                    model.Link(
+                        rel="next",
+                        href=self.url_for(request, "list_mosaic") + f"?{qs}",
+                    ),
+                )
+
+            if offset > 0:
+                prev_token = offset - limit if (offset - limit) > 0 else 0
+                qs = QueryParams(
+                    {**request.query_params, "limit": limit, "offset": prev_token}
+                )
+                links.append(
+                    model.Link(
+                        rel="prev",
+                        href=self.url_for(request, "list_mosaic") + f"?{qs}",
+                    ),
+                )
+
+            return model.Infos(
+                searches=[
+                    model.Info(
+                        search=search,
+                        links=[
+                            model.Link(
+                                rel="metadata",
+                                href=self.url_for(
+                                    request, "info_search", search_id=search.id
+                                ),
+                            ),
+                            model.Link(
+                                rel="tilejson",
+                                href=self.url_for(
+                                    request, "tilejson", search_id=search.id
+                                ),
+                            ),
+                        ],
+                    )
+                    for search in searches_info
+                ],
+                links=links,
+                context=model.Context(
+                    returned=len(searches_info),
+                    matched=nb_items,
+                    limit=limit,
+                ),
+            )
