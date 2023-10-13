@@ -4,7 +4,7 @@
 
 By default the main application (`titiler.pgstac.main.app`) provides two sets of endpoints:
 
-- `/mosaic/{searchid}`: Dynamic mosaic tiler based on STAC Search Queries
+- `/mosaic/{search_id}`: Dynamic mosaic tiler based on STAC Search Queries
 
 - `/collections/{collection_id}/items/{item_id}`: Dynamic tiler for single STAC item (stored in PgSTAC)
 

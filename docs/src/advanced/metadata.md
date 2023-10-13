@@ -50,7 +50,7 @@
 ```
 curl -X 'POST' 'http://127.0.0.1:8081/mosaic/register' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{"filter": {"op": "=", "args": [{"property": "collection"}, "landsat-c2l2-sr"]}, "metadata": {"name": "landsat mosaic"}}'
 >> {
-  "searchid": "d7fcdefd0457c949ea7a6192bc2c7122",
+  "id": "d7fcdefd0457c949ea7a6192bc2c7122",
   "links": [
     {
       "rel": "metadata",
@@ -75,7 +75,7 @@ curl http://127.0.0.1:8081/mosaic/d7fcdefd0457c949ea7a6192bc2c7122/info | jq '.s
 ```
 curl -X 'POST' 'http://127.0.0.1:8081/mosaic/register' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{"collections": ["noaa-emergency-response"], "bbox": [-87.0251, 36.0999, -85.4249, 36.2251], "filter-lang": "cql-json", "metadata": {"bounds": [-87.0251, 36.0999, -85.4249, 36.2251], "minzoom": 14, "maxzoom": 18, "assets": ["cog"], "defaults": {"true_color": {"bidx": [1, 2, 3]}}}}'
 >> {
-  "searchid":"4b0db3dbd1858d54a3a55f84de97d1ca",
+  "id":"4b0db3dbd1858d54a3a55f84de97d1ca",
   "links":[
     {
       "rel": "metadata",

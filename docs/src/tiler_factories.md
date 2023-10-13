@@ -1,6 +1,8 @@
-`TiTiler.PgSTAC` provides a `MosaicTilerFactory` factory which is an helper functions to create FastAPI router (`fastapi.APIRouter`) with a minimal set of endpoints.
 
-## `titiler.pgstac.factory.MosaicTilerFactory`
+
+## Mosaics: `titiler.pgstac.factory.MosaicTilerFactory`
+
+`TiTiler.PgSTAC` provides a `MosaicTilerFactory` factory which is an helper functions to create FastAPI router (`fastapi.APIRouter`) with a minimal set of endpoints.
 
 ```python
 # Minimal PgSTAC Mosaic Application
@@ -26,11 +28,8 @@ mosaic = MosaicTilerFactory()
 app.include_router(mosaic.router)
 ```
 
-| Method | URL                                                                       | Output                                  | Description
-| ------ | --------------------------------------------------------------------------|---------------------------------------- |--------------
-| `POST` | `/register`                                                               | JSON ([Register][register_model])       | Register **Search** query  **OPTIONAL**
-| `GET`  | `/list`                                                                   | JSON ([Info][info_model])               | Return **Search** query infos  **OPTIONAL**
-| `GET`  | `/{search_id}/info`                                                        | JSON ([Infos][infos_model])             | Return list of **Search** entries with `Mosaic` type  **OPTIONAL**
+| Method | URL                                                                        | Output                                  | Description
+| ------ | ---------------------------------------------------------------------------|---------------------------------------- |--------------
 | `GET`  | `/{search_id}/{lon},{lat}/assets`                                          | JSON                                    | Return a list of assets which overlap a given point
 | `GET`  | `/{search_id}/tiles[/{TileMatrixSetId}]/{z}/{x}/{Y}/assets`                | JSON                                    | Return a list of assets which overlap a given tile
 | `GET`  | `/{search_id}/tiles[/{TileMatrixSetId}]/{z}/{x}/{y}[@{scale}x][.{format}]` | image/bin                               | Create a web map tile image for a search query and a tile index
@@ -40,13 +39,24 @@ app.include_router(mosaic.router)
 | `POST` | `/{search_id}/statistics`                                                  | GeoJSON ([Statistics][statitics_model]) | Return statistics for geojson features **OPTIONAL**
 | `GET`  | `/{search_id}/bbox/{minx},{miny},{maxx},{maxy}[/{width}x{height}].{format}`| image/bin                               | Create an image from part of a dataset **OPTIONAL**
 | `POST` | `/{search_id}/feature[/{width}x{height}][.{format}]`                       | image/bin                               | Create an image from a GeoJSON feature **OPTIONAL**
+| `POST` | `/register`                                                                | JSON ([Register][register_model])       | Register **Search** query  **OPTIONAL**
+| `GET`  | `/list`                                                                    | JSON ([Info][info_model])               | Return **Search** query infos  **OPTIONAL**
 
 
-## Item
+### Extensions
 
-For the `single STAC item` endpoints we use TiTiler's [`MultiBaseTilerFactory`]() with a custom [`path_dependency`]() to use `item` and `collection` path parameter (instead of the default `url` query param).
+#### `searchInfoExtension`
 
-This custom `path_dependency` will connect to PgSTAC directly to fetch the STAC Item and pass it to a custom [Reader]() based on [`rio_tiler.io.MultiBaseReader`]().
+| Method | URL                                                                        | Output                                  | Description
+| ------ | ---------------------------------------------------------------------------|---------------------------------------- |--------------
+| `GET`  | `/{search_id}/info`                                                        | JSON ([Infos][infos_model])             | Return list of **Search** entries with `Mosaic` type  **OPTIONAL**
+
+
+## Items: `titiler.core.factory.MultiBaseTilerFactory`
+
+For the `single STAC item` endpoints we use TiTiler's [MultiBaseTilerFactory](https://developmentseed.org/titiler/advanced/tiler_factories/#titilercorefactorymultibasetilerfactory) with a custom [`path_dependency`]() to use `item_id` and `collection_id` path parameter (instead of the default `url` query param).
+
+This custom `path_dependency` will connect to PgSTAC directly to fetch the STAC Item and pass it to a custom [Reader](https://github.com/stac-utils/titiler-pgstac/blob/d777eca04770622982121daa2df42d429e8c244d/titiler/pgstac/reader.py#L17-L25).
 
 ```python
 # Minimal PgSTAC Item Application
