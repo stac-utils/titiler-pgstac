@@ -25,6 +25,7 @@ from titiler.mosaic.errors import MOSAIC_STATUS_CODES
 from titiler.pgstac import __version__ as titiler_pgstac_version
 from titiler.pgstac.db import close_db_connection, connect_to_db
 from titiler.pgstac.dependencies import ItemPathParams
+from titiler.pgstac.extensions import searchInfoExtension
 from titiler.pgstac.factory import MosaicTilerFactory
 from titiler.pgstac.reader import PgSTACReader
 from titiler.pgstac.settings import ApiSettings, PostgresSettings
@@ -105,6 +106,9 @@ mosaic = MosaicTilerFactory(
     add_viewer=True,
     add_mosaic_list=True,
     add_part=True,
+    extensions=[
+        searchInfoExtension(),
+    ],
 )
 app.include_router(mosaic.router, tags=["Mosaic"], prefix="/mosaic")
 

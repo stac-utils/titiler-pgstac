@@ -22,6 +22,24 @@
     assert resp.json()["id"]
     ```
 
+* move `/{search_id}/info` endpoint outside the `MosaicTilerFactory` to its own *extension* (`titiler.pgstac.extension.searchInfoExtension`)
+
+    ```python
+    # Before
+    app = FastAPI()
+    mosaic = MosaicTilerFactory()
+    app.include_router(mosaic.router, tags=["Mosaic"])
+
+    # Now
+    app = FastAPI()
+    mosaic = MosaicTilerFactory(
+        extensions=[
+            searchInfoExtension(),
+        ]
+    )
+    app.include_router(mosaic.router, tags=["Mosaic"])
+    ```
+
 ## 0.8.0 (2023-10-06)
 
 * update titiler requirement to `>=0.14.0,<0.15`

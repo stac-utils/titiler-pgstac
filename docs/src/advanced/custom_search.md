@@ -80,7 +80,7 @@ $ curl -s -X 'POST' \
   -H 'accept: application/json' \
   -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJzY29wZSI6InpvbmVfQSJ9.BelzluX7v7kYObix2KSyy1T5gEOQYQn_pyNO5Ri0gWo' \
   -H 'Content-Type: application/json' \
-  -d '{"filter":{"op":"and","args":[{"op":"=","args":[{"property":"collection"},"l1"]}]}}' | jq '.searchid'
+  -d '{"filter":{"op":"and","args":[{"op":"=","args":[{"property":"collection"},"l1"]}]}}' | jq '.id'
 "bbc3c8f4c392436f74de6cd0308469f6"
 
 $ curl -X 'GET' \

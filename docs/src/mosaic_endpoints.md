@@ -2,9 +2,6 @@ The `titiler.pgstac` package comes with a full FastAPI application with Mosaic a
 
 | Method | URL                                                                              | Output                                  | Description
 | ------ | ---------------------------------------------------------------------------------|-----------------------------------------|--------------
-| `POST` | `/mosaic/register`                                                               | JSON ([Register][register_model])       | Register **Search** query
-| `GET`  | `/mosaic/{search_id}/info`                                                        | JSON ([Info][info_model])               | Return **Search** query infos
-| `GET`  | `/mosaic/list`                                                                   | JSON ([Infos][infos_model])             | Return list of **Search** entries with `Mosaic` type
 | `GET`  | `/mosaic/{search_id}/{lon},{lat}/assets`                                          | JSON                                    | Return a list of assets which overlap a given point
 | `GET`  | `/mosaic/{search_id}/tiles[/{TileMatrixSetId}]/{z}/{x}/{Y}/assets`                | JSON                                    | Return a list of assets which overlap a given tile
 | `GET`  | `/mosaic/{search_id}/tiles[/{TileMatrixSetId}]/{z}/{x}/{y}[@{scale}x][.{format}]` | image/bin                               | Create a web map tile image for a search query and a tile index
@@ -14,172 +11,9 @@ The `titiler.pgstac` package comes with a full FastAPI application with Mosaic a
 | `POST` | `/mosaic/{search_id}/statistics`                                                  | GeoJSON ([Statistics][statitics_model]) | Return statistics for geojson features
 | `GET`  | `/mosaic/{search_id}/bbox/{minx},{miny},{maxx},{maxy}[/{width}x{height}].{format}`| image/bin                               | Create an image from part of a dataset
 | `POST` | `/mosaic/{search_id}/feature[/{width}x{height}][.{format}]`                       | image/bin                               | Create an image from a GeoJSON feature
-
-
-### Register a Search Request
-
-`:endpoint:/mosaic/register - [POST]`
-
-- **Body** (a combination of Search+Metadata): A JSON body composed of a valid **STAC Search** query (see: https://github.com/radiantearth/stac-api-spec/tree/master/item-search) and Mosaic's metadata.
-
-```json
-// titiler-pgstac search body example
-{
-  // STAC search query
-  "collections": [
-    "string"
-  ],
-  "ids": [
-    "string"
-  ],
-  "bbox": [
-    "number",
-    "number",
-    "number",
-    "number"
-  ],
-  "intersects": {
-    "type": "Point",
-    "coordinates": [
-      "number",
-      "number"
-    ]
-  },
-  "query": {
-    "additionalProp1": {},
-    "additionalProp2": {},
-    "additionalProp3": {}
-  },
-  "filter": {},
-  "datetime": "string",
-  "sortby": "string",
-  "filter-lang": "cql-json",
-  // titiler-pgstac mosaic metadata
-  "metadata": {
-    "type": "mosaic",
-    "bounds": [
-      "number",
-      "number",
-      "number",
-      "number"
-    ],
-    "minzoom": "number",
-    "maxzoom": "number",
-    "name": "string",
-    "assets": [
-      "string",
-      "string",
-    ],
-    "defaults": {}
-  }
-}
-```
-
-!!! important
-    In `titiler-pgstac` we extended the regular `stac` search to add a metadata entry.
-    Metadata defaults to `{"type": "mosaic"}`.
-
-Example:
-
-- `https://myendpoint/mosaic/register`
-
-```bash
-curl -X 'POST' 'http://127.0.0.1:8081/mosaic/register' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{"collections":["landsat-c2l2-sr"], "bbox":[-123.75,34.30714385628804,-118.125,38.82259097617712], "filter-lang": "cql-json"}' | jq
->> {
-  "id": "5a1b82d38d53a5d200273cbada886bd7",
-  "links": [
-    {
-      "rel": "metadata",
-      "type": "application/json",
-      "href": "http://127.0.0.1:8081/mosaic/5a1b82d38d53a5d200273cbada886bd7/info"
-    },
-    {
-      "rel": "tilejson",
-      "type": "application/json",
-      "href": "http://127.0.0.1:8081/mosaic/5a1b82d38d53a5d200273cbada886bd7/tilejson.json"
-    }
-  ]
-}
-
-# or using CQL2
-curl -X 'POST' 'http://127.0.0.1:8081/mosaic/register' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{"filter": {"op": "=", "args": [{"property": "collection"}, "landsat-c2l2-sr"]}}'
-
-# or using CQL2 with metadata
-curl -X 'POST' 'http://127.0.0.1:8081/mosaic/register' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{"filter": {"op": "=", "args": [{"property": "collection"}, "landsat-c2l2-sr"]}, "metadata": {"name": "landsat mosaic"}}'
-```
-
-### Search infos
-
-`:endpoint:/mosaic/{search_id}/info - [GET]`
-
-- PathParams:
-    - **search_id**: search query hashkey.
-
-Example:
-
-- `https://myendpoint/mosaic/5a1b82d38d53a5d200273cbada886bd7/info`
-
-```bash
-curl 'http://127.0.0.1:8081/mosaic/5a1b82d38d53a5d200273cbada886bd7/info' | jq
->> {
-  "search": {
-    "hash": "5a1b82d38d53a5d200273cbada886bd7",
-    "search": {
-      "bbox": [
-        -123.75,
-        34.30714385628804,
-        -118.125,
-        38.82259097617712
-      ],
-      "collections": [
-        "landsat-c2l2-sr"
-      ],
-      "filter-lang": "cql-json"
-    },
-    "_where": "(  TRUE  )  AND collection_id = ANY ('{landsat-c2l2-sr}')  AND geometry && '0103000020E610000001000000050000000000000000F05EC055F6687D502741400000000000F05EC02D553EA94A6943400000000000885DC02D553EA94A6943400000000000885DC055F6687D502741400000000000F05EC055F6687D50274140' ",
-    "orderby": "datetime DESC, id DESC",
-    "lastused": "2022-03-03T11:42:07.213313+00:00",
-    "usecount": 2,
-    "metadata": {
-      "type": "mosaic"
-    }
-  },
-  "links": [
-    {
-      "rel": "self",
-      "type": "application/json",
-      "href": "http://127.0.0.1:8081/mosaic/5a1b82d38d53a5d200273cbada886bd7/info"
-    },
-    {
-      "rel": "tilejson",
-      "type": "application/json",
-      "href": "http://127.0.0.1:8081/mosaic/5a1b82d38d53a5d200273cbada886bd7/tilejson.json"
-    }
-  ]
-}
-```
-
-### List Searches
-
-`:endpoint:/mosaic/list - [GET]`
-
-- QueryParams:
-    - **limit** (int): Page size limit, Default is `10`.
-    - **offset** (int): Page offset.
-    - **sortby** (str): Sort the searches by Metadata properties (ascending (default) or descending (`-`)).
-
-!!! Important
-    Additional query-parameters (form `PROP=VALUE`) will be considered as a **property filter**.
-
-Example:
-
-- `https://myendpoint/mosaic/list`
-- `https://myendpoint/mosaic/list?limit=100`
-- `https://myendpoint/mosaic/list?limit=10&offset=10` (page 2)
-- `https://myendpoint/mosaic/list?data=noaa` (only show mosaics with `metadata.data == noaa`)
-- `https://myendpoint/mosaic/list?sortby=lastused` (sort mosaic by `lastused` pgstac search property)
-- `https://myendpoint/mosaic/list?sortby=-prop` (sort mosaic (descending) by `metadata.prop` values)
-
+| `GET`  | `/mosaic/{search_id}/info`                                                        | JSON ([Info][info_model])               | Return **Search** query infos
+| `POST` | `/mosaic/register`                                                                | JSON ([Register][register_model])       | Register **Search** query
+| `GET`  | `/mosaic/list`                                                                    | JSON ([Infos][infos_model])             | Return list of **Search** entries with `Mosaic` type
 
 ### Tiles
 
@@ -467,6 +301,171 @@ Example:
 - `https://myendpoint/mosaic/f1ed59f0a6ad91ed80ae79b7b52bc707/feature?assets=B01`
 - `https://myendpoint/mosaic/f1ed59f0a6ad91ed80ae79b7b52bc707/feature.png?assets=B01f`
 - `https://myendpoint/mosaic/f1ed59f0a6ad91ed80ae79b7b52bc707/feature/100x100.png?assets=B01`
+
+### Register a Search Request
+
+`:endpoint:/mosaic/register - [POST]`
+
+- **Body** (a combination of Search+Metadata): A JSON body composed of a valid **STAC Search** query (see: https://github.com/radiantearth/stac-api-spec/tree/master/item-search) and Mosaic's metadata.
+
+```json
+// titiler-pgstac search body example
+{
+  // STAC search query
+  "collections": [
+    "string"
+  ],
+  "ids": [
+    "string"
+  ],
+  "bbox": [
+    "number",
+    "number",
+    "number",
+    "number"
+  ],
+  "intersects": {
+    "type": "Point",
+    "coordinates": [
+      "number",
+      "number"
+    ]
+  },
+  "query": {
+    "additionalProp1": {},
+    "additionalProp2": {},
+    "additionalProp3": {}
+  },
+  "filter": {},
+  "datetime": "string",
+  "sortby": "string",
+  "filter-lang": "cql-json",
+  // titiler-pgstac mosaic metadata
+  "metadata": {
+    "type": "mosaic",
+    "bounds": [
+      "number",
+      "number",
+      "number",
+      "number"
+    ],
+    "minzoom": "number",
+    "maxzoom": "number",
+    "name": "string",
+    "assets": [
+      "string",
+      "string",
+    ],
+    "defaults": {}
+  }
+}
+```
+
+!!! important
+    In `titiler-pgstac` we extended the regular `stac` search to add a metadata entry.
+    Metadata defaults to `{"type": "mosaic"}`.
+
+Example:
+
+- `https://myendpoint/mosaic/register`
+
+```bash
+curl -X 'POST' 'http://127.0.0.1:8081/mosaic/register' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{"collections":["landsat-c2l2-sr"], "bbox":[-123.75,34.30714385628804,-118.125,38.82259097617712], "filter-lang": "cql-json"}' | jq
+>> {
+  "id": "5a1b82d38d53a5d200273cbada886bd7",
+  "links": [
+    {
+      "rel": "metadata",
+      "type": "application/json",
+      "href": "http://127.0.0.1:8081/mosaic/5a1b82d38d53a5d200273cbada886bd7/info"
+    },
+    {
+      "rel": "tilejson",
+      "type": "application/json",
+      "href": "http://127.0.0.1:8081/mosaic/5a1b82d38d53a5d200273cbada886bd7/tilejson.json"
+    }
+  ]
+}
+
+# or using CQL2
+curl -X 'POST' 'http://127.0.0.1:8081/mosaic/register' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{"filter": {"op": "=", "args": [{"property": "collection"}, "landsat-c2l2-sr"]}}'
+
+# or using CQL2 with metadata
+curl -X 'POST' 'http://127.0.0.1:8081/mosaic/register' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{"filter": {"op": "=", "args": [{"property": "collection"}, "landsat-c2l2-sr"]}, "metadata": {"name": "landsat mosaic"}}'
+```
+
+### Search infos
+
+`:endpoint:/mosaic/{search_id}/info - [GET]`
+
+- PathParams:
+    - **search_id**: search query hashkey.
+
+Example:
+
+- `https://myendpoint/mosaic/5a1b82d38d53a5d200273cbada886bd7/info`
+
+```bash
+curl 'http://127.0.0.1:8081/mosaic/5a1b82d38d53a5d200273cbada886bd7/info' | jq
+>> {
+  "search": {
+    "hash": "5a1b82d38d53a5d200273cbada886bd7",
+    "search": {
+      "bbox": [
+        -123.75,
+        34.30714385628804,
+        -118.125,
+        38.82259097617712
+      ],
+      "collections": [
+        "landsat-c2l2-sr"
+      ],
+      "filter-lang": "cql-json"
+    },
+    "_where": "(  TRUE  )  AND collection_id = ANY ('{landsat-c2l2-sr}')  AND geometry && '0103000020E610000001000000050000000000000000F05EC055F6687D502741400000000000F05EC02D553EA94A6943400000000000885DC02D553EA94A6943400000000000885DC055F6687D502741400000000000F05EC055F6687D50274140' ",
+    "orderby": "datetime DESC, id DESC",
+    "lastused": "2022-03-03T11:42:07.213313+00:00",
+    "usecount": 2,
+    "metadata": {
+      "type": "mosaic"
+    }
+  },
+  "links": [
+    {
+      "rel": "self",
+      "type": "application/json",
+      "href": "http://127.0.0.1:8081/mosaic/5a1b82d38d53a5d200273cbada886bd7/info"
+    },
+    {
+      "rel": "tilejson",
+      "type": "application/json",
+      "href": "http://127.0.0.1:8081/mosaic/5a1b82d38d53a5d200273cbada886bd7/tilejson.json"
+    }
+  ]
+}
+```
+
+### List Searches
+
+`:endpoint:/mosaic/list - [GET]`
+
+- QueryParams:
+    - **limit** (int): Page size limit, Default is `10`.
+    - **offset** (int): Page offset.
+    - **sortby** (str): Sort the searches by Metadata properties (ascending (default) or descending (`-`)).
+
+!!! Important
+    Additional query-parameters (form `PROP=VALUE`) will be considered as a **property filter**.
+
+Example:
+
+- `https://myendpoint/mosaic/list`
+- `https://myendpoint/mosaic/list?limit=100`
+- `https://myendpoint/mosaic/list?limit=10&offset=10` (page 2)
+- `https://myendpoint/mosaic/list?data=noaa` (only show mosaics with `metadata.data == noaa`)
+- `https://myendpoint/mosaic/list?sortby=lastused` (sort mosaic by `lastused` pgstac search property)
+- `https://myendpoint/mosaic/list?sortby=-prop` (sort mosaic (descending) by `metadata.prop` values)
+
 
 
 [tilejson_model]: https://github.com/developmentseed/titiler/blob/2335048a407f17127099cbbc6c14e1328852d619/src/titiler/core/titiler/core/models/mapbox.py#L16-L38
