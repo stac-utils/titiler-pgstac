@@ -29,7 +29,7 @@ from titiler.pgstac.extensions import searchInfoExtension
 from titiler.pgstac.factory import (
     MosaicTilerFactory,
     add_mosaic_list_route,
-    add_register_route,
+    add_mosaic_register_route,
 )
 from titiler.pgstac.reader import PgSTACReader
 from titiler.pgstac.settings import ApiSettings, PostgresSettings
@@ -115,7 +115,7 @@ mosaic = MosaicTilerFactory(
 )
 app.include_router(mosaic.router, tags=["Mosaic"], prefix="/mosaics/{search_id}")
 
-add_register_route(
+add_mosaic_register_route(
     app,
     prefix="/mosaics",
     tile_dependencies=[

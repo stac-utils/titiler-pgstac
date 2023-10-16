@@ -883,7 +883,7 @@ class MosaicTilerFactory(BaseTilerFactory):
             return Response(content, media_type=media_type, headers=headers)
 
 
-def add_register_route(
+def add_mosaic_register_route(
     app: FastAPI,
     *,
     prefix: str,
