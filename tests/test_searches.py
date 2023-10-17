@@ -15,7 +15,7 @@ from .conftest import mock_rasterio_open, parse_img
 def search_no_bbox(app):
     """Search Query without BBOX."""
     query = {"collections": ["noaa-emergency-response"], "filter-lang": "cql-json"}
-    response = app.post("/mosaics/register", json=query)
+    response = app.post("/searches/register", json=query)
     assert response.status_code == 200
     resp = response.json()
     assert resp["links"]
@@ -36,7 +36,7 @@ def search_bbox(app):
         "bbox": [-85.535, 36.137, -85.465, 36.179],
         "filter-lang": "cql-json",
     }
-    response = app.post("/mosaics/register", json=query)
+    response = app.post("/searches/register", json=query)
     assert response.status_code == 200
 
     resp = response.json()
@@ -52,7 +52,7 @@ def search_bbox(app):
 
 def test_info(app, search_no_bbox):
     """Should return metadata about a search query."""
-    response = app.get(f"/mosaics/{search_no_bbox}/info")
+    response = app.get(f"/searches/{search_no_bbox}/info")
     assert response.status_code == 200
     resp = response.json()
     assert resp["search"]
@@ -64,7 +64,7 @@ def test_info(app, search_no_bbox):
     }
     assert search["metadata"] == {"type": "mosaic"}
 
-    response = app.get("/mosaics/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/info")
+    response = app.get("/searches/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/info")
     assert response.status_code == 404
     resp = response.json()
     assert resp["detail"] == "SearchId `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa` not found"
@@ -72,7 +72,7 @@ def test_info(app, search_no_bbox):
 
 def test_assets_for_point(app, search_no_bbox, search_bbox):
     """Get assets for a Point."""
-    response = app.get(f"/mosaics/{search_no_bbox}/-85.6358,36.1624/assets")
+    response = app.get(f"/searches/{search_no_bbox}/-85.6358,36.1624/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 1
@@ -80,14 +80,14 @@ def test_assets_for_point(app, search_no_bbox, search_bbox):
     assert resp[0]["id"] == "20200307aC0853900w361030"
 
     # make sure we can find assets when having both bbox and geometry
-    response = app.get(f"/mosaics/{search_bbox}/-85.5,36.1624/assets")
+    response = app.get(f"/searches/{search_bbox}/-85.5,36.1624/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 2
 
     # with coord-crs
     response = app.get(
-        f"/mosaics/{search_bbox}/-9517816.46282489,4322990.432036275/assets",
+        f"/searches/{search_bbox}/-9517816.46282489,4322990.432036275/assets",
         params={"coord_crs": "epsg:3857"},
     )
     assert response.status_code == 200
@@ -95,13 +95,15 @@ def test_assets_for_point(app, search_no_bbox, search_bbox):
     assert len(resp) == 2
 
     # no assets found outside the mosaic bbox
-    response = app.get(f"/mosaics/{search_bbox}/-85.6358,36.1624/assets")
+    response = app.get(f"/searches/{search_bbox}/-85.6358,36.1624/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 0
 
     # searchId not found
-    response = app.get("/mosaics/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/-85.5,36.1624/assets")
+    response = app.get(
+        "/searches/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/-85.5,36.1624/assets"
+    )
     assert response.status_code == 404
     resp = response.json()
     assert resp["detail"] == "SearchId `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa` not found"
@@ -109,7 +111,7 @@ def test_assets_for_point(app, search_no_bbox, search_bbox):
 
 def test_assets_for_tile(app, search_no_bbox, search_bbox):
     """Get assets for a Tile."""
-    response = app.get(f"/mosaics/{search_no_bbox}/tiles/15/8589/12849/assets")
+    response = app.get(f"/searches/{search_no_bbox}/tiles/15/8589/12849/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 1
@@ -117,38 +119,38 @@ def test_assets_for_tile(app, search_no_bbox, search_bbox):
     assert resp[0]["id"] == "20200307aC0853900w361030"
 
     # make sure we can find assets when having both bbox and geometry
-    response = app.get(f"/mosaics/{search_bbox}/tiles/15/8601/12849/assets")
+    response = app.get(f"/searches/{search_bbox}/tiles/15/8601/12849/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 2
 
     response = app.get(
-        f"/mosaics/{search_bbox}/tiles/WebMercatorQuad/15/8601/12849/assets"
+        f"/searches/{search_bbox}/tiles/WebMercatorQuad/15/8601/12849/assets"
     )
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 2
 
     # With WGS1994Quad TMS
-    response = app.get(f"/mosaics/{search_bbox}/tiles/WGS1984Quad/14/8601/4901/assets")
+    response = app.get(f"/searches/{search_bbox}/tiles/WGS1984Quad/14/8601/4901/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 4
 
-    response = app.get(f"/mosaics/{search_bbox}/tiles/15/8601/12849/assets")
+    response = app.get(f"/searches/{search_bbox}/tiles/15/8601/12849/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 2
 
     # no assets found outside the query bbox
-    response = app.get(f"/mosaics/{search_bbox}/tiles/15/8589/12849/assets")
+    response = app.get(f"/searches/{search_bbox}/tiles/15/8589/12849/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 0
 
     # searchId not found
     response = app.get(
-        "/mosaics/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/tiles/15/8589/12849/assets"
+        "/searches/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/tiles/15/8589/12849/assets"
     )
     assert response.status_code == 404
     resp = response.json()
@@ -157,10 +159,10 @@ def test_assets_for_tile(app, search_no_bbox, search_bbox):
 
 def test_tilejson(app, search_no_bbox, search_bbox):
     """Create TileJSON."""
-    response = app.get(f"/mosaics/{search_no_bbox}/tilejson.json")
+    response = app.get(f"/searches/{search_no_bbox}/tilejson.json")
     assert response.status_code == 400
 
-    response = app.get(f"/mosaics/{search_no_bbox}/tilejson.json?assets=cog")
+    response = app.get(f"/searches/{search_no_bbox}/tilejson.json?assets=cog")
     assert response.headers["content-type"] == "application/json"
     assert response.status_code == 200
     resp = response.json()
@@ -171,7 +173,7 @@ def test_tilejson(app, search_no_bbox, search_bbox):
     assert "?assets=cog" in resp["tiles"][0]
 
     response = app.get(
-        f"/mosaics/{search_no_bbox}/tilejson.json?assets=cog&scan_limit=100&items_limit=1&time_limit=2&exitwhenfull=False&skipcovered=False"
+        f"/searches/{search_no_bbox}/tilejson.json?assets=cog&scan_limit=100&items_limit=1&time_limit=2&exitwhenfull=False&skipcovered=False"
     )
     assert response.headers["content-type"] == "application/json"
     assert response.status_code == 200
@@ -181,18 +183,18 @@ def test_tilejson(app, search_no_bbox, search_bbox):
         in resp["tiles"][0]
     )
 
-    response = app.get(f"/mosaics/{search_no_bbox}/tilejson.json?expression=cog")
+    response = app.get(f"/searches/{search_no_bbox}/tilejson.json?expression=cog")
     assert response.status_code == 200
     resp = response.json()
     assert "?expression=cog" in resp["tiles"][0]
 
-    response = app.get(f"/mosaics/{search_no_bbox}/tilejson.json?expression=cog")
+    response = app.get(f"/searches/{search_no_bbox}/tilejson.json?expression=cog")
     assert response.status_code == 200
     resp = response.json()
     assert "?expression=cog" in resp["tiles"][0]
 
     response = app.get(
-        f"/mosaics/{search_no_bbox}/WorldCRS84Quad/tilejson.json?assets=cog"
+        f"/searches/{search_no_bbox}/WorldCRS84Quad/tilejson.json?assets=cog"
     )
     assert response.status_code == 200
     resp = response.json()
@@ -203,13 +205,13 @@ def test_tilejson(app, search_no_bbox, search_bbox):
     assert "?assets=cog" in resp["tiles"][0]
 
     response = app.get(
-        f"/mosaics/{search_no_bbox}/tilejson.json?assets=cog&tile_format=png"
+        f"/searches/{search_no_bbox}/tilejson.json?assets=cog&tile_format=png"
     )
     assert response.status_code == 200
     resp = response.json()
     assert ".png?assets=cog" in resp["tiles"][0]
 
-    response = app.get(f"/mosaics/{search_bbox}/tilejson.json?assets=cog")
+    response = app.get(f"/searches/{search_bbox}/tilejson.json?assets=cog")
     assert response.headers["content-type"] == "application/json"
     assert response.status_code == 200
     resp = response.json()
@@ -220,7 +222,9 @@ def test_tilejson(app, search_no_bbox, search_bbox):
     assert "?assets=cog" in resp["tiles"][0]
 
     # searchId not found
-    response = app.get("/mosaics/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/info?assets=cog")
+    response = app.get(
+        "/searches/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/tilejson.json?assets=cog"
+    )
     assert response.status_code == 404
     resp = response.json()
     assert resp["detail"] == "SearchId `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa` not found"
@@ -234,10 +238,10 @@ def test_tiles(rio, app, search_no_bbox, search_bbox):
     z, x, y = 15, 8589, 12849
 
     # missing assets
-    response = app.get(f"/mosaics/{search_no_bbox}/tiles/{z}/{x}/{y}")
+    response = app.get(f"/searches/{search_no_bbox}/tiles/{z}/{x}/{y}")
     assert response.status_code == 400
 
-    response = app.get(f"/mosaics/{search_no_bbox}/tiles/{z}/{x}/{y}?assets=cog")
+    response = app.get(f"/searches/{search_no_bbox}/tiles/{z}/{x}/{y}?assets=cog")
     assert response.status_code == 200
     assert response.headers["content-type"] == "image/jpeg"
     meta = parse_img(response.content)
@@ -245,7 +249,7 @@ def test_tiles(rio, app, search_no_bbox, search_bbox):
     assert meta["height"] == 256
 
     response = app.get(
-        f"/mosaics/{search_no_bbox}/tiles/{z}/{x}/{y}?assets=cog&buffer=0.5"
+        f"/searches/{search_no_bbox}/tiles/{z}/{x}/{y}?assets=cog&buffer=0.5"
     )
     assert response.status_code == 200
     assert response.headers["content-type"] == "image/jpeg"
@@ -253,7 +257,7 @@ def test_tiles(rio, app, search_no_bbox, search_bbox):
     assert meta["width"] == 257
     assert meta["height"] == 257
 
-    response = app.get(f"/mosaics/{search_no_bbox}/tiles/{z}/{x}/{y}.png?assets=cog")
+    response = app.get(f"/searches/{search_no_bbox}/tiles/{z}/{x}/{y}.png?assets=cog")
     assert response.status_code == 200
     assert response.headers["content-type"] == "image/png"
     meta = parse_img(response.content)
@@ -261,11 +265,11 @@ def test_tiles(rio, app, search_no_bbox, search_bbox):
     assert meta["height"] == 256
 
     # tile is outside mosaic bbox, it should return 404 (NoAssetFoundError)
-    response = app.get(f"/mosaics/{search_bbox}/tiles/{z}/{x}/{y}?assets=cog")
+    response = app.get(f"/searches/{search_bbox}/tiles/{z}/{x}/{y}?assets=cog")
     assert response.status_code == 404
 
     response = app.get(
-        f"/mosaics/{search_no_bbox}/tiles/WebMercatorQuad/{z}/{x}/{y}.tif?assets=cog"
+        f"/searches/{search_no_bbox}/tiles/WebMercatorQuad/{z}/{x}/{y}.tif?assets=cog"
     )
     assert response.status_code == 200
     assert response.headers["content-type"] == "image/tiff; application=geotiff"
@@ -275,7 +279,7 @@ def test_tiles(rio, app, search_no_bbox, search_bbox):
     assert meta["height"] == 256
 
     response = app.get(
-        f"/mosaics/{search_no_bbox}/tiles/WorldCRS84Quad/18/137421/78424.tif?assets=cog"
+        f"/searches/{search_no_bbox}/tiles/WorldCRS84Quad/18/137421/78424.tif?assets=cog"
     )
     assert response.status_code == 200
     assert response.headers["content-type"] == "image/tiff; application=geotiff"
@@ -286,7 +290,7 @@ def test_tiles(rio, app, search_no_bbox, search_bbox):
 
     # searchId not found
     response = app.get(
-        "/mosaics/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/tiles/0/0/0?assets=cog"
+        "/searches/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/tiles/0/0/0?assets=cog"
     )
     assert response.status_code == 404
     resp = response.json()
@@ -296,14 +300,14 @@ def test_tiles(rio, app, search_no_bbox, search_bbox):
 def test_wmts(app, search_no_bbox):
     """Create wmts document."""
     # missing assets
-    response = app.get(f"/mosaics/{search_no_bbox}/WMTSCapabilities.xml")
+    response = app.get(f"/searches/{search_no_bbox}/WMTSCapabilities.xml")
     assert response.status_code == 400
     assert (
         response.json()["detail"]
         == "assets must be defined either via expression or assets options."
     )
 
-    response = app.get(f"/mosaics/{search_no_bbox}/WMTSCapabilities.xml?assets=cog")
+    response = app.get(f"/searches/{search_no_bbox}/WMTSCapabilities.xml?assets=cog")
     assert response.status_code == 200
     assert response.headers["content-type"] == "application/xml"
 
@@ -313,7 +317,7 @@ def test_wmts(app, search_no_bbox):
         assert src.profile["driver"] == "WMTS"
 
     response = app.get(
-        f"/mosaics/{search_no_bbox}/WorldCRS84Quad/WMTSCapabilities.xml?assets=cog"
+        f"/searches/{search_no_bbox}/WorldCRS84Quad/WMTSCapabilities.xml?assets=cog"
     )
     assert response.status_code == 200
     assert response.headers["content-type"] == "application/xml"
@@ -335,7 +339,7 @@ def test_cql2(rio, app):
             "args": [{"property": "collection"}, "noaa-emergency-response"],
         }
     }
-    response = app.post("/mosaics/register", json=query)
+    response = app.post("/searches/register", json=query)
     assert response.status_code == 200
     resp = response.json()
     assert resp["id"]
@@ -343,7 +347,7 @@ def test_cql2(rio, app):
 
     cql2_id = resp["id"]
 
-    response = app.get(f"/mosaics/{cql2_id}/info")
+    response = app.get(f"/searches/{cql2_id}/info")
     assert response.status_code == 200
     resp = response.json()
     assert resp["search"]
@@ -357,21 +361,21 @@ def test_cql2(rio, app):
     }
     assert search["metadata"] == {"type": "mosaic"}
 
-    response = app.get(f"/mosaics/{cql2_id}/-85.6358,36.1624/assets")
+    response = app.get(f"/searches/{cql2_id}/-85.6358,36.1624/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 1
     assert list(resp[0]) == ["id", "bbox", "assets", "collection"]
     assert resp[0]["id"] == "20200307aC0853900w361030"
 
-    response = app.get(f"/mosaics/{cql2_id}/tiles/15/8589/12849/assets")
+    response = app.get(f"/searches/{cql2_id}/tiles/15/8589/12849/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 1
     assert list(resp[0]) == ["id", "bbox", "assets", "collection"]
     assert resp[0]["id"] == "20200307aC0853900w361030"
 
-    response = app.get(f"/mosaics/{cql2_id}/tilejson.json?assets=cog")
+    response = app.get(f"/searches/{cql2_id}/tilejson.json?assets=cog")
     assert response.headers["content-type"] == "application/json"
     assert response.status_code == 200
     resp = response.json()
@@ -381,12 +385,12 @@ def test_cql2(rio, app):
     assert round(resp["bounds"][0]) == -180
     # Make sure we return a tilejson with the `/{search_id}/tiles/{tms}` format
     assert (
-        f"/mosaics/{cql2_id}/tiles/WebMercatorQuad/{{z}}/{{x}}/{{y}}?assets=cog"
+        f"/searches/{cql2_id}/tiles/WebMercatorQuad/{{z}}/{{x}}/{{y}}?assets=cog"
         in resp["tiles"][0]
     )
 
     z, x, y = 15, 8589, 12849
-    response = app.get(f"/mosaics/{cql2_id}/tiles/{z}/{x}/{y}?assets=cog")
+    response = app.get(f"/searches/{cql2_id}/tiles/{z}/{x}/{y}?assets=cog")
     assert response.status_code == 200
     assert response.headers["content-type"] == "image/jpeg"
     meta = parse_img(response.content)
@@ -428,7 +432,7 @@ def test_cql2_with_geometry(rio, app):
             ],
         }
     }
-    response = app.post("/mosaics/register", json=query)
+    response = app.post("/searches/register", json=query)
     assert response.status_code == 200
     resp = response.json()
     assert resp["id"]
@@ -436,7 +440,7 @@ def test_cql2_with_geometry(rio, app):
 
     cql2_id = resp["id"]
 
-    response = app.get(f"/mosaics/{cql2_id}/info")
+    response = app.get(f"/searches/{cql2_id}/info")
     assert response.status_code == 200
     resp = response.json()
     assert resp["search"]
@@ -445,32 +449,32 @@ def test_cql2_with_geometry(rio, app):
     assert search["metadata"] == {"type": "mosaic"}
 
     # make sure we can find assets when having both geometry filter and geometry
-    response = app.get(f"/mosaics/{cql2_id}/tiles/15/8601/12849/assets")
+    response = app.get(f"/searches/{cql2_id}/tiles/15/8601/12849/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 2
 
     # point is outside the geometry filter
-    response = app.get(f"/mosaics/{cql2_id}/-85.6358,36.1624/assets")
+    response = app.get(f"/searches/{cql2_id}/-85.6358,36.1624/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 0
 
     # make sure we can find assets when having both geometry filter and geometry
-    response = app.get(f"/mosaics/{cql2_id}/tiles/15/8601/12849/assets")
+    response = app.get(f"/searches/{cql2_id}/tiles/15/8601/12849/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 2
 
     # tile is outside the geometry filter
-    response = app.get(f"/mosaics/{cql2_id}/tiles/15/8589/12849/assets")
+    response = app.get(f"/searches/{cql2_id}/tiles/15/8589/12849/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 0
 
     # tile is outside the geometry filter
     z, x, y = 15, 8589, 12849
-    response = app.get(f"/mosaics/{cql2_id}/tiles/{z}/{x}/{y}?assets=cog")
+    response = app.get(f"/searches/{cql2_id}/tiles/{z}/{x}/{y}?assets=cog")
     assert response.status_code == 404
 
 
@@ -484,7 +488,7 @@ def test_query_with_metadata(app):
         "metadata": {"name": "mymosaic", "minzoom": 1, "maxzoom": 2},
     }
 
-    response = app.post("/mosaics/register", json=query)
+    response = app.post("/searches/register", json=query)
     assert response.status_code == 200
     resp = response.json()
     assert resp["id"]
@@ -492,7 +496,7 @@ def test_query_with_metadata(app):
 
     mosaic_id = resp["id"]
 
-    response = app.get(f"/mosaics/{mosaic_id}/info")
+    response = app.get(f"/searches/{mosaic_id}/info")
     assert response.status_code == 200
     resp = response.json()
     assert resp["search"]
@@ -511,7 +515,7 @@ def test_query_with_metadata(app):
         "maxzoom": 2,
     }
 
-    response = app.get(f"/mosaics/{mosaic_id}/tilejson.json?assets=cog")
+    response = app.get(f"/searches/{mosaic_id}/tilejson.json?assets=cog")
     assert response.status_code == 200
     resp = response.json()
     assert resp["minzoom"] == 1
@@ -545,7 +549,7 @@ def test_query_with_metadata(app):
     }
 
     with pytest.warns(UserWarning):
-        response = app.post("/mosaics/register", json=query)
+        response = app.post("/searches/register", json=query)
     assert response.status_code == 200
     resp = response.json()
     assert resp["id"]
@@ -562,7 +566,7 @@ def test_query_with_metadata(app):
 
     # Test WMTS
     # 1. missing assets and no metadata layers
-    response = app.get(f"/mosaics/{mosaic_id}/WMTSCapabilities.xml")
+    response = app.get(f"/searches/{mosaic_id}/WMTSCapabilities.xml")
     assert response.status_code == 400
     assert (
         response.json()["detail"]
@@ -571,7 +575,7 @@ def test_query_with_metadata(app):
 
     # 2. assets and no metadata layers
     response = app.get(
-        f"/mosaics/{mosaic_id}/WMTSCapabilities.xml", params={"assets": "cog"}
+        f"/searches/{mosaic_id}/WMTSCapabilities.xml", params={"assets": "cog"}
     )
     assert response.status_code == 200
     assert response.headers["content-type"] == "application/xml"
@@ -583,7 +587,7 @@ def test_query_with_metadata(app):
 
     # 3. no assets and metadata layers
     with pytest.warns(UserWarning):
-        response = app.get(f"/mosaics/{mosaic_id_metadata}/WMTSCapabilities.xml")
+        response = app.get(f"/searches/{mosaic_id_metadata}/WMTSCapabilities.xml")
     assert response.status_code == 200
 
     assert response.headers["content-type"] == "application/xml"
@@ -597,7 +601,7 @@ def test_query_with_metadata(app):
     # 4. assets and metadata layers
     with pytest.warns(UserWarning):
         response = app.get(
-            f"/mosaics/{mosaic_id_metadata}/WMTSCapabilities.xml",
+            f"/searches/{mosaic_id_metadata}/WMTSCapabilities.xml",
             params={"assets": "cog"},
         )
     assert response.status_code == 200
@@ -611,7 +615,7 @@ def test_query_with_metadata(app):
         assert src.subdatasets[2].endswith(",layer=default")
 
     with pytest.warns(UserWarning):
-        response = app.get(f"/mosaics/{mosaic_id_metadata}/info")
+        response = app.get(f"/searches/{mosaic_id_metadata}/info")
     assert response.status_code == 200
     resp = response.json()
     assert resp["search"]["hash"] == mosaic_id_metadata
@@ -657,12 +661,12 @@ def test_statistics(rio, app, search_no_bbox, search_bbox):
     }
 
     response = app.post(
-        f"/mosaics/{search_no_bbox}/statistics", json=feat, params={"max_size": 1024}
+        f"/searches/{search_no_bbox}/statistics", json=feat, params={"max_size": 1024}
     )
     assert response.status_code == 400
 
     response = app.post(
-        f"/mosaics/{search_no_bbox}/statistics",
+        f"/searches/{search_no_bbox}/statistics",
         json=feat,
         params={"assets": "cog", "max_size": 1024},
     )
@@ -671,7 +675,7 @@ def test_statistics(rio, app, search_no_bbox, search_bbox):
     assert response.json()["features"][0]["properties"]["statistics"]["cog_b1"]
 
     response = app.post(
-        f"/mosaics/{search_no_bbox}/statistics",
+        f"/searches/{search_no_bbox}/statistics",
         json=feat["features"][0],
         params={"assets": "cog", "max_size": 1024},
     )
@@ -681,7 +685,7 @@ def test_statistics(rio, app, search_no_bbox, search_bbox):
 
     # searchId not found
     response = app.post(
-        "/mosaics/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/statistics",
+        "/searches/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/statistics",
         json=feat,
         params={"assets": "cog", "max_size": 1024},
     )
@@ -692,21 +696,21 @@ def test_statistics(rio, app, search_no_bbox, search_bbox):
 
 def test_mosaic_list(app):
     """Test list mosaic."""
-    response = app.get("/mosaics/list")
+    response = app.get("/searches/list")
     assert response.status_code == 200
     resp = response.json()
     assert ["searches", "links", "context"] == list(resp)
     assert len(resp["searches"]) > 0
     assert len(resp["links"]) == 1
 
-    response = app.get("/mosaics/list?limit=1")
+    response = app.get("/searches/list?limit=1")
     assert response.status_code == 200
     resp = response.json()
     assert ["searches", "links", "context"] == list(resp)
     assert len(resp["searches"]) == 1
     assert len(resp["links"]) == 2
 
-    response = app.get("/mosaics/list?limit=1&offset=1")
+    response = app.get("/searches/list?limit=1&offset=1")
     assert response.status_code == 200
     resp = response.json()
     assert ["searches", "links", "context"] == list(resp)
@@ -720,7 +724,7 @@ def test_mosaic_list(app):
         },
         "metadata": {"data": "noaa", "num": 2},
     }
-    response = app.post("/mosaics/register", json=query)
+    response = app.post("/searches/register", json=query)
 
     query = {
         "filter": {
@@ -729,7 +733,7 @@ def test_mosaic_list(app):
         },
         "metadata": {"data": "noaa", "num": 1},
     }
-    response = app.post("/mosaics/register", json=query)
+    response = app.post("/searches/register", json=query)
 
     query = {
         "filter": {
@@ -738,9 +742,9 @@ def test_mosaic_list(app):
         },
         "metadata": {"data": "noaa", "num": 3},
     }
-    response = app.post("/mosaics/register", json=query)
+    response = app.post("/searches/register", json=query)
 
-    response = app.get("/mosaics/list?data=noaa")
+    response = app.get("/searches/list?data=noaa")
     assert response.status_code == 200
     resp = response.json()
     assert ["searches", "links", "context"] == list(resp)
@@ -748,22 +752,22 @@ def test_mosaic_list(app):
     assert len(resp["searches"]) == 3
     assert [s["search"]["metadata"]["num"] for s in resp["searches"]] == [2, 1, 3]
 
-    response = app.get("/mosaics/list?data=noaa&sortby=%2Bnum")
+    response = app.get("/searches/list?data=noaa&sortby=%2Bnum")
     assert response.status_code == 200
     resp = response.json()
     assert [s["search"]["metadata"]["num"] for s in resp["searches"]] == [1, 2, 3]
 
-    response = app.get("/mosaics/list?data=noaa&sortby=num")
+    response = app.get("/searches/list?data=noaa&sortby=num")
     assert response.status_code == 200
     resp = response.json()
     assert [s["search"]["metadata"]["num"] for s in resp["searches"]] == [1, 2, 3]
 
-    response = app.get("/mosaics/list?data=noaa&sortby=-num")
+    response = app.get("/searches/list?data=noaa&sortby=-num")
     assert response.status_code == 200
     resp = response.json()
     assert [s["search"]["metadata"]["num"] for s in resp["searches"]] == [3, 2, 1]
 
-    response = app.get("/mosaics/list?sortby=lastused")
+    response = app.get("/searches/list?sortby=lastused")
     assert response.status_code == 200
     resp = response.json()
     assert resp["context"]
@@ -773,7 +777,7 @@ def test_mosaic_list(app):
     ]
     assert dates[0] < dates[-1]
 
-    response = app.get("/mosaics/list?sortby=-lastused")
+    response = app.get("/searches/list?sortby=-lastused")
     assert response.status_code == 200
     resp = response.json()
     assert resp["context"]
@@ -786,10 +790,10 @@ def test_mosaic_list(app):
 
 def test_map(app, search_bbox):
     """test /map endpoint."""
-    response = app.get(f"/mosaics/{search_bbox}/map")
+    response = app.get(f"/searches/{search_bbox}/map")
     assert response.status_code == 400
 
-    response = app.get(f"/mosaics/{search_bbox}/map", params={"assets": "cog"})
+    response = app.get(f"/searches/{search_bbox}/map", params={"assets": "cog"})
     assert response.status_code == 200
 
 
@@ -820,12 +824,12 @@ def test_feature(rio, app, search_no_bbox):
     }
 
     response = app.post(
-        f"/mosaics/{search_no_bbox}/feature", json=feat, params={"max_size": 1024}
+        f"/searches/{search_no_bbox}/feature", json=feat, params={"max_size": 1024}
     )
     assert response.status_code == 400
 
     response = app.post(
-        f"/mosaics/{search_no_bbox}/feature",
+        f"/searches/{search_no_bbox}/feature",
         json=feat,
         params={"assets": "cog", "max_size": 1024},
     )
@@ -837,7 +841,7 @@ def test_feature(rio, app, search_no_bbox):
     assert meta["count"] == 4
 
     response = app.post(
-        f"/mosaics/{search_no_bbox}/feature.jpeg",
+        f"/searches/{search_no_bbox}/feature.jpeg",
         json=feat,
         params={"assets": "cog", "max_size": 1024},
     )
@@ -849,7 +853,7 @@ def test_feature(rio, app, search_no_bbox):
     assert meta["count"] == 3
 
     response = app.post(
-        f"/mosaics/{search_no_bbox}/feature/300x400.jpeg",
+        f"/searches/{search_no_bbox}/feature/300x400.jpeg",
         json=feat,
         params={"assets": "cog", "max_size": 1024},
     )
@@ -861,7 +865,7 @@ def test_feature(rio, app, search_no_bbox):
     assert meta["count"] == 3
 
     response = app.post(
-        f"/mosaics/{search_no_bbox}/feature/300x400.tif",
+        f"/searches/{search_no_bbox}/feature/300x400.tif",
         json=feat,
         params={"assets": "cog", "max_size": 1024},
     )
@@ -871,7 +875,7 @@ def test_feature(rio, app, search_no_bbox):
     assert meta["crs"] == "epsg:4326"
 
     response = app.post(
-        f"/mosaics/{search_no_bbox}/feature/300x400.tif",
+        f"/searches/{search_no_bbox}/feature/300x400.tif",
         json=feat,
         params={"assets": "cog", "max_size": 1024, "dst_crs": "epsg:3857"},
     )
@@ -894,12 +898,12 @@ def test_bbox(rio, app, search_no_bbox):
     ]
     str_bbox = ",".join(map(str, bbox))
     response = app.get(
-        f"/mosaics/{search_no_bbox}/bbox/{str_bbox}.png", params={"max_size": 1024}
+        f"/searches/{search_no_bbox}/bbox/{str_bbox}.png", params={"max_size": 1024}
     )
     assert response.status_code == 400
 
     response = app.get(
-        f"/mosaics/{search_no_bbox}/bbox/{str_bbox}.png",
+        f"/searches/{search_no_bbox}/bbox/{str_bbox}.png",
         params={"assets": "cog", "max_size": 1024},
     )
     assert response.status_code == 200
@@ -910,7 +914,7 @@ def test_bbox(rio, app, search_no_bbox):
     assert meta["count"] == 4
 
     response = app.get(
-        f"/mosaics/{search_no_bbox}/bbox/{str_bbox}.jpeg",
+        f"/searches/{search_no_bbox}/bbox/{str_bbox}.jpeg",
         params={"assets": "cog", "max_size": 1024},
     )
     assert response.status_code == 200
@@ -921,7 +925,7 @@ def test_bbox(rio, app, search_no_bbox):
     assert meta["count"] == 3
 
     response = app.get(
-        f"/mosaics/{search_no_bbox}/bbox/{str_bbox}/300x400.jpeg",
+        f"/searches/{search_no_bbox}/bbox/{str_bbox}/300x400.jpeg",
         params={"assets": "cog", "max_size": 1024},
     )
     assert response.status_code == 200
@@ -932,7 +936,7 @@ def test_bbox(rio, app, search_no_bbox):
     assert meta["count"] == 3
 
     response = app.get(
-        f"/mosaics/{search_no_bbox}/bbox/{str_bbox}.tif",
+        f"/searches/{search_no_bbox}/bbox/{str_bbox}.tif",
         params={"assets": "cog", "max_size": 1024},
     )
     assert response.status_code == 200
@@ -941,7 +945,7 @@ def test_bbox(rio, app, search_no_bbox):
     assert meta["crs"] == "epsg:4326"
 
     response = app.get(
-        f"/mosaics/{search_no_bbox}/bbox/{str_bbox}.tif",
+        f"/searches/{search_no_bbox}/bbox/{str_bbox}.tif",
         params={"assets": "cog", "max_size": 1024, "dst_crs": "epsg:3857"},
     )
     assert response.status_code == 200

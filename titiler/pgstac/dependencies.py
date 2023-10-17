@@ -7,9 +7,10 @@ import morecantile
 import pystac
 from cachetools import TTLCache, cached
 from cachetools.keys import hashkey
+from cogeo_mosaic.errors import MosaicNotFoundError
 from fastapi import HTTPException, Path, Query
 from psycopg import errors as pgErrors
-from psycopg.rows import dict_row
+from psycopg.rows import class_row, dict_row
 from psycopg_pool import ConnectionPool
 from starlette.requests import Request
 from typing_extensions import Annotated
@@ -26,11 +27,68 @@ retry_config = RetrySettings()
 def SearchIdParams(
     search_id: Annotated[
         str,
-        Path(description="Search Id (pgSTAC Search Hash)"),
+        Path(description="PgSTAC Search Identifier (Hash)"),
     ]
 ) -> str:
     """search_id"""
     return search_id
+
+
+@cached(  # type: ignore
+    TTLCache(maxsize=cache_config.maxsize, ttl=cache_config.ttl),
+    key=lambda pool, collection_id: hashkey(collection_id),
+)
+@retry(
+    tries=retry_config.retry,
+    delay=retry_config.delay,
+    exceptions=(
+        pgErrors.OperationalError,
+        pgErrors.InterfaceError,
+    ),
+)
+def get_collection_id(pool: ConnectionPool, collection_id: str) -> str:
+    """Get Search Id for a Collection."""
+    search = model.PgSTACSearch(collections=[collection_id])
+
+    with pool.connection() as conn:
+        with conn.cursor(row_factory=dict_row) as cursor:
+            cursor.execute(
+                "SELECT * FROM pgstac.get_collection(%s);",
+                (collection_id,),
+            )
+            collection = cursor.fetchone()["get_collection"]
+            if not collection:
+                raise MosaicNotFoundError(f"CollectionId `{collection_id}` not found")
+
+            bbox = collection["extent"]["spatial"].get("bbox", [[-180, -90, 180, 90]])
+            metadata = model.Metadata(
+                name=f"Mosaic for '{collection_id}' Collection",
+                bounds=bbox[0],
+                # TODO: use asset extension to populate the `assets` attribute
+            )
+
+            cursor.row_factory = class_row(model.Search)
+            cursor.execute(
+                "SELECT * FROM search_query(%s, _metadata => %s);",
+                (
+                    search.model_dump_json(by_alias=True, exclude_none=True),
+                    metadata.model_dump_json(exclude_none=True),
+                ),
+            )
+            search_info = cursor.fetchone()
+
+    return search_info.id
+
+
+def CollectionIdParams(
+    request: Request,
+    collection_id: Annotated[
+        str,
+        Path(description="STAC Collection Identifier"),
+    ],
+) -> str:
+    """collection_id Path Parameter"""
+    return get_collection_id(request.app.state.dbpool, collection_id=collection_id)
 
 
 def SearchParams(

@@ -24,12 +24,12 @@ from titiler.core.resources.enums import OptionalHeader
 from titiler.mosaic.errors import MOSAIC_STATUS_CODES
 from titiler.pgstac import __version__ as titiler_pgstac_version
 from titiler.pgstac.db import close_db_connection, connect_to_db
-from titiler.pgstac.dependencies import ItemPathParams
+from titiler.pgstac.dependencies import CollectionIdParams, ItemPathParams
 from titiler.pgstac.extensions import searchInfoExtension
 from titiler.pgstac.factory import (
     MosaicTilerFactory,
-    add_mosaic_list_route,
-    add_mosaic_register_route,
+    add_search_list_route,
+    add_search_register_route,
 )
 from titiler.pgstac.reader import PgSTACReader
 from titiler.pgstac.settings import ApiSettings, PostgresSettings
@@ -102,10 +102,10 @@ else:
     optional_headers = []
 
 ###############################################################################
-# MOSAIC Endpoints
-mosaic = MosaicTilerFactory(
+# STAC Search Endpoints
+searches = MosaicTilerFactory(
     optional_headers=optional_headers,
-    router_prefix="/mosaics/{search_id}",
+    router_prefix="/searches/{search_id}",
     add_statistics=True,
     add_viewer=True,
     add_part=True,
@@ -113,26 +113,42 @@ mosaic = MosaicTilerFactory(
         searchInfoExtension(),
     ],
 )
-app.include_router(mosaic.router, tags=["Mosaic"], prefix="/mosaics/{search_id}")
-
-add_mosaic_register_route(
-    app,
-    prefix="/mosaics",
-    tile_dependencies=[
-        mosaic.layer_dependency,
-        mosaic.dataset_dependency,
-        mosaic.pixel_selection_dependency,
-        mosaic.process_dependency,
-        mosaic.rescale_dependency,
-        mosaic.colormap_dependency,
-        mosaic.render_dependency,
-        mosaic.pgstac_dependency,
-        mosaic.reader_dependency,
-        mosaic.backend_dependency,
-    ],
-    tags=["Mosaic"],
+app.include_router(
+    searches.router, tags=["STAC Search"], prefix="/searches/{search_id}"
 )
-add_mosaic_list_route(app, prefix="/mosaics", tags=["Mosaic"])
+
+add_search_register_route(
+    app,
+    prefix="/searches",
+    tile_dependencies=[
+        searches.layer_dependency,
+        searches.dataset_dependency,
+        searches.pixel_selection_dependency,
+        searches.process_dependency,
+        searches.rescale_dependency,
+        searches.colormap_dependency,
+        searches.render_dependency,
+        searches.pgstac_dependency,
+        searches.reader_dependency,
+        searches.backend_dependency,
+    ],
+    tags=["STAC Search"],
+)
+add_search_list_route(app, prefix="/searches", tags=["STAC Search"])
+
+###############################################################################
+# STAC COLLECTION Endpoints
+collection = MosaicTilerFactory(
+    path_dependency=CollectionIdParams,
+    optional_headers=optional_headers,
+    router_prefix="/collections/{collection_id}",
+    add_statistics=True,
+    add_viewer=True,
+    add_part=True,
+)
+app.include_router(
+    collection.router, tags=["STAC Collection"], prefix="/collections/{collection_id}"
+)
 
 ###############################################################################
 # STAC Item Endpoints
@@ -144,7 +160,9 @@ stac = MultiBaseTilerFactory(
     add_viewer=True,
 )
 app.include_router(
-    stac.router, tags=["Item"], prefix="/collections/{collection_id}/items/{item_id}"
+    stac.router,
+    tags=["STAC Item"],
+    prefix="/collections/{collection_id}/items/{item_id}",
 )
 
 ###############################################################################
@@ -202,20 +220,28 @@ def landing(request: Request):
                 "rel": "service-doc",
             },
             {
-                "title": "Mosaic List (JSON)",
-                "href": app.url_path_for("list_mosaic"),
+                "title": "PgSTAC Virtual Mosaic list (JSON)",
+                "href": app.url_path_for("list_searches"),
                 "type": "application/json",
                 "rel": "data",
             },
             {
-                "title": "Mosaic Metadata (template URL)",
-                "href": app.url_path_for("info_search", search_id="{search_id}"),
-                "type": "application/json",
-                "rel": "data",
-            },
-            {
-                "title": "Mosaic viewer (template URL)",
+                "title": "PgSTAC Virtual Mosaic viewer (template URL)",
                 "href": app.url_path_for("map_viewer", search_id="{search_id}"),
+                "type": "text/html",
+                "rel": "data",
+            },
+            {
+                "title": "PgSTAC Collection viewer (template URL)",
+                "href": app.url_path_for("map_viewer", collection_id="{collection_id}"),
+                "type": "text/html",
+                "rel": "data",
+            },
+            {
+                "title": "PgSTAC Item viewer (template URL)",
+                "href": app.url_path_for(
+                    "map_viewer", collection_id="{collection_id}", item_id="{item_id}"
+                ),
                 "type": "text/html",
                 "rel": "data",
             },
