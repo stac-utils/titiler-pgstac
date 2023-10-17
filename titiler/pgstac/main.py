@@ -26,7 +26,11 @@ from titiler.pgstac import __version__ as titiler_pgstac_version
 from titiler.pgstac.db import close_db_connection, connect_to_db
 from titiler.pgstac.dependencies import ItemPathParams
 from titiler.pgstac.extensions import searchInfoExtension
-from titiler.pgstac.factory import MosaicTilerFactory
+from titiler.pgstac.factory import (
+    MosaicTilerFactory,
+    add_mosaic_list_route,
+    add_mosaic_register_route,
+)
 from titiler.pgstac.reader import PgSTACReader
 from titiler.pgstac.settings import ApiSettings, PostgresSettings
 
@@ -101,16 +105,34 @@ else:
 # MOSAIC Endpoints
 mosaic = MosaicTilerFactory(
     optional_headers=optional_headers,
-    router_prefix="/mosaic",
+    router_prefix="/mosaics/{search_id}",
     add_statistics=True,
     add_viewer=True,
-    add_mosaic_list=True,
     add_part=True,
     extensions=[
         searchInfoExtension(),
     ],
 )
-app.include_router(mosaic.router, tags=["Mosaic"], prefix="/mosaic")
+app.include_router(mosaic.router, tags=["Mosaic"], prefix="/mosaics/{search_id}")
+
+add_mosaic_register_route(
+    app,
+    prefix="/mosaics",
+    tile_dependencies=[
+        mosaic.layer_dependency,
+        mosaic.dataset_dependency,
+        mosaic.pixel_selection_dependency,
+        mosaic.process_dependency,
+        mosaic.rescale_dependency,
+        mosaic.colormap_dependency,
+        mosaic.render_dependency,
+        mosaic.pgstac_dependency,
+        mosaic.reader_dependency,
+        mosaic.backend_dependency,
+    ],
+    tags=["Mosaic"],
+)
+add_mosaic_list_route(app, prefix="/mosaics", tags=["Mosaic"])
 
 ###############################################################################
 # STAC Item Endpoints
@@ -181,19 +203,19 @@ def landing(request: Request):
             },
             {
                 "title": "Mosaic List (JSON)",
-                "href": mosaic.url_for(request, "list_mosaic"),
+                "href": app.url_path_for("list_mosaic"),
                 "type": "application/json",
                 "rel": "data",
             },
             {
                 "title": "Mosaic Metadata (template URL)",
-                "href": mosaic.url_for(request, "info_search", search_id="{search_id}"),
+                "href": app.url_path_for("info_search", search_id="{search_id}"),
                 "type": "application/json",
                 "rel": "data",
             },
             {
                 "title": "Mosaic viewer (template URL)",
-                "href": mosaic.url_for(request, "map_viewer", search_id="{search_id}"),
+                "href": app.url_path_for("map_viewer", search_id="{search_id}"),
                 "type": "text/html",
                 "rel": "data",
             },

@@ -26,7 +26,7 @@ def test_benchmark_tile(benchmark, tile, mosaic_id):
 
     def f(input_tile):
         response = httpx.get(
-            f"http://{host}:{port}/mosaic/{mosaic_id}/tiles/{input_tile}?assets=asset"
+            f"http://{host}:{port}/mosaics/{mosaic_id}/tiles/{input_tile}?assets=asset"
         )
         assert response.status_code == 200
         return response

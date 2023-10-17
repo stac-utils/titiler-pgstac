@@ -13,7 +13,7 @@ def mosaic_id():
     port = os.environ.get("PORT", "8081")
 
     query = {"collections": ["world"]}
-    response = httpx.post(f"http://{host}:{port}/mosaic/register", json=query)
+    response = httpx.post(f"http://{host}:{port}/mosaics/register", json=query)
     assert response.status_code == 200
 
     resp = response.json()
