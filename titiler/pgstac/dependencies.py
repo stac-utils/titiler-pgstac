@@ -48,13 +48,7 @@ def SearchIdParams(
 )
 def get_collection_id(pool: ConnectionPool, collection_id: str) -> str:
     """Get Search Id for a Collection."""
-    search = model.PgSTACSearch(
-        filter={
-            "op": "=",
-            "args": [{"property": "collection"}, collection_id],
-        },
-        filter_lang="cql2-json",  # type: ignore
-    )
+    search = model.PgSTACSearch(collections=[collection_id])
 
     with pool.connection() as conn:
         with conn.cursor(row_factory=dict_row) as cursor:
