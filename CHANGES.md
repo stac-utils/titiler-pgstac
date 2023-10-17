@@ -6,21 +6,13 @@
 
 * add database's `pool` check in startup event
 
-* rename `dependencies.PathParams` to `dependencies.SearchIdParams` **breaking change**
+* add *metadata layers* links in mosaic's `/info` response for TileJSON, map and wmts endpoint links.
 
-* rename `searchid` path parameter to `search_id` **breaking change**
+### API breaking changes
 
-* in `model.RegisterResponse` (model used in `/register` endpoint) rename `searchid` by `id` **breaking change**
+* rename `dependencies.PathParams` to `dependencies.SearchIdParams`
 
-    ```python
-    # before
-    resp = httpx.post("/mosaic/register", body={"collections": ["my-collection"], "filter-lang": "cql-json"})
-    assert resp.json()["searchid"]
-
-    # now
-    resp = httpx.post("/mosaic/register", body={"collections": ["my-collection"], "filter-lang": "cql-json"})
-    assert resp.json()["id"]
-    ```
+* rename `searchid` path parameter to `search_id`
 
 * move `/{search_id}/info` endpoint outside the `MosaicTilerFactory` to its own *extension* (`titiler.pgstac.extension.searchInfoExtension`)
 
@@ -40,7 +32,78 @@
     app.include_router(mosaic.router, tags=["Mosaic"])
     ```
 
-* add *metadata layers* links in `/info` response for TileJSON, map and wmts endpoint links.
+* move `check_query_params` methods outside `MosaicTilerFactory` class
+
+* remove `/{search_id}` prefix in `MosaicTilerFactory` routes. Now use parameter injection from global prefix
+
+    ```python
+    # Before
+    app = FastAPI()
+    mosaic = MosaicTilerFactory(router_prefix="/mosaics")
+    app.include_router(mosaic.router, prefix="/mosaics")
+
+    # Now
+    app = FastAPI()
+    mosaic = MosaicTilerFactory(router_prefix="/mosaics/{search_id}")
+    app.include_router(mosaic.router, prefix="/mosaics/{search_id}")
+    ```
+
+* move `/register` and `/list` endpoint creation outside the `MosaicTilerFactory` class **API breaking change**
+
+    ```python
+    # before
+    from titiler.pgstac.factory import MosaicTilerFactory
+
+    mosaic = MosaicTilerFactory(router_prefix="/{search_id}")
+    app.include_router(mosaic.router, prefix="/{search_id}")
+
+    # Now
+    from titiler.pgstac.factory import (
+        MosaicTilerFactory,
+        add_mosaic_list_route,
+        add_mosaic_register_route,
+    )
+
+    mosaic = MosaicTilerFactory(router_prefix="/{search_id}")
+    app.include_router(mosaic.router, prefix="/{search_id}")
+
+    # add /register endpoint
+    add_mosaic_register_route(
+        app,
+        # any dependency we want to validate
+        # when creating the tilejson/map links
+        tile_dependencies=[
+            mosaic.layer_dependency,
+            mosaic.dataset_dependency,
+            mosaic.pixel_selection_dependency,
+            mosaic.process_dependency,
+            mosaic.rescale_dependency,
+            mosaic.colormap_dependency,
+            mosaic.render_dependency,
+            mosaic.pgstac_dependency,
+            mosaic.reader_dependency,
+            mosaic.backend_dependency,
+        ],
+    )
+    # add /list endpoint
+    add_mosaic_list_route(app)
+    ```
+
+### Endpoint breaking changes
+
+* in `model.RegisterResponse` (model used in `/register` endpoint) rename `searchid` by `id`
+
+    ```python
+    # before
+    resp = httpx.post("/mosaic/register", body={"collections": ["my-collection"], "filter-lang": "cql-json"})
+    assert resp.json()["searchid"]
+
+    # now
+    resp = httpx.post("/mosaic/register", body={"collections": ["my-collection"], "filter-lang": "cql-json"})
+    assert resp.json()["id"]
+    ```
+
+* move Mosaic's endpoint from `/mosaic` to `/mosaics`
 
 ## 0.8.0 (2023-10-06)
 

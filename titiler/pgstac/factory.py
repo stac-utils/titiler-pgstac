@@ -886,7 +886,7 @@ class MosaicTilerFactory(BaseTilerFactory):
 def add_mosaic_register_route(
     app: FastAPI,
     *,
-    prefix: str,
+    prefix: str = "",
     tile_dependencies: Optional[List[Callable]] = None,
     tags: Optional[List[str]] = None,
 ):
@@ -1016,7 +1016,7 @@ def add_mosaic_register_route(
 def add_mosaic_list_route(  # noqa: C901
     app: FastAPI,
     *,
-    prefix: str,
+    prefix: str = "",
     tags: Optional[List[str]] = None,
 ):
     """Add mosaic listing route."""
