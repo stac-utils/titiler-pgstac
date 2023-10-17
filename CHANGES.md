@@ -8,6 +8,10 @@
 
 * add *metadata layers* links in mosaic's `/info` response for TileJSON, map and wmts endpoint links.
 
+* add `CollectionIdParams` dependency to retrieve a SearchId for a CollectionId
+
+* add `/collections/{collection_id}` virtual mosaic endpoints
+
 ### API breaking changes
 
 * rename `dependencies.PathParams` to `dependencies.SearchIdParams`
@@ -20,7 +24,7 @@
     # Before
     app = FastAPI()
     mosaic = MosaicTilerFactory()
-    app.include_router(mosaic.router, tags=["Mosaic"])
+    app.include_router(mosaic.router)
 
     # Now
     app = FastAPI()
@@ -29,7 +33,7 @@
             searchInfoExtension(),
         ]
     )
-    app.include_router(mosaic.router, tags=["Mosaic"])
+    app.include_router(mosaic.router)
     ```
 
 * move `check_query_params` methods outside `MosaicTilerFactory` class
@@ -48,7 +52,7 @@
     app.include_router(mosaic.router, prefix="/mosaics/{search_id}")
     ```
 
-* move `/register` and `/list` endpoint creation outside the `MosaicTilerFactory` class **API breaking change**
+* move `/register` and `/list` endpoint creation outside the `MosaicTilerFactory` class
 
     ```python
     # before
@@ -60,7 +64,7 @@
     # Now
     from titiler.pgstac.factory import (
         MosaicTilerFactory,
-        add_mosaic_list_route,
+        add_search_register_route,
         add_mosaic_register_route,
     )
 
@@ -68,7 +72,7 @@
     app.include_router(mosaic.router, prefix="/{search_id}")
 
     # add /register endpoint
-    add_mosaic_register_route(
+    add_search_register_route(
         app,
         # any dependency we want to validate
         # when creating the tilejson/map links
@@ -86,10 +90,14 @@
         ],
     )
     # add /list endpoint
-    add_mosaic_list_route(app)
+    add_search_list_route(app)
     ```
 
 ### Endpoint breaking changes
+
+* update endpoints Tags (`STAC Search`, `STAC Collection`, `STAC Item`)
+
+* move PgSTAC Search Virtual Mosaic's endpoint from `/mosaic` to `/searches`
 
 * in `model.RegisterResponse` (model used in `/register` endpoint) rename `searchid` by `id`
 
@@ -99,11 +107,9 @@
     assert resp.json()["searchid"]
 
     # now
-    resp = httpx.post("/mosaic/register", body={"collections": ["my-collection"], "filter-lang": "cql-json"})
+    resp = httpx.post("/searches/register", body={"collections": ["my-collection"], "filter-lang": "cql-json"})
     assert resp.json()["id"]
     ```
-
-* move Mosaic's endpoint from `/mosaic` to `/mosaics`
 
 ## 0.8.0 (2023-10-06)
 

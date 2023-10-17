@@ -883,7 +883,7 @@ class MosaicTilerFactory(BaseTilerFactory):
             return Response(content, media_type=media_type, headers=headers)
 
 
-def add_mosaic_register_route(
+def add_search_register_route(
     app: FastAPI,
     *,
     prefix: str = "",
@@ -1013,13 +1013,13 @@ def add_mosaic_register_route(
         return model.RegisterResponse(id=search_info.id, links=links)
 
 
-def add_mosaic_list_route(  # noqa: C901
+def add_search_list_route(  # noqa: C901
     app: FastAPI,
     *,
     prefix: str = "",
     tags: Optional[List[str]] = None,
 ):
-    """Add mosaic listing route."""
+    """Add PgSTAC Search (of type mosaic) listing route."""
 
     @app.get(
         f"{prefix}/list",
@@ -1028,7 +1028,7 @@ def add_mosaic_list_route(  # noqa: C901
         response_model_exclude_none=True,
         tags=tags,
     )
-    def list_mosaic(  # noqa: C901
+    def list_searches(  # noqa: C901
         request: Request,
         limit: Annotated[
             int,
@@ -1052,7 +1052,7 @@ def add_mosaic_list_route(  # noqa: C901
             ),
         ] = None,
     ):
-        """List a Search query."""
+        """List a PgSTAC Searches."""
         # Default filter to only return `metadata->type == 'mosaic'`
         mosaic_filter = sql.SQL("metadata->>'type' = 'mosaic'")
 
@@ -1126,7 +1126,7 @@ def add_mosaic_list_route(  # noqa: C901
 
         base_url = str(request.base_url)
         list_endpoint = str(
-            app.url_path_for("list_mosaic").make_absolute_url(base_url=base_url)
+            app.url_path_for("list_searches").make_absolute_url(base_url=base_url)
         )
 
         qs = QueryParams({**request.query_params, "limit": limit, "offset": offset})
