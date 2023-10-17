@@ -21,12 +21,12 @@ port = os.environ.get("PORT", "8081")
         "6/43/31",
     ],
 )
-def test_benchmark_tile(benchmark, tile, mosaic_id):
+def test_benchmark_tile(benchmark, tile, search_id):
     """Benchmark items endpoint."""
 
     def f(input_tile):
         response = httpx.get(
-            f"http://{host}:{port}/mosaics/{mosaic_id}/tiles/{input_tile}?assets=asset"
+            f"http://{host}:{port}/searches/{search_id}/tiles/{input_tile}?assets=asset"
         )
         assert response.status_code == 200
         return response
