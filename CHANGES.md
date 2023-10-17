@@ -1,40 +1,40 @@
 # Release Notes
 
-## Unrelease
+## 1.0.0 (TBD)
 
 * add `pgstac_dependency` attribute in `MosaicTilerFactory` (defaults to `dependencies.PgSTACParams`)
 
 * add database's `pool` check in startup event
 
-* add *metadata layers* links in mosaic's `/info` response for TileJSON, map and wmts endpoint links.
+* add *metadata layers* links in mosaic's `/info` response for TileJSON, map and wmts endpoint links
 
 * add `CollectionIdParams` dependency to retrieve a SearchId for a CollectionId
 
 * add `/collections/{collection_id}` virtual mosaic endpoints
+
+* update endpoints Tags (`STAC Search`, `STAC Collection`, `STAC Item`)
+
+### Endpoint breaking changes
+
+* move PgSTAC Search Virtual Mosaic's endpoints from `/mosaic` to `/searches`
+
+* in `model.RegisterResponse` (model used in `/register` endpoint) rename `searchid` by `id`
+
+    ```python
+    # before
+    resp = httpx.post("/mosaic/register", body={"collections": ["my-collection"], "filter-lang": "cql-json"})
+    assert resp.json()["searchid"]
+
+    # now
+    resp = httpx.post("/searches/register", body={"collections": ["my-collection"], "filter-lang": "cql-json"})
+    assert resp.json()["id"]
+    ```
 
 ### API breaking changes
 
 * rename `dependencies.PathParams` to `dependencies.SearchIdParams`
 
 * rename `searchid` path parameter to `search_id`
-
-* move `/{search_id}/info` endpoint outside the `MosaicTilerFactory` to its own *extension* (`titiler.pgstac.extension.searchInfoExtension`)
-
-    ```python
-    # Before
-    app = FastAPI()
-    mosaic = MosaicTilerFactory()
-    app.include_router(mosaic.router)
-
-    # Now
-    app = FastAPI()
-    mosaic = MosaicTilerFactory(
-        extensions=[
-            searchInfoExtension(),
-        ]
-    )
-    app.include_router(mosaic.router)
-    ```
 
 * move `check_query_params` methods outside `MosaicTilerFactory` class
 
@@ -50,6 +50,24 @@
     app = FastAPI()
     mosaic = MosaicTilerFactory(router_prefix="/mosaics/{search_id}")
     app.include_router(mosaic.router, prefix="/mosaics/{search_id}")
+    ```
+
+* move `/info` endpoint outside the `MosaicTilerFactory` to its own *extension* (`titiler.pgstac.extension.searchInfoExtension`)
+
+    ```python
+    # Before
+    app = FastAPI()
+    mosaic = MosaicTilerFactory()
+    app.include_router(mosaic.router)
+
+    # Now
+    app = FastAPI()
+    mosaic = MosaicTilerFactory(
+        extensions=[
+            searchInfoExtension(),
+        ]
+    )
+    app.include_router(mosaic.router)
     ```
 
 * move `/register` and `/list` endpoint creation outside the `MosaicTilerFactory` class
@@ -91,24 +109,6 @@
     )
     # add /list endpoint
     add_search_list_route(app)
-    ```
-
-### Endpoint breaking changes
-
-* update endpoints Tags (`STAC Search`, `STAC Collection`, `STAC Item`)
-
-* move PgSTAC Search Virtual Mosaic's endpoint from `/mosaic` to `/searches`
-
-* in `model.RegisterResponse` (model used in `/register` endpoint) rename `searchid` by `id`
-
-    ```python
-    # before
-    resp = httpx.post("/mosaic/register", body={"collections": ["my-collection"], "filter-lang": "cql-json"})
-    assert resp.json()["searchid"]
-
-    # now
-    resp = httpx.post("/searches/register", body={"collections": ["my-collection"], "filter-lang": "cql-json"})
-    assert resp.json()["id"]
     ```
 
 ## 0.8.0 (2023-10-06)
