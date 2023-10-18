@@ -27,9 +27,11 @@ import jwt
 from fastapi import FastAPI
 from fastapi.security.utils import get_authorization_scheme_param
 from starlette.requests import Request
-from titiler.pgstac.factory import MosaicTilerFactory
+from titiler.pgstac.factory import MosaicTilerFactory, add_search_register_route
 from titiler.pgstac.model import RegisterMosaic, Metadata, PgSTACSearch
 from titiler.pgstac.db import close_db_connection, connect_to_db
+from titiler.pgstac.extensions import searchInfoExtension
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -68,8 +70,13 @@ def search_factory(request: Request, body: RegisterMosaic) -> Tuple[PgSTACSearch
     return model.PgSTACSearch(**search), body.metadata
 
 
-mosaic = MosaicTilerFactory(search_dependency=search_factory)
+mosaic = MosaicTilerFactory(
+    extensions=[
+      searchInfoExtension
+    ]
+)
 app.include_router(mosaic.router)
+add_search_register_route(app, search_dependency=search_factory)
 ```
 
 Checking:

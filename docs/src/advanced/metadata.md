@@ -1,4 +1,4 @@
-`TiTiler-PgSTAC` uses PgSTAC [search](https://github.com/stac-utils/pgstac/blob/3499daa2bfa700ae7bb07503795c169bf2ebafc7/sql/004_search.sql#L907-L915) to host mosaic parameters for performance purposes. To help users we added the possibility to add `metadata` to search entries and in `TiTiler-PgSTAC` we introduced a `non-official` specification to help user storing meaningful informations.
+`TiTiler-PgSTAC` uses PgSTAC [search](https://github.com/stac-utils/pgstac/blob/3499daa2bfa700ae7bb07503795c169bf2ebafc7/sql/004_search.sql#L907-L915) to host mosaic parameters for performance purposes. To help users we added the possibility to add `metadata` to search entries and in `TiTiler-PgSTAC` we introduced a `non-official` specification to help user storing meaningful information.
 
 ### Specification
 
@@ -43,29 +43,29 @@
 ```
 
 !!! Important
-    - When using the `/mosaic/register` endpoint, `{"type": "mosaic"}` will be set by default
+    - When using the `/searches/register` endpoint, `{"type": "mosaic"}` will be set by default
     - All metadata fields are optional and custom fields are also allowed.
 
 
 ```
-curl -X 'POST' 'http://127.0.0.1:8081/mosaic/register' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{"filter": {"op": "=", "args": [{"property": "collection"}, "landsat-c2l2-sr"]}, "metadata": {"name": "landsat mosaic"}}'
+curl -X 'POST' 'http://127.0.0.1:8081/searches/register' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{"filter": {"op": "=", "args": [{"property": "collection"}, "landsat-c2l2-sr"]}, "metadata": {"name": "landsat mosaic"}}'
 >> {
   "id": "d7fcdefd0457c949ea7a6192bc2c7122",
   "links": [
     {
       "rel": "metadata",
       "type": "application/json",
-      "href": "http://127.0.0.1:8081/mosaic/d7fcdefd0457c949ea7a6192bc2c7122/info"
+      "href": "http://127.0.0.1:8081/searches/d7fcdefd0457c949ea7a6192bc2c7122/info"
     },
     {
       "rel": "tilejson",
       "type": "application/json",
-      "href": "http://127.0.0.1:8081/mosaic/d7fcdefd0457c949ea7a6192bc2c7122/tilejson.json"
+      "href": "http://127.0.0.1:8081/searches/d7fcdefd0457c949ea7a6192bc2c7122/tilejson.json"
     }
   ]
 }
 
-curl http://127.0.0.1:8081/mosaic/d7fcdefd0457c949ea7a6192bc2c7122/info | jq '.search.metadata'
+curl http://127.0.0.1:8081/searches/d7fcdefd0457c949ea7a6192bc2c7122/info | jq '.search.metadata'
 >> {
   "type": "mosaic",
   "name": "landsat mosaic"
@@ -73,24 +73,24 @@ curl http://127.0.0.1:8081/mosaic/d7fcdefd0457c949ea7a6192bc2c7122/info | jq '.s
 ```
 
 ```
-curl -X 'POST' 'http://127.0.0.1:8081/mosaic/register' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{"collections": ["noaa-emergency-response"], "bbox": [-87.0251, 36.0999, -85.4249, 36.2251], "filter-lang": "cql-json", "metadata": {"bounds": [-87.0251, 36.0999, -85.4249, 36.2251], "minzoom": 14, "maxzoom": 18, "assets": ["cog"], "defaults": {"true_color": {"bidx": [1, 2, 3]}}}}'
+curl -X 'POST' 'http://127.0.0.1:8081/searches/register' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{"collections": ["noaa-emergency-response"], "bbox": [-87.0251, 36.0999, -85.4249, 36.2251], "filter-lang": "cql-json", "metadata": {"bounds": [-87.0251, 36.0999, -85.4249, 36.2251], "minzoom": 14, "maxzoom": 18, "assets": ["cog"], "defaults": {"true_color": {"bidx": [1, 2, 3]}}}}'
 >> {
   "id":"4b0db3dbd1858d54a3a55f84de97d1ca",
   "links":[
     {
       "rel": "metadata",
       "type": "application/json",
-      "href": "http://127.0.0.1:8081/mosaic/4b0db3dbd1858d54a3a55f84de97d1ca/info"
+      "href": "http://127.0.0.1:8081/searches/4b0db3dbd1858d54a3a55f84de97d1ca/info"
     },
     {
       "rel": "tilejson",
       "type": "application/json",
-      "href": "http://127.0.0.1:8081/mosaic/4b0db3dbd1858d54a3a55f84de97d1ca/tilejson.json"
+      "href": "http://127.0.0.1:8081/searches/4b0db3dbd1858d54a3a55f84de97d1ca/tilejson.json"
     }
   ]
 }
 
-curl http://127.0.0.1:8081/mosaic/4b0db3dbd1858d54a3a55f84de97d1ca/info | jq '.search.metadata'
+curl http://127.0.0.1:8081/searches/4b0db3dbd1858d54a3a55f84de97d1ca/info | jq '.search.metadata'
 >> {
   "type": "mosaic",
   "bounds": [

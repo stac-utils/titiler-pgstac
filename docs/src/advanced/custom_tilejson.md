@@ -12,15 +12,11 @@ from titiler.core.resources.enums import ImageType
 from titiler.core.models.mapbox import TileJSON
 from titiler.pgstac import factory as TitilerPgSTACFactory
 from titiler.pgstac.dependencies import PgSTACParams
+from typing_extensions import Annotated
 
 from fastapi import Depends, Query
 
 from starlette.requests import Request
-
-if sys.version_info >= (3, 9):
-    from typing import Annotated  # pylint: disable=no-name-in-module
-else:
-    from typing_extensions import Annotated
 
 
 @dataclass
@@ -31,20 +27,20 @@ class MosaicTilerFactory(TitilerPgSTACFactory.MosaicTilerFactory):
         """Custom TileJSON endpoint."""
 
         @self.router.get(
-            "/{searchid}/tilejson.json",
+            "/tilejson.json",
             response_model=TileJSON,
             responses={200: {"description": "Return a tilejson"}},
             response_model_exclude_none=True,
         )
         @self.router.get(
-            "/{searchid}/{tileMatrixSetId}/tilejson.json",
+            "/{tileMatrixSetId}/tilejson.json",
             response_model=TileJSON,
             responses={200: {"description": "Return a tilejson"}},
             response_model_exclude_none=True,
         )
         def tilejson(
             request: Request,
-            searchid=Depends(self.path_dependency),
+            search_id=Depends(self.path_dependency),
             tileMatrixSetId: Annotated[  # type: ignore
                 Literal[tuple(self.supported_tms.list())],
                 f"Identifier selecting one of the TileMatrixSetId supported (default: '{self.default_tms}')",
@@ -104,14 +100,14 @@ class MosaicTilerFactory(TitilerPgSTACFactory.MosaicTilerFactory):
                 with conn.cursor(row_factory=class_row(model.Search)) as cursor:
                     cursor.execute(
                         "SELECT * FROM searches WHERE hash=%s;",
-                        (searchid,),
+                        (search_id,),
                     )
                     search_info = cursor.fetchone()
                     if not search_info:
-                        raise KeyError(f"search {searchid} not found")
+                        raise KeyError(f"search {search_id} not found")
 
             route_params = {
-                "searchid": search_info.id,
+                "search_id": search_info.id,
                 "z": "{z}",
                 "x": "{x}",
                 "y": "{y}",

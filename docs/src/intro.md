@@ -2,35 +2,37 @@
 
 **TiTiler.PgSTAC** is a TiTiler extension, which create dynamic tiler connected to PgSTAC databases.
 
-By default the main application (`titiler.pgstac.main.app`) provides two sets of endpoints:
+By default the main application (`titiler.pgstac.main.app`) provides three sets of endpoints:
 
-- `/mosaic/{search_id}`: Dynamic mosaic tiler based on STAC Search Queries
+- `/searches/{search_id}`: Dynamic **mosaic** tiler based on PgSTAC Search Query
+
+- `/collections/{collection_id}`: Dynamic **mosaic** tiler based on STAC Collection
 
 - `/collections/{collection_id}/items/{item_id}`: Dynamic tiler for single STAC item (stored in PgSTAC)
 
-## Virtual Mosaic
+## STAC Searches - `/searches/{search_id}`
 
-The goal of the `mosaic` endpoints is to use any [`search`](https://github.com/radiantearth/stac-api-spec/tree/master/item-search) query to create tiles. `titiler-pgstac` provides a set of endpoint to `register` and `list` the `search` queries.
-
-### Register a PgSTAC `Search` request
+#### Register a PgSTAC `Search` request
 
 ![](https://user-images.githubusercontent.com/10407788/132193537-0560016f-09bc-4a25-8a2a-eac9b50bc28a.png)
 
 !!! Important
-    In `TiTiler.PgSTAC` a STAC [`Search Query`](https://github.com/radiantearth/stac-api-spec/tree/master/item-search) is equivalent to a *Virtual Mosaic*.
+    In `TiTiler.PgSTAC` a STAC [`Search Query`](https://github.com/radiantearth/stac-api-spec/tree/master/item-search) is equivalent to a *Virtual Mosaic* and a
+    PgSTAC [`Search Hash`](https://github.com/stac-utils/pgstac/blob/main/src/pgstac/sql/004_search.sql#L411-L427) is equivalent to a *Mosaic Identifier*.
 
-Before being able to create Map Tiles, the user needs to register a `Search Query` within the PgSTAC database (in the `searches` table). By default, `TiTiler.PgSTAC` has a `/mosaic/register (POST)` endpoint which will:
+
+Before being able to create Map Tiles, the user needs to register a `Search Query` within the PgSTAC database (in the `searches` table). By default, `TiTiler.PgSTAC` has a `/searches/register (POST)` endpoint which will:
 
   - validate the search query (based on the STAC API specification [`item-search`]((https://github.com/radiantearth/stac-api-spec/tree/master/item-search)))
 
   - send the search query to the postgres database using the [`search_query`](https://github.com/stac-utils/pgstac/blob/76512ab50e1373e3f77c65843cf328cbe6dd0dec/sql/004_search.sql#L1000) PgSTAC function
 
-  - return a pgstac search identifier (`id`) (might be also called `mosaicid`).
+  - return a PgSTAC Search hash
 
 **Example**
 
 ```bash
-curl -X 'POST' 'http://127.0.0.1:8081/mosaic/register' \
+curl -X 'POST' 'http://127.0.0.1:8081/searches/register' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{"collections":["landsat-c2l2-sr"], "bbox":[-123.75,34.30714385628804,-118.125,38.82259097617712], "filter-lang": "cql-json"}' | jq
@@ -41,18 +43,18 @@ curl -X 'POST' 'http://127.0.0.1:8081/mosaic/register' \
     {
       "rel": "metadata",
       "type": "application/json",
-      "href": "http://127.0.0.1:8081/mosaic/5a1b82d38d53a5d200273cbada886bd7/info"
+      "href": "http://127.0.0.1:8081/searches/5a1b82d38d53a5d200273cbada886bd7/info"
     },
     {
       "rel": "tilejson",
       "type": "application/json",
-      "href": "http://127.0.0.1:8081/mosaic/5a1b82d38d53a5d200273cbada886bd7/tilejson.json"
+      "href": "http://127.0.0.1:8081/searches/5a1b82d38d53a5d200273cbada886bd7/tilejson.json"
     }
   ]
 }
 
 # Or using CQL-2
-curl -X 'POST' 'http://127.0.0.1:8081/mosaic/register' \
+curl -X 'POST' 'http://127.0.0.1:8081/searches/register' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{"filter": {"op": "and", "args": [{"op": "=", "args": [{"property": "collection"}, "landsat-c2l2-sr"]}, {"op": "s_intersects", "args": [{"property": "geometry"}, {"coordinates": [[[-123.75, 34.30714385628804], [-123.75, 38.82259097617712], [-118.125, 38.82259097617712], [-118.125, 34.30714385628804], [-123.75, 34.30714385628804]]], "type": "Polygon"}]}]}}' | jq
@@ -63,25 +65,24 @@ curl -X 'POST' 'http://127.0.0.1:8081/mosaic/register' \
     {
       "rel": "metadata",
       "type": "application/json",
-      "href": "http://127.0.0.1:8081/mosaic/5063721f06957d6b2320326d82e90d1e/info"
+      "href": "http://127.0.0.1:8081/searches/5063721f06957d6b2320326d82e90d1e/info"
     },
     {
       "rel": "tilejson",
       "type": "application/json",
-      "href": "http://127.0.0.1:8081/mosaic/5063721f06957d6b2320326d82e90d1e/tilejson.json"
+      "href": "http://127.0.0.1:8081/searches/5063721f06957d6b2320326d82e90d1e/tilejson.json"
     }
   ]
 }
 ```
 
-##### Mosaic metadata
 
 ```bash
-curl http://127.0.0.1:8081/mosaic/5063721f06957d6b2320326d82e90d1e/info | jq
+curl http://127.0.0.1:8081/searches/5063721f06957d6b2320326d82e90d1e/info | jq
 
 >> {
   "search": {
-    "hash": "5063721f06957d6b2320326d82e90d1e",  # <-- this is the search/mosaic identifier
+    "hash": "5063721f06957d6b2320326d82e90d1e",  # <-- this is the PgSTAC Hash = search/mosaic identifier
     "search": {  # <-- Summary of the search request
       "filter": {  # <-- this is CQL2 filter associated with the search
         "op": "and",
@@ -138,28 +139,30 @@ curl http://127.0.0.1:8081/mosaic/5063721f06957d6b2320326d82e90d1e/info | jq
     "lastused": "2022-03-03T11:44:55.878504+00:00",  # <-- internal pgstac variable
     "usecount": 2,  # <-- internal pgstac variable
     "metadata": {  # <-- titiler-pgstac Mosaic Metadata
-      "type": "mosaic"  # <-- where using the `/mosaic/register` endpoint, titiler-pgstac will add `type=mosaic` to the metadata
+      "type": "mosaic"  # <-- when we use the `/searches/register` endpoint, titiler-pgstac will add `type=mosaic` to the metadata
     }
   },
   "links": [
     {
       "rel": "self",
       "type": "application/json",
-      "href": "http://127.0.0.1:8081/mosaic/5063721f06957d6b2320326d82e90d1e/info"
+      "href": "http://127.0.0.1:8081/searches/5063721f06957d6b2320326d82e90d1e/info"
     },
     {
       "rel": "tilejson",
       "type": "application/json",
-      "href": "http://127.0.0.1:8081/mosaic/5063721f06957d6b2320326d82e90d1e/tilejson.json"
+      "href": "http://127.0.0.1:8081/searches/5063721f06957d6b2320326d82e90d1e/tilejson.json"
     }
   ]
 }
 ```
 
-Note: In addition to the `search query`, a user can pass `metadata`, which will be saved in the postgres table.
+#### Mosaic Metadata
+
+In addition to the `search query`, a user can pass `metadata`, which will be saved in the postgres table.
 
 ```bash
-curl -X 'POST' 'http://127.0.0.1:8081/mosaic/register' \
+curl -X 'POST' 'http://127.0.0.1:8081/searches/register' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{"collections":["landsat-c2l2-sr"], "bbox":[-123.75,34.30714385628804,-118.125,38.82259097617712], "filter-lang": "cql-json", "metadata": {"minzoom": 8, "maxzoom": 13, "assets": ["B04", "B03", "B02"], "defaults": {"true_color": {"assets": ["B04", "B03", "B02"], "color_formula": "Gamma RGB 3.5 Saturation 1.7 Sigmoidal RGB 15 0.35"}}}}' | jq
@@ -170,17 +173,17 @@ curl -X 'POST' 'http://127.0.0.1:8081/mosaic/register' \
     {
       "rel": "metadata",
       "type": "application/json",
-      "href": "http://127.0.0.1:8081/mosaic/f31d7de8a5ddfa3a80b9a9dd06378db1/info"
+      "href": "http://127.0.0.1:8081/searches/f31d7de8a5ddfa3a80b9a9dd06378db1/info"
     },
     {
       "rel": "tilejson",
       "type": "application/json",
-      "href": "http://127.0.0.1:8081/mosaic/f31d7de8a5ddfa3a80b9a9dd06378db1/tilejson.json"
+      "href": "http://127.0.0.1:8081/searches/f31d7de8a5ddfa3a80b9a9dd06378db1/tilejson.json"
     }
   ]
 }
 
-curl http://127.0.0.1:8081/mosaic/f31d7de8a5ddfa3a80b9a9dd06378db1/info | jq '.search.metadata'
+curl http://127.0.0.1:8081/searches/f31d7de8a5ddfa3a80b9a9dd06378db1/info | jq '.search.metadata'
 >> {
   "type": "mosaic",
   "minzoom": 8,
@@ -203,7 +206,7 @@ curl http://127.0.0.1:8081/mosaic/f31d7de8a5ddfa3a80b9a9dd06378db1/info | jq '.s
 }
 ```
 
-### Fetch mosaic `Tiles`
+#### Fetch mosaic `Tiles`
 
 When we have an **id** we can call the dynamic tiler and ask for Map Tiles.
 
@@ -221,10 +224,42 @@ On each `Tile` request, the tiler api is going to call the PgSTAC [`geometrysear
 **Example**
 
 ```bash
-curl 'http://127.0.0.1:8081/mosaic/f1ed59f0a6ad91ed80ae79b7b52bc707/tiles/8/40/102.png?assets=B01&rescale=0,16000 > 8-40-102.png
+curl 'http://127.0.0.1:8081/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/tiles/8/40/102.png?assets=B01&rescale=0,16000 > 8-40-102.png
 ```
 
-## Individual Item
+## STAC Collection - `/collections/{collection_id}`
+
+No need for the user to `register` search queries for those endpoints. The tiler will automatically `register` a search query (`collection={collection_id}`).
+
+**example**
+
+```bash
+curl http://127.0.0.1:8081/collections/my-collection/tilejson.json?assets=data
+{
+  "tilejson": "2.2.0",
+  "name": "Mosaic for 'my-collection' Collection",
+  "version": "1.0.0",
+  "scheme": "xyz",
+  "tiles": [
+    "http://127.0.0.1:8081/collections/my-collection/tiles/WebMercatorQuad/{z}/{x}/{y}?assets=data"
+  ],
+  "minzoom": 0,
+  "maxzoom": 24,
+  "bounds": [
+    -180,
+    -90,
+    180,
+    90
+  ],
+  "center": [
+    0,
+    0,
+    0
+  ]
+}
+```
+
+## STAC Item - `/collections/{collection_id}/items/{item_id}`
 
 `titiler-pgstac` can also be used to access individual item stored in the PgSTAC database. By default the `titiler-pgstac` application will have a set of `/collections/{collection_id}/items/{item_id}/...` endpoints. The endpoints are created using [titiler.core.factory.MultiBaseTilerFactory](https://developmentseed.org/titiler/advanced/tiler_factories/#titilercorefactorymultibasetilerfactory) but using a custom `path_dependency` with `collection_id` and `item_id` path parameters instead of the STAC url as query parameter.
 

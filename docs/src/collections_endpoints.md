@@ -1,26 +1,25 @@
-The `titiler.pgstac` package comes with a full FastAPI application with Mosaic and single STAC item support.
+
+### STAC Collections endpoints
+
 
 | Method | URL                                                                              | Output                                  | Description
 | ------ | ---------------------------------------------------------------------------------|-----------------------------------------|--------------
-| `GET`  | `/mosaic/{search_id}/{lon},{lat}/assets`                                          | JSON                                    | Return a list of assets which overlap a given point
-| `GET`  | `/mosaic/{search_id}/tiles[/{TileMatrixSetId}]/{z}/{x}/{Y}/assets`                | JSON                                    | Return a list of assets which overlap a given tile
-| `GET`  | `/mosaic/{search_id}/tiles[/{TileMatrixSetId}]/{z}/{x}/{y}[@{scale}x][.{format}]` | image/bin                               | Create a web map tile image for a search query and a tile index
-| `GET`  | `/mosaic/{search_id}[/{TileMatrixSetId}]/tilejson.json`                           | JSON ([TileJSON][tilejson_model])       | Return a Mapbox TileJSON document
-| `GET`  | `/mosaic/{search_id}[/{TileMatrixSetId}]/WMTSCapabilities.xml`                    | XML                                     | return OGC WMTS Get Capabilities
-| `GET`  | `/mosaic/{search_id}[/{TileMatrixSetId}]/map`                                     | HTML                                    | simple map viewer
-| `POST` | `/mosaic/{search_id}/statistics`                                                  | GeoJSON ([Statistics][statitics_model]) | Return statistics for geojson features
-| `GET`  | `/mosaic/{search_id}/bbox/{minx},{miny},{maxx},{maxy}[/{width}x{height}].{format}`| image/bin                               | Create an image from part of a dataset
-| `POST` | `/mosaic/{search_id}/feature[/{width}x{height}][.{format}]`                       | image/bin                               | Create an image from a GeoJSON feature
-| `GET`  | `/mosaic/{search_id}/info`                                                        | JSON ([Info][info_model])               | Return **Search** query infos
-| `POST` | `/mosaic/register`                                                                | JSON ([Register][register_model])       | Register **Search** query
-| `GET`  | `/mosaic/list`                                                                    | JSON ([Infos][infos_model])             | Return list of **Search** entries with `Mosaic` type
+| `GET`  | `/collections/{collection_id}/{lon},{lat}/assets`                                          | JSON                                    | Return a list of assets which overlap a given point
+| `GET`  | `/collections/{collection_id}/tiles[/{TileMatrixSetId}]/{z}/{x}/{Y}/assets`                | JSON                                    | Return a list of assets which overlap a given tile
+| `GET`  | `/collections/{collection_id}/tiles[/{TileMatrixSetId}]/{z}/{x}/{y}[@{scale}x][.{format}]` | image/bin                               | Create a web map tile image for a collection and a tile index
+| `GET`  | `/collections/{collection_id}[/{TileMatrixSetId}]/tilejson.json`                           | JSON ([TileJSON][tilejson_model])       | Return a Mapbox TileJSON document
+| `GET`  | `/collections/{collection_id}[/{TileMatrixSetId}]/WMTSCapabilities.xml`                    | XML                                     | return OGC WMTS Get Capabilities
+| `GET`  | `/collections/{collection_id}[/{TileMatrixSetId}]/map`                                     | HTML                                    | simple map viewer
+| `POST` | `/collections/{collection_id}/statistics`                                                  | GeoJSON ([Statistics][statitics_model]) | Return statistics for geojson features
+| `GET`  | `/collections/{collection_id}/bbox/{minx},{miny},{maxx},{maxy}[/{width}x{height}].{format}`| image/bin                               | Create an image from part of a dataset
+| `POST` | `/collections/{collection_id}/feature[/{width}x{height}][.{format}]`                       | image/bin                               | Create an image from a GeoJSON feature
 
 ### Tiles
 
-`:endpoint:/mosaic/{search_id}/tiles[/{TileMatrixSetId}]/{z}/{x}/{y}[@{scale}x][.{format}]`
+`:endpoint:/collections/{collection_id}/tiles[/{TileMatrixSetId}]/{z}/{x}/{y}[@{scale}x][.{format}]`
 
 - PathParams:
-    - **search_id**: search query hashkey.
+    - **collection_id**: STAC Collection Identifier.
     - **TileMatrixSetId**: TileMatrixSet name, default is `WebMercatorQuad`. OPTIONAL
     - **z**: Tile's zoom level.
     - **x**: Tile's column.
@@ -56,17 +55,17 @@ The `titiler.pgstac` package comes with a full FastAPI application with Mosaic a
 
 Example:
 
-- `https://myendpoint/mosaic/f1ed59f0a6ad91ed80ae79b7b52bc707/tiles/1/2/3?assets=B01`
-- `https://myendpoint/mosaic/f1ed59f0a6ad91ed80ae79b7b52bc707/tiles/1/2/3.jpg?assets=B01`
-- `https://myendpoint/mosaic/f1ed59f0a6ad91ed80ae79b7b52bc707/tiles/WorldCRS84Quad/1/2/3@2x.png?assets=B01&assets=B02&assets=B03`
-- `https://myendpoint/mosaic/f1ed59f0a6ad91ed80ae79b7b52bc707/tiles/WorldCRS84Quad/1/2/3?assets=B01&rescale=0,1000&colormap_name=cfastie`
+- `https://myendpoint/collections/my-collection/tiles/1/2/3?assets=B01`
+- `https://myendpoint/collections/my-collection/tiles/1/2/3.jpg?assets=B01`
+- `https://myendpoint/collections/my-collection/tiles/WorldCRS84Quad/1/2/3@2x.png?assets=B01&assets=B02&assets=B03`
+- `https://myendpoint/collections/my-collection/tiles/WorldCRS84Quad/1/2/3?assets=B01&rescale=0,1000&colormap_name=cfastie`
 
 ### TilesJSON
 
-`:endpoint:/mosaic/{search_id}[/{TileMatrixSetId}]/tilejson.json`
+`:endpoint:/collections/{collection_id}[/{TileMatrixSetId}]/tilejson.json`
 
 - PathParams:
-    - **search_id**: search query hashkey.
+    - **collection_id**: STAC Collection Identifier.
     - **TileMatrixSetId**: TileMatrixSet name, default is `WebMercatorQuad`. OPTIONAL
 
 - QueryParams:
@@ -100,17 +99,17 @@ Example:
 
 Example:
 
-- `https://myendpoint/mosaic/f1ed59f0a6ad91ed80ae79b7b52bc707/tilejson.json?assets=B01`
-- `https://myendpoint/mosaic/f1ed59f0a6ad91ed80ae79b7b52bc707/tilejson.json?assets=B01&tile_format=png`
-- `https://myendpoint/mosaic/f1ed59f0a6ad91ed80ae79b7b52bc707/WorldCRS84Quad/tilejson.json?assets=B01&tile_scale=2`
+- `https://myendpoint/collections/my-collection/tilejson.json?assets=B01`
+- `https://myendpoint/collections/my-collection/tilejson.json?assets=B01&tile_format=png`
+- `https://myendpoint/collections/my-collection/WorldCRS84Quad/tilejson.json?assets=B01&tile_scale=2`
 
 
 ### WMTS
 
-`:endpoint:/mosaic/{search_id}[/{TileMatrixSetId}]/WMTSCapabilities.xml`
+`:endpoint:/collections/{collection_id}[/{TileMatrixSetId}]/WMTSCapabilities.xml`
 
 - PathParams:
-    - **search_id**: search query hashkey.
+    - **collection_id**: STAC Collection Identifier.
     - **TileMatrixSetId**: TileMatrixSet name, default is `WebMercatorQuad`. OPTIONAL
 
 - QueryParams:
@@ -125,17 +124,17 @@ Example:
 
 Example:
 
-- `https://myendpoint/mosaic/f1ed59f0a6ad91ed80ae79b7b52bc707/WMTSCapabilities.xml?assets=B01`
-- `https://myendpoint/mosaic/f1ed59f0a6ad91ed80ae79b7b52bc707/WMTSCapabilities.xml?assets=B01&tile_format=png`
-- `https://myendpoint/mosaic/f1ed59f0a6ad91ed80ae79b7b52bc707/WorldCRS84Quad/WMTSCapabilities.xml?assets=B01&tile_scale=2`
+- `https://myendpoint/collections/my-collection/WMTSCapabilities.xml?assets=B01`
+- `https://myendpoint/collections/my-collection/WMTSCapabilities.xml?assets=B01&tile_format=png`
+- `https://myendpoint/collections/my-collection/WorldCRS84Quad/WMTSCapabilities.xml?assets=B01&tile_scale=2`
 
 
 ### Assets
 
-`:endpoint:/mosaic/{search_id}/tiles/[{TileMatrixSetId}]/{z}/{x}/{y}/assets`
+`:endpoint:/collections/{collection_id}/tiles/[{TileMatrixSetId}]/{z}/{x}/{y}/assets`
 
 - PathParams:
-    - **search_id**: search query hashkey.
+    - **collection_id**: STAC Collection Identifier.
     - **TileMatrixSetId**: TileMatrixSet name, default is `WebMercatorQuad`. OPTIONAL
     - **z**: Tile's zoom level.
     - **x**: Tile's column.
@@ -150,12 +149,12 @@ Example:
 
 Example:
 
-- `https://myendpoint/mosaic/f1ed59f0a6ad91ed80ae79b7b52bc707/tiles/0/0/0/assets`
+- `https://myendpoint/collections/my-collection/tiles/0/0/0/assets`
 
-`:endpoint:/mosaic/{search_id}/{lon},{lat}/assets`
+`:endpoint:/collections/{collection_id}/{lon},{lat}/assets`
 
 - PathParams:
-    - **search_id**: search query hashkey.
+    - **collection_id**: STAC Collection Identifier.
     - **lon**: Longitude (in WGS84 CRS).
     - **lat**: Latitude (in WGS84 CRS).
 
@@ -168,14 +167,17 @@ Example:
 
 Example:
 
-- `https://myendpoint/mosaic/f1ed59f0a6ad91ed80ae79b7b52bc707/0.0,0.0/assets`
+- `https://myendpoint/collections/my-collection/0.0,0.0/assets`
 
 ### Statistics
 
-`:endpoint:/mosaic/{search_id}/statistics - [POST]`
+`:endpoint:/collections/{collection_id}/statistics - [POST]`
 
 - Body:
     - **feature** (JSON): A valid GeoJSON feature or FeatureCollection
+
+- PathParams:
+    - **collection_id**: STAC Collection Identifier.
 
 - QueryParams:
     - **assets** (array[str]): asset names.
@@ -209,16 +211,16 @@ Example:
 
 Example:
 
-- `https://myendpoint/mosaic/f1ed59f0a6ad91ed80ae79b7b52bc707/statistics?assets=B01`
+- `https://myendpoint/collections/my-collection/statistics?assets=B01`
 
 ### BBOX/Feature
 
-`:endpoint:/mosaic/{search_id}/bbox/{minx},{miny},{maxx},{maxy}.{format}`
+`:endpoint:/collections/{collection_id}/bbox/{minx},{miny},{maxx},{maxy}.{format}`
 
-`:endpoint:/mosaic/{search_id}/bbox/{minx},{miny},{maxx},{maxy}/{width}x{height}.{format}`
+`:endpoint:/collections/{collection_id}/bbox/{minx},{miny},{maxx},{maxy}/{width}x{height}.{format}`
 
 - PathParams:
-    - **search_id**: search query hashkey.
+    - **collection_id**: STAC Collection Identifier.
     - **minx,miny,maxx,maxy** (str): Comma (',') delimited bounding box in WGS84.
     - **format** (str): Output image format.
     - **height** (int): Force output image height.
@@ -254,16 +256,17 @@ Example:
 
 Example:
 
-- `https://myendpoint/mosaic/f1ed59f0a6ad91ed80ae79b7b52bc707/bbox/0,0,10,10.png?assets=B01`
-- `https://myendpoint/mosaic/f1ed59f0a6ad91ed80ae79b7b52bc707/bbox/0,0,10,10/400x300.png?assets=B01`
+- `https://myendpoint/collections/my-collection/bbox/0,0,10,10.png?assets=B01`
+- `https://myendpoint/collections/my-collection/bbox/0,0,10,10/400x300.png?assets=B01`
 
 
-`:endpoint:/mosaic/{search_id}/feature[/{width}x{height}][].{format}] - [POST]`
+`:endpoint:/collections/{collection_id}/feature[/{width}x{height}][].{format}] - [POST]`
 
 - Body:
     - **feature** (JSON): A valid GeoJSON feature (Polygon or MultiPolygon)
 
 - PathParams:
+    - **collection_id**: STAC Collection Identifier.
     - **height** (int): Force output image height. **Optional**
     - **width** (int): Force output image width. **Optional**
     - **format** (str): Output image format, default is set to None and will be either JPEG or PNG depending on masked value. **Optional**
@@ -298,178 +301,10 @@ Example:
 
 Example:
 
-- `https://myendpoint/mosaic/f1ed59f0a6ad91ed80ae79b7b52bc707/feature?assets=B01`
-- `https://myendpoint/mosaic/f1ed59f0a6ad91ed80ae79b7b52bc707/feature.png?assets=B01f`
-- `https://myendpoint/mosaic/f1ed59f0a6ad91ed80ae79b7b52bc707/feature/100x100.png?assets=B01`
-
-### Register a Search Request
-
-`:endpoint:/mosaic/register - [POST]`
-
-- **Body** (a combination of Search+Metadata): A JSON body composed of a valid **STAC Search** query (see: https://github.com/radiantearth/stac-api-spec/tree/master/item-search) and Mosaic's metadata.
-
-```json
-// titiler-pgstac search body example
-{
-  // STAC search query
-  "collections": [
-    "string"
-  ],
-  "ids": [
-    "string"
-  ],
-  "bbox": [
-    "number",
-    "number",
-    "number",
-    "number"
-  ],
-  "intersects": {
-    "type": "Point",
-    "coordinates": [
-      "number",
-      "number"
-    ]
-  },
-  "query": {
-    "additionalProp1": {},
-    "additionalProp2": {},
-    "additionalProp3": {}
-  },
-  "filter": {},
-  "datetime": "string",
-  "sortby": "string",
-  "filter-lang": "cql-json",
-  // titiler-pgstac mosaic metadata
-  "metadata": {
-    "type": "mosaic",
-    "bounds": [
-      "number",
-      "number",
-      "number",
-      "number"
-    ],
-    "minzoom": "number",
-    "maxzoom": "number",
-    "name": "string",
-    "assets": [
-      "string",
-      "string",
-    ],
-    "defaults": {}
-  }
-}
-```
-
-!!! important
-    In `titiler-pgstac` we extended the regular `stac` search to add a metadata entry.
-    Metadata defaults to `{"type": "mosaic"}`.
-
-Example:
-
-- `https://myendpoint/mosaic/register`
-
-```bash
-curl -X 'POST' 'http://127.0.0.1:8081/mosaic/register' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{"collections":["landsat-c2l2-sr"], "bbox":[-123.75,34.30714385628804,-118.125,38.82259097617712], "filter-lang": "cql-json"}' | jq
->> {
-  "id": "5a1b82d38d53a5d200273cbada886bd7",
-  "links": [
-    {
-      "rel": "metadata",
-      "type": "application/json",
-      "href": "http://127.0.0.1:8081/mosaic/5a1b82d38d53a5d200273cbada886bd7/info"
-    },
-    {
-      "rel": "tilejson",
-      "type": "application/json",
-      "href": "http://127.0.0.1:8081/mosaic/5a1b82d38d53a5d200273cbada886bd7/tilejson.json"
-    }
-  ]
-}
-
-# or using CQL2
-curl -X 'POST' 'http://127.0.0.1:8081/mosaic/register' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{"filter": {"op": "=", "args": [{"property": "collection"}, "landsat-c2l2-sr"]}}'
-
-# or using CQL2 with metadata
-curl -X 'POST' 'http://127.0.0.1:8081/mosaic/register' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{"filter": {"op": "=", "args": [{"property": "collection"}, "landsat-c2l2-sr"]}, "metadata": {"name": "landsat mosaic"}}'
-```
-
-### Search infos
-
-`:endpoint:/mosaic/{search_id}/info - [GET]`
-
-- PathParams:
-    - **search_id**: search query hashkey.
-
-Example:
-
-- `https://myendpoint/mosaic/5a1b82d38d53a5d200273cbada886bd7/info`
-
-```bash
-curl 'http://127.0.0.1:8081/mosaic/5a1b82d38d53a5d200273cbada886bd7/info' | jq
->> {
-  "search": {
-    "hash": "5a1b82d38d53a5d200273cbada886bd7",
-    "search": {
-      "bbox": [
-        -123.75,
-        34.30714385628804,
-        -118.125,
-        38.82259097617712
-      ],
-      "collections": [
-        "landsat-c2l2-sr"
-      ],
-      "filter-lang": "cql-json"
-    },
-    "_where": "(  TRUE  )  AND collection_id = ANY ('{landsat-c2l2-sr}')  AND geometry && '0103000020E610000001000000050000000000000000F05EC055F6687D502741400000000000F05EC02D553EA94A6943400000000000885DC02D553EA94A6943400000000000885DC055F6687D502741400000000000F05EC055F6687D50274140' ",
-    "orderby": "datetime DESC, id DESC",
-    "lastused": "2022-03-03T11:42:07.213313+00:00",
-    "usecount": 2,
-    "metadata": {
-      "type": "mosaic"
-    }
-  },
-  "links": [
-    {
-      "rel": "self",
-      "type": "application/json",
-      "href": "http://127.0.0.1:8081/mosaic/5a1b82d38d53a5d200273cbada886bd7/info"
-    },
-    {
-      "rel": "tilejson",
-      "type": "application/json",
-      "href": "http://127.0.0.1:8081/mosaic/5a1b82d38d53a5d200273cbada886bd7/tilejson.json"
-    }
-  ]
-}
-```
-
-### List Searches
-
-`:endpoint:/mosaic/list - [GET]`
-
-- QueryParams:
-    - **limit** (int): Page size limit, Default is `10`.
-    - **offset** (int): Page offset.
-    - **sortby** (str): Sort the searches by Metadata properties (ascending (default) or descending (`-`)).
-
-!!! Important
-    Additional query-parameters (form `PROP=VALUE`) will be considered as a **property filter**.
-
-Example:
-
-- `https://myendpoint/mosaic/list`
-- `https://myendpoint/mosaic/list?limit=100`
-- `https://myendpoint/mosaic/list?limit=10&offset=10` (page 2)
-- `https://myendpoint/mosaic/list?data=noaa` (only show mosaics with `metadata.data == noaa`)
-- `https://myendpoint/mosaic/list?sortby=lastused` (sort mosaic by `lastused` pgstac search property)
-- `https://myendpoint/mosaic/list?sortby=-prop` (sort mosaic (descending) by `metadata.prop` values)
-
+- `https://myendpoint/collections/my-collection/feature?assets=B01`
+- `https://myendpoint/collections/my-collection/feature.png?assets=B01f`
+- `https://myendpoint/collections/my-collection/feature/100x100.png?assets=B01`
 
 
 [tilejson_model]: https://github.com/developmentseed/titiler/blob/2335048a407f17127099cbbc6c14e1328852d619/src/titiler/core/titiler/core/models/mapbox.py#L16-L38
-[info_model]: https://github.com/stac-utils/titiler-pgstac/blob/047315da8851a974660032ca45f219db2c3a8d54/titiler/pgstac/model.py#L236-L240
-[infos_model]: https://github.com/stac-utils/titiler-pgstac/blob/4f569fee1946f853be9b9149cb4dd2fd5c62b110/titiler/pgstac/model.py#L260-L265
-[register_model]: https://github.com/stac-utils/titiler-pgstac/blob/047315da8851a974660032ca45f219db2c3a8d54/titiler/pgstac/model.py#L229-L233
 [statitics_model]: https://github.com/developmentseed/titiler/blob/17cdff2f0ddf08dbd9a47c2140b13c4bbcc30b6d/src/titiler/core/titiler/core/models/responses.py#L49-L52

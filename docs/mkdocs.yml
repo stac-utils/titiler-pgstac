@@ -18,17 +18,20 @@ nav:
   - Home: "index.md"
   - Intro: "intro.md"
   - Endpoints:
-    - Mosaic: "mosaic_endpoints.md"
-    - Item: "item_endpoints.md"
+    - Searches: "searches_endpoints.md"
+    - Collections: "collections_endpoints.md"
+    - Items: "items_endpoints.md"
     - TileMatrixSet: "tms_endpoints.md"
   - Tiler Factories: "tiler_factories.md"
   - Advanced usage:
     - Mosaic metadata specification: "advanced/metadata.md"
-    - Mosaic list: "advanced/mosaic_list.md"
+    - Mosaic list: "advanced/searches_list.md"
     - Custom search model: "advanced/custom_search.md"
     - Custom TileJSON endpoint : "advanced/custom_tilejson.md"
   - Examples:
     - demo: "notebooks/demo.ipynb"
+  - Migration Guides:
+    - v0.8 -> v1.0: 'migrations/v1_migration.md'
   - Performance Benchmarks: benchmark.html
   - Development - Contributing: "contributing.md"
   - Release notes: "release-notes.md"

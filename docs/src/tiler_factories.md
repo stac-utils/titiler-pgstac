@@ -24,24 +24,31 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
-mosaic = MosaicTilerFactory()
+mosaic = MosaicTilerFactory(
+    path_dependency=lambda: "aaaaaaaaaaaaaaaaaaaaa",
+)
 app.include_router(mosaic.router)
 ```
 
+!!! Important
+
+    The `MosaicTilerFactory` requires a `path_dependency`, which should be a `Callable` that return a *search_id* (PgSTAC Search Hash).
+
+    For the `/searches/{search_id}` endpoints the `path_dependency` is set to `titiler.pgstac.dependencies.SearchIdParams` and to `titiler.pgstac.dependencies.CollectionIdParams` for the `/collections/{collection_id}` endpoints.
+`
+
+
 | Method | URL                                                                        | Output                                  | Description
 | ------ | ---------------------------------------------------------------------------|---------------------------------------- |--------------
-| `GET`  | `/{search_id}/{lon},{lat}/assets`                                          | JSON                                    | Return a list of assets which overlap a given point
-| `GET`  | `/{search_id}/tiles[/{TileMatrixSetId}]/{z}/{x}/{Y}/assets`                | JSON                                    | Return a list of assets which overlap a given tile
-| `GET`  | `/{search_id}/tiles[/{TileMatrixSetId}]/{z}/{x}/{y}[@{scale}x][.{format}]` | image/bin                               | Create a web map tile image for a search query and a tile index
-| `GET`  | `/{search_id}[/{TileMatrixSetId}]/tilejson.json`                           | JSON ([TileJSON][tilejson_model])       | Return a Mapbox TileJSON document
-| `GET`  | `/{search_id}[/{TileMatrixSetId}]/WMTSCapabilities.xml`                    | XML                                     | Return OGC WMTS Get Capabilities
-| `GET`  | `/{search_id}[/{TileMatrixSetId}]/map`                                     | HTML                                    | Simple map viewer **OPTIONAL**
-| `POST` | `/{search_id}/statistics`                                                  | GeoJSON ([Statistics][statitics_model]) | Return statistics for geojson features **OPTIONAL**
-| `GET`  | `/{search_id}/bbox/{minx},{miny},{maxx},{maxy}[/{width}x{height}].{format}`| image/bin                               | Create an image from part of a dataset **OPTIONAL**
-| `POST` | `/{search_id}/feature[/{width}x{height}][.{format}]`                       | image/bin                               | Create an image from a GeoJSON feature **OPTIONAL**
-| `POST` | `/register`                                                                | JSON ([Register][register_model])       | Register **Search** query  **OPTIONAL**
-| `GET`  | `/list`                                                                    | JSON ([Info][info_model])               | Return **Search** query infos  **OPTIONAL**
-
+| `GET`  | `/{lon},{lat}/assets`                                          | JSON                                    | Return a list of assets which overlap a given point
+| `GET`  | `/tiles[/{TileMatrixSetId}]/{z}/{x}/{Y}/assets`                | JSON                                    | Return a list of assets which overlap a given tile
+| `GET`  | `/tiles[/{TileMatrixSetId}]/{z}/{x}/{y}[@{scale}x][.{format}]` | image/bin                               | Create a web map tile image for a search query and a tile index
+| `GET`  | `[/{TileMatrixSetId}]/tilejson.json`                           | JSON ([TileJSON][tilejson_model])       | Return a Mapbox TileJSON document
+| `GET`  | `[/{TileMatrixSetId}]/WMTSCapabilities.xml`                    | XML                                     | Return OGC WMTS Get Capabilities
+| `GET`  | `[/{TileMatrixSetId}]/map`                                     | HTML                                    | Simple map viewer **OPTIONAL**
+| `POST` | `/statistics`                                                  | GeoJSON ([Statistics][statitics_model]) | Return statistics for geojson features **OPTIONAL**
+| `GET`  | `/bbox/{minx},{miny},{maxx},{maxy}[/{width}x{height}].{format}`| image/bin                               | Create an image from part of a dataset **OPTIONAL**
+| `POST` | `/feature[/{width}x{height}][.{format}]`                       | image/bin                               | Create an image from a GeoJSON feature **OPTIONAL**
 
 ### Extensions
 
@@ -49,8 +56,36 @@ app.include_router(mosaic.router)
 
 | Method | URL                                                                        | Output                                  | Description
 | ------ | ---------------------------------------------------------------------------|---------------------------------------- |--------------
-| `GET`  | `/{search_id}/info`                                                        | JSON ([Infos][infos_model])             | Return list of **Search** entries with `Mosaic` type  **OPTIONAL**
+| `GET`  | `/info`                                                        | JSON ([Infos][infos_model])             | Return list of **Search** entries with `Mosaic` type  **OPTIONAL**
 
+```python
+app = FastAPI()
+mosaic = MosaicTilerFactory(
+    path_dependency=lambda: "aaaaaaaaaaaaaaaaaaaaa",
+    extensions=[
+        searchInfoExtension(),
+    ],
+)
+app.include_router(mosaic.router)
+```
+
+#### `register and list`
+
+| Method | URL                                                                        | Output                                  | Description
+| ------ | ---------------------------------------------------------------------------|---------------------------------------- |--------------
+| `POST` | `/register`                                                                | JSON ([Register][register_model])       | Register **Search** query  **OPTIONAL**
+| `GET`  | `/list`                                                                    | JSON ([Info][info_model])               | Return **Search** query infos  **OPTIONAL**
+
+```python
+app = FastAPI()
+mosaic = MosaicTilerFactory(
+    path_dependency=lambda: "aaaaaaaaaaaaaaaaaaaaa",
+)
+app.include_router(mosaic.router)
+
+add_search_register_route(app)
+add_search_list_route(app)
+```
 
 ## Items: `titiler.core.factory.MultiBaseTilerFactory`
 

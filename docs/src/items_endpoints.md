@@ -1,4 +1,4 @@
-The `titiler.pgstac` package comes with a full FastAPI application with Mosaic and single STAC item support.
+### STAC Items endpoints
 
 The `Item` endpoints are created using TiTiler's [MultiBaseTilerFactory](https://developmentseed.org/titiler/advanced/tiler_factories/#titilercorefactorymultibasetilerfactory)
 
@@ -25,8 +25,8 @@ The `Item` endpoints are created using TiTiler's [MultiBaseTilerFactory](https:/
 `:endpoint:/collections/{collection_id}/items/{item_id}/tiles[/{TileMatrixSetId}]/{z}/{x}/{y}[@{scale}x][.{format}]`
 
 - PathParams:
-    - **collection_id** (str): STAC Collection ID.
-    - **item_id** (str): STAC Item ID.
+    - **collection_id** (str): STAC Collection Identifier.
+    - **item_id** (str): STAC Item Identifier.
     - **TileMatrixSetId** (str): TileMatrixSet name, default is `WebMercatorQuad`. **Optional**
     - **z** (int): TMS tile's zoom level.
     - **x** (int): TMS tile's column.
@@ -66,8 +66,8 @@ Example:
 `:endpoint:/collections/{collection_id}/items/{item_id}/preview[.{format}]`
 
 - PathParams:
-    - **collection_id** (str): STAC Collection ID.
-    - **item_id** (str): STAC Item ID.
+    - **collection_id** (str): STAC Collection Identifier.
+    - **item_id** (str): STAC Item Identifier.
     - **format**: Output image format, default is set to None and will be either JPEG or PNG depending on masked value. **Optional**
 
 - QueryParams:
@@ -106,8 +106,8 @@ Example:
 `:endpoint:/collections/{collection_id}/items/{item_id}/crop/{minx},{miny},{maxx},{maxy}/{width}x{height}.{format}`
 
 - PathParams:
-    - **collection_id** (str): STAC Collection ID.
-    - **item_id** (str): STAC Item ID.
+    - **collection_id** (str): STAC Collection Identifier.
+    - **item_id** (str): STAC Item Identifier.
     - **minx,miny,maxx,maxy** (str): Comma (',') delimited bounding box in WGS84.
     - **height** (int): Force output image height. **Optional**
     - **width** (int): Force output image width. **Optional**
@@ -146,8 +146,8 @@ Example:
     - **feature** (JSON): A valid GeoJSON feature (Polygon or MultiPolygon)
 
 - PathParams:
-    - **collection_id** (str): STAC Collection ID.
-    - **item_id** (str): STAC Item ID.
+    - **collection_id** (str): STAC Collection Identifier.
+    - **item_id** (str): STAC Item Identifier.
     - **height** (int): Force output image height. **Optional**
     - **width** (int): Force output image width. **Optional**
     - **format** (str): Output image format, default is set to None and will be either JPEG or PNG depending on masked value. **Optional**
@@ -185,8 +185,8 @@ Example:
 `:endpoint:/collections/{collection_id}/items/{item_id}/point/{lon},{lat}`
 
 - PathParams:
-    - **collection_id** (str): STAC Collection ID.
-    - **item_id** (str): STAC Item ID.
+    - **collection_id** (str): STAC Collection Identifier.
+    - **item_id** (str): STAC Item Identifier.
     - **lon,lat,** (str): Comma (',') delimited point Longitude and Latitude WGS84.
 
 - QueryParams:
@@ -210,8 +210,8 @@ Example:
 `:endpoint:/collections/{collection_id}/items/{item_id}[/{TileMatrixSetId}]/tilejson.json` tileJSON document
 
 - PathParams:
-    - **collection_id** (str): STAC Collection ID.
-    - **item_id** (str): STAC Item ID.
+    - **collection_id** (str): STAC Collection Identifier.
+    - **item_id** (str): STAC Item Identifier.
     - **TileMatrixSetId**: TileMatrixSet name, default is `WebMercatorQuad`.
 
 - QueryParams:
@@ -249,8 +249,8 @@ Example:
 `:endpoint:/collections/{collection_id}/items/{item_id}/bounds` - Return the bounds of the STAC item.
 
 - PathParams:
-    - **collection_id** (str): STAC Collection ID.
-    - **item_id** (str): STAC Item ID.
+    - **collection_id** (str): STAC Collection Identifier.
+    - **item_id** (str): STAC Item Identifier.
 
 Example:
 
@@ -262,8 +262,8 @@ Example:
 `:endpoint:/collections/{collection_id}/items/{item_id}/info` - Return basic info on STAC item's COG.
 
 - PathParams:
-    - **collection_id** (str): STAC Collection ID.
-    - **item_id** (str): STAC Item ID.
+    - **collection_id** (str): STAC Collection Identifier.
+    - **item_id** (str): STAC Item Identifier.
 
 - QueryParams:
     - **assets** (array[str]): asset names. Default to all available assets.
@@ -275,12 +275,12 @@ Example:
 `:endpoint:/collections/{collection_id}/items/{item_id}/info.geojson` - Return basic info on STAC item's COG as a GeoJSON feature
 
 - PathParams:
-    - **collection_id** (str): STAC Collection ID.
-    - **item_id** (str): STAC Item ID.
+    - **collection_id** (str): STAC Collection Identifier.
+    - **item_id** (str): STAC Item Identifier.
 
 - QueryParams:
-    - **collection** (str): STAC Collection ID. **Required**
-    - **item** (str): STAC Item ID. **Required**
+    - **collection** (str): STAC Collection Identifier. **Required**
+    - **item** (str): STAC Item Identifier. **Required**
     - **assets** (array[str]): asset names. Default to all available assets.
 
 Example:
@@ -296,8 +296,8 @@ Example:
 `:endpoint:/collections/{collection_id}/items/{item_id}/assets` - Return a list of available assets
 
 - PathParams:
-    - **collection_id** (str): STAC Collection ID.
-    - **item_id** (str): STAC Item ID.
+    - **collection_id** (str): STAC Collection Identifier.
+    - **item_id** (str): STAC Item Identifier.
 
 Example:
 
@@ -308,12 +308,12 @@ Example:
 `:endpoint:/collections/{collection_id}/items/{item_id}/asset_statistics - [GET]`
 
 - PathParams:
-    - **collection_id** (str): STAC Collection ID.
-    - **item_id** (str): STAC Item ID.
+    - **collection_id** (str): STAC Collection Identifier.
+    - **item_id** (str): STAC Item Identifier.
 
 - QueryParams:
-    - **collection** (str): STAC Collection ID. **Required**
-    - **item** (str): STAC Item ID. **Required**
+    - **collection** (str): STAC Collection Identifier. **Required**
+    - **item** (str): STAC Item Identifier. **Required**
     - **assets** (array[str]): asset names. Default to all available assets.
     - **asset_bidx** (array[str]): Per asset band math expression (e.g `Asset1|1;2;3`).
     - **asset_expression** (array[str]): Per asset band math expression (e.g `Asset1|b1\*b2`).
@@ -337,12 +337,12 @@ Example:
 `:endpoint:/collections/{collection_id}/items/{item_id}/statistics - [GET]`
 
 - PathParams:
-    - **collection_id** (str): STAC Collection ID.
-    - **item_id** (str): STAC Item ID.
+    - **collection_id** (str): STAC Collection Identifier.
+    - **item_id** (str): STAC Item Identifier.
 
 - QueryParams:
-    - **collection** (str): STAC Collection ID. **Required**
-    - **item** (str): STAC Item ID. **Required**
+    - **collection** (str): STAC Collection Identifier. **Required**
+    - **item** (str): STAC Item Identifier. **Required**
     - **assets** (array[str]): asset names.
     - **expression** (str): rio-tiler's math expression with asset names (e.g `Asset1_b1/Asset2_b1`).
     - **asset_as_band** (bool): tell rio-tiler that each asset is a 1 band dataset, so expression `Asset1/Asset2` can be passed.
@@ -370,8 +370,8 @@ Example:
     - **feature** (JSON): A valid GeoJSON feature or FeatureCollection
 
 - PathParams:
-    - **collection_id** (str): STAC Collection ID.
-    - **item_id** (str): STAC Item ID.
+    - **collection_id** (str): STAC Collection Identifier.
+    - **item_id** (str): STAC Item Identifier.
 
 - QueryParams:
     - **assets** (array[str]): asset names.

@@ -1,6 +1,6 @@
 
 
-Starting with `titiler-pgstac>=0.2.0`, we've added a `/mosaic/list` endpoint to be able to list all registered mosaics. When we add a mosaic via `/mosaic/register` we add a specific `metadata.type: "mosaic"` to the pgstac `search` entry, which is then used by the `/mosaic/list` endpoint to filter the pgstac `searches`.
+Starting with `titiler-pgstac>=0.2.0`, we've added a `/searches/list` endpoint to be able to list all registered mosaics. When we add a mosaic via `/searches/register` we add a specific `metadata.type: "mosaic"` to the pgstac `search` entry, which is then used by the `/searches/list` endpoint to filter the pgstac `searches`.
 
 In order to make the mosaic list performant, users might want to alter their PgSTAC database to add an **index**
 
