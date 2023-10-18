@@ -34,21 +34,45 @@
 
 * rename `dependencies.PathParams` to `dependencies.SearchIdParams`
 
-* rename `searchid` path parameter to `search_id`
+* rename `searchid` path parameter to `search_id` in `SearchIdParams`
 
 * move `check_query_params` methods outside `MosaicTilerFactory` class
+
+* make `path_dependency` a required input to `MosaicTilerFactory` class
+
+    ```python
+    # before
+    app = FastAPI()
+    mosaic = MosaicTilerFactory(...)
+    app.include_router(mosaic.router)
+
+    # now
+    app = FastAPI()
+    mosaic = MosaicTilerFactory(
+        ...,
+        path_dependency=lambda: "aaaaaaaaaaaaaa"
+    )
+    app.include_router(mosaic.router)
+    ```
+
 
 * remove `/{search_id}` prefix in `MosaicTilerFactory` routes. Now use parameter injection from global prefix
 
     ```python
     # Before
     app = FastAPI()
-    mosaic = MosaicTilerFactory(router_prefix="/mosaics")
+    mosaic = MosaicTilerFactory(
+        ...,
+        router_prefix="/mosaics"
+    )
     app.include_router(mosaic.router, prefix="/mosaics")
 
     # Now
     app = FastAPI()
-    mosaic = MosaicTilerFactory(router_prefix="/mosaics/{search_id}")
+    mosaic = MosaicTilerFactory(
+        ...
+        router_prefix="/mosaics/{search_id}"
+    )
     app.include_router(mosaic.router, prefix="/mosaics/{search_id}")
     ```
 
@@ -57,12 +81,13 @@
     ```python
     # Before
     app = FastAPI()
-    mosaic = MosaicTilerFactory()
+    mosaic = MosaicTilerFactory(...)
     app.include_router(mosaic.router)
 
     # Now
     app = FastAPI()
     mosaic = MosaicTilerFactory(
+        ...
         extensions=[
             searchInfoExtension(),
         ]
@@ -76,7 +101,10 @@
     # before
     from titiler.pgstac.factory import MosaicTilerFactory
 
-    mosaic = MosaicTilerFactory(router_prefix="/{search_id}")
+    mosaic = MosaicTilerFactory(
+        ...,
+        router_prefix="/{search_id}",
+    )
     app.include_router(mosaic.router, prefix="/{search_id}")
 
     # Now
@@ -86,7 +114,10 @@
         add_mosaic_register_route,
     )
 
-    mosaic = MosaicTilerFactory(router_prefix="/{search_id}")
+    mosaic = MosaicTilerFactory(
+        ...,
+        router_prefix="/{search_id}",
+    )
     app.include_router(mosaic.router, prefix="/{search_id}")
 
     # add /register endpoint

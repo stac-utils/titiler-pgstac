@@ -24,7 +24,11 @@ from titiler.core.resources.enums import OptionalHeader
 from titiler.mosaic.errors import MOSAIC_STATUS_CODES
 from titiler.pgstac import __version__ as titiler_pgstac_version
 from titiler.pgstac.db import close_db_connection, connect_to_db
-from titiler.pgstac.dependencies import CollectionIdParams, ItemPathParams
+from titiler.pgstac.dependencies import (
+    CollectionIdParams,
+    ItemPathParams,
+    SearchIdParams,
+)
 from titiler.pgstac.extensions import searchInfoExtension
 from titiler.pgstac.factory import (
     MosaicTilerFactory,
@@ -104,6 +108,7 @@ else:
 ###############################################################################
 # STAC Search Endpoints
 searches = MosaicTilerFactory(
+    path_dependency=SearchIdParams,
     optional_headers=optional_headers,
     router_prefix="/searches/{search_id}",
     add_statistics=True,
