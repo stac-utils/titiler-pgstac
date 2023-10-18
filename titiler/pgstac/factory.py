@@ -3,7 +3,18 @@ import os
 import re
 import warnings
 from dataclasses import dataclass
-from typing import Any, Callable, Dict, Generator, List, Literal, Optional, Type, Union
+from typing import (
+    Any,
+    Callable,
+    Dict,
+    Generator,
+    List,
+    Literal,
+    Optional,
+    Tuple,
+    Type,
+    Union,
+)
 from urllib.parse import urlencode
 
 import jinja2
@@ -47,7 +58,6 @@ from titiler.pgstac import model
 from titiler.pgstac.dependencies import (
     BackendParams,
     PgSTACParams,
-    SearchIdParams,
     SearchParams,
     TileParams,
 )
@@ -102,8 +112,9 @@ def check_query_params(
 class MosaicTilerFactory(BaseTilerFactory):
     """Custom MosaicTiler for PgSTAC Mosaic Backend."""
 
+    path_dependency: Callable[..., str]
+
     reader: Type[BaseBackend] = PGSTACBackend
-    path_dependency: Callable[..., str] = SearchIdParams
     layer_dependency: Type[DefaultDependency] = AssetsBidxExprParams
 
     # Statistics/Histogram Dependencies
@@ -887,6 +898,9 @@ def add_search_register_route(
     app: FastAPI,
     *,
     prefix: str = "",
+    search_dependency: Callable[
+        ..., Tuple[model.PgSTACSearch, model.Metadata]
+    ] = SearchParams,
     tile_dependencies: Optional[List[Callable]] = None,
     tags: Optional[List[str]] = None,
 ):
@@ -901,7 +915,7 @@ def add_search_register_route(
         response_model_exclude_none=True,
         tags=tags,
     )
-    def register_search(request: Request, search_query=Depends(SearchParams)):
+    def register_search(request: Request, search_query=Depends(search_dependency)):
         """Register a Search query."""
         search, metadata = search_query
 
