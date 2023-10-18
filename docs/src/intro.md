@@ -217,9 +217,9 @@ When we have an **id** we can call the dynamic tiler and ask for Map Tiles.
 On each `Tile` request, the tiler api is going to call the PgSTAC [`geometrysearch`](https://github.com/stac-utils/pgstac/blob/76512ab50e1373e3f77c65843cf328cbe6dd0dec/sql/006_tilesearch.sql#L4) function with the `id` and the `Tile geometry` to get the list of **STAC Items** ([code](https://github.com/stac-utils/titiler-pgstac/blob/0f2b5b4ba50bb3458237ab21cf9a154d7b811851/titiler/pgstac/mosaic.py#L238-L247)). Then based on the `assets` parameter, the tiler will construct the tile image ([code](https://github.com/stac-utils/titiler-pgstac/blob/0f2b5b4ba50bb3458237ab21cf9a154d7b811851/titiler/pgstac/mosaic.py#L257-L263)).
 
 !!! important
-  Because `Tiles` will be created from **STAC Items** we HAVE TO pass **`assets={stac asset}`** option to the tile endpoint to tell the tiler which **STAC assets** has to be used.
+    Because `Tiles` will be created from **STAC Items** we HAVE TO pass **`assets={stac asset}`** option to the tile endpoint to tell the tiler which **STAC assets** has to be used.
 
-  See full list of [options](../mosaic_endpoints/#tiles)
+    See full list of [options](../mosaic_endpoints/#tiles)
 
 **Example**
 
