@@ -1,6 +1,6 @@
 # Release Notes
 
-## 1.0.0 (TBD)
+## 1.0.0a0 (2023-10-20)
 
 * add `pgstac_dependency` attribute in `MosaicTilerFactory` (defaults to `dependencies.PgSTACParams`)
 
