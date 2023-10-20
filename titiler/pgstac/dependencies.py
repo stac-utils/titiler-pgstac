@@ -186,7 +186,7 @@ def get_stac_item(pool: ConnectionPool, collection: str, item: str) -> pystac.It
             return pystac.Item.from_dict(resp["features"][0])
 
 
-def ItemPathParams(
+def ItemIdParams(
     request: Request,
     collection_id: Annotated[
         str,
