@@ -1,5 +1,9 @@
 # Release Notes
 
+## Unreleased
+
+* rename `dependencies.ItemPathParams` to `ItemIdParams` **breaking change**
+
 ## 1.0.0a0 (2023-10-20)
 
 * add `pgstac_dependency` attribute in `MosaicTilerFactory` (defaults to `dependencies.PgSTACParams`)
