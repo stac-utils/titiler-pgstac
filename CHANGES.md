@@ -1,6 +1,6 @@
 # Release Notes
 
-## Unreleased
+## 1.0.0a1 (2023-10-20)
 
 * rename `dependencies.ItemPathParams` to `ItemIdParams` **breaking change**
 
