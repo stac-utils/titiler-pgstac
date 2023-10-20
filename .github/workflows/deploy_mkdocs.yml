@@ -28,7 +28,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install .
+          python -m pip install -e ".[psycopg-binary]"
           python -m pip install nbconvert==6.5.3 mkdocs mkdocs-material mkdocs-jupyter pygments pdocs
 
       - name: update API docs
