@@ -31,5 +31,21 @@ jobs:
           python -m pip install .
           python -m pip install nbconvert==6.5.3 mkdocs mkdocs-material mkdocs-jupyter pygments pdocs
 
+      - name: update API docs
+        run: |
+          pdocs as_markdown \
+            --output_dir docs/src/api \
+            --exclude_source \
+            --overwrite \
+            titiler.pgstac.db \
+            titiler.pgstac.dependencies \
+            titiler.pgstac.extensions \
+            titiler.pgstac.factory \
+            titiler.pgstac.model \
+            titiler.pgstac.mosaic \
+            titiler.pgstac.reader \
+            titiler.pgstac.settings \
+            titiler.pgstac.utils
+
       - name: Deploy docs
         run: mkdocs gh-deploy -f docs/mkdocs.yml --force

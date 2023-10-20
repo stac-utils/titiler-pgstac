@@ -30,11 +30,22 @@ nav:
     - Custom TileJSON endpoint : "advanced/custom_tilejson.md"
   - Examples:
     - demo: "notebooks/demo.ipynb"
+  - API:
+    - titiler.pgstac:
+      - db: api/titiler/pgstac/db.md
+      - dependencies: api/titiler/pgstac/dependencies.md
+      - extensions: api/titiler/pgstac/extensions.md
+      - factory: api/titiler/pgstac/factory.md
+      - model: api/titiler/pgstac/model.md
+      - mosaic: api/titiler/pgstac/mosaic.md
+      - reader: api/titiler/pgstac/reader.md
+      - settings: api/titiler/pgstac/settings.md
+      - utils: api/titiler/pgstac/utils.md
   - Migration Guides:
     - v0.8 -> v1.0: 'migrations/v1_migration.md'
-  - Performance Benchmarks: benchmark.html
   - Development - Contributing: "contributing.md"
   - Release notes: "release-notes.md"
+  - Performance Benchmarks: benchmark.html
 
 plugins:
   - search
