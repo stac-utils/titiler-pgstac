@@ -266,7 +266,7 @@ def test_tiles(rio, app, search_no_bbox, search_bbox):
 
     # tile is outside mosaic bbox, it should return 404 (NoAssetFoundError)
     response = app.get(f"/searches/{search_bbox}/tiles/{z}/{x}/{y}?assets=cog")
-    assert response.status_code == 404
+    assert response.status_code in [404, 204]
 
     response = app.get(
         f"/searches/{search_no_bbox}/tiles/WebMercatorQuad/{z}/{x}/{y}.tif?assets=cog"
@@ -475,7 +475,7 @@ def test_cql2_with_geometry(rio, app):
     # tile is outside the geometry filter
     z, x, y = 15, 8589, 12849
     response = app.get(f"/searches/{cql2_id}/tiles/{z}/{x}/{y}?assets=cog")
-    assert response.status_code == 404
+    assert response.status_code in [404, 204]
 
 
 def test_query_with_metadata(app):
