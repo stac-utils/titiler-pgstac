@@ -11,6 +11,7 @@ on:
       - 'CONTRIBUTING.md'
       - 'docs/**'
       - 'mkdocs.yml'
+      - '.github/workflows/deploy_mkdocs.yml'
 
 jobs:
   build:
@@ -29,7 +30,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install -e ".[psycopg-binary]"
-          python -m pip install nbconvert==6.5.3 mkdocs mkdocs-material mkdocs-jupyter pygments pdocs
+          python -m pip install nbconvert==6.5.3 mkdocs mkdocs-material mkdocs-jupyter pygments pdocs mike
 
       - name: update API docs
         run: |
@@ -47,5 +48,24 @@ jobs:
             titiler.pgstac.settings \
             titiler.pgstac.utils
 
-      - name: Deploy docs
-        run: mkdocs gh-deploy -f docs/mkdocs.yml --force
+      - name: Set module version
+        id: module
+        run: |
+          echo version=$(python -c'import titiler.pgstac; print(titiler.pgstac.__version__)') >> $GITHUB_OUTPUT
+
+      - name: Configure Git user
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+
+      - name: Deploy documentation
+        if: ${{ github.ref_type == 'branch' }}
+        run: |
+          mike deploy --push --update-aliases latest --config-file docs/mkdocs.yml
+          mike set-default --push latest --config-file docs/mkdocs.yml
+
+      - name: Deploy documentation and update alias for latest
+        if: startsWith(github.event.ref, 'refs/tags') || github.event_name == 'release'
+        run: |
+          mike deploy --push --update-aliases ${{ steps.module.outputs.version}} latest --config-file docs/mkdocs.yml
+          mike set-default --push latest --config-file docs/mkdocs.yml

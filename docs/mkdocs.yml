@@ -4,15 +4,18 @@ site_description: Dynamic Mosaics From PgSTAC database.
 docs_dir: 'src'
 site_dir: 'build'
 
-repo_name: "stac-utils/titiler-pgstac"
-repo_url: "https://github.com/stac-utils/titiler-pgstac"
-edit_uri: "blob/main/docs/"
-site_url: "https://stac-utils.github.io/titiler-pgstac/"
+repo_name: stac-utils/titiler-pgstac
+repo_url: https://github.com/stac-utils/titiler-pgstac
+edit_uri: blob/main/docs/
+site_url: https://stac-utils.github.io/titiler-pgstac/
 
 extra:
   social:
     - icon: "fontawesome/brands/github"
       link: "https://github.com/stac-utils"
+  version:
+    provider: mike
+    default: latest
 
 nav:
   - Home: "index.md"
@@ -53,12 +56,12 @@ plugins:
       include_source: True
 
 theme:
-  palette:
-    primary: teal
-    scheme: default
   name: material
   favicon: img/favicon.ico
   logo: img/logo.png
+
+extra_css:
+  - overrides/stylesheets/extra.css
 
 # https://github.com/kylebarron/cogeo-mosaic/blob/mkdocs/mkdocs.yml#L50-L75
 markdown_extensions:
