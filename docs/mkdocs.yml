@@ -18,21 +18,22 @@ extra:
     default: latest
 
 nav:
-  - Home: "index.md"
-  - Intro: "intro.md"
+  - Home: index.md
+  - Intro: intro.md
   - Endpoints:
-    - Searches: "searches_endpoints.md"
-    - Collections: "collections_endpoints.md"
-    - Items: "items_endpoints.md"
-    - TileMatrixSet: "tms_endpoints.md"
-  - Tiler Factories: "tiler_factories.md"
+    - endpoints/index.md
+    - Searches: endpoints/searches_endpoints.md
+    - Collections: endpoints/collections_endpoints.md
+    - Items: endpoints/items_endpoints.md
+    - TileMatrixSet: endpoints/tms_endpoints.md
+  - Tiler Factories: tiler_factories.md
   - Advanced usage:
-    - Mosaic metadata specification: "advanced/metadata.md"
-    - Mosaic list: "advanced/searches_list.md"
-    - Custom search model: "advanced/custom_search.md"
-    - Custom TileJSON endpoint : "advanced/custom_tilejson.md"
+    - Mosaic metadata specification: advanced/metadata.md
+    - Mosaic list: advanced/searches_list.md
+    - Custom search model: advanced/custom_search.md
+    - Custom TileJSON endpoint : advanced/custom_tilejson.md
   - Examples:
-    - demo: "notebooks/demo.ipynb"
+    - demo: notebooks/demo.ipynb
   - API:
     - titiler.pgstac:
       - db: api/titiler/pgstac/db.md
@@ -45,9 +46,9 @@ nav:
       - settings: api/titiler/pgstac/settings.md
       - utils: api/titiler/pgstac/utils.md
   - Migration Guides:
-    - v0.8 -> v1.0: 'migrations/v1_migration.md'
-  - Development - Contributing: "contributing.md"
-  - Release notes: "release-notes.md"
+    - v0.8 -> v1.0: migrations/v1_migration.md
+  - Development - Contributing: contributing.md
+  - Release notes: release-notes.md
   - Performance Benchmarks: benchmark.html
 
 plugins:
@@ -59,6 +60,8 @@ theme:
   name: material
   favicon: img/favicon.ico
   logo: img/logo.png
+  features:
+    - navigation.indexes
 
 extra_css:
   - overrides/stylesheets/extra.css
