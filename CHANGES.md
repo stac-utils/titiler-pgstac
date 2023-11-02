@@ -1,5 +1,10 @@
 # Release Notes
 
+## 1.0.0a2 (2023-11-02)
+
+* update titiler's dependency to `>=0.15.2,<0.16`
+* rename `dependencies.TileParams` to `dependencies.TmsTileParams`
+
 ## 1.0.0a1 (2023-10-20)
 
 * rename `dependencies.ItemPathParams` to `ItemIdParams` **breaking change**
