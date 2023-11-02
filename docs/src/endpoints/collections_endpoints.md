@@ -35,6 +35,7 @@
     - **nodata**: Overwrite internal Nodata value. OPTIONAL
     - **unscale** (bool): Apply dataset internal Scale/Offset.
     - **resampling** (str): RasterIO resampling algorithm. Defaults to `nearest`.
+    - **reproject** (str): WarpKernel resampling algorithm (only used when doing re-projection). Defaults to `nearest`.
     - **algorithm** (str): Custom algorithm name (e.g `hillshade`).
     - **algorithm_params** (str): JSON encoded algorithm parameters.
     - **rescale** (array[str]): Comma (',') delimited Min,Max range (e.g `rescale=0,1000`, `rescale=0,1000&rescale=0,3000&rescale=0,2000`).
@@ -80,6 +81,7 @@ Example:
     - **nodata** (str, int, float): Overwrite internal Nodata value.
     - **unscale** (bool): Apply dataset internal Scale/Offset.
     - **resampling** (str): RasterIO resampling algorithm. Defaults to `nearest`.
+    - **reproject** (str): WarpKernel resampling algorithm (only used when doing re-projection). Defaults to `nearest`.
     - **algorithm** (str): Custom algorithm name (e.g `hillshade`).
     - **algorithm_params** (str): JSON encoded algorithm parameters.
     - **rescale** (array[str]): Comma (',') delimited Min,Max range (e.g `rescale=0,1000`, `rescale=0,1000&rescale=0,3000&rescale=0,2000`).
@@ -194,6 +196,7 @@ Example:
     - **nodata**: Overwrite internal Nodata value. OPTIONAL
     - **unscale** (bool): Apply dataset internal Scale/Offset.
     - **resampling** (str): RasterIO resampling algorithm. Defaults to `nearest`.
+    - **reproject** (str): WarpKernel resampling algorithm (only used when doing re-projection). Defaults to `nearest`.
     - **algorithm** (str): Custom algorithm name (e.g `hillshade`).
     - **algorithm_params** (str): JSON encoded algorithm parameters.
     - **categorical** (bool): Return statistics for categorical dataset, default is false.
@@ -239,6 +242,7 @@ Example:
     - **nodata**: Overwrite internal Nodata value. OPTIONAL
     - **unscale** (bool): Apply dataset internal Scale/Offset.
     - **resampling** (str): RasterIO resampling algorithm. Defaults to `nearest`.
+    - **reproject** (str): WarpKernel resampling algorithm (only used when doing re-projection). Defaults to `nearest`.
     - **algorithm** (str): Custom algorithm name (e.g `hillshade`).
     - **algorithm_params** (str): JSON encoded algorithm parameters.
     - **rescale** (array[str]): Comma (',') delimited Min,Max range (e.g `rescale=0,1000`, `rescale=0,1000&rescale=0,3000&rescale=0,2000`).
@@ -284,6 +288,7 @@ Example:
     - **nodata**: Overwrite internal Nodata value. OPTIONAL
     - **unscale** (bool): Apply dataset internal Scale/Offset.
     - **resampling** (str): RasterIO resampling algorithm. Defaults to `nearest`.
+    - **reproject** (str): WarpKernel resampling algorithm (only used when doing re-projection). Defaults to `nearest`.
     - **algorithm** (str): Custom algorithm name (e.g `hillshade`).
     - **algorithm_params** (str): JSON encoded algorithm parameters.
     - **rescale** (array[str]): Comma (',') delimited Min,Max range (e.g `rescale=0,1000`, `rescale=0,1000&rescale=0,3000&rescale=0,2000`).
