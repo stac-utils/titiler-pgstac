@@ -38,7 +38,6 @@ from typing_extensions import Annotated
 
 from titiler.core.dependencies import (
     AssetsBidxExprParams,
-    BufferParams,
     ColorFormulaParams,
     CoordCRSParams,
     DefaultDependency,
@@ -46,6 +45,7 @@ from titiler.core.dependencies import (
     HistogramParams,
     PartFeatureParams,
     StatisticsParams,
+    TileParams,
 )
 from titiler.core.factory import BaseTilerFactory, img_endpoint_params
 from titiler.core.models.mapbox import TileJSON
@@ -59,7 +59,7 @@ from titiler.pgstac.dependencies import (
     BackendParams,
     PgSTACParams,
     SearchParams,
-    TileParams,
+    TmsTileParams,
 )
 from titiler.pgstac.mosaic import PGSTACBackend
 
@@ -121,6 +121,9 @@ class MosaicTilerFactory(BaseTilerFactory):
     stats_dependency: Type[DefaultDependency] = StatisticsParams
     histogram_dependency: Type[DefaultDependency] = HistogramParams
 
+    # Tile/Tilejson/WMTS Dependencies
+    tile_dependency: Type[DefaultDependency] = TileParams
+
     # Crop endpoints Dependencies
     # WARNINGS: `/bbox` and `/feature` endpoints should be used carefully because
     # each request might need to open/read a lot of files if the user decide to
@@ -179,7 +182,7 @@ class MosaicTilerFactory(BaseTilerFactory):
         )
         def tile(
             search_id=Depends(self.path_dependency),
-            tile=Depends(TileParams),
+            tile=Depends(TmsTileParams),
             tileMatrixSetId: Annotated[  # type: ignore
                 Literal[tuple(self.supported_tms.list())],
                 f"Identifier selecting one of the TileMatrixSetId supported (default: '{self.default_tms}')",
@@ -189,13 +192,13 @@ class MosaicTilerFactory(BaseTilerFactory):
                 "Tile size scale. 1=256x256, 2=512x512...",
             ] = None,
             format: Annotated[
-                ImageType,
+                Optional[ImageType],
                 "Default will be automatically defined if the output image needs a mask (png) or not (jpeg).",
             ] = None,
             layer_params=Depends(self.layer_dependency),
             dataset_params=Depends(self.dataset_dependency),
             pixel_selection=Depends(self.pixel_selection_dependency),
-            buffer=Depends(BufferParams),
+            tile_params=Depends(self.tile_dependency),
             post_process=Depends(self.process_dependency),
             rescale=Depends(self.rescale_dependency),
             color_formula=Depends(ColorFormulaParams),
@@ -231,9 +234,9 @@ class MosaicTilerFactory(BaseTilerFactory):
                         tile.y,
                         tile.z,
                         tilesize=scale * 256,
-                        buffer=buffer,
                         pixel_selection=pixel_selection,
                         threads=MOSAIC_THREADS,
+                        **tile_params,
                         **layer_params,
                         **dataset_params,
                         **pgstac_params,
@@ -307,7 +310,7 @@ class MosaicTilerFactory(BaseTilerFactory):
             layer_params=Depends(self.layer_dependency),
             dataset_params=Depends(self.dataset_dependency),
             pixel_selection=Depends(self.pixel_selection_dependency),
-            buffer=Depends(BufferParams),
+            tile_params=Depends(self.tile_dependency),
             post_process=Depends(self.process_dependency),
             rescale=Depends(self.rescale_dependency),
             color_formula=Depends(ColorFormulaParams),
@@ -406,7 +409,7 @@ class MosaicTilerFactory(BaseTilerFactory):
             layer_params=Depends(self.layer_dependency),
             dataset_params=Depends(self.dataset_dependency),
             pixel_selection=Depends(self.pixel_selection_dependency),
-            buffer=Depends(BufferParams),
+            tile_params=Depends(self.tile_dependency),
             post_process=Depends(self.process_dependency),
             rescale=Depends(self.rescale_dependency),
             color_formula=Depends(ColorFormulaParams),
@@ -500,6 +503,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                 self.layer_dependency,
                 self.dataset_dependency,
                 self.pixel_selection_dependency,
+                self.tile_dependency,
                 self.process_dependency,
                 self.rescale_dependency,
                 self.colormap_dependency,
@@ -616,7 +620,7 @@ class MosaicTilerFactory(BaseTilerFactory):
         )
         def assets_for_tile(
             search_id=Depends(self.path_dependency),
-            tile=Depends(TileParams),
+            tile=Depends(TmsTileParams),
             tileMatrixSetId: Annotated[
                 Literal[tuple(self.supported_tms.list())],
                 f"Identifier selecting one of the TileMatrixSetId supported (default: '{self.default_tms}')",

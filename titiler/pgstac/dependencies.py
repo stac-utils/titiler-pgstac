@@ -198,7 +198,7 @@ def ItemIdParams(
     return get_stac_item(request.app.state.dbpool, collection_id, item_id)
 
 
-def TileParams(
+def TmsTileParams(
     z: Annotated[
         int,
         Path(
@@ -218,5 +218,5 @@ def TileParams(
         ),
     ],
 ) -> morecantile.Tile:
-    """Tile parameters."""
+    """TileMatrixSet Tile parameters."""
     return morecantile.Tile(x, y, z)

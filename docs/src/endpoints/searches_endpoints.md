@@ -35,7 +35,8 @@
     - **asset_bidx** (array[str]): Per asset band math expression (e.g `Asset1|1;2;3`).
     - **nodata**: Overwrite internal Nodata value. OPTIONAL
     - **unscale** (bool): Apply dataset internal Scale/Offset.
-    - **resampling** (str): rasterio resampling method. Default is `nearest`.
+    - **resampling** (str): RasterIO resampling algorithm. Defaults to `nearest`.
+    - **reproject** (str): WarpKernel resampling algorithm (only used when doing re-projection). Defaults to `nearest`.
     - **algorithm** (str): Custom algorithm name (e.g `hillshade`).
     - **algorithm_params** (str): JSON encoded algorithm parameters.
     - **rescale** (array[str]): Comma (',') delimited Min,Max range (e.g `rescale=0,1000`, `rescale=0,1000&rescale=0,3000&rescale=0,2000`).
@@ -43,7 +44,8 @@
     - **colormap** (str): JSON encoded custom Colormap.
     - **colormap_name** (str): rio-tiler color map name.
     - **return_mask** (bool): Add mask to the output data. Default is True.
-    - **buffer** (float): Add buffer on each side of the tile (e.g 0.5 = 257x257, 1.0 = 258x258).
+    - **buffer** (float): Buffer on each side of the given tile. It must be a multiple of `0.5`. Output **tilesize** will be expanded to `tilesize + 2 * buffer` (e.g 0.5 = 257x257, 1.0 = 258x258).
+    - **padding** (int): Padding to apply to each tile edge. Helps reduce resampling artefacts along edges. Defaults to `0`
     - **pixel_selection** (str): Pixel selection method (https://cogeotiff.github.io/rio-tiler/mosaic/).
     - **scan_limit** (int): Return as soon as we scan N items, Default is 10,000 in PgSTAC.
     - **items_limit** (int): Return as soon as we have N items per geometry, Default is 100 in PgSTAC.
@@ -79,7 +81,8 @@ Example:
     - **asset_bidx** (array[str]): Per asset band math expression (e.g `Asset1|1;2;3`).
     - **nodata** (str, int, float): Overwrite internal Nodata value.
     - **unscale** (bool): Apply dataset internal Scale/Offset.
-    - **resampling** (str): rasterio resampling method. Default is `nearest`.
+    - **resampling** (str): RasterIO resampling algorithm. Defaults to `nearest`.
+    - **reproject** (str): WarpKernel resampling algorithm (only used when doing re-projection). Defaults to `nearest`.
     - **algorithm** (str): Custom algorithm name (e.g `hillshade`).
     - **algorithm_params** (str): JSON encoded algorithm parameters.
     - **rescale** (array[str]): Comma (',') delimited Min,Max range (e.g `rescale=0,1000`, `rescale=0,1000&rescale=0,3000&rescale=0,2000`).
@@ -87,7 +90,8 @@ Example:
     - **colormap** (str): JSON encoded custom Colormap.
     - **colormap_name** (str): rio-tiler color map name.
     - **return_mask** (bool): Add mask to the output data. Default is True.
-    - **buffer** (float): Add buffer on each side of the tile (e.g 0.5 = 257x257, 1.0 = 258x258).
+    - **buffer** (float): Buffer on each side of the given tile. It must be a multiple of `0.5`. Output **tilesize** will be expanded to `tilesize + 2 * buffer` (e.g 0.5 = 257x257, 1.0 = 258x258).
+    - **padding** (int): Padding to apply to each tile edge. Helps reduce resampling artefacts along edges. Defaults to `0`
     - **pixel_selection** (str): Pixel selection method (https://cogeotiff.github.io/rio-tiler/mosaic/).
     - **scan_limit** (int): Return as soon as we scan N items, Default is 10,000 in PgSTAC.
     - **items_limit** (int): Return as soon as we have N items per geometry, Default is 100 in PgSTAC.
@@ -192,7 +196,8 @@ Example:
     - **width** (int): Force image width from which to calculate statistics.
     - **nodata**: Overwrite internal Nodata value. OPTIONAL
     - **unscale** (bool): Apply dataset internal Scale/Offset.
-    - **resampling** (str): rasterio resampling method. Default is `nearest`.
+    - **resampling** (str): RasterIO resampling algorithm. Defaults to `nearest`.
+    - **reproject** (str): WarpKernel resampling algorithm (only used when doing re-projection). Defaults to `nearest`.
     - **algorithm** (str): Custom algorithm name (e.g `hillshade`).
     - **algorithm_params** (str): JSON encoded algorithm parameters.
     - **categorical** (bool): Return statistics for categorical dataset, default is false.
@@ -237,7 +242,8 @@ Example:
     - **max_size** (int): Max image size.
     - **nodata**: Overwrite internal Nodata value. OPTIONAL
     - **unscale** (bool): Apply dataset internal Scale/Offset.
-    - **resampling** (str): rasterio resampling method. Default is `nearest`.
+    - **resampling** (str): RasterIO resampling algorithm. Defaults to `nearest`.
+    - **reproject** (str): WarpKernel resampling algorithm (only used when doing re-projection). Defaults to `nearest`.
     - **algorithm** (str): Custom algorithm name (e.g `hillshade`).
     - **algorithm_params** (str): JSON encoded algorithm parameters.
     - **rescale** (array[str]): Comma (',') delimited Min,Max range (e.g `rescale=0,1000`, `rescale=0,1000&rescale=0,3000&rescale=0,2000`).
@@ -282,7 +288,8 @@ Example:
     - **max_size** (int): Max image size.
     - **nodata**: Overwrite internal Nodata value. OPTIONAL
     - **unscale** (bool): Apply dataset internal Scale/Offset.
-    - **resampling** (str): rasterio resampling method. Default is `nearest`.
+    - **resampling** (str): RasterIO resampling algorithm. Defaults to `nearest`.
+    - **reproject** (str): WarpKernel resampling algorithm (only used when doing re-projection). Defaults to `nearest`.
     - **algorithm** (str): Custom algorithm name (e.g `hillshade`).
     - **algorithm_params** (str): JSON encoded algorithm parameters.
     - **rescale** (array[str]): Comma (',') delimited Min,Max range (e.g `rescale=0,1000`, `rescale=0,1000&rescale=0,3000&rescale=0,2000`).
