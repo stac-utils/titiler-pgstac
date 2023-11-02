@@ -153,7 +153,7 @@
 
 ## 0.8.0 (2023-10-06)
 
-* update titiler requirement to `>=0.14.0,<0.15`
+* update titiler requirement to `>=0.15.0,<0.16`
 * remove `max_size` default for mosaic's `/statistics [POST]` endpoint  **breaking change**
 * add `/bbox` and `/feature [POST]` optional endpoints
 * add `img_part_dependency` attribute in `MosaicTilerFactory` (defaults to `titiler.code.dependencies.PartFeatureParams`)
