@@ -1,5 +1,9 @@
 # Release Notes
 
+## 1.0.0a3 (2023-11-03)
+
+* remove `reverse` option in `PGSTACBackend` mosaic backend. Reverse item order should be achieved with STAC search sortby.
+
 ## 1.0.0a2 (2023-11-02)
 
 * update titiler's dependency to `>=0.15.2,<0.16`
