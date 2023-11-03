@@ -1,17 +1,11 @@
 name: Publish docs via GitHub Pages
 
+# Only run on new tags
 on:
   push:
-    branches:
-      - main
-    paths:
-      # Only rebuild website when docs have changed
-      - 'README.md'
-      - 'CHANGES.md'
-      - 'CONTRIBUTING.md'
-      - 'docs/**'
-      - 'mkdocs.yml'
-      - '.github/workflows/deploy_mkdocs.yml'
+    tags:
+      - '*'
+  workflow_dispatch:
 
 jobs:
   build:
@@ -62,14 +56,6 @@ jobs:
         run: |
           git fetch origin gh-pages --depth=1
 
-      - name: Deploy documentation
-        if: ${{ github.ref_type == 'branch' }}
-        run: |
-          mike deploy --push --update-aliases latest --config-file docs/mkdocs.yml
-          mike set-default --push latest --config-file docs/mkdocs.yml
-
       - name: Deploy documentation and update alias for latest
-        if: startsWith(github.event.ref, 'refs/tags') || github.event_name == 'release'
         run: |
-          mike deploy --push --update-aliases ${{ steps.module.outputs.version}} latest --config-file docs/mkdocs.yml
-          mike set-default --push latest --config-file docs/mkdocs.yml
+          mike deploy ${{ steps.module.outputs.version}} latest --push --update-aliases --config-file docs/mkdocs.yml
