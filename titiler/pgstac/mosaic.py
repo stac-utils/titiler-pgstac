@@ -293,7 +293,6 @@ class PGSTACBackend(BaseBackend):
         tile_x: int,
         tile_y: int,
         tile_z: int,
-        reverse: bool = False,
         scan_limit: Optional[int] = None,
         items_limit: Optional[int] = None,
         time_limit: Optional[int] = None,
@@ -318,9 +317,6 @@ class PGSTACBackend(BaseBackend):
                 f"No assets found for tile {tile_z}-{tile_x}-{tile_y}"
             )
 
-        if reverse:
-            mosaic_assets = list(reversed(mosaic_assets))
-
         def _reader(
             item: Dict[str, Any], x: int, y: int, z: int, **kwargs: Any
         ) -> ImageData:
@@ -334,7 +330,6 @@ class PGSTACBackend(BaseBackend):
         lon: float,
         lat: float,
         coord_crs: CRS = WGS84_CRS,
-        reverse: bool = False,
         scan_limit: Optional[int] = None,
         items_limit: Optional[int] = None,
         time_limit: Optional[int] = None,
@@ -356,9 +351,6 @@ class PGSTACBackend(BaseBackend):
         if not mosaic_assets:
             raise NoAssetFoundError(f"No assets found for point ({lon},{lat})")
 
-        if reverse:
-            mosaic_assets = list(reversed(mosaic_assets))
-
         def _reader(
             item: Dict[str, Any],
             lon: float,
@@ -379,7 +371,6 @@ class PGSTACBackend(BaseBackend):
         bbox: BBox,
         dst_crs: Optional[CRS] = None,
         bounds_crs: CRS = WGS84_CRS,
-        reverse: bool = False,
         scan_limit: Optional[int] = None,
         items_limit: Optional[int] = None,
         time_limit: Optional[int] = None,
@@ -406,9 +397,6 @@ class PGSTACBackend(BaseBackend):
         if not mosaic_assets:
             raise NoAssetFoundError("No assets found for bbox input")
 
-        if reverse:
-            mosaic_assets = list(reversed(mosaic_assets))
-
         def _reader(item: Dict[str, Any], bbox: BBox, **kwargs: Any) -> ImageData:
             with self.reader(item, **self.reader_options) as src_dst:
                 return src_dst.part(bbox, **kwargs)
@@ -428,7 +416,6 @@ class PGSTACBackend(BaseBackend):
         dst_crs: Optional[CRS] = None,
         shape_crs: CRS = WGS84_CRS,
         max_size: int = 1024,
-        reverse: bool = False,
         scan_limit: Optional[int] = None,
         items_limit: Optional[int] = None,
         time_limit: Optional[int] = None,
@@ -456,9 +443,6 @@ class PGSTACBackend(BaseBackend):
 
         if not mosaic_assets:
             raise NoAssetFoundError("No assets found for Geometry")
-
-        if reverse:
-            mosaic_assets = list(reversed(mosaic_assets))
 
         def _reader(item: Dict[str, Any], shape: Dict, **kwargs: Any) -> ImageData:
             with self.reader(item, **self.reader_options) as src_dst:
