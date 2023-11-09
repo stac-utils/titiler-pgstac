@@ -1,5 +1,9 @@
 # Release Notes
 
+## 0.8.1 (2023-11-10)
+
+* add `algorithm` options for `/statistics [POST]` endpoints
+
 ## 0.8.0 (2023-10-06)
 
 * update titiler requirement to `>=0.14.0,<0.15`

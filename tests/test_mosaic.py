@@ -675,6 +675,23 @@ def test_statistics(rio, app, search_no_bbox, search_bbox):
     resp = response.json()
     assert resp["detail"] == "SearchId `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa` not found"
 
+    # with Algorithm
+    response = app.post(
+        f"/mosaic/{search_no_bbox}/statistics",
+        json=feat,
+        params={
+            "assets": "cog",
+            "max_size": 1024,
+            "algorithm": "normalizedIndex",
+            "asset_bidx": "cog|1,2",
+        },
+    )
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "application/geo+json"
+    resp = response.json()
+    stats = resp["features"][0]["properties"]["statistics"]
+    assert "(cog_b2 - cog_b1) / (cog_b2 + cog_b1)" in stats
+
 
 def test_mosaic_list(app):
     """Test list mosaic."""
