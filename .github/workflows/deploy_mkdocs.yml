@@ -1,16 +1,11 @@
 name: Publish docs via GitHub Pages
 
+# Only run on new tags
 on:
   push:
-    branches:
-      - main
-    paths:
-      # Only rebuild website when docs have changed
-      - 'README.md'
-      - 'CHANGES.md'
-      - 'CONTRIBUTING.md'
-      - 'docs/**'
-      - 'mkdocs.yml'
+    tags:
+      - '*'
+  workflow_dispatch:
 
 jobs:
   build:
@@ -28,8 +23,39 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install .
-          python -m pip install nbconvert==6.5.3 mkdocs mkdocs-material mkdocs-jupyter pygments pdocs
+          python -m pip install -e ".[psycopg-binary]"
+          python -m pip install nbconvert==6.5.3 mkdocs mkdocs-material mkdocs-jupyter pygments pdocs mike~=2.0
 
-      - name: Deploy docs
-        run: mkdocs gh-deploy -f docs/mkdocs.yml --force
+      - name: update API docs
+        run: |
+          pdocs as_markdown \
+            --output_dir docs/src/api \
+            --exclude_source \
+            --overwrite \
+            titiler.pgstac.db \
+            titiler.pgstac.dependencies \
+            titiler.pgstac.extensions \
+            titiler.pgstac.factory \
+            titiler.pgstac.model \
+            titiler.pgstac.mosaic \
+            titiler.pgstac.reader \
+            titiler.pgstac.settings \
+            titiler.pgstac.utils
+
+      - name: Set module version
+        id: module
+        run: |
+          echo version=$(python -c'import titiler.pgstac; print(titiler.pgstac.__version__)') >> $GITHUB_OUTPUT
+
+      - name: Configure Git user
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+
+      - name: Fetch gh-pages repository
+        run: |
+          git fetch origin gh-pages --depth=1
+
+      - name: Deploy documentation and update alias for latest
+        run: |
+          mike deploy ${{ steps.module.outputs.version}} latest --push --update-aliases --config-file docs/mkdocs.yml
