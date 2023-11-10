@@ -1,5 +1,9 @@
 # Release Notes
 
+## 1.0.0a4 (2023-11-10)
+
+* add `algorithm` options for `/statistics [POST]` endpoints (back-ported from 0.8.1)
+
 ## 1.0.0a3 (2023-11-03)
 
 * remove `reverse` option in `PGSTACBackend` mosaic backend. Reverse item order should be achieved with STAC search sortby.
@@ -154,6 +158,10 @@
     # add /list endpoint
     add_search_list_route(app)
     ```
+
+## 0.8.1 (2023-11-10)
+
+* add `algorithm` options for `/statistics [POST]` endpoints
 
 ## 0.8.0 (2023-10-06)
 
