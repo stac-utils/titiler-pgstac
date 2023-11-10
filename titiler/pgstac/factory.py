@@ -693,6 +693,7 @@ class MosaicTilerFactory(BaseTilerFactory):
             dataset_params=Depends(self.dataset_dependency),
             image_params=Depends(self.img_part_dependency),
             pixel_selection=Depends(self.pixel_selection_dependency),
+            post_process=Depends(self.process_dependency),
             stats_params=Depends(self.stats_dependency),
             histogram_params=Depends(self.histogram_dependency),
             pgstac_params=Depends(self.pgstac_dependency),
@@ -714,7 +715,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                     for feature in fc:
                         shape = feature.model_dump(exclude_none=True)
 
-                        data, _ = src_dst.feature(
+                        image, _ = src_dst.feature(
                             shape,
                             shape_crs=coord_crs or WGS84_CRS,
                             dst_crs=dst_crs,
@@ -726,12 +727,15 @@ class MosaicTilerFactory(BaseTilerFactory):
                             **pgstac_params,
                         )
 
-                        coverage_array = data.get_coverage_array(
+                        coverage_array = image.get_coverage_array(
                             shape,
                             shape_crs=coord_crs or WGS84_CRS,
                         )
 
-                        stats = data.statistics(
+                        if post_process:
+                            image = post_process(image)
+
+                        stats = image.statistics(
                             **stats_params,
                             hist_options={**histogram_params},
                             coverage=coverage_array,
