@@ -34,7 +34,6 @@ jobs:
             --overwrite \
             titiler.pgstac.db \
             titiler.pgstac.dependencies \
-            titiler.pgstac.extensions \
             titiler.pgstac.factory \
             titiler.pgstac.model \
             titiler.pgstac.mosaic \
@@ -56,6 +55,6 @@ jobs:
         run: |
           git fetch origin gh-pages --depth=1
 
-      - name: Deploy documentation and update alias for latest
+      - name: Deploy documentation
         run: |
-          mike deploy ${{ steps.module.outputs.version}} latest --push --update-aliases --config-file docs/mkdocs.yml
+          mike deploy ${{ steps.module.outputs.version}} --push --update-aliases --config-file docs/mkdocs.yml
