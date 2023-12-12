@@ -1,5 +1,9 @@
 # Release Notes
 
+## 1.0.0 (2023-12-12)
+
+* no change since `1.0.0a4`
+
 ## 1.0.0a4 (2023-11-10)
 
 * add `algorithm` options for `/statistics [POST]` endpoints (back-ported from 0.8.1)
