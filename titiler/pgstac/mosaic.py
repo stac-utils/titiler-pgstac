@@ -23,7 +23,7 @@ from rio_tiler.io import Reader
 from rio_tiler.io.base import BaseReader, MultiBaseReader
 from rio_tiler.models import ImageData
 from rio_tiler.mosaic import mosaic_reader
-from rio_tiler.tasks import multi_values
+from rio_tiler.tasks import create_tasks, filter_tasks
 from rio_tiler.types import AssetInfo, BBox
 
 from titiler.pgstac.settings import CacheSettings, RetrySettings
@@ -355,7 +355,7 @@ class PGSTACBackend(BaseBackend):
             item: Dict[str, Any],
             lon: float,
             lat: float,
-            coord_crs=coord_crs,
+            coord_crs: CRS = coord_crs,
             **kwargs: Any,
         ) -> Dict:
             with self.reader(item, **self.reader_options) as src_dst:
@@ -364,7 +364,9 @@ class PGSTACBackend(BaseBackend):
         if "allowed_exceptions" not in kwargs:
             kwargs.update({"allowed_exceptions": (PointOutsideBounds,)})
 
-        return list(multi_values(mosaic_assets, _reader, lon, lat, **kwargs).items())
+        tasks = create_tasks(_reader, mosaic_assets, lon=lon, lat=lat, coord_crs=coord_crs, **kwargs)
+
+        return [val for val, _ in filter_tasks(tasks)]
 
     def part(
         self,
