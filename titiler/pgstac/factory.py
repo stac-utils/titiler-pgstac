@@ -436,7 +436,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                     "request": request,
                     "tilejson_endpoint": tilejson_url,
                     "tms": tms,
-                    "resolutions": [tms._resolution(matrix) for matrix in tms],
+                    "resolutions": [matrix.cellSize for matrix in tms],
                 },
                 media_type="text/html",
             )
