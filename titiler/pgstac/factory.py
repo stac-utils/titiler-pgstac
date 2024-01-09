@@ -54,7 +54,6 @@ from titiler.core.resources.enums import ImageType, MediaType, OptionalHeader
 from titiler.core.resources.responses import GeoJSONResponse, JSONResponse, XMLResponse
 from titiler.core.utils import render_image
 from titiler.mosaic.factory import PixelSelectionParams
-from titiler.mosaic.models.responses import Point
 from titiler.pgstac import model
 from titiler.pgstac.dependencies import (
     BackendParams,

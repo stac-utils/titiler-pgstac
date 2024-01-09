@@ -364,7 +364,9 @@ class PGSTACBackend(BaseBackend):
         if "allowed_exceptions" not in kwargs:
             kwargs.update({"allowed_exceptions": (PointOutsideBounds,)})
 
-        tasks = create_tasks(_reader, mosaic_assets, lon=lon, lat=lat, coord_crs=coord_crs, **kwargs)
+        tasks = create_tasks(
+            _reader, mosaic_assets, lon=lon, lat=lat, coord_crs=coord_crs, **kwargs
+        )
 
         return [val for val, _ in filter_tasks(tasks)]
 
