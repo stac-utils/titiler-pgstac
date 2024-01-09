@@ -75,15 +75,15 @@ def _first_value(values: List[Any], default: Any = None):
     return next(filter(lambda x: x is not None, values), default)
 
 
-DEFAULT_TEMPLATES = Jinja2Templates(
-    directory="",
+jinja2_env = jinja2.Environment(
     loader=jinja2.ChoiceLoader(
         [
             jinja2.PackageLoader(__package__, "templates"),
             jinja2.PackageLoader("titiler.core", "templates"),
         ]
     ),
-)  # type:ignore
+)
+DEFAULT_TEMPLATES = Jinja2Templates(env=jinja2_env)
 
 
 def check_query_params(
