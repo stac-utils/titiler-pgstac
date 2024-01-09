@@ -27,8 +27,8 @@ classifiers = [
     "Topic :: Scientific/Engineering :: GIS",
 ]
 dependencies = [
-    "titiler.core>=0.15.2,<0.16",
-    "titiler.mosaic>=0.15.2,<0.16",
+    "titiler.core>=0.16.0,<0.17",
+    "titiler.mosaic>=0.16.0,<0.17",
     "geojson-pydantic~=1.0",
     "pydantic>=2.4,<3.0",
     "pydantic-settings~=2.0",
