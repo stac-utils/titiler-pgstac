@@ -54,6 +54,7 @@ from titiler.core.resources.enums import ImageType, MediaType, OptionalHeader
 from titiler.core.resources.responses import GeoJSONResponse, JSONResponse, XMLResponse
 from titiler.core.utils import render_image
 from titiler.mosaic.factory import PixelSelectionParams
+from titiler.mosaic.models.responses import Point
 from titiler.pgstac import model
 from titiler.pgstac.dependencies import (
     BackendParams,
@@ -906,7 +907,7 @@ class MosaicTilerFactory(BaseTilerFactory):
 
         @self.router.get(
             "/{lon},{lat}/values",
-            response_model=model.Point,
+            response_model=Point,
             response_class=JSONResponse,
             responses={200: {"description": "Return a value for a point"}},
         )
@@ -944,7 +945,7 @@ class MosaicTilerFactory(BaseTilerFactory):
             return {
                 "coordinates": [lon, lat],
                 "values": [
-                    (val.assets, val.data.tolist(), val.band_names) for val in values
+                    (src, pts.data.tolist(), pts.band_names) for src, pts in values
                 ],
             }
 

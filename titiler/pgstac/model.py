@@ -5,7 +5,7 @@ Note: This is mostly a copy of https://github.com/stac-utils/stac-fastapi/blob/m
 """
 
 from datetime import datetime
-from typing import Any, Dict, List, Literal, Optional, Tuple
+from typing import Any, Dict, List, Literal, Optional
 
 from geojson_pydantic.geometries import Geometry
 from geojson_pydantic.types import BBox
@@ -210,15 +210,3 @@ class Infos(BaseModel):
     searches: List[Info]
     links: Optional[List[Link]] = None
     context: Context
-
-
-class Point(BaseModel):
-    """
-    Point model.
-
-    response model for `/{lon}/{lat}/values` endpoint
-
-    """
-
-    coordinates: List[float]
-    values: List[Tuple[List[str], List[float], List[str]]]

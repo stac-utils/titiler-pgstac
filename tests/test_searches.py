@@ -982,9 +982,7 @@ def test_query_point_searches(app, search_no_bbox, search_bbox):
 
     values = resp["values"]
     assert len(values) == 2
-    assert values[0][0] == [
-        "https://noaa-eri-pds.s3.us-east-1.amazonaws.com/2020_Nashville_Tornado/20200307a_RGB/20200307aC0853130w361030n.tif"
-    ]
+    assert values[0][0] == "noaa-emergency-response/20200307aC0853130w361030"
     assert values[0][2] == ["cog_b1", "cog_b2", "cog_b3"]
 
     # with coord-crs
