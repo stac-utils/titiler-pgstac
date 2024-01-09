@@ -1,5 +1,9 @@
 # Release Notes
 
+## unreleased
+
+* use morecantile `TileMatrixSet.cellSize` property instead of deprecated/private `TileMatrixSet._resolution` method (author @hrodmn, https://github.com/stac-utils/titiler-pgstac/pull/148)
+
 ## 1.0.0 (2023-12-12)
 
 * no change since `1.0.0a4`
