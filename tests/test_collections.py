@@ -473,7 +473,7 @@ def test_bbox_collection(rio, app):
 def test_query_point_collections(app):
     """Get values for a Point."""
     response = app.get(
-        f"/collections/{collection_id}/-85.5,36.1624/values", params={"assets": "cog"}
+        f"/collections/{collection_id}/point/-85.5,36.1624", params={"assets": "cog"}
     )
 
     assert response.status_code == 200
@@ -486,7 +486,7 @@ def test_query_point_collections(app):
 
     # with coord-crs
     response = app.get(
-        f"/collections/{collection_id}/-9517816.46282489,4322990.432036275/values",
+        f"/collections/{collection_id}/point/-9517816.46282489,4322990.432036275",
         params={"assets": "cog", "coord_crs": "epsg:3857"},
     )
     assert response.status_code == 200
@@ -495,7 +495,7 @@ def test_query_point_collections(app):
 
     # CollectionId not found
     response = app.get(
-        "/collections/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/-85.5,36.1624/values",
+        "/collections/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/point/-85.5,36.1624",
         params={"assets": "cog"},
     )
     assert response.status_code == 404
@@ -504,7 +504,7 @@ def test_query_point_collections(app):
 
     # at a point with no assets
     response = app.get(
-        f"/collections/{collection_id}/-86.0,-35.0/values", params={"assets": "cog"}
+        f"/collections/{collection_id}/point/-86.0,-35.0", params={"assets": "cog"}
     )
 
     assert response.status_code == 204  # (no content)
