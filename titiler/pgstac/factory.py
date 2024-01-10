@@ -51,9 +51,10 @@ from titiler.core.factory import BaseTilerFactory, img_endpoint_params
 from titiler.core.models.mapbox import TileJSON
 from titiler.core.models.responses import MultiBaseStatisticsGeoJSON
 from titiler.core.resources.enums import ImageType, MediaType, OptionalHeader
-from titiler.core.resources.responses import GeoJSONResponse, XMLResponse
+from titiler.core.resources.responses import GeoJSONResponse, JSONResponse, XMLResponse
 from titiler.core.utils import render_image
 from titiler.mosaic.factory import PixelSelectionParams
+from titiler.mosaic.models.responses import Point
 from titiler.pgstac import model
 from titiler.pgstac.dependencies import (
     BackendParams,
@@ -150,6 +151,7 @@ class MosaicTilerFactory(BaseTilerFactory):
         self._tiles_routes()
         self._tilejson_routes()
         self._wmts_routes()
+        self._point_routes()
 
         if self.add_part:
             self._part_routes()
@@ -220,7 +222,6 @@ class MosaicTilerFactory(BaseTilerFactory):
                     reader_options={**reader_params},
                     **backend_params,
                 ) as src_dst:
-
                     if MOSAIC_STRICT_ZOOM and (
                         tile.z < src_dst.minzoom or tile.z > src_dst.maxzoom
                     ):
@@ -900,6 +901,53 @@ class MosaicTilerFactory(BaseTilerFactory):
                 headers["X-Assets"] = ",".join(ids)
 
             return Response(content, media_type=media_type, headers=headers)
+
+    def _point_routes(self):
+        """Register point values endpoint."""
+
+        @self.router.get(
+            "/{lon},{lat}/values",
+            response_model=Point,
+            response_class=JSONResponse,
+            responses={200: {"description": "Return a value for a point"}},
+        )
+        def point(
+            lon: Annotated[float, Path(description="Longitude")],
+            lat: Annotated[float, Path(description="Latitude")],
+            search_id=Depends(self.path_dependency),
+            coord_crs=Depends(CoordCRSParams),
+            layer_params=Depends(self.layer_dependency),
+            dataset_params=Depends(self.dataset_dependency),
+            pgstac_params=Depends(self.pgstac_dependency),
+            backend_params=Depends(self.backend_dependency),
+            reader_params=Depends(self.reader_dependency),
+            env=Depends(self.environment_dependency),
+        ):
+            """Get Point value for a Mosaic."""
+            threads = int(os.getenv("MOSAIC_CONCURRENCY", MAX_THREADS))
+
+            with rasterio.Env(**env):
+                with self.reader(
+                    search_id,
+                    reader_options={**reader_params},
+                    **backend_params,
+                ) as src_dst:
+                    values = src_dst.point(
+                        lon,
+                        lat,
+                        coord_crs=coord_crs or WGS84_CRS,
+                        threads=threads,
+                        **layer_params,
+                        **dataset_params,
+                        **pgstac_params,
+                    )
+
+            return {
+                "coordinates": [lon, lat],
+                "values": [
+                    (src, pts.data.tolist(), pts.band_names) for src, pts in values
+                ],
+            }
 
 
 def add_search_register_route(

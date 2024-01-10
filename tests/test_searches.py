@@ -969,3 +969,43 @@ def test_bbox(rio, app, search_no_bbox):
     assert response.headers["content-type"] == "image/tiff; application=geotiff"
     meta = parse_img(response.content)
     assert meta["crs"] == "epsg:3857"
+
+
+def test_query_point_searches(app, search_no_bbox, search_bbox):
+    """Test getting values for a Point."""
+    response = app.get(
+        f"/searches/{search_no_bbox}/-85.5,36.1624/values", params={"assets": "cog"}
+    )
+
+    assert response.status_code == 200
+    resp = response.json()
+
+    values = resp["values"]
+    assert len(values) == 2
+    assert values[0][0] == "noaa-emergency-response/20200307aC0853130w361030"
+    assert values[0][2] == ["cog_b1", "cog_b2", "cog_b3"]
+
+    # with coord-crs
+    response = app.get(
+        f"/searches/{search_no_bbox}/-9517816.46282489,4322990.432036275/values",
+        params={"assets": "cog", "coord_crs": "epsg:3857"},
+    )
+    assert response.status_code == 200
+    resp = response.json()
+    assert len(resp["values"]) == 2
+
+    # SearchId not found
+    response = app.get(
+        "/searches/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/-85.5,36.1624/values",
+        params={"assets": "cog"},
+    )
+    assert response.status_code == 404
+    resp = response.json()
+    assert resp["detail"] == "SearchId `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa` not found"
+
+    # outside of searchid bbox
+    response = app.get(
+        f"/searches/{search_bbox}/-86.0,35.0/values", params={"assets": "cog"}
+    )
+
+    assert response.status_code == 204  # (no content)

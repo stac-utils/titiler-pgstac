@@ -1,7 +1,7 @@
 """TiTiler.PgSTAC custom Mosaic Backend and Custom STACReader."""
 
 import json
-from typing import Any, Dict, List, Optional, Tuple, Type
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Type
 
 import attr
 import rasterio
@@ -17,13 +17,13 @@ from psycopg import errors as pgErrors
 from psycopg_pool import ConnectionPool
 from rasterio.crs import CRS
 from rasterio.warp import transform, transform_bounds, transform_geom
-from rio_tiler.constants import WEB_MERCATOR_TMS, WGS84_CRS
+from rio_tiler.constants import MAX_THREADS, WEB_MERCATOR_TMS, WGS84_CRS
 from rio_tiler.errors import InvalidAssetName, PointOutsideBounds
 from rio_tiler.io import Reader
 from rio_tiler.io.base import BaseReader, MultiBaseReader
-from rio_tiler.models import ImageData
+from rio_tiler.models import ImageData, PointData
 from rio_tiler.mosaic import mosaic_reader
-from rio_tiler.tasks import multi_values
+from rio_tiler.tasks import create_tasks, filter_tasks
 from rio_tiler.types import AssetInfo, BBox
 
 from titiler.pgstac.settings import CacheSettings, RetrySettings
@@ -31,6 +31,30 @@ from titiler.pgstac.utils import retry
 
 cache_config = CacheSettings()
 retry_config = RetrySettings()
+
+
+def multi_points_pgstac(
+    asset_list: Sequence[Dict[str, Any]],
+    reader: Callable[..., PointData],
+    *args: Any,
+    threads: int = MAX_THREADS,
+    allowed_exceptions: Optional[Tuple] = None,
+    **kwargs: Any,
+) -> Dict:
+    """Merge values returned from tasks.
+
+    Custom version of `rio_tiler.task.multi_values` which
+    use constructed `item_id` as dict key.
+
+    """
+    tasks = create_tasks(reader, asset_list, threads, *args, **kwargs)
+
+    out: Dict[str, Any] = {}
+    for val, asset in filter_tasks(tasks, allowed_exceptions=allowed_exceptions):
+        item_id = f"{asset['collection']}/{asset['id']}"
+        out[item_id] = val
+
+    return out
 
 
 @attr.s
@@ -355,16 +379,18 @@ class PGSTACBackend(BaseBackend):
             item: Dict[str, Any],
             lon: float,
             lat: float,
-            coord_crs=coord_crs,
+            coord_crs: CRS = coord_crs,
             **kwargs: Any,
-        ) -> Dict:
+        ) -> PointData:
             with self.reader(item, **self.reader_options) as src_dst:
                 return src_dst.point(lon, lat, coord_crs=coord_crs, **kwargs)
 
         if "allowed_exceptions" not in kwargs:
             kwargs.update({"allowed_exceptions": (PointOutsideBounds,)})
 
-        return list(multi_values(mosaic_assets, _reader, lon, lat, **kwargs).items())
+        return list(
+            multi_points_pgstac(mosaic_assets, _reader, lon, lat, **kwargs).items()
+        )
 
     def part(
         self,

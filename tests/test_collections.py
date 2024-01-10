@@ -468,3 +468,43 @@ def test_bbox_collection(rio, app):
     assert response.headers["content-type"] == "image/tiff; application=geotiff"
     meta = parse_img(response.content)
     assert meta["crs"] == "epsg:3857"
+
+
+def test_query_point_collections(app):
+    """Get values for a Point."""
+    response = app.get(
+        f"/collections/{collection_id}/-85.5,36.1624/values", params={"assets": "cog"}
+    )
+
+    assert response.status_code == 200
+    resp = response.json()
+    values = resp["values"]
+    assert len(values) == 2
+    assert values[0][0] == "noaa-emergency-response/20200307aC0853130w361030"
+    assert values[0][2] == ["cog_b1", "cog_b2", "cog_b3"]
+    assert values[1][0] == "noaa-emergency-response/20200307aC0853000w361030"
+
+    # with coord-crs
+    response = app.get(
+        f"/collections/{collection_id}/-9517816.46282489,4322990.432036275/values",
+        params={"assets": "cog", "coord_crs": "epsg:3857"},
+    )
+    assert response.status_code == 200
+    resp = response.json()
+    assert len(resp["values"]) == 2
+
+    # CollectionId not found
+    response = app.get(
+        "/collections/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/-85.5,36.1624/values",
+        params={"assets": "cog"},
+    )
+    assert response.status_code == 404
+    resp = response.json()
+    assert resp["detail"] == "CollectionId `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa` not found"
+
+    # at a point with no assets
+    response = app.get(
+        f"/collections/{collection_id}/-86.0,-35.0/values", params={"assets": "cog"}
+    )
+
+    assert response.status_code == 204  # (no content)
