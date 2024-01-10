@@ -13,6 +13,7 @@
 | `POST` | `/collections/{collection_id}/statistics`                                                  | GeoJSON ([Statistics][statitics_model]) | Return statistics for geojson features
 | `GET`  | `/collections/{collection_id}/bbox/{minx},{miny},{maxx},{maxy}[/{width}x{height}].{format}`| image/bin                               | Create an image from part of a dataset
 | `POST` | `/collections/{collection_id}/feature[/{width}x{height}][.{format}]`                       | image/bin                               | Create an image from a GeoJSON feature
+| `GET`  | `/searches/{search_id}/point/{lon},{lat}`                                           | JSON ([Point][point_model])             | Return pixel values from assets intersecting with a given point
 
 ### Tiles
 
@@ -31,7 +32,7 @@
     - **assets** (array[str]): asset names.
     - **expression** (str): rio-tiler's math expression with asset names (e.g `Asset1_b1/Asset2_b1`).
     - **asset_as_band** (bool): tell rio-tiler that each asset is a 1 band dataset, so expression `Asset1/Asset2` can be passed.
-    - **asset_bidx** (array[str]): Per asset band math expression (e.g `Asset1|1;2;3`).
+    - **asset_bidx** (array[str]): Per asset band index (e.g `Asset1|1;2;3`).
     - **nodata**: Overwrite internal Nodata value. OPTIONAL
     - **unscale** (bool): Apply dataset internal Scale/Offset.
     - **resampling** (str): RasterIO resampling algorithm. Defaults to `nearest`.
@@ -77,7 +78,7 @@ Example:
     - **maxzoom**: Overwrite default maxzoom. OPTIONAL
     - **expression** (str): rio-tiler's math expression with asset names (e.g `Asset1_b1/Asset2_b1`).
     - **asset_as_band** (bool): tell rio-tiler that each asset is a 1 band dataset, so expression `Asset1/Asset2` can be passed.
-    - **asset_bidx** (array[str]): Per asset band math expression (e.g `Asset1|1;2;3`).
+    - **asset_bidx** (array[str]): Per asset band index (e.g `Asset1|1;2;3`).
     - **nodata** (str, int, float): Overwrite internal Nodata value.
     - **unscale** (bool): Apply dataset internal Scale/Offset.
     - **resampling** (str): RasterIO resampling algorithm. Defaults to `nearest`.
@@ -187,7 +188,7 @@ Example:
     - **assets** (array[str]): asset names.
     - **expression** (str): rio-tiler's math expression with asset names (e.g `Asset1_b1/Asset2_b1`).
     - **asset_as_band** (bool): tell rio-tiler that each asset is a 1 band dataset, so expression `Asset1/Asset2` can be passed.
-    - **asset_bidx** (array[str]): Per asset band math expression (e.g `Asset1|1;2;3`).
+    - **asset_bidx** (array[str]): Per asset band index (e.g `Asset1|1;2;3`).
     - **coord_crs** (str): Coordinate Reference System of the input geometry. Default to `epsg:4326`.
     - **dst_crs** (str): Output Coordinate Reference System. Default to `coord_crs`.
     - **max_size** (int): Max image size from which to calculate statistics.
@@ -235,7 +236,7 @@ Example:
     - **assets** (array[str]): asset names.
     - **expression** (str): rio-tiler's math expression with asset names (e.g `Asset1_b1/Asset2_b1`).
     - **asset_as_band** (bool): tell rio-tiler that each asset is a 1 band dataset, so expression `Asset1/Asset2` can be passed.
-    - **asset_bidx** (array[str]): Per asset band math expression (e.g `Asset1|1;2;3`).
+    - **asset_bidx** (array[str]): Per asset band index (e.g `Asset1|1;2;3`).
     - **coord_crs** (str): Coordinate Reference System of the input coordinates. Default to `epsg:4326`.
     - **dst_crs** (str): Output Coordinate Reference System. Default to `coord_crs`.
     - **max_size** (int): Max image size.
@@ -281,7 +282,7 @@ Example:
     - **assets** (array[str]): asset names.
     - **expression** (str): rio-tiler's math expression with asset names (e.g `Asset1_b1/Asset2_b1`).
     - **asset_as_band** (bool): tell rio-tiler that each asset is a 1 band dataset, so expression `Asset1/Asset2` can be passed.
-    - **asset_bidx** (array[str]): Per asset band math expression (e.g `Asset1|1;2;3`).
+    - **asset_bidx** (array[str]): Per asset band index (e.g `Asset1|1;2;3`).
     - **coord_crs** (str): Coordinate Reference System of the input geometry. Default to `epsg:4326`.
     - **dst_crs** (str): Output Coordinate Reference System. Default to `coord_crs`.
     - **max_size** (int): Max image size.
@@ -313,5 +314,39 @@ Example:
 - `https://myendpoint/collections/my-collection/feature/100x100.png?assets=B01`
 
 
+### Point
+
+`:endpoint:/collections/{collection_id}/point/{lon},{lat}`
+
+- PathParams:
+    - **collection_id**: STAC Collection Identifier.
+    - **lon**: Longitude (in `coord-crs`, defaults to `WGS84`).
+    - **lat**: Latitude (in `coord-crs`, defaults to `WGS84`).
+
+- QueryParams:
+    - **assets** (array[str]): asset names.
+    - **expression** (str): rio-tiler's math expression with asset names (e.g `Asset1_b1/Asset2_b1`).
+    - **asset_as_band** (bool): tell rio-tiler that each asset is a 1 band dataset, so expression `Asset1/Asset2` can be passed.
+    - **asset_bidx** (array[str]): Per asset band index (e.g `Asset1|1;2;3`).
+    - **coord_crs** (str): Coordinate Reference System of the input geometry. Default to `epsg:4326`.
+    - **nodata** (str, int, float): Overwrite internal Nodata value.
+    - **unscale** (bool): Apply dataset internal Scale/Offset.
+    - **resampling** (str): RasterIO resampling algorithm. Defaults to `nearest`.
+    - **reproject** (str): WarpKernel resampling algorithm (only used when doing re-projection). Defaults to `nearest`.
+    - **scan_limit** (int): Return as soon as we scan N items, Default is 10,000 in PgSTAC.
+    - **items_limit** (int): Return as soon as we have N items per geometry, Default is 100 in PgSTAC.
+    - **time_limit** (int): Return after N seconds to avoid long requests, Default is 5sec in PgSTAC.
+    - **exitwhenfull** (bool): Return as soon as the geometry is fully covered, Default is `True` in PgSTAC.
+    - **skipcovered** (bool): Skip any items that would show up completely under the previous items, Default is `True` in PgSTAC.
+
+!!! important
+    **assets** OR **expression** is required
+
+Example:
+
+- `https://myendpoint/collections/my-collection/point/0,0?assets=B01`
+
+
 [tilejson_model]: https://github.com/developmentseed/titiler/blob/2335048a407f17127099cbbc6c14e1328852d619/src/titiler/core/titiler/core/models/mapbox.py#L16-L38
 [statitics_model]: https://github.com/developmentseed/titiler/blob/17cdff2f0ddf08dbd9a47c2140b13c4bbcc30b6d/src/titiler/core/titiler/core/models/responses.py#L49-L52
+[point_model]: https://github.com/developmentseed/titiler/blob/e396959e7f818909a5494301a809b5f795aa202e/src/titiler/mosaic/titiler/mosaic/models/responses.py#L8-L17

@@ -2,7 +2,9 @@
 
 ## unreleased
 
+* update titiler requirement to `>=0.16.0,<0.17`
 * use morecantile `TileMatrixSet.cellSize` property instead of deprecated/private `TileMatrixSet._resolution` method (author @hrodmn, https://github.com/stac-utils/titiler-pgstac/pull/148)
+* add `/point/{lon},{lat}` endpoint in `MosaicTilerFactory` (co-author @hrodmn, https://github.com/stac-utils/titiler-pgstac/pull/150)
 
 ## 1.0.0 (2023-12-12)
 
