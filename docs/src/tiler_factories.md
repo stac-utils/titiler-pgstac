@@ -49,6 +49,7 @@ app.include_router(mosaic.router)
 | `POST` | `/statistics`                                                  | GeoJSON ([Statistics][statitics_model]) | Return statistics for geojson features **OPTIONAL**
 | `GET`  | `/bbox/{minx},{miny},{maxx},{maxy}[/{width}x{height}].{format}`| image/bin                               | Create an image from part of a dataset **OPTIONAL**
 | `POST` | `/feature[/{width}x{height}][.{format}]`                       | image/bin                               | Create an image from a GeoJSON feature **OPTIONAL**
+| `GET`  | `/point/{lon}x{lat}`                                           | JSON ([Point][point_model])             | Return pixel values from assets intersecting with a given point
 
 ### Extensions
 
@@ -131,3 +132,4 @@ app.include_router(item.router, prefix="/collections/{collection_id}/items/{item
 [infos_model]: https://github.com/stac-utils/titiler-pgstac/blob/4f569fee1946f853be9b9149cb4dd2fd5c62b110/titiler/pgstac/model.py#L260-L265
 [register_model]: https://github.com/stac-utils/titiler-pgstac/blob/047315da8851a974660032ca45f219db2c3a8d54/titiler/pgstac/model.py#L229-L233
 [statitics_model]: https://github.com/developmentseed/titiler/blob/17cdff2f0ddf08dbd9a47c2140b13c4bbcc30b6d/src/titiler/core/titiler/core/models/responses.py#L49-L52
+[point_model]: https://github.com/developmentseed/titiler/blob/e396959e7f818909a5494301a809b5f795aa202e/src/titiler/mosaic/titiler/mosaic/models/responses.py#L8-L17
