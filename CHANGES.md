@@ -1,6 +1,6 @@
 # Release Notes
 
-## unreleased
+## 1.1.0 (2024-01-10)
 
 * update titiler requirement to `>=0.16.0,<0.17`
 * use morecantile `TileMatrixSet.cellSize` property instead of deprecated/private `TileMatrixSet._resolution` method (author @hrodmn, https://github.com/stac-utils/titiler-pgstac/pull/148)
