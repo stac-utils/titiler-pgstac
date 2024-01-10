@@ -906,7 +906,7 @@ class MosaicTilerFactory(BaseTilerFactory):
         """Register point values endpoint."""
 
         @self.router.get(
-            "/{lon},{lat}/values",
+            "/point/{lon},{lat}",
             response_model=Point,
             response_class=JSONResponse,
             responses={200: {"description": "Return a value for a point"}},

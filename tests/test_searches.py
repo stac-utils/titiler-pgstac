@@ -974,7 +974,7 @@ def test_bbox(rio, app, search_no_bbox):
 def test_query_point_searches(app, search_no_bbox, search_bbox):
     """Test getting values for a Point."""
     response = app.get(
-        f"/searches/{search_no_bbox}/-85.5,36.1624/values", params={"assets": "cog"}
+        f"/searches/{search_no_bbox}/point/-85.5,36.1624", params={"assets": "cog"}
     )
 
     assert response.status_code == 200
@@ -987,7 +987,7 @@ def test_query_point_searches(app, search_no_bbox, search_bbox):
 
     # with coord-crs
     response = app.get(
-        f"/searches/{search_no_bbox}/-9517816.46282489,4322990.432036275/values",
+        f"/searches/{search_no_bbox}/point/-9517816.46282489,4322990.432036275",
         params={"assets": "cog", "coord_crs": "epsg:3857"},
     )
     assert response.status_code == 200
@@ -996,7 +996,7 @@ def test_query_point_searches(app, search_no_bbox, search_bbox):
 
     # SearchId not found
     response = app.get(
-        "/searches/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/-85.5,36.1624/values",
+        "/searches/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/point/-85.5,36.1624",
         params={"assets": "cog"},
     )
     assert response.status_code == 404
@@ -1005,7 +1005,7 @@ def test_query_point_searches(app, search_no_bbox, search_bbox):
 
     # outside of searchid bbox
     response = app.get(
-        f"/searches/{search_bbox}/-86.0,35.0/values", params={"assets": "cog"}
+        f"/searches/{search_bbox}/point/-86.0,35.0", params={"assets": "cog"}
     )
 
     assert response.status_code == 204  # (no content)
