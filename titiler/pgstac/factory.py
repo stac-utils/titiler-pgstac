@@ -677,7 +677,7 @@ class MosaicTilerFactory(BaseTilerFactory):
             response_class=GeoJSONResponse,
             responses={
                 200: {
-                    "content": {"application/json": {}},
+                    "content": {"application/geo+json": {}},
                     "description": "Return statistics for geojson features.",
                 }
             },
@@ -722,6 +722,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                             dst_crs=dst_crs,
                             pixel_selection=pixel_selection,
                             threads=MOSAIC_THREADS,
+                            align_bounds_with_dataset=True,
                             **image_params,
                             **layer_params,
                             **dataset_params,
