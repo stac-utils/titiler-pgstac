@@ -1,5 +1,10 @@
 # Release Notes
 
+## 1.2.0 (2024-01-17)
+
+* update titiler requirement to `>=0.17.0,<0.18`
+* use new `align_bounds_with_dataset=True` rio-tiler option in GeoJSON statistics methods for more precise calculation
+
 ## 1.1.0 (2024-01-10)
 
 * update titiler requirement to `>=0.16.0,<0.17`
