@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1705490990686,
+  "lastUpdate": 1705686568337,
   "repoUrl": "https://github.com/stac-utils/titiler-pgstac",
   "entries": {
     "TiTiler-pgSTAC Benchmarks": [
@@ -4453,6 +4453,79 @@ window.BENCHMARK_DATA = {
             "unit": "iter/sec",
             "range": "stddev: 0.0025026008741940316",
             "extra": "mean: 38.15244633333323 msec\nrounds: 21"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "vincent.sarago@gmail.com",
+            "name": "Vincent Sarago",
+            "username": "vincentsarago"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "8208cf7f6f2ff3651b44c91af6a26a8d10c61a0e",
+          "message": "Merge pull request #153 from stac-utils/patch/fix-url-parsing-html-template\n\nbetter handle URL path when app if proxied",
+          "timestamp": "2024-01-19T18:45:30+01:00",
+          "tree_id": "f783b82fecbd3b7e1735f2c6354208fa7fac58ef",
+          "url": "https://github.com/stac-utils/titiler-pgstac/commit/8208cf7f6f2ff3651b44c91af6a26a8d10c61a0e"
+        },
+        "date": 1705686567277,
+        "tool": "pytest",
+        "benches": [
+          {
+            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "value": 5.088402371450165,
+            "unit": "iter/sec",
+            "range": "stddev: 0.005637557271094072",
+            "extra": "mean: 196.52533880000647 msec\nrounds: 5"
+          },
+          {
+            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "value": 12.292915157712416,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0035324322765405316",
+            "extra": "mean: 81.34766954546276 msec\nrounds: 11"
+          },
+          {
+            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "value": 16.29519704563624,
+            "unit": "iter/sec",
+            "range": "stddev: 0.003958892715529881",
+            "extra": "mean: 61.36777586668055 msec\nrounds: 15"
+          },
+          {
+            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "value": 27.183857230048186,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0029119707340245953",
+            "extra": "mean: 36.78653811110482 msec\nrounds: 18"
+          },
+          {
+            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "value": 34.019379554369834,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0031630857803134314",
+            "extra": "mean: 29.395009935492745 msec\nrounds: 31"
+          },
+          {
+            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "value": 28.111914826073146,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0029751986513337726",
+            "extra": "mean: 35.572105499996866 msec\nrounds: 26"
+          },
+          {
+            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "value": 28.233310631755995,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0025538450527969867",
+            "extra": "mean: 35.419154807698305 msec\nrounds: 26"
           }
         ]
       }
