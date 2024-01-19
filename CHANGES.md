@@ -1,5 +1,9 @@
 # Release Notes
 
+## 1.2.1 (2024-01-19)
+
+* fix invalid url parsing in HTML responses
+
 ## 1.2.0 (2024-01-17)
 
 * update titiler requirement to `>=0.17.0,<0.18`
