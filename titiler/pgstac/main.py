@@ -1,6 +1,7 @@
 """TiTiler+PgSTAC FastAPI application."""
 
 import logging
+import re
 from contextlib import asynccontextmanager
 from typing import Dict
 
@@ -265,6 +266,8 @@ def landing(request: Request):
     }
 
     urlpath = request.url.path
+    if root_path := request.app.root_path:
+        urlpath = re.sub(r"^" + root_path, "", urlpath)
     crumbs = []
     baseurl = str(request.base_url).rstrip("/")
 
