@@ -178,6 +178,12 @@
     add_search_list_route(app)
     ```
 
+## 0.8.2 (2024-01-23)
+
+* update rio-tiler version to `>6.3.0` (defined in `titiler>=0.17`)
+* use new `align_bounds_with_dataset=True` rio-tiler option in GeoJSON statistics methods for more precise calculation [backported from 1.2.0]
+* use morecantile `TileMatrixSet.cellSize` property instead of deprecated/private TileMatrixSet._resolution method [backported from 1.1.0]
+
 ## 0.8.1 (2023-11-10)
 
 * add `algorithm` options for `/statistics [POST]` endpoints
