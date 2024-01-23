@@ -450,7 +450,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                     "request": request,
                     "tilejson_endpoint": tilejson_url,
                     "tms": tms,
-                    "resolutions": [tms._resolution(matrix) for matrix in tms],
+                    "resolutions": [matrix.cellSize for matrix in tms],
                 },
                 media_type="text/html",
             )
@@ -1083,6 +1083,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                             dst_crs=dst_crs,
                             pixel_selection=pixel_selection,
                             threads=MOSAIC_THREADS,
+                            align_bounds_with_dataset=True,
                             **image_params,
                             **layer_params,
                             **dataset_params,
