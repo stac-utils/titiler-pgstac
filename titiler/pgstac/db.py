@@ -1,6 +1,6 @@
 """Database connection handling."""
 
-from typing import Optional
+from typing import Dict, Optional
 
 from fastapi import FastAPI
 from psycopg_pool import ConnectionPool
@@ -9,7 +9,11 @@ from titiler.pgstac.settings import PostgresSettings
 
 
 async def connect_to_db(
-    app: FastAPI, settings: Optional[PostgresSettings] = None
+    app: FastAPI,
+    settings: Optional[PostgresSettings] = None,
+    kwargs: Dict[str, str] = {
+        "options": "-c search_path=pgstac,public -c application_name=pgstac"
+    },
 ) -> None:
     """Connect to Database."""
     if not settings:
@@ -22,7 +26,7 @@ async def connect_to_db(
         max_waiting=settings.db_max_queries,
         max_idle=settings.db_max_idle,
         num_workers=settings.db_num_workers,
-        kwargs={"options": "-c search_path=pgstac,public -c application_name=pgstac"},
+        kwargs=kwargs,
     )
 
     # Make sure the pool is ready
