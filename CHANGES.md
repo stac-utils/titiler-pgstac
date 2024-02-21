@@ -95,7 +95,6 @@
     app.include_router(mosaic.router)
     ```
 
-
 * remove `/{search_id}` prefix in `MosaicTilerFactory` routes. Now use parameter injection from global prefix
 
     ```python
@@ -181,6 +180,10 @@
     # add /list endpoint
     add_search_list_route(app)
     ```
+
+## 0.8.3 (2024-02-21)
+
+* enable passing `ConnectionPool` kwargs option in `titiler.pgstac.db.connect_to_db` function (author @smohiudd, #155) [backported from 1.2.2]
 
 ## 0.8.2 (2024-01-23)
 
