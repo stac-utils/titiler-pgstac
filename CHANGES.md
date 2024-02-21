@@ -1,5 +1,9 @@
 # Release Notes
 
+## 0.8.3 (2024-02-21)
+
+* enable passing `ConnectionPool` kwargs option in `titiler.pgstac.db.connect_to_db` function (author @smohiudd, #155) [backported from 1.2.2]
+
 ## 0.8.2 (2024-01-23)
 
 * update rio-tiler version to `>6.3.0` (defined in `titiler>=0.17`)
