@@ -1,5 +1,9 @@
 # Release Notes
 
+## 1.2.2 (2024-02-21)
+
+* enable passing `ConnectionPool` *kwargs* option in `titiler.pgstac.db.connect_to_db` function (author @smohiudd, https://github.com/stac-utils/titiler-pgstac/pull/155)
+
 ## 1.2.1 (2024-01-19)
 
 * fix invalid url parsing in HTML responses
