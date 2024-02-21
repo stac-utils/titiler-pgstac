@@ -1,6 +1,6 @@
 """Database connection handling."""
 
-from typing import Dict, Optional
+from typing import Any, Dict, Optional
 
 from fastapi import FastAPI
 from psycopg_pool import ConnectionPool
@@ -11,7 +11,7 @@ from titiler.pgstac.settings import PostgresSettings
 async def connect_to_db(
     app: FastAPI,
     settings: Optional[PostgresSettings] = None,
-    kwargs: Dict[str, str] = {
+    kwargs: Dict[str, Any] = {
         "options": "-c search_path=pgstac,public -c application_name=pgstac"
     },
 ) -> None:
