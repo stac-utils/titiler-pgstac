@@ -5,7 +5,7 @@
 
 <p align="center">
   <a href="https://github.com/stac-utils/titiler-pgstac/actions?query=workflow%3ACI" target="_blank">
-      <img src="https://github.com/developmentseed/titiler/workflows/CI/badge.svg" alt="Test">
+      <img src="https://github.com/stac-utils/titiler-pgstac/workflows/CI/badge.svg" alt="Test">
   </a>
   <a href="https://codecov.io/gh/stac-utils/titiler-pgstac" target="_blank">
       <img src="https://codecov.io/gh/stac-utils/titiler-pgstac/branch/main/graph/badge.svg" alt="Coverage">
