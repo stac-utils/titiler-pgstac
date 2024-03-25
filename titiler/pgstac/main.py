@@ -15,7 +15,12 @@ from starlette.responses import HTMLResponse
 from starlette.templating import Jinja2Templates
 
 from titiler.core.errors import DEFAULT_STATUS_CODES, add_exception_handlers
-from titiler.core.factory import AlgorithmFactory, MultiBaseTilerFactory, TMSFactory
+from titiler.core.factory import (
+    AlgorithmFactory,
+    ColorMapFactory,
+    MultiBaseTilerFactory,
+    TMSFactory,
+)
 from titiler.core.middleware import (
     CacheControlMiddleware,
     LoggerMiddleware,
@@ -180,6 +185,13 @@ app.include_router(tms.router, tags=["Tiling Schemes"])
 algorithms = AlgorithmFactory()
 app.include_router(algorithms.router, tags=["Algorithms"])
 
+###############################################################################
+# Colormaps endpoints
+cmaps = ColorMapFactory()
+app.include_router(
+    cmaps.router,
+    tags=["ColorMaps"],
+)
 
 ###############################################################################
 # Health Check Endpoint
@@ -235,12 +247,14 @@ def landing(request: Request):
                 "href": app.url_path_for("map_viewer", search_id="{search_id}"),
                 "type": "text/html",
                 "rel": "data",
+                "templated": True,
             },
             {
                 "title": "PgSTAC Collection viewer (template URL)",
                 "href": app.url_path_for("map_viewer", collection_id="{collection_id}"),
                 "type": "text/html",
                 "rel": "data",
+                "templated": True,
             },
             {
                 "title": "PgSTAC Item viewer (template URL)",
@@ -249,6 +263,7 @@ def landing(request: Request):
                 ),
                 "type": "text/html",
                 "rel": "data",
+                "templated": True,
             },
             {
                 "title": "TiTiler-PgSTAC Documentation (external link)",
@@ -281,8 +296,9 @@ def landing(request: Request):
         crumbs.append({"url": crumbpath.rstrip("/"), "part": part.capitalize()})
 
     return templates.TemplateResponse(
-        "index.html",
-        {
+        request,
+        name="index.html",
+        context={
             "request": request,
             "response": data,
             "template": {
