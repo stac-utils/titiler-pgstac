@@ -1,5 +1,10 @@
 # Release Notes
 
+## 1.2.3 (2024-03-25)
+
+* add python 3.12 support
+* Add `extra="ignore"` option `CacheSettings` to fix pydantic issue when using `.env` file
+
 ## 1.2.2 (2024-02-21)
 
 * enable passing `ConnectionPool` *kwargs* option in `titiler.pgstac.db.connect_to_db` function (author @smohiudd, https://github.com/stac-utils/titiler-pgstac/pull/155)
