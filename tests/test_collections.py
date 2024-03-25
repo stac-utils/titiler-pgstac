@@ -41,17 +41,14 @@ def test_assets_for_point_collections(app):
 
 def test_assets_for_tile_collections(app):
     """Get assets for a Tile."""
-    response = app.get(f"/collections/{collection_id}/tiles/15/8589/12849/assets")
+    response = app.get(
+        f"/collections/{collection_id}/tiles/WebMercatorQuad/15/8589/12849/assets"
+    )
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 1
     assert list(resp[0]) == ["id", "bbox", "assets", "collection"]
     assert resp[0]["id"] == "20200307aC0853900w361030"
-
-    response = app.get(f"/collections/{collection_id}/tiles/15/8601/12849/assets")
-    assert response.status_code == 200
-    resp = response.json()
-    assert len(resp) == 2
 
     response = app.get(
         f"/collections/{collection_id}/tiles/WebMercatorQuad/15/8601/12849/assets"
@@ -68,14 +65,9 @@ def test_assets_for_tile_collections(app):
     resp = response.json()
     assert len(resp) == 4
 
-    response = app.get(f"/collections/{collection_id}/tiles/15/8601/12849/assets")
-    assert response.status_code == 200
-    resp = response.json()
-    assert len(resp) == 2
-
     # CollectionId not found
     response = app.get(
-        "/collections/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/tiles/15/8589/12849/assets"
+        "/collections/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/tiles/WebMercatorQuad/15/8589/12849/assets"
     )
     assert response.status_code == 404
     resp = response.json()
@@ -84,10 +76,12 @@ def test_assets_for_tile_collections(app):
 
 def test_tilejson_collections(app):
     """Create TileJSON."""
-    response = app.get(f"/collections/{collection_id}/tilejson.json")
+    response = app.get(f"/collections/{collection_id}/WebMercatorQuad/tilejson.json")
     assert response.status_code == 400
 
-    response = app.get(f"/collections/{collection_id}/tilejson.json?assets=cog")
+    response = app.get(
+        f"/collections/{collection_id}/WebMercatorQuad/tilejson.json?assets=cog"
+    )
     assert response.headers["content-type"] == "application/json"
     assert response.status_code == 200
     resp = response.json()
@@ -98,7 +92,7 @@ def test_tilejson_collections(app):
     assert "?assets=cog" in resp["tiles"][0]
 
     response = app.get(
-        f"/collections/{collection_id}/tilejson.json?assets=cog&scan_limit=100&items_limit=1&time_limit=2&exitwhenfull=False&skipcovered=False"
+        f"/collections/{collection_id}/WebMercatorQuad/tilejson.json?assets=cog&scan_limit=100&items_limit=1&time_limit=2&exitwhenfull=False&skipcovered=False"
     )
     assert response.headers["content-type"] == "application/json"
     assert response.status_code == 200
@@ -108,12 +102,16 @@ def test_tilejson_collections(app):
         in resp["tiles"][0]
     )
 
-    response = app.get(f"/collections/{collection_id}/tilejson.json?expression=cog")
+    response = app.get(
+        f"/collections/{collection_id}/WebMercatorQuad/tilejson.json?expression=cog"
+    )
     assert response.status_code == 200
     resp = response.json()
     assert "?expression=cog" in resp["tiles"][0]
 
-    response = app.get(f"/collections/{collection_id}/tilejson.json?expression=cog")
+    response = app.get(
+        f"/collections/{collection_id}/WebMercatorQuad/tilejson.json?expression=cog"
+    )
     assert response.status_code == 200
     resp = response.json()
     assert "?expression=cog" in resp["tiles"][0]
@@ -130,7 +128,7 @@ def test_tilejson_collections(app):
     assert "?assets=cog" in resp["tiles"][0]
 
     response = app.get(
-        f"/collections/{collection_id}/tilejson.json?assets=cog&tile_format=png"
+        f"/collections/{collection_id}/WebMercatorQuad/tilejson.json?assets=cog&tile_format=png"
     )
     assert response.status_code == 200
     resp = response.json()
@@ -138,7 +136,7 @@ def test_tilejson_collections(app):
 
     # CollectionId not found
     response = app.get(
-        "/collections/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/tilejson.json?assets=cog"
+        "/collections/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/WebMercatorQuad/tilejson.json?assets=cog"
     )
     assert response.status_code == 404
     resp = response.json()
@@ -153,10 +151,14 @@ def test_tiles_collections(rio, app):
     z, x, y = 15, 8589, 12849
 
     # missing assets
-    response = app.get(f"/collections/{collection_id}/tiles/{z}/{x}/{y}")
+    response = app.get(
+        f"/collections/{collection_id}/tiles/WebMercatorQuad/{z}/{x}/{y}"
+    )
     assert response.status_code == 400
 
-    response = app.get(f"/collections/{collection_id}/tiles/{z}/{x}/{y}?assets=cog")
+    response = app.get(
+        f"/collections/{collection_id}/tiles/WebMercatorQuad/{z}/{x}/{y}?assets=cog"
+    )
     assert response.status_code == 200
     assert response.headers["content-type"] == "image/jpeg"
     meta = parse_img(response.content)
@@ -164,7 +166,7 @@ def test_tiles_collections(rio, app):
     assert meta["height"] == 256
 
     response = app.get(
-        f"/collections/{collection_id}/tiles/{z}/{x}/{y}?assets=cog&buffer=0.5"
+        f"/collections/{collection_id}/tiles/WebMercatorQuad/{z}/{x}/{y}?assets=cog&buffer=0.5"
     )
     assert response.status_code == 200
     assert response.headers["content-type"] == "image/jpeg"
@@ -172,7 +174,9 @@ def test_tiles_collections(rio, app):
     assert meta["width"] == 257
     assert meta["height"] == 257
 
-    response = app.get(f"/collections/{collection_id}/tiles/{z}/{x}/{y}.png?assets=cog")
+    response = app.get(
+        f"/collections/{collection_id}/tiles/WebMercatorQuad/{z}/{x}/{y}.png?assets=cog"
+    )
     assert response.status_code == 200
     assert response.headers["content-type"] == "image/png"
     meta = parse_img(response.content)
@@ -201,7 +205,7 @@ def test_tiles_collections(rio, app):
 
     # CollectionId not found
     response = app.get(
-        "/collections/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/tiles/0/0/0?assets=cog"
+        "/collections/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/tiles/WebMercatorQuad/0/0/0?assets=cog"
     )
     assert response.status_code == 404
     resp = response.json()
@@ -211,14 +215,18 @@ def test_tiles_collections(rio, app):
 def test_wmts_collections(app):
     """Create wmts document."""
     # missing assets
-    response = app.get(f"/collections/{collection_id}/WMTSCapabilities.xml")
+    response = app.get(
+        f"/collections/{collection_id}/WebMercatorQuad/WMTSCapabilities.xml"
+    )
     assert response.status_code == 400
     assert (
         response.json()["detail"]
         == "assets must be defined either via expression or assets options."
     )
 
-    response = app.get(f"/collections/{collection_id}/WMTSCapabilities.xml?assets=cog")
+    response = app.get(
+        f"/collections/{collection_id}/WebMercatorQuad/WMTSCapabilities.xml?assets=cog"
+    )
     assert response.status_code == 200
     assert response.headers["content-type"] == "application/xml"
 
@@ -306,10 +314,12 @@ def test_statistics_collections(rio, app):
 
 def test_map_collection(app):
     """test /map endpoint."""
-    response = app.get(f"/collections/{collection_id}/map")
+    response = app.get(f"/collections/{collection_id}/WebMercatorQuad/map")
     assert response.status_code == 400
 
-    response = app.get(f"/collections/{collection_id}/map", params={"assets": "cog"})
+    response = app.get(
+        f"/collections/{collection_id}/WebMercatorQuad/map", params={"assets": "cog"}
+    )
     assert response.status_code == 200
 
 

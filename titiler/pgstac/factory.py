@@ -165,10 +165,18 @@ class MosaicTilerFactory(BaseTilerFactory):
     def _tiles_routes(self) -> None:
         """register tiles routes."""
 
-        @self.router.get("/tiles/{z}/{x}/{y}", **img_endpoint_params)
-        @self.router.get("/tiles/{z}/{x}/{y}.{format}", **img_endpoint_params)
-        @self.router.get("/tiles/{z}/{x}/{y}@{scale}x", **img_endpoint_params)
-        @self.router.get("/tiles/{z}/{x}/{y}@{scale}x.{format}", **img_endpoint_params)
+        @self.router.get("/tiles/{z}/{x}/{y}", **img_endpoint_params, deprecated=True)
+        @self.router.get(
+            "/tiles/{z}/{x}/{y}.{format}", **img_endpoint_params, deprecated=True
+        )
+        @self.router.get(
+            "/tiles/{z}/{x}/{y}@{scale}x", **img_endpoint_params, deprecated=True
+        )
+        @self.router.get(
+            "/tiles/{z}/{x}/{y}@{scale}x.{format}",
+            **img_endpoint_params,
+            deprecated=True,
+        )
         @self.router.get("/tiles/{tileMatrixSetId}/{z}/{x}/{y}", **img_endpoint_params)
         @self.router.get(
             "/tiles/{tileMatrixSetId}/{z}/{x}/{y}.{format}",
@@ -274,6 +282,7 @@ class MosaicTilerFactory(BaseTilerFactory):
             response_model=TileJSON,
             responses={200: {"description": "Return a tilejson"}},
             response_model_exclude_none=True,
+            deprecated=True,
         )
         @self.router.get(
             "/{tileMatrixSetId}/tilejson.json",
@@ -378,7 +387,7 @@ class MosaicTilerFactory(BaseTilerFactory):
     def _map_routes(self):  # noqa: C901
         """Register /map endpoint."""
 
-        @self.router.get("/map", response_class=HTMLResponse)
+        @self.router.get("/map", response_class=HTMLResponse, deprecated=True)
         @self.router.get("/{tileMatrixSetId}/map", response_class=HTMLResponse)
         def map_viewer(
             request: Request,
@@ -432,9 +441,9 @@ class MosaicTilerFactory(BaseTilerFactory):
 
             tms = self.supported_tms.get(tileMatrixSetId)
             return self.templates.TemplateResponse(
+                request,
                 name="map.html",
                 context={
-                    "request": request,
                     "tilejson_endpoint": tilejson_url,
                     "tms": tms,
                     "resolutions": [matrix.cellSize for matrix in tms],
@@ -445,7 +454,9 @@ class MosaicTilerFactory(BaseTilerFactory):
     def _wmts_routes(self):  # noqa: C901
         """Add wmts endpoint."""
 
-        @self.router.get("/WMTSCapabilities.xml", response_class=XMLResponse)
+        @self.router.get(
+            "/WMTSCapabilities.xml", response_class=XMLResponse, deprecated=True
+        )
         @self.router.get(
             "/{tileMatrixSetId}/WMTSCapabilities.xml",
             response_class=XMLResponse,
@@ -594,9 +605,9 @@ class MosaicTilerFactory(BaseTilerFactory):
                 tileMatrix.append(tm)
 
             return self.templates.TemplateResponse(
-                "wmts.xml",
-                {
-                    "request": request,
+                request,
+                name="wmts.xml",
+                context={
                     "title": search_info.metadata.name or search_id,
                     "bounds": bounds,
                     "tileMatrix": tileMatrix,
@@ -613,6 +624,7 @@ class MosaicTilerFactory(BaseTilerFactory):
         @self.router.get(
             "/tiles/{z}/{x}/{y}/assets",
             responses={200: {"description": "Return list of assets"}},
+            deprecated=True,
         )
         @self.router.get(
             "/tiles/{tileMatrixSetId}/{z}/{x}/{y}/assets",
@@ -991,16 +1003,17 @@ def add_search_register_route(
 
         base_url = str(request.base_url)
 
-        mosaic_info_endpoint = None
         try:
-            mosaic_info_endpoint = str(
-                app.url_path_for(
-                    "info_search", search_id=search_info.id
-                ).make_absolute_url(base_url=base_url)
-            )
             links.append(
                 model.Link(
-                    rel="metadata", title="Mosaic metadata", href=mosaic_info_endpoint
+                    rel="metadata",
+                    title="Mosaic metadata",
+                    href=str(
+                        app.url_path_for(
+                            "info_search",
+                            search_id=search_info.id,
+                        ).make_absolute_url(base_url=base_url)
+                    ),
                 ),
             )
         except NoMatchFound:
@@ -1010,32 +1023,36 @@ def add_search_register_route(
         try:
             tilejson_endpoint = str(
                 app.url_path_for(
-                    "tilejson", search_id=search_info.id
+                    "tilejson",
+                    search_id=search_info.id,
+                    tileMatrixSetId="{tileMatrixSetId}",
                 ).make_absolute_url(base_url=base_url)
             )
 
             links.append(
                 model.Link(
-                    rel="tilejson", title="Link for TileJSON", href=tilejson_endpoint
+                    rel="tilejson",
+                    title="Link for TileJSON (Template URL)",
+                    href=tilejson_endpoint,
+                    templated=True,
                 )
             )
         except NoMatchFound:
             pass
 
-        map_endpoint = None
         try:
-            map_endpoint = str(
-                app.url_path_for(
-                    "map_viewer",
-                    search_id=search_info.id,
-                ).make_absolute_url(base_url=base_url)
-            )
-
             links.append(
                 model.Link(
                     rel="map",
-                    title="Link for Map viewer",
-                    href=map_endpoint,
+                    title="Link for Map viewer (Template URL)",
+                    href=str(
+                        app.url_path_for(
+                            "map_viewer",
+                            search_id=search_info.id,
+                            tileMatrixSetId="{tileMatrixSetId}",
+                        ).make_absolute_url(base_url=base_url)
+                    ),
+                    templated=True,
                 )
             )
         except NoMatchFound:
@@ -1045,13 +1062,15 @@ def add_search_register_route(
             links.append(
                 model.Link(
                     rel="wmts",
-                    title="Link for WMTS",
+                    title="Link for WMTS (Template URL)",
                     href=str(
                         app.url_path_for(
                             "wmts",
                             search_id=search_info.id,
+                            tileMatrixSetId="{tileMatrixSetId}",
                         ).make_absolute_url(base_url=base_url)
                     ),
+                    templated=True,
                 )
             )
         except NoMatchFound:
@@ -1075,9 +1094,10 @@ def add_search_register_route(
 
                 links.append(
                     model.Link(
-                        title=f"TileJSON link for `{name}` layer.",
+                        title=f"TileJSON link for `{name}` layer (Template URL).",
                         rel="tilejson",
                         href=f"{tilejson_endpoint}?{query_string}",
+                        templated=True,
                     )
                 )
 
@@ -1226,9 +1246,11 @@ def add_search_list_route(  # noqa: C901
         tilejson_endpoint = None
         try:
             tilejson_endpoint = str(
-                app.url_path_for("tilejson", search_id="{search_id}").make_absolute_url(
-                    base_url=base_url
-                )
+                app.url_path_for(
+                    "tilejson",
+                    search_id="{search_id}",
+                    tileMatrixSetId="{tileMatrixSetId}",
+                ).make_absolute_url(base_url=base_url)
             )
         except NoMatchFound:
             pass
@@ -1259,8 +1281,9 @@ def add_search_list_route(  # noqa: C901
                 search_links.append(
                     model.Link(
                         rel="tilejson",
-                        title="Link for TileJSON",
+                        title="Link for TileJSON (Template URL)",
                         href=tilejson_endpoint.replace("{search_id}", search.id),
+                        templated=True,
                     ),
                 )
 

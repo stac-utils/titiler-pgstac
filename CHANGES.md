@@ -1,5 +1,28 @@
 # Release Notes
 
+## 1.3.0 (TBD)
+
+* update titiler requirement to `>=0.18.0,<0.19`
+* Add `/colorMaps` endpoints
+* **Deprecation** remove default `WebMercatorQuad` tile matrix set in `/tiles`, `/tilesjson.json`, `/map`, `/WMTSCapabilities.xml` and `/assets` endpoints
+
+    ```
+    # Before
+    /tiles/{z}/{x}/{y}
+    /tilejson.json
+    /map
+    /WMTSCapabilities.xml
+
+    # Now
+    /tiles/WebMercatorQuad/{z}/{x}/{y}
+    /WebMercatorQuad/tilejson.json
+    /WebMercatorQuad/map
+    /WebMercatorQuad/WMTSCapabilities.xml
+    ```
+
+* update `titiler.pgstac.model.Link` to match the OGC specification
+* use `{tileMatrixSetId}` in templated URL links
+
 ## 1.2.3 (2024-03-25)
 
 * add python 3.12 support

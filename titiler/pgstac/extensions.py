@@ -87,18 +87,21 @@ class searchInfoExtension(FactoryExtension):
                     layers.append((name, query_string))
 
             try:
-                tilejson_endpoint = factory.url_for(request, "tilejson")
+                tilejson_endpoint = factory.url_for(
+                    request, "tilejson", tileMatrixSetId="{tileMatrixSetId}"
+                )
                 links.append(
                     model.Link(
-                        title="TileJSON link (Template URL)",
+                        title="TileJSON link (Template URL).",
                         rel="tilejson",
                         href=tilejson_endpoint,
+                        templated=True,
                     ),
                 )
                 for layer, qs in layers:
                     links.append(
                         model.Link(
-                            title=f"TileJSON link for `{layer}` layer",
+                            title=f"TileJSON link for `{layer}` layer (Template URL).",
                             rel="tilejson",
                             href=tilejson_endpoint + f"?{qs}",
                         ),
@@ -108,20 +111,24 @@ class searchInfoExtension(FactoryExtension):
                 pass
 
             try:
-                map_viewer_endpoint = factory.url_for(request, "map_viewer")
+                map_viewer_endpoint = factory.url_for(
+                    request, "map_viewer", tileMatrixSetId="{tileMatrixSetId}"
+                )
                 links.append(
                     model.Link(
                         rel="map",
-                        title="Map viewer link (Template URL)",
+                        title="Map viewer link (Template URL).",
                         href=map_viewer_endpoint,
+                        templated=True,
                     )
                 )
                 for layer, qs in layers:
                     links.append(
                         model.Link(
-                            title=f"Map viewer link for `{layer}` layer",
+                            title=f"Map viewer link for `{layer}` layer (Template URL).",
                             rel="map",
                             href=map_viewer_endpoint + f"?{qs}",
+                            templated=True,
                         ),
                     )
 
@@ -129,20 +136,24 @@ class searchInfoExtension(FactoryExtension):
                 pass
 
             try:
-                wmts_endpoint = factory.url_for(request, "wmts")
+                wmts_endpoint = factory.url_for(
+                    request, "wmts", tileMatrixSetId="{tileMatrixSetId}"
+                )
                 links.append(
                     model.Link(
                         rel="wmts",
                         title="WMTS link (Template URL)",
                         href=wmts_endpoint,
+                        templated=True,
                     )
                 )
                 for _layer, qs in layers:
                     links.append(
                         model.Link(
-                            title=f"WMTS link for `{layer}` layer",
+                            title=f"WMTS link for `{layer}` layer (Template URL).",
                             rel="wmts",
                             href=wmts_endpoint + f"?{qs}",
+                            templated=True,
                         ),
                     )
 

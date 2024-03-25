@@ -111,7 +111,9 @@ def test_assets_for_point(app, search_no_bbox, search_bbox):
 
 def test_assets_for_tile(app, search_no_bbox, search_bbox):
     """Get assets for a Tile."""
-    response = app.get(f"/searches/{search_no_bbox}/tiles/15/8589/12849/assets")
+    response = app.get(
+        f"/searches/{search_no_bbox}/tiles/WebMercatorQuad/15/8589/12849/assets"
+    )
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 1
@@ -119,11 +121,6 @@ def test_assets_for_tile(app, search_no_bbox, search_bbox):
     assert resp[0]["id"] == "20200307aC0853900w361030"
 
     # make sure we can find assets when having both bbox and geometry
-    response = app.get(f"/searches/{search_bbox}/tiles/15/8601/12849/assets")
-    assert response.status_code == 200
-    resp = response.json()
-    assert len(resp) == 2
-
     response = app.get(
         f"/searches/{search_bbox}/tiles/WebMercatorQuad/15/8601/12849/assets"
     )
@@ -137,20 +134,17 @@ def test_assets_for_tile(app, search_no_bbox, search_bbox):
     resp = response.json()
     assert len(resp) == 4
 
-    response = app.get(f"/searches/{search_bbox}/tiles/15/8601/12849/assets")
-    assert response.status_code == 200
-    resp = response.json()
-    assert len(resp) == 2
-
     # no assets found outside the query bbox
-    response = app.get(f"/searches/{search_bbox}/tiles/15/8589/12849/assets")
+    response = app.get(
+        f"/searches/{search_bbox}/tiles/WebMercatorQuad/15/8589/12849/assets"
+    )
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 0
 
     # searchId not found
     response = app.get(
-        "/searches/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/tiles/15/8589/12849/assets"
+        "/searches/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/tiles/WebMercatorQuad/15/8589/12849/assets"
     )
     assert response.status_code == 404
     resp = response.json()
@@ -159,10 +153,12 @@ def test_assets_for_tile(app, search_no_bbox, search_bbox):
 
 def test_tilejson(app, search_no_bbox, search_bbox):
     """Create TileJSON."""
-    response = app.get(f"/searches/{search_no_bbox}/tilejson.json")
+    response = app.get(f"/searches/{search_no_bbox}/WebMercatorQuad/tilejson.json")
     assert response.status_code == 400
 
-    response = app.get(f"/searches/{search_no_bbox}/tilejson.json?assets=cog")
+    response = app.get(
+        f"/searches/{search_no_bbox}/WebMercatorQuad/tilejson.json?assets=cog"
+    )
     assert response.headers["content-type"] == "application/json"
     assert response.status_code == 200
     resp = response.json()
@@ -173,7 +169,7 @@ def test_tilejson(app, search_no_bbox, search_bbox):
     assert "?assets=cog" in resp["tiles"][0]
 
     response = app.get(
-        f"/searches/{search_no_bbox}/tilejson.json?assets=cog&scan_limit=100&items_limit=1&time_limit=2&exitwhenfull=False&skipcovered=False"
+        f"/searches/{search_no_bbox}/WebMercatorQuad/tilejson.json?assets=cog&scan_limit=100&items_limit=1&time_limit=2&exitwhenfull=False&skipcovered=False"
     )
     assert response.headers["content-type"] == "application/json"
     assert response.status_code == 200
@@ -183,12 +179,9 @@ def test_tilejson(app, search_no_bbox, search_bbox):
         in resp["tiles"][0]
     )
 
-    response = app.get(f"/searches/{search_no_bbox}/tilejson.json?expression=cog")
-    assert response.status_code == 200
-    resp = response.json()
-    assert "?expression=cog" in resp["tiles"][0]
-
-    response = app.get(f"/searches/{search_no_bbox}/tilejson.json?expression=cog")
+    response = app.get(
+        f"/searches/{search_no_bbox}/WebMercatorQuad/tilejson.json?expression=cog"
+    )
     assert response.status_code == 200
     resp = response.json()
     assert "?expression=cog" in resp["tiles"][0]
@@ -205,13 +198,15 @@ def test_tilejson(app, search_no_bbox, search_bbox):
     assert "?assets=cog" in resp["tiles"][0]
 
     response = app.get(
-        f"/searches/{search_no_bbox}/tilejson.json?assets=cog&tile_format=png"
+        f"/searches/{search_no_bbox}/WebMercatorQuad/tilejson.json?assets=cog&tile_format=png"
     )
     assert response.status_code == 200
     resp = response.json()
     assert ".png?assets=cog" in resp["tiles"][0]
 
-    response = app.get(f"/searches/{search_bbox}/tilejson.json?assets=cog")
+    response = app.get(
+        f"/searches/{search_bbox}/WebMercatorQuad/tilejson.json?assets=cog"
+    )
     assert response.headers["content-type"] == "application/json"
     assert response.status_code == 200
     resp = response.json()
@@ -223,7 +218,7 @@ def test_tilejson(app, search_no_bbox, search_bbox):
 
     # searchId not found
     response = app.get(
-        "/searches/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/tilejson.json?assets=cog"
+        "/searches/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/WebMercatorQuad/tilejson.json?assets=cog"
     )
     assert response.status_code == 404
     resp = response.json()
@@ -238,10 +233,12 @@ def test_tiles(rio, app, search_no_bbox, search_bbox):
     z, x, y = 15, 8589, 12849
 
     # missing assets
-    response = app.get(f"/searches/{search_no_bbox}/tiles/{z}/{x}/{y}")
+    response = app.get(f"/searches/{search_no_bbox}/tiles/WebMercatorQuad/{z}/{x}/{y}")
     assert response.status_code == 400
 
-    response = app.get(f"/searches/{search_no_bbox}/tiles/{z}/{x}/{y}?assets=cog")
+    response = app.get(
+        f"/searches/{search_no_bbox}/tiles/WebMercatorQuad/{z}/{x}/{y}?assets=cog"
+    )
     assert response.status_code == 200
     assert response.headers["content-type"] == "image/jpeg"
     meta = parse_img(response.content)
@@ -249,7 +246,7 @@ def test_tiles(rio, app, search_no_bbox, search_bbox):
     assert meta["height"] == 256
 
     response = app.get(
-        f"/searches/{search_no_bbox}/tiles/{z}/{x}/{y}?assets=cog&buffer=0.5"
+        f"/searches/{search_no_bbox}/tiles/WebMercatorQuad/{z}/{x}/{y}?assets=cog&buffer=0.5"
     )
     assert response.status_code == 200
     assert response.headers["content-type"] == "image/jpeg"
@@ -257,7 +254,9 @@ def test_tiles(rio, app, search_no_bbox, search_bbox):
     assert meta["width"] == 257
     assert meta["height"] == 257
 
-    response = app.get(f"/searches/{search_no_bbox}/tiles/{z}/{x}/{y}.png?assets=cog")
+    response = app.get(
+        f"/searches/{search_no_bbox}/tiles/WebMercatorQuad/{z}/{x}/{y}.png?assets=cog"
+    )
     assert response.status_code == 200
     assert response.headers["content-type"] == "image/png"
     meta = parse_img(response.content)
@@ -265,7 +264,9 @@ def test_tiles(rio, app, search_no_bbox, search_bbox):
     assert meta["height"] == 256
 
     # tile is outside mosaic bbox, it should return 404 (NoAssetFoundError)
-    response = app.get(f"/searches/{search_bbox}/tiles/{z}/{x}/{y}?assets=cog")
+    response = app.get(
+        f"/searches/{search_bbox}/tiles/WebMercatorQuad/{z}/{x}/{y}?assets=cog"
+    )
     assert response.status_code in [404, 204]
 
     response = app.get(
@@ -290,7 +291,7 @@ def test_tiles(rio, app, search_no_bbox, search_bbox):
 
     # searchId not found
     response = app.get(
-        "/searches/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/tiles/0/0/0?assets=cog"
+        "/searches/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/tiles/WebMercatorQuad/0/0/0?assets=cog"
     )
     assert response.status_code == 404
     resp = response.json()
@@ -300,14 +301,18 @@ def test_tiles(rio, app, search_no_bbox, search_bbox):
 def test_wmts(app, search_no_bbox):
     """Create wmts document."""
     # missing assets
-    response = app.get(f"/searches/{search_no_bbox}/WMTSCapabilities.xml")
+    response = app.get(
+        f"/searches/{search_no_bbox}/WebMercatorQuad/WMTSCapabilities.xml"
+    )
     assert response.status_code == 400
     assert (
         response.json()["detail"]
         == "assets must be defined either via expression or assets options."
     )
 
-    response = app.get(f"/searches/{search_no_bbox}/WMTSCapabilities.xml?assets=cog")
+    response = app.get(
+        f"/searches/{search_no_bbox}/WebMercatorQuad/WMTSCapabilities.xml?assets=cog"
+    )
     assert response.status_code == 200
     assert response.headers["content-type"] == "application/xml"
 
@@ -368,14 +373,16 @@ def test_cql2(rio, app):
     assert list(resp[0]) == ["id", "bbox", "assets", "collection"]
     assert resp[0]["id"] == "20200307aC0853900w361030"
 
-    response = app.get(f"/searches/{cql2_id}/tiles/15/8589/12849/assets")
+    response = app.get(
+        f"/searches/{cql2_id}/tiles/WebMercatorQuad/15/8589/12849/assets"
+    )
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 1
     assert list(resp[0]) == ["id", "bbox", "assets", "collection"]
     assert resp[0]["id"] == "20200307aC0853900w361030"
 
-    response = app.get(f"/searches/{cql2_id}/tilejson.json?assets=cog")
+    response = app.get(f"/searches/{cql2_id}/WebMercatorQuad/tilejson.json?assets=cog")
     assert response.headers["content-type"] == "application/json"
     assert response.status_code == 200
     resp = response.json()
@@ -390,7 +397,9 @@ def test_cql2(rio, app):
     )
 
     z, x, y = 15, 8589, 12849
-    response = app.get(f"/searches/{cql2_id}/tiles/{z}/{x}/{y}?assets=cog")
+    response = app.get(
+        f"/searches/{cql2_id}/tiles/WebMercatorQuad/{z}/{x}/{y}?assets=cog"
+    )
     assert response.status_code == 200
     assert response.headers["content-type"] == "image/jpeg"
     meta = parse_img(response.content)
@@ -449,7 +458,9 @@ def test_cql2_with_geometry(rio, app):
     assert search["metadata"] == {"type": "mosaic"}
 
     # make sure we can find assets when having both geometry filter and geometry
-    response = app.get(f"/searches/{cql2_id}/tiles/15/8601/12849/assets")
+    response = app.get(
+        f"/searches/{cql2_id}/tiles/WebMercatorQuad/15/8601/12849/assets"
+    )
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 2
@@ -461,20 +472,26 @@ def test_cql2_with_geometry(rio, app):
     assert len(resp) == 0
 
     # make sure we can find assets when having both geometry filter and geometry
-    response = app.get(f"/searches/{cql2_id}/tiles/15/8601/12849/assets")
+    response = app.get(
+        f"/searches/{cql2_id}/tiles/WebMercatorQuad/15/8601/12849/assets"
+    )
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 2
 
     # tile is outside the geometry filter
-    response = app.get(f"/searches/{cql2_id}/tiles/15/8589/12849/assets")
+    response = app.get(
+        f"/searches/{cql2_id}/tiles/WebMercatorQuad/15/8589/12849/assets"
+    )
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 0
 
     # tile is outside the geometry filter
     z, x, y = 15, 8589, 12849
-    response = app.get(f"/searches/{cql2_id}/tiles/{z}/{x}/{y}?assets=cog")
+    response = app.get(
+        f"/searches/{cql2_id}/tiles/WebMercatorQuad/{z}/{x}/{y}?assets=cog"
+    )
     assert response.status_code in [404, 204]
 
 
@@ -515,7 +532,9 @@ def test_query_with_metadata(app):
         "maxzoom": 2,
     }
 
-    response = app.get(f"/searches/{mosaic_id}/tilejson.json?assets=cog")
+    response = app.get(
+        f"/searches/{mosaic_id}/WebMercatorQuad/tilejson.json?assets=cog"
+    )
     assert response.status_code == 200
     resp = response.json()
     assert resp["minzoom"] == 1
@@ -560,13 +579,13 @@ def test_query_with_metadata(app):
 
     mosaic_id_metadata = resp["id"]
 
-    assert link["title"] == "TileJSON link for `one_band` layer."
+    assert link["title"] == "TileJSON link for `one_band` layer (Template URL)."
     assert "asset_bidx=cog%7C1" in link["href"]
     assert "assets=cog" in link["href"]
 
     # Test WMTS
     # 1. missing assets and no metadata layers
-    response = app.get(f"/searches/{mosaic_id}/WMTSCapabilities.xml")
+    response = app.get(f"/searches/{mosaic_id}/WebMercatorQuad/WMTSCapabilities.xml")
     assert response.status_code == 400
     assert (
         response.json()["detail"]
@@ -575,7 +594,8 @@ def test_query_with_metadata(app):
 
     # 2. assets and no metadata layers
     response = app.get(
-        f"/searches/{mosaic_id}/WMTSCapabilities.xml", params={"assets": "cog"}
+        f"/searches/{mosaic_id}/WebMercatorQuad/WMTSCapabilities.xml",
+        params={"assets": "cog"},
     )
     assert response.status_code == 200
     assert response.headers["content-type"] == "application/xml"
@@ -587,7 +607,9 @@ def test_query_with_metadata(app):
 
     # 3. no assets and metadata layers
     with pytest.warns(UserWarning):
-        response = app.get(f"/searches/{mosaic_id_metadata}/WMTSCapabilities.xml")
+        response = app.get(
+            f"/searches/{mosaic_id_metadata}/WebMercatorQuad/WMTSCapabilities.xml"
+        )
     assert response.status_code == 200
 
     assert response.headers["content-type"] == "application/xml"
@@ -601,7 +623,7 @@ def test_query_with_metadata(app):
     # 4. assets and metadata layers
     with pytest.warns(UserWarning):
         response = app.get(
-            f"/searches/{mosaic_id_metadata}/WMTSCapabilities.xml",
+            f"/searches/{mosaic_id_metadata}/WebMercatorQuad/WMTSCapabilities.xml",
             params={"assets": "cog"},
         )
     assert response.status_code == 200
@@ -621,9 +643,15 @@ def test_query_with_metadata(app):
     assert resp["search"]["hash"] == mosaic_id_metadata
     assert len(resp["links"]) == 10  # self, tilejson (3), map (3), wmts (3)
 
-    assert resp["links"][1]["title"] == "TileJSON link (Template URL)"
-    assert resp["links"][2]["title"] == "TileJSON link for `one_band` layer"
-    assert resp["links"][3]["title"] == "TileJSON link for `three_bands` layer"
+    assert resp["links"][1]["title"] == "TileJSON link (Template URL)."
+    assert (
+        resp["links"][2]["title"]
+        == "TileJSON link for `one_band` layer (Template URL)."
+    )
+    assert (
+        resp["links"][3]["title"]
+        == "TileJSON link for `three_bands` layer (Template URL)."
+    )
 
     assert "asset_bidx=cog%7C1" in resp["links"][2]["href"]
     assert "assets=cog" in resp["links"][2]["href"]
@@ -807,10 +835,12 @@ def test_mosaic_list(app):
 
 def test_map(app, search_bbox):
     """test /map endpoint."""
-    response = app.get(f"/searches/{search_bbox}/map")
+    response = app.get(f"/searches/{search_bbox}/WebMercatorQuad/map")
     assert response.status_code == 400
 
-    response = app.get(f"/searches/{search_bbox}/map", params={"assets": "cog"})
+    response = app.get(
+        f"/searches/{search_bbox}/WebMercatorQuad/map", params={"assets": "cog"}
+    )
     assert response.status_code == 200
 
 
