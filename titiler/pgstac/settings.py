@@ -95,7 +95,11 @@ class CacheSettings(BaseSettings):
     # Whether or not caching is enabled
     disable: bool = False
 
-    model_config = {"env_prefix": "TITILER_PGSTAC_CACHE_", "env_file": ".env"}
+    model_config = {
+        "env_prefix": "TITILER_PGSTAC_CACHE_",
+        "env_file": ".env",
+        "extra": "ignore",
+    }
 
     @model_validator(mode="after")
     def check_enable(self):

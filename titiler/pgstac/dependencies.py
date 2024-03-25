@@ -64,7 +64,9 @@ def get_collection_id(pool: ConnectionPool, collection_id: str) -> str:
             metadata = model.Metadata(
                 name=f"Mosaic for '{collection_id}' Collection",
                 bounds=bbox[0],
-                # TODO: use asset extension to populate the `assets` attribute
+                # TODO:
+                # - use the `asset`` extension to populate the `assets` attribute
+                # - use the `render` extension to populate the `defaults` attribute
             )
 
             cursor.row_factory = class_row(model.Search)
@@ -75,7 +77,7 @@ def get_collection_id(pool: ConnectionPool, collection_id: str) -> str:
                     metadata.model_dump_json(exclude_none=True),
                 ),
             )
-            search_info = cursor.fetchone()
+            search_info: model.Search = cursor.fetchone()
 
     return search_info.id
 
