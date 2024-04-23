@@ -327,4 +327,4 @@ curl http://127.0.0.1:8081/collections/world/items/world_20000_5000/info | jq
 
 ```
 
-See full list of [endpoints](../item_endpoints)
+See full list of [endpoints](../endpoints/items_endpoints/)
