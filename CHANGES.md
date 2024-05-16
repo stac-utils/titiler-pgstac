@@ -22,6 +22,9 @@
 
 * update `titiler.pgstac.model.Link` to match the OGC specification
 * use `{tileMatrixSetId}` in templated URL links
+* add support for `render` and `item-assets` STAC Collection extensions
+* add `/info` endpoint to the `Collections` endpoints
+* add `/collections` and `/collections/{collection_id}` endpoints when `TITILER_PGSTAC_API_DEBUG=TRUE`
 
 ## 1.2.3 (2024-03-25)
 

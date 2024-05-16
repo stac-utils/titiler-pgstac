@@ -1,0 +1,133 @@
+{
+  "id": "MAXAR_BayofBengal_Cyclone_Mocha_May_23",
+  "type": "Collection",
+  "links": [],
+  "title": "Bay of Bengal Cyclone Mocha 2023",
+  "extent": {
+    "spatial": {
+      "bbox": [
+        [
+          91.831615,
+          19.982078842323997,
+          92.97426268500965,
+          21.666101
+        ],
+        [
+          92.567815,
+          20.18811887678192,
+          92.74417544237298,
+          20.62968532404085
+        ],
+        [
+          92.72278776887262,
+          20.104801,
+          92.893524,
+          20.630214
+        ],
+        [
+          92.75855246040959,
+          19.982078842323997,
+          92.89682495377032,
+          20.514473160464657
+        ],
+        [
+          92.84253515935835,
+          19.984656587012033,
+          92.97426268500965,
+          20.514418665444474
+        ],
+        [
+          91.831615,
+          21.518411,
+          91.957078,
+          21.666101
+        ]
+      ]
+    },
+    "temporal": {
+      "interval": [
+        [
+          "2023-01-03T04:30:17Z",
+          "2023-05-22T04:35:25Z"
+        ]
+      ]
+    }
+  },
+  "license": "CC-BY-NC-4.0",
+  "renders": {
+    "visual": {
+      "title": "Visual Image",
+      "assets": [
+        "visual"
+      ],
+      "asset_bidx": "visual|1,2,3",
+      "minmax_zoom": [
+        8,
+        22
+      ],
+      "tilematrixsets": {
+        "WebMercatorQuad": [
+            8,
+            22
+        ]
+      }
+    },
+    "color": {
+      "title": "Colored Image",
+      "assets": [
+        "visual"
+      ],
+      "asset_bidx": "visual|1",
+      "colormap": {
+        "1": [0, 0, 0, 255],
+        "1000": [255, 255, 255, 255]
+      }
+    },
+    "visualr": {
+      "title": "Rescaled Image",
+      "assets": [
+        "visual"
+      ],
+      "asset_bidx": "visual|1",
+      "rescale": [
+        [0, 100]
+      ]
+    }
+  },
+  "description": "Maxar OpenData | Cyclone Mocha, a category five cyclone with 130 mph winds and torrential rain, hit parts of Myanmar and Bangladesh, forcing mass evacuations ahead of the storm. The cyclone, one of the most powerful to hit the region in the last decade, made landfall on Sunday, May 14, 2023, near Sittwe in Myanmar's Rakhine state. Rain and a storm surge caused widespread flooding in low-lying areas. The United National Office Coordination of Humanitarian Affairs stated that there had been extensive damage among already vulnerable communities and that communications with the affected areas have been difficult.",
+  "item_assets": {
+    "visual": {
+      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "roles": [
+        "visual"
+      ],
+      "title": "Visual Image"
+    },
+    "data-mask": {
+      "type": "application/geopackage+sqlite3",
+      "roles": [
+        "data-mask"
+      ],
+      "title": "Data Mask"
+    },
+    "ms_analytic": {
+      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "roles": [
+        "data"
+      ],
+      "title": "Multispectral Image"
+    },
+    "pan_analytic": {
+      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "roles": [
+        "data"
+      ],
+      "title": "Panchromatic Image"
+    }
+  },
+  "stac_version": "1.0.0",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/item-assets/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/render/v1.0.0/schema.json"
+  ]
+}

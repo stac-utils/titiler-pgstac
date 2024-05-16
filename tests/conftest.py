@@ -17,6 +17,7 @@ from starlette.testclient import TestClient
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "fixtures")
 collection = os.path.join(DATA_DIR, "noaa-emergency-response.json")
+collection_maxar = os.path.join(DATA_DIR, "maxar_BayOfBengal.json")
 items = os.path.join(DATA_DIR, "noaa-eri-nashville2020.json")
 
 test_db = pytest_pgsql.TransactedPostgreSQLTestDB.create_fixture(
@@ -67,6 +68,7 @@ def database_url(test_db):
         print("Load items and collection into PgSTAC")
         loader = Loader(db=db)
         loader.load_collections(collection)
+        loader.load_collections(collection_maxar)
         loader.load_items(items)
 
     # Make sure we have 1 collection and 163 items in pgstac
@@ -74,7 +76,7 @@ def database_url(test_db):
         with conn.cursor() as cur:
             cur.execute("SELECT COUNT(*) FROM pgstac.collections")
             val = cur.fetchone()[0]
-            assert val == 1
+            assert val == 2
 
             cur.execute("SELECT COUNT(*) FROM pgstac.items")
             val = cur.fetchone()[0]

@@ -135,16 +135,16 @@ class MosaicTilerFactory(TitilerPgSTACFactory.MosaicTilerFactory):
             ]
 
             if layer:
-                config = search_info.defaults.get(layer)
+                config = search_info.metadata.defaults_params.get(layer)
                 if not config:
                     raise HTTPException(status_code=404, detail=f"Invalid {layer} configuration.")
 
                 # This assume the default configuration follows the endpoint expected format
-                # as `"true_color": [("assets", "B4"), ("assets", "B3"), ("assets", "B2")]`
+                # as `"true_color": {"assets": ["B4", "B3", "B2"]}`
                 qs = QueryParams(config)
 
             if qs:
-                tiles_url += f"?{urlencode(qs)}"
+                tiles_url += f"?{urlencode(qs, doseq=True)}"
 
             minzoom = _first_value([minzoom, search_info.metadata.minzoom], tms.minzoom)
             maxzoom = _first_value([maxzoom, search_info.metadata.maxzoom], tms.maxzoom)

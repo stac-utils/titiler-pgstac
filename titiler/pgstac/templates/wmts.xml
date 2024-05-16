@@ -8,7 +8,7 @@
         <ows:Operation name="GetCapabilities">
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Get xlink:href="{{ request.url }}">
+                    <ows:Get xlink:href="{{ service_url }}">
                         <ows:Constraint name="GetEncoding">
                             <ows:AllowedValues>
                                 <ows:Value>RESTful</ows:Value>
@@ -21,7 +21,7 @@
         <ows:Operation name="GetTile">
             <ows:DCP>
                 <ows:HTTP>
-                    <ows:Get xlink:href="{{ request.url }}">
+                    <ows:Get xlink:href="{{ service_url }}">
                         <ows:Constraint name="GetEncoding">
                             <ows:AllowedValues>
                                 <ows:Value>RESTful</ows:Value>
@@ -49,7 +49,7 @@
                 <TileMatrixSetLink>
                     <TileMatrixSet>{{ tms.id }}</TileMatrixSet>
                 </TileMatrixSetLink>
-                <ResourceURL format="{{ media_type }}" resourceType="tile" template="{{ layer.endpoint }}" />
+                <ResourceURL format="{{ media_type }}" resourceType="tile" template="{{ layer.tiles_url }}?{{ layer.query_string | escape }}" />
             </Layer>
         {% endfor %}
         <TileMatrixSet>
@@ -60,5 +60,5 @@
             {% endfor %}
         </TileMatrixSet>
     </Contents>
-    <ServiceMetadataURL xlink:href="{{ request.url }}" />
+    <ServiceMetadataURL xlink:href="{{ service_url }}" />
 </Capabilities>

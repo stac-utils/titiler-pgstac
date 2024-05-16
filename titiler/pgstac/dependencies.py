@@ -1,5 +1,6 @@
 """titiler-pgstac dependencies."""
 
+import warnings
 from dataclasses import dataclass, field
 from typing import Optional, Tuple
 
@@ -46,7 +47,7 @@ def SearchIdParams(
         pgErrors.InterfaceError,
     ),
 )
-def get_collection_id(pool: ConnectionPool, collection_id: str) -> str:
+def get_collection_id(pool: ConnectionPool, collection_id: str) -> str:  # noqa: C901
     """Get Search Id for a Collection."""
     search = model.PgSTACSearch(collections=[collection_id])
 
@@ -64,10 +65,40 @@ def get_collection_id(pool: ConnectionPool, collection_id: str) -> str:
             metadata = model.Metadata(
                 name=f"Mosaic for '{collection_id}' Collection",
                 bounds=bbox[0],
-                # TODO:
-                # - use the `asset`` extension to populate the `assets` attribute
-                # - use the `render` extension to populate the `defaults` attribute
             )
+
+            # item-assets https://github.com/stac-extensions/item-assets
+            if "item_assets" in collection:
+                metadata.assets = list(collection["item_assets"])
+
+            # render https://github.com/stac-extensions/render
+            if "renders" in collection:
+                renders = {}
+                for name, render in collection["renders"].items():
+                    try:
+                        # `title` is not a parameter expected by titiler-pgstac
+                        _ = render.pop("title", None)
+
+                        # TODO: add support for tilematrixset
+                        _ = render.pop("tilematrixsets", None)
+
+                        # `minmax_zoom` is not a parameter expected by titiler-pgstac
+                        zooms = render.pop("minmax_zoom", None)
+                        if zooms and len(zooms) == 2:
+                            render["minzoom"] = zooms[0]
+                            render["maxzoom"] = zooms[1]
+
+                        renders[name] = render
+
+                    except Exception as e:
+                        warnings.warn(
+                            f"Invalid render `{name}`: {repr(e)}",
+                            UserWarning,
+                            stacklevel=2,
+                        )
+                        continue
+
+                metadata.defaults = renders
 
             cursor.row_factory = class_row(model.Search)
             cursor.execute(
