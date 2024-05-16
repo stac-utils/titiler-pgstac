@@ -60,7 +60,7 @@
       "assets": [
         "visual"
       ],
-      "asset_bidx": "visual|1,2,3",
+      "asset_bidx": ["visual|1,2,3"],
       "minmax_zoom": [
         8,
         22
@@ -77,7 +77,7 @@
       "assets": [
         "visual"
       ],
-      "asset_bidx": "visual|1",
+      "asset_bidx": ["visual|1"],
       "colormap": {
         "1": [0, 0, 0, 255],
         "1000": [255, 255, 255, 255]
@@ -88,7 +88,7 @@
       "assets": [
         "visual"
       ],
-      "asset_bidx": "visual|1",
+      "asset_bidx": ["visual|1"],
       "rescale": [
         [0, 100]
       ]

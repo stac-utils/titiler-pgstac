@@ -546,4 +546,4 @@ def test_collections_render(app, tmp_path):
 
     response = app.get("/collections/MAXAR_BayofBengal_Cyclone_Mocha_May_23/info")
     assert response.status_code == 200
-    print(response.text)
+    assert len(response.json()["links"]) == 10  # self, tilejson (4), map (4), wmts (1)
