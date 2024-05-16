@@ -518,3 +518,32 @@ def test_query_point_collections(app):
     )
 
     assert response.status_code == 204  # (no content)
+
+
+def test_collections_render(app, tmp_path):
+    """Create wmts document."""
+    response = app.get(
+        "/collections/MAXAR_BayofBengal_Cyclone_Mocha_May_23/WebMercatorQuad/WMTSCapabilities.xml"
+    )
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "application/xml"
+
+    wmts = tmp_path / "WMTSCapabilities.xml"
+    with open(wmts, "wb") as f:
+        f.write(response.content)
+
+    # Validate it's a good WMTS
+    with rasterio.open(wmts) as src:
+        assert not src.crs
+        assert src.profile["driver"] == "WMTS"
+        assert len(src.subdatasets) == 3
+        assert ["color", "visual", "visualr"] == [
+            s.split(",layer=")[1] for s in src.subdatasets
+        ]
+        with rasterio.open(src.subdatasets[0]) as sub:
+            assert sub.crs == CRS.from_epsg(3857)
+            assert sub.profile["driver"] == "WMTS"
+
+    response = app.get("/collections/MAXAR_BayofBengal_Cyclone_Mocha_May_23/info")
+    assert response.status_code == 200
+    assert len(response.json()["links"]) == 10  # self, tilejson (4), map (4), wmts (1)

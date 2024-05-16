@@ -6,8 +6,9 @@ from contextlib import asynccontextmanager
 from typing import Dict
 
 import jinja2
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Path, Query
 from psycopg import OperationalError
+from psycopg.rows import dict_row
 from psycopg_pool import PoolTimeout
 from starlette.middleware.cors import CORSMiddleware
 from starlette.requests import Request
@@ -101,14 +102,36 @@ if settings.cors_origins:
     )
 
 app.add_middleware(CacheControlMiddleware, cachecontrol=settings.cachecontrol)
+
+optional_headers = []
 if settings.debug:
     app.add_middleware(TotalTimeMiddleware)
     app.add_middleware(LoggerMiddleware)
 
-if settings.debug:
     optional_headers = [OptionalHeader.server_timing, OptionalHeader.x_assets]
-else:
-    optional_headers = []
+
+    @app.get("/collections", include_in_schema=False)
+    async def list_collections(request: Request):
+        """list collections."""
+        with request.app.state.dbpool.connection() as conn:
+            with conn.cursor(row_factory=dict_row) as cursor:
+                cursor.execute("SELECT * FROM pgstac.all_collections();")
+                r = cursor.fetchone()
+                cols = r.get("all_collections", [])
+                return [col["id"] for col in cols]
+
+    @app.get("/collections/{collection_id}", include_in_schema=False)
+    async def get_collection(request: Request, collection_id: str = Path()):
+        """get collection."""
+        with request.app.state.dbpool.connection() as conn:
+            with conn.cursor(row_factory=dict_row) as cursor:
+                cursor.execute(
+                    "SELECT * FROM get_collection(%s);",
+                    (collection_id,),
+                )
+                r = cursor.fetchone()
+                return r.get("get_collection") or {}
+
 
 ###############################################################################
 # STAC Search Endpoints
@@ -155,6 +178,9 @@ collection = MosaicTilerFactory(
     add_statistics=True,
     add_viewer=True,
     add_part=True,
+    extensions=[
+        searchInfoExtension(),
+    ],
 )
 app.include_router(
     collection.router, tags=["STAC Collection"], prefix="/collections/{collection_id}"

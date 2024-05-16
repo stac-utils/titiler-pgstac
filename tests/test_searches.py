@@ -552,16 +552,28 @@ def test_query_with_metadata(app):
             "maxzoom": 2,
             "defaults": {
                 "one_band": {
-                    "assets": "cog",
-                    "asset_bidx": "cog|1",
+                    "assets": ["cog"],
+                    "asset_bidx": ["cog|1"],
                 },
                 "three_bands": {
-                    "assets": "cog",
-                    "asset_bidx": "cog|1,2,3",
+                    "assets": ["cog"],
+                    "asset_bidx": ["cog|1,2,3"],
+                },
+                "rescale": {
+                    "assets": ["cog"],
+                    "asset_bidx": ["cog|1"],
+                    "rescale": [
+                        [-1, 1],
+                    ],
+                },
+                "colormap": {
+                    "assets": ["cog"],
+                    "asset_bidx": ["cog|1"],
+                    "colormap": {"1": [0, 0, 0, 255], "1000": [255, 255, 255, 255]},
                 },
                 # missing `assets`
                 "bad_layer": {
-                    "asset_bidx": "cog|1,2,3",
+                    "asset_bidx": ["cog|1,2,3"],
                 },
             },
         },
@@ -572,9 +584,7 @@ def test_query_with_metadata(app):
     assert response.status_code == 200
     resp = response.json()
     assert resp["id"]
-    assert (
-        len(resp["links"]) == 6
-    )  # info, tilejson, map, wmts tilejson for one_band, tilejson for three_bands
+    assert len(resp["links"]) == 8  # info, tilejson, map, wmts, tilejson layers
     link = resp["links"][-2]
 
     mosaic_id_metadata = resp["id"]
@@ -616,9 +626,7 @@ def test_query_with_metadata(app):
 
     with rasterio.open(io.BytesIO(response.content)) as src:
         assert src.profile["driver"] == "WMTS"
-        assert len(src.subdatasets) == 2
-        assert src.subdatasets[0].endswith(",layer=one_band")
-        assert src.subdatasets[1].endswith(",layer=three_bands")
+        assert len(src.subdatasets) == 4
 
     # 4. assets and metadata layers
     with pytest.warns(UserWarning):
@@ -631,26 +639,22 @@ def test_query_with_metadata(app):
 
     with rasterio.open(io.BytesIO(response.content)) as src:
         assert src.profile["driver"] == "WMTS"
-        assert len(src.subdatasets) == 3
-        assert src.subdatasets[0].endswith(",layer=one_band")
-        assert src.subdatasets[1].endswith(",layer=three_bands")
-        assert src.subdatasets[2].endswith(",layer=default")
+        assert len(src.subdatasets) == 5
 
     with pytest.warns(UserWarning):
         response = app.get(f"/searches/{mosaic_id_metadata}/info")
     assert response.status_code == 200
     resp = response.json()
     assert resp["search"]["hash"] == mosaic_id_metadata
-    assert len(resp["links"]) == 10  # self, tilejson (3), map (3), wmts (3)
+    assert len(resp["links"]) == 12  # self, tilejson (5), map (5), wmts (1)
 
     assert resp["links"][1]["title"] == "TileJSON link (Template URL)."
     assert (
-        resp["links"][2]["title"]
-        == "TileJSON link for `one_band` layer (Template URL)."
+        resp["links"][2]["title"] == "TileJSON link for `rescale` layer (Template URL)."
     )
     assert (
         resp["links"][3]["title"]
-        == "TileJSON link for `three_bands` layer (Template URL)."
+        == "TileJSON link for `colormap` layer (Template URL)."
     )
 
     assert "asset_bidx=cog%7C1" in resp["links"][2]["href"]

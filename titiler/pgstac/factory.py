@@ -88,7 +88,7 @@ DEFAULT_TEMPLATES = Jinja2Templates(env=jinja2_env)
 
 
 def check_query_params(
-    *, dependencies: List[Callable], query_params: QueryParams
+    *, dependencies: List[Callable], query_params: Union[QueryParams, Dict]
 ) -> None:
     """Check QueryParams for Query dependency.
 
@@ -367,7 +367,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                 if key.lower() not in qs_key_to_remove
             ]
             if qs:
-                tiles_url += f"?{urlencode(qs)}"
+                tiles_url += f"?{urlencode(qs, doseq=True)}"
 
             tms = self.supported_tms.get(tileMatrixSetId)
             minzoom = _first_value([minzoom, search_info.metadata.minzoom], tms.minzoom)
@@ -437,7 +437,7 @@ class MosaicTilerFactory(BaseTilerFactory):
                 tileMatrixSetId=tileMatrixSetId,
             )
             if request.query_params._list:
-                tilejson_url += f"?{urlencode(request.query_params._list)}"
+                tilejson_url += f"?{urlencode(request.query_params._list, doseq=True)}"
 
             tms = self.supported_tms.get(tileMatrixSetId)
             return self.templates.TemplateResponse(
@@ -526,13 +526,14 @@ class MosaicTilerFactory(BaseTilerFactory):
             ]
 
             layers: List[Dict[str, Any]] = []
-            if search_info.metadata.defaults:
-                for name, values in search_info.metadata.defaults.items():
-                    query_string = urlencode(values, doseq=True)
+
+            # LAYERS from mosaic metadata
+            if renders := search_info.metadata.defaults_params:
+                for name, values in renders.items():
                     try:
                         check_query_params(
                             dependencies=tile_dependencies,
-                            query_params=QueryParams(query_string),
+                            query_params=values,
                         )
                     except Exception as e:
                         warnings.warn(
@@ -545,10 +546,14 @@ class MosaicTilerFactory(BaseTilerFactory):
                     layers.append(
                         {
                             "name": name,
-                            "endpoint": tiles_url + f"?{query_string}",
+                            "tiles_url": tiles_url,
+                            "query_string": urlencode(values, doseq=True)
+                            if values
+                            else None,
                         }
                     )
 
+            # LAYER from query-parameters
             qs_key_to_remove = [
                 "tilematrixsetid",
                 "tile_format",
@@ -563,8 +568,6 @@ class MosaicTilerFactory(BaseTilerFactory):
                 for (key, value) in request.query_params._list
                 if key.lower() not in qs_key_to_remove
             ]
-            if qs:
-                tiles_url += f"?{urlencode(qs)}"
 
             # Checking if we can construct a valid tile URL
             # 1. we use `check_query_params` to validate the query-parameter
@@ -579,7 +582,13 @@ class MosaicTilerFactory(BaseTilerFactory):
                 if not layers:
                     raise e
             else:
-                layers.append({"name": "default", "endpoint": tiles_url})
+                layers.append(
+                    {
+                        "name": "default",
+                        "tiles_url": tiles_url,
+                        "query_string": urlencode(qs, doseq=True) if qs else None,
+                    }
+                )
 
             tms = self.supported_tms.get(tileMatrixSetId)
             minzoom = _first_value([minzoom, search_info.metadata.minzoom], tms.minzoom)
@@ -609,6 +618,9 @@ class MosaicTilerFactory(BaseTilerFactory):
                 name="wmts.xml",
                 context={
                     "title": search_info.metadata.name or search_id,
+                    "service_url": self.url_for(
+                        request, "wmts", tileMatrixSetId=tileMatrixSetId
+                    ),
                     "bounds": bounds,
                     "tileMatrix": tileMatrix,
                     "tms": tms,
@@ -1010,7 +1022,7 @@ def add_search_register_route(
                     title="Mosaic metadata",
                     href=str(
                         app.url_path_for(
-                            "info_search",
+                            "info",
                             search_id=search_info.id,
                         ).make_absolute_url(base_url=base_url)
                     ),
@@ -1076,13 +1088,12 @@ def add_search_register_route(
         except NoMatchFound:
             pass
 
-        if search_info.metadata.defaults:
-            for name, values in search_info.metadata.defaults.items():
-                query_string = urlencode(values, doseq=True)
+        if renders := search_info.metadata.defaults_params:
+            for name, values in renders.items():
                 try:
                     check_query_params(
                         dependencies=tile_dependencies,
-                        query_params=QueryParams(query_string),
+                        query_params=values,
                     )
                 except Exception as e:
                     warnings.warn(
@@ -1096,7 +1107,7 @@ def add_search_register_route(
                     model.Link(
                         title=f"TileJSON link for `{name}` layer (Template URL).",
                         rel="tilejson",
-                        href=f"{tilejson_endpoint}?{query_string}",
+                        href=f"{tilejson_endpoint}?{urlencode(values, doseq=True)}",
                         templated=True,
                     )
                 )
@@ -1258,9 +1269,9 @@ def add_search_list_route(  # noqa: C901
         mosaic_info_endpoint = None
         try:
             mosaic_info_endpoint = str(
-                app.url_path_for(
-                    "info_search", search_id="{search_id}"
-                ).make_absolute_url(base_url=base_url)
+                app.url_path_for("info", search_id="{search_id}").make_absolute_url(
+                    base_url=base_url
+                )
             )
         except NoMatchFound:
             pass

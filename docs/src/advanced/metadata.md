@@ -35,7 +35,7 @@
         },
         "ndvi": {
             "expression": "(B4-B3)/(B4+B3)",
-            "rescale": "-1,1",
+            "rescale": [[-1, 1]],
             "colormap_name": "viridis"
         }
     }

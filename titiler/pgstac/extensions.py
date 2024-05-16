@@ -8,7 +8,6 @@ from urllib.parse import urlencode
 from cogeo_mosaic.errors import MosaicNotFoundError
 from fastapi import Depends
 from psycopg.rows import class_row
-from starlette.datastructures import QueryParams
 from starlette.requests import Request
 from starlette.routing import NoMatchFound
 
@@ -30,7 +29,7 @@ class searchInfoExtension(FactoryExtension):
             response_model=model.Info,
             response_model_exclude_none=True,
         )
-        def info_search(  # noqa: C901
+        def info(  # noqa: C901
             request: Request, search_id=Depends(factory.path_dependency)
         ):
             """Get Search query metadata."""
@@ -49,12 +48,12 @@ class searchInfoExtension(FactoryExtension):
                 model.Link(
                     rel="self",
                     title="Mosaic metadata",
-                    href=factory.url_for(request, "info_search"),
+                    href=factory.url_for(request, "info"),
                 ),
             ]
 
             layers: List[Tuple[str, str]] = []
-            if search_info.metadata.defaults:
+            if renders := search_info.metadata.defaults_params:
                 # List of dependencies a `/tile` URL should validate
                 # Note: Those dependencies should only require Query() inputs
                 tile_dependencies = [
@@ -70,12 +69,11 @@ class searchInfoExtension(FactoryExtension):
                     factory.backend_dependency,
                 ]
 
-                for name, values in search_info.metadata.defaults.items():
-                    query_string = urlencode(values, doseq=True)
+                for name, values in renders.items():
                     try:
                         check_query_params(
                             dependencies=tile_dependencies,
-                            query_params=QueryParams(query_string),
+                            query_params=values,
                         )
                     except Exception as e:
                         warnings.warn(
@@ -84,7 +82,8 @@ class searchInfoExtension(FactoryExtension):
                             stacklevel=2,
                         )
                         continue
-                    layers.append((name, query_string))
+
+                    layers.append((name, urlencode(values, doseq=True)))
 
             try:
                 tilejson_endpoint = factory.url_for(
@@ -104,6 +103,7 @@ class searchInfoExtension(FactoryExtension):
                             title=f"TileJSON link for `{layer}` layer (Template URL).",
                             rel="tilejson",
                             href=tilejson_endpoint + f"?{qs}",
+                            templated=True,
                         ),
                     )
 
@@ -147,15 +147,6 @@ class searchInfoExtension(FactoryExtension):
                         templated=True,
                     )
                 )
-                for _layer, qs in layers:
-                    links.append(
-                        model.Link(
-                            title=f"WMTS link for `{layer}` layer (Template URL).",
-                            rel="wmts",
-                            href=wmts_endpoint + f"?{qs}",
-                            templated=True,
-                        ),
-                    )
 
             except NoMatchFound:
                 pass

@@ -4,6 +4,9 @@ Titiler.pgstac models.
 Note: This is mostly a copy of https://github.com/stac-utils/stac-fastapi/blob/master/stac_fastapi/pgstac/stac_fastapi/pgstac/types/search.py
 """
 
+import json
+import warnings
+from copy import deepcopy
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
@@ -49,13 +52,66 @@ class Metadata(BaseModel):
     #     },
     #     "ndvi": {
     #         "expression": "(B4-B3)/(B4+B3)",
-    #         "rescale": "-1,1",
+    #         "rescale": [[-1, 1]],
     #         "colormap_name": "viridis"
     #     }
     # }
     defaults: Optional[Dict[str, Any]] = None
 
     model_config = {"extra": "allow"}
+
+    @property
+    def defaults_params(self) -> Dict[str, Any]:  # noqa: C901
+        """Return defaults in a form compatible with TiTiler dependencies."""
+        params: Dict[str, Any] = {}
+        if self.defaults is not None:
+            renders = deepcopy(self.defaults)
+            for name, values in renders.items():
+                # special encoding for Rescale
+                # Per Specification, the rescale entry is a 2d array in form of `[[min, max], [min,max]]`
+                # We need to convert this to `['{min},{max}', '{min},{max}']` for titiler dependency
+                if rescale := values.pop("rescale", None):
+                    rescales = []
+                    for r in rescale:
+                        if not isinstance(r, str):
+                            rescales.append(",".join(map(str, r)))
+                        else:
+                            rescales.append(r)
+
+                    values["rescale"] = rescales
+
+                # special encoding for ColorMaps
+                # Per Specification, the colormap is a JSON object. TiTiler dependency expects a string encoded dict
+                if colormap := values.pop("colormap", None):
+                    if not isinstance(colormap, str):
+                        colormap = json.dumps(colormap)
+
+                    values["colormap"] = colormap
+
+                # Previously we were allowing {assets: "b"} instead of {assets: ["b"]}
+                if assets := values.pop("assets", None):
+                    if isinstance(assets, str):
+                        warnings.warn(
+                            f"Invalid assets form: `{assets}`, will be replaced with `[{assets}]`",
+                            UserWarning,
+                            stacklevel=2,
+                        )
+                        assets = [assets]
+                    values["assets"] = assets
+
+                if asset_bidx := values.pop("asset_bidx", None):
+                    if isinstance(asset_bidx, str):
+                        warnings.warn(
+                            f"Invalid assets form: `{asset_bidx}`, will be replaced with `[{asset_bidx}]`",
+                            UserWarning,
+                            stacklevel=2,
+                        )
+                        asset_bidx = [asset_bidx]
+                    values["asset_bidx"] = asset_bidx
+
+                params[name] = values
+
+        return params
 
 
 class PgSTACSearch(BaseModel):
