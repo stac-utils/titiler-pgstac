@@ -110,7 +110,7 @@ if settings.debug:
 
     optional_headers = [OptionalHeader.server_timing, OptionalHeader.x_assets]
 
-    @app.get("/collections", include_in_schema=False)
+    @app.get("/collections", include_in_schema=False, tags=["DEBUG"])
     async def list_collections(request: Request):
         """list collections."""
         with request.app.state.dbpool.connection() as conn:
@@ -120,7 +120,7 @@ if settings.debug:
                 cols = r.get("all_collections", [])
                 return [col["id"] for col in cols]
 
-    @app.get("/collections/{collection_id}", include_in_schema=False)
+    @app.get("/collections/{collection_id}", include_in_schema=False, tags=["DEBUG"])
     async def get_collection(request: Request, collection_id: str = Path()):
         """get collection."""
         with request.app.state.dbpool.connection() as conn:
@@ -238,7 +238,7 @@ def ping(
 
 ###############################################################################
 # Landing Page
-@app.get("/", response_class=HTMLResponse)
+@app.get("/", response_class=HTMLResponse, tags=["Landing"])
 def landing(request: Request):
     """Get landing page."""
     data = {

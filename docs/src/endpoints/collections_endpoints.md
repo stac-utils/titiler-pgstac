@@ -13,7 +13,8 @@
 | `POST` | `/collections/{collection_id}/statistics`                                                  | GeoJSON ([Statistics][statitics_model]) | Return statistics for geojson features
 | `GET`  | `/collections/{collection_id}/bbox/{minx},{miny},{maxx},{maxy}[/{width}x{height}].{format}`| image/bin                               | Create an image from part of a dataset
 | `POST` | `/collections/{collection_id}/feature[/{width}x{height}][.{format}]`                       | image/bin                               | Create an image from a GeoJSON feature
-| `GET`  | `/searches/{search_id}/point/{lon},{lat}`                                           | JSON ([Point][point_model])             | Return pixel values from assets intersecting with a given point
+| `GET`  | `/collections/{collection_id}/point/{lon},{lat}`                                           | JSON ([Point][point_model])             | Return pixel values from assets intersecting with a given point
+| `GET`  | `/collections/{collection_id}/info`                                                        | JSON ([Info][info_model])               | Return **Search** query infos from `collection_id`
 
 ### Tiles
 
@@ -350,3 +351,152 @@ Example:
 [tilejson_model]: https://github.com/developmentseed/titiler/blob/2335048a407f17127099cbbc6c14e1328852d619/src/titiler/core/titiler/core/models/mapbox.py#L16-L38
 [statitics_model]: https://github.com/developmentseed/titiler/blob/17cdff2f0ddf08dbd9a47c2140b13c4bbcc30b6d/src/titiler/core/titiler/core/models/responses.py#L49-L52
 [point_model]: https://github.com/developmentseed/titiler/blob/e396959e7f818909a5494301a809b5f795aa202e/src/titiler/mosaic/titiler/mosaic/models/responses.py#L8-L17
+
+
+### Collection Search infos
+
+`:endpoint:/collections/{collection_id}/info - [GET]`
+
+- PathParams:
+    - **collection_id**: STAC Collection Identifier.
+
+Example:
+
+- `https://myendpoint/collections/my-collection/info`
+
+```bash
+curl 'http://myendpoint/collections/my-collection/info' | jq
+>> {
+  "search": {
+    "hash": "37c6ebb942cc5393a9eb408ad8431f62",
+    "search": {
+      "collections": [
+        "my-collection"
+      ]
+    },
+    "_where": "collection = ANY ('{my-collection}') ",
+    "orderby": "datetime DESC, id DESC",
+    "lastused": "2024-05-17T06:44:45.980518Z",
+    "usecount": 1,
+    "metadata": {
+      "type": "mosaic",
+      "bounds": [
+        91.831615,
+        19.982078842323997,
+        92.97426268500965,
+        21.666101
+      ],
+      "name": "Mosaic for 'my-collection' Collection",
+      "assets": [
+        "visual",
+        "data-mask",
+        "ms_analytic",
+        "pan_analytic"
+      ],
+      "defaults": {
+        "color": {
+          "assets": [
+            "visual"
+          ],
+          "colormap": {
+            "1": [
+              0,
+              0,
+              0,
+              255
+            ],
+            "1000": [
+              255,
+              255,
+              255,
+              255
+            ]
+          },
+          "asset_bidx": ["visual|1"]
+        },
+        "visual": {
+          "assets": [
+            "visual"
+          ],
+          "maxzoom": 22,
+          "minzoom": 8,
+          "asset_bidx": ["visual|1,2,3"]
+        },
+        "visualr": {
+          "assets": [
+            "visual"
+          ],
+          "rescale": [
+            [
+              0,
+              100
+            ]
+          ],
+          "asset_bidx": ["visual|1"]
+        }
+      }
+    }
+  },
+  "links": [
+    {
+      "href": "http://myendpoint/collections/my-collection/info",
+      "rel": "self",
+      "title": "Mosaic metadata"
+    },
+    {
+      "href": "http://myendpoint/collections/my-collection/{tileMatrixSetId}/tilejson.json",
+      "rel": "tilejson",
+      "templated": true,
+      "title": "TileJSON link (Template URL)."
+    },
+    {
+      "href": "http://myendpoint/collections/my-collection/{tileMatrixSetId}/tilejson.json?colormap=%7B%221%22%3A+%5B0%2C+0%2C+0%2C+255%5D%2C+%221000%22%3A+%5B255%2C+255%2C+255%2C+255%5D%7D&assets=visual&asset_bidx=visual%7C1",
+      "rel": "tilejson",
+      "templated": true,
+      "title": "TileJSON link for `color` layer (Template URL)."
+    },
+    {
+      "href": "http://myendpoint/collections/my-collection/{tileMatrixSetId}/tilejson.json?maxzoom=22&minzoom=8&assets=visual&asset_bidx=visual%7C1%2C2%2C3",
+      "rel": "tilejson",
+      "templated": true,
+      "title": "TileJSON link for `visual` layer (Template URL)."
+    },
+    {
+      "href": "http://myendpoint/collections/my-collection/{tileMatrixSetId}/tilejson.json?rescale=0%2C100&assets=visual&asset_bidx=visual%7C1",
+      "rel": "tilejson",
+      "templated": true,
+      "title": "TileJSON link for `visualr` layer (Template URL)."
+    },
+    {
+      "href": "http://myendpoint/collections/my-collection/{tileMatrixSetId}/map",
+      "rel": "map",
+      "templated": true,
+      "title": "Map viewer link (Template URL)."
+    },
+    {
+      "href": "http://myendpoint/collections/my-collection/{tileMatrixSetId}/map?colormap=%7B%221%22%3A+%5B0%2C+0%2C+0%2C+255%5D%2C+%221000%22%3A+%5B255%2C+255%2C+255%2C+255%5D%7D&assets=visual&asset_bidx=visual%7C1",
+      "rel": "map",
+      "templated": true,
+      "title": "Map viewer link for `color` layer (Template URL)."
+    },
+    {
+      "href": "http://myendpoint/collections/my-collection/{tileMatrixSetId}/map?maxzoom=22&minzoom=8&assets=visual&asset_bidx=visual%7C1%2C2%2C3",
+      "rel": "map",
+      "templated": true,
+      "title": "Map viewer link for `visual` layer (Template URL)."
+    },
+    {
+      "href": "http://myendpoint/collections/my-collection/{tileMatrixSetId}/map?rescale=0%2C100&assets=visual&asset_bidx=visual%7C1",
+      "rel": "map",
+      "templated": true,
+      "title": "Map viewer link for `visualr` layer (Template URL)."
+    },
+    {
+      "href": "http://myendpoint/collections/my-collection/{tileMatrixSetId}/WMTSCapabilities.xml",
+      "rel": "wmts",
+      "templated": true,
+      "title": "WMTS link (Template URL)"
+    }
+  ]
+}
+```

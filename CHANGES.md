@@ -1,9 +1,9 @@
 # Release Notes
 
-## 1.3.0 (TBD)
+## 1.3.0 (2024-05-17)
 
 * update titiler requirement to `>=0.18.0,<0.19`
-* Add `/colorMaps` endpoints
+* Add `/colorMaps` endpoints to the application
 * **Deprecation** remove default `WebMercatorQuad` tile matrix set in `/tiles`, `/tilesjson.json`, `/map`, `/WMTSCapabilities.xml` and `/assets` endpoints
 
     ```
@@ -22,9 +22,24 @@
 
 * update `titiler.pgstac.model.Link` to match the OGC specification
 * use `{tileMatrixSetId}` in templated URL links
-* add support for `render` and `item-assets` STAC Collection extensions
-* add `/info` endpoint to the `Collections` endpoints
+* add support for [`render`](https://github.com/stac-extensions/render) and [`item-assets`](https://github.com/stac-extensions/item-assets) STAC Collection extensions for the `STAC Collections` *info* and *wmts* endpoints
+* add `/info` endpoint to the `STAC Collections` endpoints
 * add `/collections` and `/collections/{collection_id}` endpoints when `TITILER_PGSTAC_API_DEBUG=TRUE`
+* Expect the `Metadata.defaults` configurations to follow the STAC `render` extension (https://github.com/stac-extensions/render)
+
+    ```json
+        // before
+        "blue": {
+            "rescale": ["0,100"],
+            "assets": "b1",
+        }
+
+        // now
+        "blue": {
+            "rescale": [[0, 100]],
+            "assets": ["b1"],
+        }
+    ```
 
 ## 1.2.3 (2024-03-25)
 

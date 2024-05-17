@@ -28,6 +28,7 @@
     "assets": ["image", "cog"],
 
     // OPTIONAL. Default: null. A set of `defaults` configuration to be forwarded to the /tiles endpoints.
+    // Note: The defaults block should follow the STAC render extension https://github.com/stac-extensions/render
     "defaults": {
         "true_color": {
             "assets": ["B4", "B3", "B2"],
