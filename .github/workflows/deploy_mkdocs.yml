@@ -7,6 +7,7 @@ on:
       - '*'
   workflow_dispatch:
 
+
 jobs:
   build:
     name: Deploy docs
@@ -15,16 +16,16 @@ jobs:
       - name: Checkout main
         uses: actions/checkout@v4
 
-      - name: Set up Python 3.8
+      - name: Set up Python 3.11
         uses: actions/setup-python@v5
         with:
-          python-version: 3.8
+          python-version: 3.11
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           python -m pip install -e ".[psycopg-binary]"
-          python -m pip install nbconvert==6.5.3 mkdocs mkdocs-material mkdocs-jupyter pygments pdocs mike~=2.0
+          python -m pip install nbconvert mkdocs mkdocs-material mkdocs-jupyter pygments pdocs mike~=2.0
 
       - name: update API docs
         run: |
