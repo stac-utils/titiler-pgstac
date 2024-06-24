@@ -211,7 +211,7 @@ jobs:
       # Push `latest` when comiting to main
       - name: Build and push latest
         if: github.ref == 'refs/heads/main'
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64
           context: .
@@ -223,7 +223,7 @@ jobs:
       # Push `{VERSION}` when pushing a new tag
       - name: Build and push tag
         if: startsWith(github.event.ref, 'refs/tags') || github.event_name == 'release'
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64
           context: .
