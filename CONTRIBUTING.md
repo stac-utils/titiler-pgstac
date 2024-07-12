@@ -7,7 +7,7 @@ Issues and pull requests are more than welcome: https://github.com/stac-utils/ti
 ```bash
 $ git clone https://github.com/stac-utils/titiler-pgstac.git
 $ cd titiler-pgstac
-$ pip install pre-commit -e .["dev,test,psycopg"]
+$ python -m pip install -e ".[dev,test,psycopg]"
 ```
 
 You can then run the tests with the following command:
