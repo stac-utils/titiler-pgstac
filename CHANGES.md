@@ -1,5 +1,9 @@
 # Release Notes
 
+## Unreleased
+
+* update models to avoid pydantic deprecation
+
 ## 1.3.0 (2024-05-17)
 
 * update titiler requirement to `>=0.18.0,<0.19`

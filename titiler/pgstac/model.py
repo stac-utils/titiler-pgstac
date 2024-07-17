@@ -224,20 +224,27 @@ class Link(BaseModel):
         str,
         Field(
             description="Supplies the URI to a remote resource (or resource fragment).",
-            example="http://data.example.com/buildings/123",
+            json_schema_extra={
+                "example": "http://data.example.com/buildings/123",
+            },
         ),
     ]
     rel: Annotated[
         str,
         Field(
-            description="The type or semantics of the relation.", example="alternate"
+            description="The type or semantics of the relation.",
+            json_schema_extra={
+                "example": "alternate",
+            },
         ),
     ]
     type: Annotated[
         Optional[MediaType],
         Field(
             description="A hint indicating what the media type of the result of dereferencing the link should be.",
-            example="application/geo+json",
+            json_schema_extra={
+                "example": "application/geo+json",
+            },
         ),
     ] = None
     templated: Annotated[
@@ -248,21 +255,27 @@ class Link(BaseModel):
         Optional[str],
         Field(
             description="A base path to retrieve semantic information about the variables used in URL template.",
-            example="/ogcapi/vars/",
+            json_schema_extra={
+                "example": "/ogcapi/vars/",
+            },
         ),
     ] = None
     hreflang: Annotated[
         Optional[str],
         Field(
             description="A hint indicating what the language of the result of dereferencing the link should be.",
-            example="en",
+            json_schema_extra={
+                "example": "en",
+            },
         ),
     ] = None
     title: Annotated[
         Optional[str],
         Field(
             description="Used to label the destination of a link such that it can be used as a human-readable identifier.",
-            example="Trierer Strasse 70, 53115 Bonn",
+            json_schema_extra={
+                "example": "Trierer Strasse 70, 53115 Bonn",
+            },
         ),
     ] = None
     length: Optional[int] = None

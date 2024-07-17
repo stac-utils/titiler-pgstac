@@ -55,7 +55,7 @@ def search_factory(request: Request, body: RegisterMosaic) -> Tuple[PgSTACSearch
     scheme, token = get_authorization_scheme_param(authorization)
     payload = jwt.decode(token, algorithms=["HS256"], key="your-256-bit-secret")
 
-    search = body.dict(exclude_none=True, exclude={"metadata"}, by_alias=True)
+    search = body.model_dump(exclude_none=True, exclude={"metadata"}, by_alias=True)
     search["filter"] = {
         "op": "and",
         "args": [
