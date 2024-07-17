@@ -225,7 +225,7 @@ class Link(BaseModel):
         Field(
             description="Supplies the URI to a remote resource (or resource fragment).",
             json_schema_extra={
-                "example": ["http://data.example.com/buildings/123"],
+                "example": "http://data.example.com/buildings/123",
             },
         ),
     ]
@@ -234,7 +234,7 @@ class Link(BaseModel):
         Field(
             description="The type or semantics of the relation.",
             json_schema_extra={
-                "example": ["alternate"],
+                "example": "alternate",
             },
         ),
     ]
@@ -243,7 +243,7 @@ class Link(BaseModel):
         Field(
             description="A hint indicating what the media type of the result of dereferencing the link should be.",
             json_schema_extra={
-                "example": ["application/geo+json"],
+                "example": "application/geo+json",
             },
         ),
     ] = None
@@ -256,7 +256,7 @@ class Link(BaseModel):
         Field(
             description="A base path to retrieve semantic information about the variables used in URL template.",
             json_schema_extra={
-                "example": ["/ogcapi/vars/"],
+                "example": "/ogcapi/vars/",
             },
         ),
     ] = None
@@ -265,7 +265,7 @@ class Link(BaseModel):
         Field(
             description="A hint indicating what the language of the result of dereferencing the link should be.",
             json_schema_extra={
-                "example": ["en"],
+                "example": "en",
             },
         ),
     ] = None
@@ -274,7 +274,7 @@ class Link(BaseModel):
         Field(
             description="Used to label the destination of a link such that it can be used as a human-readable identifier.",
             json_schema_extra={
-                "example": ["Trierer Strasse 70, 53115 Bonn"],
+                "example": "Trierer Strasse 70, 53115 Bonn",
             },
         ),
     ] = None

@@ -1,6 +1,6 @@
 # Release Notes
 
-## 1.3.1 (2024-06-21)
+## Unreleased
 
 * update models to avoid pydantic deprecation
 
