@@ -209,7 +209,7 @@ app.include_router(mosaic.router, prefix="/{search_id}")
 from titiler.pgstac.factory import (
     MosaicTilerFactory,
     add_search_register_route,
-    add_mosaic_register_route,
+    add_search_list_route,
 )
 
 mosaic = MosaicTilerFactory(
