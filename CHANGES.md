@@ -1,6 +1,6 @@
 # Release Notes
 
-## Unreleased
+## 1.3.1 (2024-08-01)
 
 * update models to avoid pydantic deprecation
 * update `searches` model for pgstac>=9.1
