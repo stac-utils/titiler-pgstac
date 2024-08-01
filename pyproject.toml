@@ -128,3 +128,17 @@ explicit_package_bases = true
 filterwarnings = [
     "ignore::rasterio.errors.NotGeoreferencedWarning",
 ]
+
+[tool.bumpversion]
+current_version = "1.3.0"
+search = "{current_version}"
+replace = "{new_version}"
+regex = false
+tag = true
+commit = true
+tag_name = "{new_version}"
+
+[[tool.bumpversion.files]]
+filename = "titiler/pgstac/__init__.py"
+search = '__version__ = "{current_version}"'
+replace = '__version__ = "{new_version}"'
