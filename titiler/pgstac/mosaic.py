@@ -297,9 +297,13 @@ class PGSTACBackend(BaseBackend):
                     )
                     resp = cursor.fetchone()[0]
 
-                except pgErrors.RaiseException as e:
+                except (pgErrors.RaiseException, pgErrors.NotNullViolation) as e:
                     # Catch Invalid SearchId and raise specific Error
-                    if f"Search with Query Hash {self.input} Not Found" in str(e):
+                    if f"Search with Query Hash {self.input} Not Found" in str(
+                        e
+                    ) or 'null value in column "search" of relation "searches"' in str(
+                        e
+                    ):
                         raise MosaicNotFoundError(
                             f"SearchId `{self.input}` not found"
                         ) from e

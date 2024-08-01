@@ -4,6 +4,7 @@
 
 * update models to avoid pydantic deprecation
 * update `searches` model for pgstac>=9.1
+* update psycopg error catching when `search` doesn't exist
 
 ## 1.3.0 (2024-05-17)
 
