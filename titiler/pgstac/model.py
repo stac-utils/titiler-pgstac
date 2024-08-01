@@ -197,8 +197,8 @@ class Search(BaseModel):
 
     id: str = Field(alias="hash")
     input_search: Dict[str, Any] = Field(alias="search")
-    sql_where: str = Field(alias="_where")
-    orderby: str
+    sql_where: Optional[str] = Field(default=None, alias="_where")
+    orderby: Optional[str] = None
     lastused: datetime
     usecount: int
     metadata: Metadata
