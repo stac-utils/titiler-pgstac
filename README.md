@@ -92,13 +92,13 @@ $ uvicorn titiler.pgstac.main:app --reload
 ```
 $ git clone https://github.com/stac-utils/titiler-pgstac.git
 $ cd titiler-pgstac
-$ docker-compose up --build tiler
+$ docker compose up --build tiler
 ```
 
 It runs `titiler.pgstac` using Gunicorn web server. To run Uvicorn based version:
 
 ```
-$ docker-compose up --build tiler-uvicorn
+$ docker compose up --build tiler-uvicorn
 ```
 
 ## Contribution & Development
