@@ -56,7 +56,7 @@ test = [
     "pytest-cov",
     "pytest-asyncio",
     "httpx",
-    "pypgstac>=0.8",
+    "pypgstac>=0.7,<=0.9.1",
     "psycopg2",
     "pytest-pgsql",
 ]
