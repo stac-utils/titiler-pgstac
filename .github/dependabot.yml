@@ -2,7 +2,6 @@
 
 version: 2
 updates:
-
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
@@ -12,3 +11,13 @@ updates:
       all:
         patterns:
         - "*"
+
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      pgstac:
+        dependency-type: "development"
+        patterns:
+        - "pypgstac*"
