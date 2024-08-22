@@ -1043,3 +1043,16 @@ def test_query_point_searches(app, search_no_bbox, search_bbox):
     )
 
     assert response.status_code == 204  # (no content)
+
+
+def test_cache_middleware_settings(app, search_no_bbox):
+    """Make sure some endpoints do not have cache-control headers."""
+    response = app.get("/searches/list")
+    assert response.status_code == 200
+    assert not response.headers.get("Cache-Control")
+
+    response = app.get(
+        f"/searches/{search_no_bbox}/point/-85.5,36.1624", params={"assets": "cog"}
+    )
+    assert response.status_code == 200
+    assert response.headers.get("Cache-Control")
