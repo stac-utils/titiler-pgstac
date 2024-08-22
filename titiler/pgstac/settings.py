@@ -1,7 +1,7 @@
 """API settings."""
 
 from functools import lru_cache
-from typing import Any, Optional
+from typing import Any, Optional, Set
 
 from pydantic import (
     Field,
@@ -20,6 +20,11 @@ class ApiSettings(BaseSettings):
     name: str = "titiler-pgstac"
     cors_origins: str = "*"
     cachecontrol: str = "public, max-age=3600"
+    cachecontrol_exclude_paths: Set[str] = Field(
+        default={
+            ".+/list",
+        }
+    )
     root_path: str = ""
     debug: bool = False
 

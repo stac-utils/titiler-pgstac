@@ -1,5 +1,9 @@
 # Release Notes
 
+## Unreleased
+
+* add `cachecontrol_exclude_paths` attribute in `ApiSettings` to let users decide if some path should not have cache-control headers (defaults is to exclude `/list`)
+
 ## 1.3.1 (2024-08-01)
 
 * update models to avoid pydantic deprecation

@@ -101,7 +101,11 @@ if settings.cors_origins:
         allow_headers=["*"],
     )
 
-app.add_middleware(CacheControlMiddleware, cachecontrol=settings.cachecontrol)
+app.add_middleware(
+    CacheControlMiddleware,
+    cachecontrol=settings.cachecontrol,
+    exclude_path=settings.cachecontrol_exclude_paths,
+)
 
 optional_headers = []
 if settings.debug:
