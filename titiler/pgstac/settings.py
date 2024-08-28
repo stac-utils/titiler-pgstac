@@ -116,6 +116,31 @@ class CacheSettings(BaseSettings):
         return self
 
 
+class PgstacSettings(BaseSettings):
+    """Pgstac settings"""
+
+    # Return as soon as we scan N items
+    scan_limit: int = 10000
+
+    # Return as soon as we have N items per geometru
+    items_limit: int = 100
+
+    # Return after N seconds to avoid long requests
+    time_limit: int = 5
+
+    # Return as soon as the geometry is fully covered
+    exitwhenfull: bool = True
+
+    # Skip any items that would show up completely under the previous items
+    skipcovered:bool = True
+
+    model_config = {
+        "env_prefix": "TITILER_PGSTAC_BACKEND_",
+        "env_file": ".env",
+        "extra": "ignore",
+    }
+
+
 class _RetrySettings(BaseSettings):
     """Retry settings"""
 
