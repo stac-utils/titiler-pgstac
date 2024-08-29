@@ -4,6 +4,7 @@
 
 * add `/collections/{collection_id}/items/{item_id}/assets/{asset_id}` optional endpoints (`TITILER_PGSTAC_API_ENABLE_ASSETS_ENDPOINTS=TRUE|FALSE`)
 * add `/external` optional endpoints (`TITILER_PGSTAC_API_ENABLE_EXTERNAL_DATASET_ENDPOINTS=TRUE|FALSE`)
+* add `cachecontrol_exclude_paths` attribute in `ApiSettings` to let users decide if some path should not have cache-control headers (defaults is to exclude `/list`)
 
 ## 1.3.1 (2024-08-01)
 
