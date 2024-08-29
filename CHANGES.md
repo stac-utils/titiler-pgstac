@@ -1,5 +1,10 @@
 # Release Notes
 
+## Unreleased
+
+* add `/collections/{collection_id}/items/{item_id}/assets/{asset_id}` optional endpoints (`TITILER_PGSTAC_API_ENABLE_ASSETS_ENDPOINTS=TRUE|FALSE`)
+* add `/external` optional endpoints (`TITILER_PGSTAC_API_ENABLE_EXTERNAL_DATASET_ENDPOINTS=TRUE|FALSE`)
+
 ## 1.3.1 (2024-08-01)
 
 * update models to avoid pydantic deprecation
