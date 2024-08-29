@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   tiler:
     container_name: tiler-pgstac
