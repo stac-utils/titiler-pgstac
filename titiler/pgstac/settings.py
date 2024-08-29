@@ -132,7 +132,7 @@ class PgstacSettings(BaseSettings):
     exitwhenfull: bool = True
 
     # Skip any items that would show up completely under the previous items
-    skipcovered:bool = True
+    skipcovered: bool = True
 
     model_config = {
         "env_prefix": "TITILER_PGSTAC_BACKEND_",

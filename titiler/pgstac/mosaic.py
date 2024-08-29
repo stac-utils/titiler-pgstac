@@ -1,7 +1,6 @@
 """TiTiler.PgSTAC custom Mosaic Backend and Custom STACReader."""
 
 import json
-import os
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Type
 
 import attr
@@ -27,7 +26,7 @@ from rio_tiler.mosaic import mosaic_reader
 from rio_tiler.tasks import create_tasks, filter_tasks
 from rio_tiler.types import AssetInfo, BBox
 
-from titiler.pgstac.settings import CacheSettings, RetrySettings, PgstacSettings
+from titiler.pgstac.settings import CacheSettings, PgstacSettings, RetrySettings
 from titiler.pgstac.utils import retry
 
 cache_config = CacheSettings()
@@ -278,7 +277,9 @@ class PGSTACBackend(BaseBackend):
         scan_limit = scan_limit or pgstac_config.scan_limit
         items_limit = items_limit or pgstac_config.items_limit
         time_limit = time_limit or pgstac_config.time_limit
-        exitwhenfull = pgstac_config.exitwhenfull if exitwhenfull is None else exitwhenfull
+        exitwhenfull = (
+            pgstac_config.exitwhenfull if exitwhenfull is None else exitwhenfull
+        )
         skipcovered = pgstac_config.skipcovered if skipcovered is None else skipcovered
 
         with self.pool.connection() as conn:
