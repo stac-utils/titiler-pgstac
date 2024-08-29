@@ -135,7 +135,7 @@ class PgstacSettings(BaseSettings):
     skipcovered: bool = True
 
     model_config = {
-        "env_prefix": "TITILER_PGSTAC_BACKEND_",
+        "env_prefix": "TITILER_PGSTAC_SEARCH_",
         "env_file": ".env",
         "extra": "ignore",
     }
