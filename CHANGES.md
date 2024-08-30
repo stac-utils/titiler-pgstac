@@ -3,6 +3,7 @@
 ## Unreleased
 
 * add `cachecontrol_exclude_paths` attribute in `ApiSettings` to let users decide if some path should not have cache-control headers (defaults is to exclude `/list`)
+* Add PgstacSettings such that the user can provide their own default settings for PgSTAC search
 
 ## 1.3.1 (2024-08-01)
 
