@@ -2,6 +2,7 @@
 
 from functools import lru_cache
 from typing import Any, Optional, Set
+from urllib.parse import quote_plus as quote
 
 from pydantic import (
     Field,
@@ -83,8 +84,8 @@ class PostgresSettings(BaseSettings):
 
         return PostgresDsn.build(
             scheme="postgresql",
-            username=info.data.get("postgres_user"),
-            password=info.data.get("postgres_pass"),
+            username=info.data["postgres_user"],
+            password=quote(info.data["postgres_pass"]),
             host=info.data.get("postgres_host", ""),
             port=info.data.get("postgres_port", 5432),
             path=info.data.get("postgres_dbname", ""),

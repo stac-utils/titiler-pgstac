@@ -57,8 +57,7 @@ test = [
     "pytest-asyncio",
     "httpx",
     "pypgstac>=0.7,<=0.9.1",
-    "psycopg2",
-    "pytest-pgsql",
+    "pytest-postgresql",
 ]
 
 [project.urls]
