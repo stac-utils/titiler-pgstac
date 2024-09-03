@@ -3,14 +3,15 @@
 import os
 import warnings
 from typing import Any, Dict
+from urllib.parse import quote_plus as quote
 
 import psycopg
 import pytest
-import pytest_pgsql
 import rasterio
 from pypgstac.db import PgstacDB
 from pypgstac.load import Loader
 from pypgstac.migrate import Migrate
+from pytest_postgresql.janitor import DatabaseJanitor
 from rasterio.errors import NotGeoreferencedWarning
 from rasterio.io import MemoryFile
 from starlette.testclient import TestClient
@@ -19,10 +20,6 @@ DATA_DIR = os.path.join(os.path.dirname(__file__), "fixtures")
 collection = os.path.join(DATA_DIR, "noaa-emergency-response.json")
 collection_maxar = os.path.join(DATA_DIR, "maxar_BayOfBengal.json")
 items = os.path.join(DATA_DIR, "noaa-eri-nashville2020.json")
-
-test_db = pytest_pgsql.TransactedPostgreSQLTestDB.create_fixture(
-    "test_db", scope="session", use_restore_state=False
-)
 
 
 def parse_img(content: bytes) -> Dict[Any, Any]:
@@ -51,42 +48,52 @@ def mock_rasterio_open(asset):
 
 
 @pytest.fixture(scope="session")
-def database_url(test_db):
-    """
-    Session scoped fixture to launch a postgresql database in a separate process.  We use psycopg2 to ingest test data
-    because pytest-asyncio event loop is a function scoped fixture and cannot be called within the current scope.  Yields
-    a database url which we pass to our application through a monkeypatched environment variable.
-    """
-    with PgstacDB(dsn=str(test_db.connection.engine.url)) as db:
+def database(postgresql_proc):
+    """Create Database fixture."""
+    with DatabaseJanitor(
+        user=postgresql_proc.user,
+        host=postgresql_proc.host,
+        port=postgresql_proc.port,
+        dbname="pgstacrw",
+        version=postgresql_proc.version,
+        password="a2Vw:yk=)CdSis[fek]tW=/o",
+    ) as jan:
+        connection = f"postgresql://{jan.user}:{quote(jan.password)}@{jan.host}:{jan.port}/{jan.dbname}"
+
+        # make sure the DB is set to use UTC
+        with psycopg.connect(connection) as conn:
+            with conn.cursor() as cur:
+                cur.execute(f"ALTER DATABASE {jan.dbname} SET TIMEZONE='UTC';")
+
         print("Running to PgSTAC migration...")
-        migrator = Migrate(db)
-        version = migrator.run_migration()
-        assert version
-        assert test_db.has_schema("pgstac")
-        print(f"PgSTAC version: {version}")
+        with PgstacDB(dsn=connection) as db:
+            migrator = Migrate(db)
+            version = migrator.run_migration()
+            assert version
+            print(f"PgSTAC version: {version}")
 
-        print("Load items and collection into PgSTAC")
-        loader = Loader(db=db)
-        loader.load_collections(collection)
-        loader.load_collections(collection_maxar)
-        loader.load_items(items)
+            print("Load items and collection into PgSTAC")
+            loader = Loader(db=db)
+            loader.load_collections(collection)
+            loader.load_collections(collection_maxar)
+            loader.load_items(items)
 
-    # Make sure we have 1 collection and 163 items in pgstac
-    with psycopg.connect(str(test_db.connection.engine.url)) as conn:
-        with conn.cursor() as cur:
-            cur.execute("SELECT COUNT(*) FROM pgstac.collections")
-            val = cur.fetchone()[0]
-            assert val == 2
+        # Make sure we have 1 collection and 163 items in pgstac
+        with psycopg.connect(connection) as conn:
+            with conn.cursor() as cur:
+                cur.execute("SELECT COUNT(*) FROM pgstac.collections")
+                val = cur.fetchone()[0]
+                assert val == 2
 
-            cur.execute("SELECT COUNT(*) FROM pgstac.items")
-            val = cur.fetchone()[0]
-            assert val == 163
+                cur.execute("SELECT COUNT(*) FROM pgstac.items")
+                val = cur.fetchone()[0]
+                assert val == 163
 
-    return test_db.connection.engine.url
+        yield jan
 
 
 @pytest.fixture(autouse=True)
-def app(database_url, monkeypatch):
+def app(database, monkeypatch):
     """Create app with connection to the pytest database."""
     monkeypatch.setenv("AWS_ACCESS_KEY_ID", "jqt")
     monkeypatch.setenv("AWS_SECRET_ACCESS_KEY", "rde")
@@ -97,8 +104,10 @@ def app(database_url, monkeypatch):
     monkeypatch.setenv("TITILER_PGSTAC_API_DEBUG", "TRUE")
     monkeypatch.setenv("TITILER_PGSTAC_API_ENABLE_ASSETS_ENDPOINTS", "TRUE")
     monkeypatch.setenv("TITILER_PGSTAC_API_ENABLE_EXTERNAL_DATASET_ENDPOINTS", "TRUE")
-
-    monkeypatch.setenv("DATABASE_URL", str(database_url))
+    monkeypatch.setenv(
+        "DATABASE_URL",
+        f"postgresql://{database.user}:{quote(database.password)}@{database.host}:{database.port}/{database.dbname}",
+    )
 
     from titiler.pgstac.main import app
 
