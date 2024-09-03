@@ -20,6 +20,7 @@ from titiler.core.factory import (
     AlgorithmFactory,
     ColorMapFactory,
     MultiBaseTilerFactory,
+    TilerFactory,
     TMSFactory,
 )
 from titiler.core.middleware import (
@@ -31,7 +32,12 @@ from titiler.core.resources.enums import OptionalHeader
 from titiler.mosaic.errors import MOSAIC_STATUS_CODES
 from titiler.pgstac import __version__ as titiler_pgstac_version
 from titiler.pgstac.db import close_db_connection, connect_to_db
-from titiler.pgstac.dependencies import CollectionIdParams, ItemIdParams, SearchIdParams
+from titiler.pgstac.dependencies import (
+    AssetIdParams,
+    CollectionIdParams,
+    ItemIdParams,
+    SearchIdParams,
+)
 from titiler.pgstac.extensions import searchInfoExtension
 from titiler.pgstac.factory import (
     MosaicTilerFactory,
@@ -204,6 +210,30 @@ app.include_router(
     tags=["STAC Item"],
     prefix="/collections/{collection_id}/items/{item_id}",
 )
+
+###############################################################################
+# STAC Assets Endpoints
+if settings.enable_assets_endpoints:
+    asset = TilerFactory(
+        path_dependency=AssetIdParams,
+        router_prefix="/collections/{collection_id}/items/{item_id}/assets/{asset_id}",
+        add_viewer=True,
+    )
+    app.include_router(
+        asset.router,
+        tags=["STAC Asset"],
+        prefix="/collections/{collection_id}/items/{item_id}/assets/{asset_id}",
+    )
+
+###############################################################################
+# External Dataset Endpoints
+if settings.enable_external_dataset_endpoints:
+    external_cog = TilerFactory(router_prefix="/external", add_viewer=True)
+    app.include_router(
+        external_cog.router,
+        tags=["External Dataset"],
+        prefix="/external",
+    )
 
 ###############################################################################
 # Tiling Schemes Endpoints

@@ -1,7 +1,7 @@
 
 ### Start DB
 ```bash
-$ docker-compose up database
+$ docker compose up database
 ```
 
 ### Add items/collections to the db

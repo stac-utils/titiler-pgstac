@@ -28,6 +28,9 @@ class ApiSettings(BaseSettings):
     root_path: str = ""
     debug: bool = False
 
+    enable_assets_endpoints: bool = False
+    enable_external_dataset_endpoints: bool = False
+
     model_config = {
         "env_prefix": "TITILER_PGSTAC_API_",
         "env_file": ".env",

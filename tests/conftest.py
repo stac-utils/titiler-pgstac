@@ -95,14 +95,12 @@ def app(database_url, monkeypatch):
     monkeypatch.delenv("AWS_PROFILE", raising=False)
     monkeypatch.setenv("TITILER_PGSTAC_CACHE_DISABLE", "TRUE")
     monkeypatch.setenv("TITILER_PGSTAC_API_DEBUG", "TRUE")
+    monkeypatch.setenv("TITILER_PGSTAC_API_ENABLE_ASSETS_ENDPOINTS", "TRUE")
+    monkeypatch.setenv("TITILER_PGSTAC_API_ENABLE_EXTERNAL_DATASET_ENDPOINTS", "TRUE")
 
     monkeypatch.setenv("DATABASE_URL", str(database_url))
 
     from titiler.pgstac.main import app
-
-    # Remove middlewares https://github.com/encode/starlette/issues/472
-    # app.user_middleware = []
-    # app.middleware_stack = app.build_middleware_stack()
 
     with TestClient(app) as app:
         yield app

@@ -10,6 +10,12 @@ By default the main application (`titiler.pgstac.main.app`) provides three sets 
 
 - `/collections/{collection_id}/items/{item_id}`: Dynamic tiler for single STAC item (stored in PgSTAC)
 
+Two other sets of endpoints can be enabled using environment variable:
+
+- `/collections/{collection_id}/items/{item_id}/assets/{asset_id}`: Dynamic tiler of single STAC Asset (stored in PgSTAC), enabled setting `TITILER_PGSTAC_API_ENABLE_ASSETS_ENDPOINTS=TRUE`
+
+- `/external`: Dynamic tiler of single Cloud Optimized dataset, enabled setting `TITILER_PGSTAC_API_ENABLE_EXTERNAL_DATASET_ENDPOINTS=TRUE`
+
 ## STAC Searches - `/searches/{search_id}`
 
 #### Register a PgSTAC `Search` request

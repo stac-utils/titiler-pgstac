@@ -231,6 +231,21 @@ def ItemIdParams(
     return get_stac_item(request.app.state.dbpool, collection_id, item_id)
 
 
+def AssetIdParams(
+    request: Request,
+    collection_id: Annotated[
+        str,
+        Path(description="STAC Collection Identifier"),
+    ],
+    item_id: Annotated[str, Path(description="STAC Item Identifier")],
+    asset_id: Annotated[str, Path(description="STAC Asset Identifier")],
+) -> str:
+    """STAC Asset dependency."""
+    item = get_stac_item(request.app.state.dbpool, collection_id, item_id)
+    asset_info = item.assets[asset_id]
+    return asset_info.get_absolute_href() or asset_info.href
+
+
 def TmsTileParams(
     z: Annotated[
         int,
