@@ -25,7 +25,7 @@ from fastapi import Body, Depends, FastAPI, HTTPException, Path, Query
 from fastapi.dependencies.utils import get_dependant, request_params_to_args
 from geojson_pydantic import Feature, FeatureCollection
 from psycopg import sql
-from psycopg.rows import class_row
+from psycopg.rows import class_row, dict_row
 from pydantic import conint
 from rio_tiler.constants import MAX_THREADS, WGS84_CRS
 from rio_tiler.mosaic.methods.base import MosaicMethodBase
@@ -62,6 +62,7 @@ from titiler.pgstac.dependencies import (
     SearchParams,
     TmsTileParams,
 )
+from titiler.pgstac.errors import ReadOnlyPgSTACError
 from titiler.pgstac.mosaic import PGSTACBackend
 
 MOSAIC_THREADS = int(os.getenv("MOSAIC_CONCURRENCY", MAX_THREADS))
@@ -1001,7 +1002,14 @@ def add_search_register_route(
         search, metadata = search_query
 
         with request.app.state.dbpool.connection() as conn:
-            with conn.cursor(row_factory=class_row(model.Search)) as cursor:
+            with conn.cursor(row_factory=dict_row) as cursor:
+                cursor.execute("SELECT pgstac.readonly()")
+                if cursor.fetchone()["readonly"]:
+                    raise ReadOnlyPgSTACError(
+                        "PgSTAC instance is set to `read-only`, cannot register search query."
+                    )
+
+                cursor.row_factory = class_row(model.Search)
                 cursor.execute(
                     "SELECT * FROM search_query(%s, _metadata => %s);",
                     (

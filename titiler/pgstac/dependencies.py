@@ -18,6 +18,7 @@ from typing_extensions import Annotated
 
 from titiler.core.dependencies import DefaultDependency
 from titiler.pgstac import model
+from titiler.pgstac.errors import ReadOnlyPgSTACError
 from titiler.pgstac.settings import CacheSettings, RetrySettings
 from titiler.pgstac.utils import retry
 
@@ -99,6 +100,14 @@ def get_collection_id(pool: ConnectionPool, collection_id: str) -> str:  # noqa:
                         continue
 
                 metadata.defaults = renders
+
+            # TODO: adapt Mosaic Backend to accept Search object directly
+            # we technically don't need to register the search request for /collections
+            cursor.execute("SELECT pgstac.readonly()")
+            if cursor.fetchone()["readonly"]:
+                raise ReadOnlyPgSTACError(
+                    "PgSTAC instance is set to `read-only`, cannot register search query."
+                )
 
             cursor.row_factory = class_row(model.Search)
             cursor.execute(
