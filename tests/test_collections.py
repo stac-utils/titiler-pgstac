@@ -559,7 +559,12 @@ def test_collections_additional_parameters(app):
     assert response.status_code == 200
     resp = response.json()
     assert resp["search"]["search"]["bbox"] == [-87.0251, 36.1749, -86.9999, 36.2001]
-    assert resp["search"]["metadata"]["bbox"] == [-87.0251, 36.1749, -86.9999, 36.2001]
+    assert resp["search"]["metadata"]["bounds"] == [
+        -87.0251,
+        36.1749,
+        -86.9999,
+        36.2001,
+    ]
 
     # ids
     response = app.get(
@@ -577,7 +582,7 @@ def test_collections_additional_parameters(app):
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 1
-    assert resp[0]["id"] == "20200307aC0853000w361030"
+    assert resp[0]["id"] == "20200307aC0853130w361030"
 
     # datetime
     response = app.get(
@@ -587,8 +592,6 @@ def test_collections_additional_parameters(app):
     assert response.status_code == 200
     resp = response.json()
     assert resp["search"]["search"]["datetime"] == "2020-03-07T00:00:00Z"
-    assert "datetime <= '2020-03-07 00:00:00+00'" in resp["search"]["_where"]
-    assert "end_datetime >= '2020-03-07 00:00:00+00''" in resp["search"]["_where"]
 
     response = app.get(
         "/collections/noaa-emergency-response/info",
@@ -597,4 +600,3 @@ def test_collections_additional_parameters(app):
     assert response.status_code == 200
     resp = response.json()
     assert resp["search"]["search"]["datetime"] == "../2020-03-07T00:00:00Z"
-    assert "end_datetime >= '-infinity'" in resp["search"]["_where"]

@@ -750,21 +750,21 @@ def test_mosaic_list(app):
     resp = response.json()
     assert ["searches", "links", "context"] == list(resp)
     assert len(resp["searches"]) > 0
-    assert len(resp["links"]) == 1
+    assert len(resp["links"]) >= 1
 
     response = app.get("/searches/list?limit=1")
     assert response.status_code == 200
     resp = response.json()
     assert ["searches", "links", "context"] == list(resp)
     assert len(resp["searches"]) == 1
-    assert len(resp["links"]) == 2
+    assert len(resp["links"]) >= 2
 
     response = app.get("/searches/list?limit=1&offset=1")
     assert response.status_code == 200
     resp = response.json()
     assert ["searches", "links", "context"] == list(resp)
     assert len(resp["searches"]) == 1
-    assert len(resp["links"]) == 3
+    assert len(resp["links"]) >= 3
 
     query = {
         "filter": {

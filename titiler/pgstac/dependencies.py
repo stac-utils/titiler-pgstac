@@ -43,7 +43,7 @@ def SearchIdParams(
         collection_id,
         str(ids),
         str(bbox),
-        str(datetime),
+        datetime,
     ),
 )
 @retry(
