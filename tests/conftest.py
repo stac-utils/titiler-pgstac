@@ -59,41 +59,53 @@ def database(postgresql_proc):
         password="a2Vw:yk=)CdSis[fek]tW=/o",
     ) as jan:
         connection = f"postgresql://{jan.user}:{quote(jan.password)}@{jan.host}:{jan.port}/{jan.dbname}"
-
         # make sure the DB is set to use UTC
         with psycopg.connect(connection) as conn:
             with conn.cursor() as cur:
                 cur.execute(f"ALTER DATABASE {jan.dbname} SET TIMEZONE='UTC';")
 
-        print("Running to PgSTAC migration...")
-        with PgstacDB(dsn=connection) as db:
-            migrator = Migrate(db)
-            version = migrator.run_migration()
-            assert version
-            print(f"PgSTAC version: {version}")
-
-            print("Load items and collection into PgSTAC")
-            loader = Loader(db=db)
-            loader.load_collections(collection)
-            loader.load_collections(collection_maxar)
-            loader.load_items(items)
-
-        # Make sure we have 1 collection and 163 items in pgstac
-        with psycopg.connect(connection) as conn:
-            with conn.cursor() as cur:
-                cur.execute("SELECT COUNT(*) FROM pgstac.collections")
-                val = cur.fetchone()[0]
-                assert val == 2
-
-                cur.execute("SELECT COUNT(*) FROM pgstac.items")
-                val = cur.fetchone()[0]
-                assert val == 163
-
         yield jan
 
 
+@pytest.fixture(scope="session")
+def pgstac(database):
+    """Create PgSTAC fixture."""
+    connection = f"postgresql://{database.user}:{quote(database.password)}@{database.host}:{database.port}/{database.dbname}"
+
+    # Clear PgSTAC
+    with psycopg.connect(connection) as conn:
+        with conn.cursor() as cur:
+            cur.execute("DROP SCHEMA IF EXISTS pgstac CASCADE;")
+
+    print("Running to PgSTAC migration...")
+    with PgstacDB(dsn=connection) as db:
+        migrator = Migrate(db)
+        version = migrator.run_migration()
+        assert version
+        print(f"PgSTAC version: {version}")
+
+        print("Load items and collection into PgSTAC")
+        loader = Loader(db=db)
+        loader.load_collections(collection)
+        loader.load_collections(collection_maxar)
+        loader.load_items(items)
+
+    # Make sure we have 1 collection and 163 items in pgstac
+    with psycopg.connect(connection) as conn:
+        with conn.cursor() as cur:
+            cur.execute("SELECT COUNT(*) FROM pgstac.collections")
+            val = cur.fetchone()[0]
+            assert val == 2
+
+            cur.execute("SELECT COUNT(*) FROM pgstac.items")
+            val = cur.fetchone()[0]
+            assert val == 163
+
+    yield connection
+
+
 @pytest.fixture(autouse=True)
-def app(database, monkeypatch):
+def app(pgstac, monkeypatch):
     """Create app with connection to the pytest database."""
     monkeypatch.setenv("AWS_ACCESS_KEY_ID", "jqt")
     monkeypatch.setenv("AWS_SECRET_ACCESS_KEY", "rde")
@@ -104,10 +116,7 @@ def app(database, monkeypatch):
     monkeypatch.setenv("TITILER_PGSTAC_API_DEBUG", "TRUE")
     monkeypatch.setenv("TITILER_PGSTAC_API_ENABLE_ASSETS_ENDPOINTS", "TRUE")
     monkeypatch.setenv("TITILER_PGSTAC_API_ENABLE_EXTERNAL_DATASET_ENDPOINTS", "TRUE")
-    monkeypatch.setenv(
-        "DATABASE_URL",
-        f"postgresql://{database.user}:{quote(database.password)}@{database.host}:{database.port}/{database.dbname}",
-    )
+    monkeypatch.setenv("DATABASE_URL", pgstac)
 
     from titiler.pgstac.main import app
 

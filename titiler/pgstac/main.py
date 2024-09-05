@@ -38,6 +38,7 @@ from titiler.pgstac.dependencies import (
     ItemIdParams,
     SearchIdParams,
 )
+from titiler.pgstac.errors import PGSTAC_STATUS_CODES
 from titiler.pgstac.extensions import searchInfoExtension
 from titiler.pgstac.factory import (
     MosaicTilerFactory,
@@ -95,6 +96,7 @@ app = FastAPI(
 
 add_exception_handlers(app, DEFAULT_STATUS_CODES)
 add_exception_handlers(app, MOSAIC_STATUS_CODES)
+add_exception_handlers(app, PGSTAC_STATUS_CODES)
 
 
 # Set all CORS enabled origins
@@ -141,6 +143,22 @@ if settings.debug:
                 )
                 r = cursor.fetchone()
                 return r.get("get_collection") or {}
+
+    @app.get("/pgstac", include_in_schema=False, tags=["DEBUG"])
+    def pgstac_info(request: Request) -> Dict:
+        """Retrieve PgSTAC Info."""
+        with request.app.state.dbpool.connection() as conn:
+            with conn.cursor(row_factory=dict_row) as cursor:
+                cursor.execute("SELECT pgstac.readonly()")
+                pgstac_readonly = cursor.fetchone()["readonly"]
+
+                cursor.execute("SELECT pgstac.get_version();")
+                pgstac_version = cursor.fetchone()["get_version"]
+
+        return {
+            "pgstac_version": pgstac_version,
+            "pgstac_readonly": pgstac_readonly,
+        }
 
 
 ###############################################################################
