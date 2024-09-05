@@ -8,6 +8,7 @@
 * add `PgstacSettings` such that the user can provide their own default settings for PgSTAC search
 * add check for pgstac `read-only` mode and raise `ReadOnlyPgSTACError` error when trying to write to the pgstac instance
 * add `/pgstac` endpoint in the application (when `TITILER_PGSTAC_API_DEBUG=TRUE`)
+* add `ids`, `bbox` and `datetime` options to the `/collections/{collection_id}` endpoints
 
 ## 1.3.1 (2024-08-01)
 

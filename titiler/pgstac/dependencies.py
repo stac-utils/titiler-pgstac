@@ -2,7 +2,7 @@
 
 import warnings
 from dataclasses import dataclass, field
-from typing import Optional, Tuple
+from typing import List, Optional, Tuple
 
 import morecantile
 import pystac
@@ -10,6 +10,7 @@ from cachetools import TTLCache, cached
 from cachetools.keys import hashkey
 from cogeo_mosaic.errors import MosaicNotFoundError
 from fastapi import HTTPException, Path, Query
+from geojson_pydantic.types import BBox
 from psycopg import errors as pgErrors
 from psycopg.rows import class_row, dict_row
 from psycopg_pool import ConnectionPool
@@ -38,7 +39,12 @@ def SearchIdParams(
 
 @cached(  # type: ignore
     TTLCache(maxsize=cache_config.maxsize, ttl=cache_config.ttl),
-    key=lambda pool, collection_id: hashkey(collection_id),
+    key=lambda pool, collection_id, ids, bbox, datetime: hashkey(
+        collection_id,
+        str(ids),
+        str(bbox),
+        str(datetime),
+    ),
 )
 @retry(
     tries=retry_config.retry,
@@ -48,9 +54,20 @@ def SearchIdParams(
         pgErrors.InterfaceError,
     ),
 )
-def get_collection_id(pool: ConnectionPool, collection_id: str) -> str:  # noqa: C901
+def get_collection_id(
+    pool: ConnectionPool,
+    collection_id: str,
+    ids: Optional[List[str]] = None,
+    bbox: Optional[BBox] = None,
+    datetime: Optional[str] = None,
+) -> str:  # noqa: C901
     """Get Search Id for a Collection."""
-    search = model.PgSTACSearch(collections=[collection_id])
+    search = model.PgSTACSearch(
+        collections=[collection_id],
+        ids=ids,
+        bbox=bbox,
+        datetime=datetime,
+    )
 
     with pool.connection() as conn:
         with conn.cursor(row_factory=dict_row) as cursor:
@@ -62,10 +79,12 @@ def get_collection_id(pool: ConnectionPool, collection_id: str) -> str:  # noqa:
             if not collection:
                 raise MosaicNotFoundError(f"CollectionId `{collection_id}` not found")
 
-            bbox = collection["extent"]["spatial"].get("bbox", [[-180, -90, 180, 90]])
+            collection_bbox = collection["extent"]["spatial"].get(
+                "bbox", [[-180, -90, 180, 90]]
+            )
             metadata = model.Metadata(
                 name=f"Mosaic for '{collection_id}' Collection",
-                bounds=bbox[0],
+                bounds=bbox or collection_bbox[0],
             )
 
             # item-assets https://github.com/stac-extensions/item-assets
@@ -134,9 +153,48 @@ def CollectionIdParams(
         str,
         Path(description="STAC Collection Identifier"),
     ],
+    ids: Annotated[
+        Optional[str],
+        Query(
+            description="Array of Item ids",
+            json_schema_extra={
+                "example": "item1,item2",
+            },
+        ),
+    ] = None,
+    bbox: Annotated[
+        Optional[str],
+        Query(
+            description="Filters items intersecting this bounding box",
+            json_schema_extra={
+                "example": "-175.05,-85.05,175.05,85.05",
+            },
+        ),
+    ] = None,
+    datetime: Annotated[
+        Optional[str],
+        Query(
+            description="""Filters items that have a temporal property that intersects this value.\n
+Either a date-time or an interval, open or closed. Date and time expressions adhere to RFC 3339. Open intervals are expressed using double-dots.""",
+            openapi_examples={
+                "datetime": {"value": "2018-02-12T23:20:50Z"},
+                "closed-interval": {
+                    "value": "2018-02-12T00:00:00Z/2018-03-18T12:31:12Z"
+                },
+                "open-interval-from": {"value": "2018-02-12T00:00:00Z/.."},
+                "open-interval-to": {"value": "../2018-03-18T12:31:12Z"},
+            },
+        ),
+    ] = None,
 ) -> str:
-    """collection_id Path Parameter"""
-    return get_collection_id(request.app.state.dbpool, collection_id=collection_id)
+    """Collection endpoints Parameters"""
+    return get_collection_id(
+        request.app.state.dbpool,
+        collection_id=collection_id,
+        ids=ids.split(",") if ids else None,
+        bbox=list(map(float, bbox.split(","))) if bbox else None,
+        datetime=datetime,
+    )
 
 
 def SearchParams(

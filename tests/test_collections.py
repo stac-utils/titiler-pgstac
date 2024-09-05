@@ -547,3 +547,54 @@ def test_collections_render(app, tmp_path):
     response = app.get("/collections/MAXAR_BayofBengal_Cyclone_Mocha_May_23/info")
     assert response.status_code == 200
     assert len(response.json()["links"]) == 10  # self, tilejson (4), map (4), wmts (1)
+
+
+def test_collections_additional_parameters(app):
+    """Check that additional parameter work."""
+    # bbox
+    response = app.get(
+        "/collections/noaa-emergency-response/info",
+        params={"bbox": "-87.0251,36.1749,-86.9999,36.2001"},
+    )
+    assert response.status_code == 200
+    resp = response.json()
+    assert resp["search"]["search"]["bbox"] == [-87.0251, 36.1749, -86.9999, 36.2001]
+    assert resp["search"]["metadata"]["bbox"] == [-87.0251, 36.1749, -86.9999, 36.2001]
+
+    # ids
+    response = app.get(
+        "/collections/noaa-emergency-response/info",
+        params={"ids": "20200307aC0853130w361030"},
+    )
+    assert response.status_code == 200
+    resp = response.json()
+    assert resp["search"]["search"]["ids"] == ["20200307aC0853130w361030"]
+
+    response = app.get(
+        "/collections/noaa-emergency-response/-85.5,36.1624/assets",
+        params={"ids": "20200307aC0853130w361030"},
+    )
+    assert response.status_code == 200
+    resp = response.json()
+    assert len(resp) == 1
+    assert resp[0]["id"] == "20200307aC0853000w361030"
+
+    # datetime
+    response = app.get(
+        "/collections/noaa-emergency-response/info",
+        params={"datetime": "2020-03-07T00:00:00Z"},
+    )
+    assert response.status_code == 200
+    resp = response.json()
+    assert resp["search"]["search"]["datetime"] == "2020-03-07T00:00:00Z"
+    assert "datetime <= '2020-03-07 00:00:00+00'" in resp["search"]["_where"]
+    assert "end_datetime >= '2020-03-07 00:00:00+00''" in resp["search"]["_where"]
+
+    response = app.get(
+        "/collections/noaa-emergency-response/info",
+        params={"datetime": "../2020-03-07T00:00:00Z"},
+    )
+    assert response.status_code == 200
+    resp = response.json()
+    assert resp["search"]["search"]["datetime"] == "../2020-03-07T00:00:00Z"
+    assert "end_datetime >= '-infinity'" in resp["search"]["_where"]
