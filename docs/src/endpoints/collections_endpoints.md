@@ -53,6 +53,9 @@
     - **time_limit** (int): Return after N seconds to avoid long requests, Default is 5sec in PgSTAC.
     - **exitwhenfull** (bool): Return as soon as the geometry is fully covered, Default is `True` in PgSTAC.
     - **skipcovered** (bool): Skip any items that would show up completely under the previous items, Default is `True` in PgSTAC.
+    - **ids** (str): Array of Item ids to show.
+    - **bbox** (str): Filters items intersecting this bounding box.
+    - **datetime** (str):Filters items that have a temporal property that intersects this value. Either a date-time or an interval, open or closed.
 
 !!! important
     **assets** OR **expression** is required
@@ -99,6 +102,9 @@ Example:
     - **time_limit** (int): Return after N seconds to avoid long requests, Default is 5sec in PgSTAC.
     - **exitwhenfull** (bool): Return as soon as the geometry is fully covered, Default is `True` in PgSTAC.
     - **skipcovered** (bool): Skip any items that would show up completely under the previous items, Default is `True` in PgSTAC.
+    - **ids** (str): Array of Item ids to show.
+    - **bbox** (str): Filters items intersecting this bounding box.
+    - **datetime** (str):Filters items that have a temporal property that intersects this value. Either a date-time or an interval, open or closed.
 
 !!! important
     **assets** OR **expression** is required
@@ -123,6 +129,10 @@ Example:
     - **tile_scale**: Tile size scale, default is set to 1 (256x256). OPTIONAL
     - **minzoom**: Overwrite default minzoom. OPTIONAL
     - **maxzoom**: Overwrite default maxzoom. OPTIONAL
+    - **ids** (str): Array of Item ids to show.
+    - **bbox** (str): Filters items intersecting this bounding box.
+    - **datetime** (str):Filters items that have a temporal property that intersects this value. Either a date-time or an interval, open or closed.
+
 
 
 !!! important
@@ -152,6 +162,10 @@ Example:
     - **time_limit** (int): Return after N seconds to avoid long requests, Default is 5sec in PgSTAC.
     - **exitwhenfull** (bool): Return as soon as the geometry is fully covered, Default is `True` in PgSTAC.
     - **skipcovered** (bool): Skip any items that would show up completely under the previous items, Default is `True` in PgSTAC.
+    - **ids** (str): Array of Item ids to show.
+    - **bbox** (str): Filters items intersecting this bounding box.
+    - **datetime** (str):Filters items that have a temporal property that intersects this value. Either a date-time or an interval, open or closed.
+
 
 Example:
 
@@ -170,6 +184,10 @@ Example:
     - **time_limit** (int): Return after N seconds to avoid long requests, Default is 5sec in PgSTAC.
     - **exitwhenfull** (bool): Return as soon as the geometry is fully covered, Default is `True` in PgSTAC.
     - **skipcovered** (bool): Skip any items that would show up completely under the previous items, Default is `True` in PgSTAC.
+    - **ids** (str): Array of Item ids to show.
+    - **bbox** (str): Filters items intersecting this bounding box.
+    - **datetime** (str):Filters items that have a temporal property that intersects this value. Either a date-time or an interval, open or closed.
+
 
 Example:
 
@@ -212,6 +230,9 @@ Example:
     - **time_limit** (int): Return after N seconds to avoid long requests, Default is 5sec in PgSTAC.
     - **exitwhenfull** (bool): Return as soon as the geometry is fully covered, Default is `True` in PgSTAC.
     - **skipcovered** (bool): Skip any items that would show up completely under the previous items, Default is `True` in PgSTAC.
+    - **ids** (str): Array of Item ids to show.
+    - **bbox** (str): Filters items intersecting this bounding box.
+    - **datetime** (str):Filters items that have a temporal property that intersects this value. Either a date-time or an interval, open or closed.
 
 !!! important
     if **height** and **width** are provided **max_size** will be ignored.
@@ -258,6 +279,9 @@ Example:
     - **time_limit** (int): Return after N seconds to avoid long requests, Default is 5sec in PgSTAC.
     - **exitwhenfull** (bool): Return as soon as the geometry is fully covered, Default is `True` in PgSTAC.
     - **skipcovered** (bool): Skip any items that would show up completely under the previous items, Default is `True` in PgSTAC.
+    - **ids** (str): Array of Item ids to show.
+    - **bbox** (str): Filters items intersecting this bounding box.
+    - **datetime** (str):Filters items that have a temporal property that intersects this value. Either a date-time or an interval, open or closed.
 
 !!! important
     if **height** and **width** are provided **max_size** will be ignored.
@@ -304,6 +328,9 @@ Example:
     - **time_limit** (int): Return after N seconds to avoid long requests, Default is 5sec in PgSTAC.
     - **exitwhenfull** (bool): Return as soon as the geometry is fully covered, Default is `True` in PgSTAC.
     - **skipcovered** (bool): Skip any items that would show up completely under the previous items, Default is `True` in PgSTAC.
+    - **ids** (str): Array of Item ids to show.
+    - **bbox** (str): Filters items intersecting this bounding box.
+    - **datetime** (str):Filters items that have a temporal property that intersects this value. Either a date-time or an interval, open or closed.
 
 !!! important
     if **height** and **width** are provided **max_size** will be ignored.
@@ -339,6 +366,9 @@ Example:
     - **time_limit** (int): Return after N seconds to avoid long requests, Default is 5sec in PgSTAC.
     - **exitwhenfull** (bool): Return as soon as the geometry is fully covered, Default is `True` in PgSTAC.
     - **skipcovered** (bool): Skip any items that would show up completely under the previous items, Default is `True` in PgSTAC.
+    - **ids** (str): Array of Item ids to show.
+    - **bbox** (str): Filters items intersecting this bounding box.
+    - **datetime** (str):Filters items that have a temporal property that intersects this value. Either a date-time or an interval, open or closed.
 
 !!! important
     **assets** OR **expression** is required
