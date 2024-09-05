@@ -4,13 +4,13 @@ from unittest.mock import patch
 
 import pystac
 
-from titiler.pgstac.dependencies import get_stac_item
-
 from .conftest import mock_rasterio_open
 
 
 def test_get_stac_item(app):
     """test get_stac_item."""
+    from titiler.pgstac.dependencies import get_stac_item
+
     item = get_stac_item(
         app.app.state.dbpool, "noaa-emergency-response", "20200307aC0853900w361030"
     )

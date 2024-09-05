@@ -11,44 +11,15 @@ from psycopg.rows import class_row, dict_row
 from pypgstac.db import PgstacDB
 from pypgstac.load import Loader
 from pypgstac.migrate import Migrate
-from pytest_postgresql.janitor import DatabaseJanitor
 from starlette.requests import Request
 from starlette.testclient import TestClient
 
-from titiler.pgstac.db import close_db_connection, connect_to_db
-from titiler.pgstac.dependencies import CollectionIdParams, SearchIdParams
 from titiler.pgstac.errors import ReadOnlyPgSTACError
-from titiler.pgstac.extensions import searchInfoExtension
-from titiler.pgstac.factory import (
-    MosaicTilerFactory,
-    add_search_list_route,
-    add_search_register_route,
-)
 from titiler.pgstac.model import Metadata, PgSTACSearch, Search
-from titiler.pgstac.settings import PostgresSettings
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "fixtures")
 collection = os.path.join(DATA_DIR, "noaa-emergency-response.json")
 items = os.path.join(DATA_DIR, "noaa-eri-nashville2020.json")
-
-
-@pytest.fixture(scope="session")
-def database_ro(postgresql_proc):
-    """Create Database fixture."""
-    with DatabaseJanitor(
-        user=postgresql_proc.user,
-        host=postgresql_proc.host,
-        port=postgresql_proc.port,
-        dbname="test_db",
-        version=postgresql_proc.version,
-        password="a2Vw:yk=)CdSis[fek]tW=/o",
-    ) as jan:
-        connection = f"postgresql://{jan.user}:{quote(jan.password)}@{jan.host}:{jan.port}/{jan.dbname}"
-        with psycopg.connect(connection) as conn:
-            with conn.cursor() as cur:
-                cur.execute(f"ALTER DATABASE {jan.dbname} SET TIMEZONE='UTC';")
-
-        yield jan
 
 
 @pytest.fixture(
@@ -58,11 +29,11 @@ def database_ro(postgresql_proc):
     ],
     scope="session",
 )
-def pgstac_ro(request, database_ro):
+def pgstac_ro(request, database):
     """Create PgSTAC fixture."""
     read_only = request.param
 
-    connection = f"postgresql://{database_ro.user}:{quote(database_ro.password)}@{database_ro.host}:{database_ro.port}/{database_ro.dbname}"
+    connection = f"postgresql://{database.user}:{quote(database.password)}@{database.host}:{database.port}/{database.dbname}"
     with psycopg.connect(connection) as conn:
         with conn.cursor() as cur:
             cur.execute("DROP SCHEMA IF EXISTS pgstac CASCADE;")
@@ -105,10 +76,22 @@ def pgstac_ro(request, database_ro):
 
 
 @pytest.fixture(autouse=True)
-def app_ro(pgstac_ro):
+def app_ro(pgstac_ro, monkeypatch):
     """create app fixture."""
+    monkeypatch.setenv("TITILER_PGSTAC_CACHE_DISABLE", "TRUE")
 
     dsn, ro = pgstac_ro
+
+    from titiler.pgstac.db import close_db_connection, connect_to_db
+    from titiler.pgstac.dependencies import CollectionIdParams, SearchIdParams
+    from titiler.pgstac.extensions import searchInfoExtension
+    from titiler.pgstac.factory import (
+        MosaicTilerFactory,
+        add_search_list_route,
+        add_search_register_route,
+    )
+    from titiler.pgstac.settings import PostgresSettings
+
     postgres_settings = PostgresSettings(database_url=dsn)
 
     @asynccontextmanager
