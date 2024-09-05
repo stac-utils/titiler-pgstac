@@ -9,7 +9,6 @@ import psycopg
 import pytest
 import rasterio
 from pypgstac.db import PgstacDB
-from pypgstac.load import Loader
 from pypgstac.migrate import Migrate
 from pytest_postgresql.janitor import DatabaseJanitor
 from rasterio.errors import NotGeoreferencedWarning
@@ -67,9 +66,25 @@ def database(postgresql_proc):
         yield jan
 
 
-@pytest.fixture(scope="session")
-def pgstac(database):
+def load_json(filepath: str):
+    """yield JSON file content."""
+    with open(filepath, "r") as f:
+        for line in f:
+            yield line.strip()
+
+
+@pytest.fixture(
+    params=[
+        "0.7.10",
+        "0.8.5",
+        "0.9.1",
+    ],
+    scope="session",
+)
+def pgstac(request, database):
     """Create PgSTAC fixture."""
+    pgstac_version = request.param
+
     connection = f"postgresql://{database.user}:{quote(database.password)}@{database.host}:{database.port}/{database.dbname}"
 
     # Clear PgSTAC
@@ -80,15 +95,22 @@ def pgstac(database):
     print("Running to PgSTAC migration...")
     with PgstacDB(dsn=connection) as db:
         migrator = Migrate(db)
-        version = migrator.run_migration()
+        version = migrator.run_migration(pgstac_version)
         assert version
         print(f"PgSTAC version: {version}")
 
-        print("Load items and collection into PgSTAC")
-        loader = Loader(db=db)
-        loader.load_collections(collection)
-        loader.load_collections(collection_maxar)
-        loader.load_items(items)
+    with psycopg.connect(connection) as conn:
+        with conn.cursor() as cur:
+            for col in load_json(collection):
+                cur.execute(
+                    "SELECT * FROM pgstac.create_collection(%s::jsonb);", (col,)
+                )
+            for col in load_json(collection_maxar):
+                cur.execute(
+                    "SELECT * FROM pgstac.create_collection(%s::jsonb);", (col,)
+                )
+            for item in load_json(items):
+                cur.execute("SELECT * FROM pgstac.create_item(%s::jsonb);", (item,))
 
     # Make sure we have 1 collection and 163 items in pgstac
     with psycopg.connect(connection) as conn:
@@ -104,7 +126,7 @@ def pgstac(database):
     yield connection
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture
 def app(pgstac, monkeypatch):
     """Create app with connection to the pytest database."""
     monkeypatch.setenv("AWS_ACCESS_KEY_ID", "jqt")
