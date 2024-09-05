@@ -24,6 +24,7 @@ from cogeo_mosaic.errors import MosaicNotFoundError
 from fastapi import Body, Depends, FastAPI, HTTPException, Path, Query
 from fastapi.dependencies.utils import get_dependant, request_params_to_args
 from geojson_pydantic import Feature, FeatureCollection
+from psycopg import errors as pgErrors
 from psycopg import sql
 from psycopg.rows import class_row, dict_row
 from pydantic import conint
@@ -976,7 +977,7 @@ class MosaicTilerFactory(BaseTilerFactory):
             }
 
 
-def add_search_register_route(
+def add_search_register_route(  # noqa: C901
     app: FastAPI,
     *,
     prefix: str = "",
@@ -1003,11 +1004,18 @@ def add_search_register_route(
 
         with request.app.state.dbpool.connection() as conn:
             with conn.cursor(row_factory=dict_row) as cursor:
-                cursor.execute("SELECT pgstac.readonly()")
-                if cursor.fetchone()["readonly"]:
-                    raise ReadOnlyPgSTACError(
-                        "PgSTAC instance is set to `read-only`, cannot register search query."
-                    )
+
+                try:
+                    cursor.execute("SELECT pgstac.readonly()")
+                    if cursor.fetchone()["readonly"]:
+                        raise ReadOnlyPgSTACError(
+                            "PgSTAC instance is set to `read-only`, cannot register search query."
+                        )
+
+                # before pgstac 0.8.2, the read-only mode didn't exist
+                except pgErrors.UndefinedFunction:
+                    conn.rollback()
+                    pass
 
                 cursor.row_factory = class_row(model.Search)
                 cursor.execute(

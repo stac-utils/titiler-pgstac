@@ -103,11 +103,17 @@ def get_collection_id(pool: ConnectionPool, collection_id: str) -> str:  # noqa:
 
             # TODO: adapt Mosaic Backend to accept Search object directly
             # we technically don't need to register the search request for /collections
-            cursor.execute("SELECT pgstac.readonly()")
-            if cursor.fetchone()["readonly"]:
-                raise ReadOnlyPgSTACError(
-                    "PgSTAC instance is set to `read-only`, cannot register search query."
-                )
+            try:
+                cursor.execute("SELECT pgstac.readonly()")
+                if cursor.fetchone()["readonly"]:
+                    raise ReadOnlyPgSTACError(
+                        "PgSTAC instance is set to `read-only`, cannot register search query."
+                    )
+
+            # before pgstac 0.8.2, the read-only mode didn't exist
+            except pgErrors.UndefinedFunction:
+                conn.rollback()
+                pass
 
             cursor.row_factory = class_row(model.Search)
             cursor.execute(
