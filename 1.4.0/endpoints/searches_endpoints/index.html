@@ -1,0 +1,2060 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Dynamic Mosaics From PgSTAC database.">
+      
+      
+      
+        <link rel="canonical" href="https://stac-utils.github.io/titiler-pgstac/1.4.0/endpoints/searches_endpoints/">
+      
+      
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../collections_endpoints/">
+      
+      
+      <link rel="icon" href="../../img/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.34">
+    
+    
+      
+        <title>Searches - TiTiler.PgSTAC</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.35f28582.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../overrides/stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#stac-searches-endpoints" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="TiTiler.PgSTAC" class="md-header__button md-logo" aria-label="TiTiler.PgSTAC" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            TiTiler.PgSTAC
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Searches
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/stac-utils/titiler-pgstac" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    stac-utils/titiler-pgstac
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="TiTiler.PgSTAC" class="md-nav__button md-logo" aria-label="TiTiler.PgSTAC" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    TiTiler.PgSTAC
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/stac-utils/titiler-pgstac" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    stac-utils/titiler-pgstac
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../intro/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Intro
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Endpoints
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Endpoints
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Searches
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Searches
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#stac-searches-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      STAC Searches endpoints
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tiles" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tiles
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tilesjson" class="md-nav__link">
+    <span class="md-ellipsis">
+      TilesJSON
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wmts" class="md-nav__link">
+    <span class="md-ellipsis">
+      WMTS
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#assets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Assets
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#statistics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Statistics
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bboxfeature" class="md-nav__link">
+    <span class="md-ellipsis">
+      BBOX/Feature
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#point" class="md-nav__link">
+    <span class="md-ellipsis">
+      Point
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#register-a-search-request" class="md-nav__link">
+    <span class="md-ellipsis">
+      Register a Search Request
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#search-infos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Search infos
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#list-searches" class="md-nav__link">
+    <span class="md-ellipsis">
+      List Searches
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../collections_endpoints/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Collections
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../items_endpoints/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Items
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tms_endpoints/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TileMatrixSet
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tiler_factories/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tiler Factories
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Advanced usage
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Advanced usage
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/metadata/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Mosaic metadata specification
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/searches_list/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Mosaic list
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/custom_search/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Custom search model
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/custom_tilejson/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Custom TileJSON endpoint
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Examples
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Examples
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notebooks/demo/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    demo
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    API
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            API
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_1" id="__nav_7_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    titiler.pgstac
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_1">
+            <span class="md-nav__icon md-icon"></span>
+            titiler.pgstac
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/titiler/pgstac/db/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    db
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/titiler/pgstac/dependencies/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    dependencies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/titiler/pgstac/extensions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    extensions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/titiler/pgstac/factory/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    factory
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/titiler/pgstac/model/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    model
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/titiler/pgstac/mosaic/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    mosaic
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/titiler/pgstac/reader/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    reader
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/titiler/pgstac/settings/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    settings
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/titiler/pgstac/utils/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    utils
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Migration Guides
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Migration Guides
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../migrations/v1_migration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    v0.8 -> v1.0
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Development - Contributing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../release-notes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Release notes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../benchmark.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance Benchmarks
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#stac-searches-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      STAC Searches endpoints
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tiles" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tiles
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tilesjson" class="md-nav__link">
+    <span class="md-ellipsis">
+      TilesJSON
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wmts" class="md-nav__link">
+    <span class="md-ellipsis">
+      WMTS
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#assets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Assets
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#statistics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Statistics
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bboxfeature" class="md-nav__link">
+    <span class="md-ellipsis">
+      BBOX/Feature
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#point" class="md-nav__link">
+    <span class="md-ellipsis">
+      Point
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#register-a-search-request" class="md-nav__link">
+    <span class="md-ellipsis">
+      Register a Search Request
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#search-infos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Search infos
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#list-searches" class="md-nav__link">
+    <span class="md-ellipsis">
+      List Searches
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+  <h1>Searches</h1>
+
+<h3 id="stac-searches-endpoints">STAC Searches endpoints<a class="headerlink" href="#stac-searches-endpoints" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>URL</th>
+<th>Output</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/searches/{search_id}/{lon},{lat}/assets</code></td>
+<td>JSON</td>
+<td>Return a list of assets which overlap a given point</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/searches/{search_id}/tiles[/{TileMatrixSetId}]/{z}/{x}/{Y}/assets</code></td>
+<td>JSON</td>
+<td>Return a list of assets which overlap a given tile</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/searches/{search_id}/tiles[/{TileMatrixSetId}]/{z}/{x}/{y}[@{scale}x][.{format}]</code></td>
+<td>image/bin</td>
+<td>Create a web map tile image for a search query and a tile index</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/searches/{search_id}[/{TileMatrixSetId}]/tilejson.json</code></td>
+<td>JSON (<a href="https://github.com/developmentseed/titiler/blob/2335048a407f17127099cbbc6c14e1328852d619/src/titiler/core/titiler/core/models/mapbox.py#L16-L38">TileJSON</a>)</td>
+<td>Return a Mapbox TileJSON document</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/searches/{search_id}[/{TileMatrixSetId}]/WMTSCapabilities.xml</code></td>
+<td>XML</td>
+<td>return OGC WMTS Get Capabilities</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/searches/{search_id}[/{TileMatrixSetId}]/map</code></td>
+<td>HTML</td>
+<td>simple map viewer</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/searches/{search_id}/statistics</code></td>
+<td>GeoJSON (<a href="https://github.com/developmentseed/titiler/blob/17cdff2f0ddf08dbd9a47c2140b13c4bbcc30b6d/src/titiler/core/titiler/core/models/responses.py#L49-L52">Statistics</a>)</td>
+<td>Return statistics for geojson features</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/searches/{search_id}/bbox/{minx},{miny},{maxx},{maxy}[/{width}x{height}].{format}</code></td>
+<td>image/bin</td>
+<td>Create an image from part of a dataset</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/searches/{search_id}/feature[/{width}x{height}][.{format}]</code></td>
+<td>image/bin</td>
+<td>Create an image from a GeoJSON feature</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/searches/{search_id}/point/{lon},{lat}</code></td>
+<td>JSON (<a href="https://github.com/developmentseed/titiler/blob/e396959e7f818909a5494301a809b5f795aa202e/src/titiler/mosaic/titiler/mosaic/models/responses.py#L8-L17">Point</a>)</td>
+<td>Return pixel values from assets intersecting with a given point</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/searches/{search_id}/info</code></td>
+<td>JSON (<a href="https://github.com/stac-utils/titiler-pgstac/blob/047315da8851a974660032ca45f219db2c3a8d54/titiler/pgstac/model.py#L236-L240">Info</a>)</td>
+<td>Return <strong>Search</strong> query infos</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/searches/register</code></td>
+<td>JSON (<a href="https://github.com/stac-utils/titiler-pgstac/blob/047315da8851a974660032ca45f219db2c3a8d54/titiler/pgstac/model.py#L229-L233">Register</a>)</td>
+<td>Register <strong>Search</strong> query</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/searches/list</code></td>
+<td>JSON (<a href="https://github.com/stac-utils/titiler-pgstac/blob/4f569fee1946f853be9b9149cb4dd2fd5c62b110/titiler/pgstac/model.py#L260-L265">Infos</a>)</td>
+<td>Return list of <strong>Search</strong> entries with <code>Mosaic</code> type</td>
+</tr>
+</tbody>
+</table>
+<h3 id="tiles">Tiles<a class="headerlink" href="#tiles" title="Permanent link">&para;</a></h3>
+<p><code>:endpoint:/searches/{search_id}/tiles[/{TileMatrixSetId}]/{z}/{x}/{y}[@{scale}x][.{format}]</code></p>
+<ul>
+<li>
+<p>PathParams:</p>
+<ul>
+<li><strong>search_id</strong>: PgSTAC Search Identifier (Hash).</li>
+<li><strong>TileMatrixSetId</strong>: TileMatrixSet name, default is <code>WebMercatorQuad</code>. OPTIONAL</li>
+<li><strong>z</strong>: Tile's zoom level.</li>
+<li><strong>x</strong>: Tile's column.</li>
+<li><strong>y</strong>: Tile's row.</li>
+<li><strong>scale</strong>: Tile size scale, default is set to 1 (256x256). OPTIONAL</li>
+<li><strong>format</strong>: Output image format, default is set to None and will be either JPEG or PNG depending on masked value. OPTIONAL</li>
+</ul>
+</li>
+<li>
+<p>QueryParams:</p>
+<ul>
+<li><strong>assets</strong> (array[str]): asset names.</li>
+<li><strong>expression</strong> (str): rio-tiler's math expression with asset names (e.g <code>Asset1_b1/Asset2_b1</code>).</li>
+<li><strong>asset_as_band</strong> (bool): tell rio-tiler that each asset is a 1 band dataset, so expression <code>Asset1/Asset2</code> can be passed.</li>
+<li><strong>asset_bidx</strong> (array[str]): Per asset band index (e.g <code>Asset1|1;2;3</code>).</li>
+<li><strong>nodata</strong>: Overwrite internal Nodata value. OPTIONAL</li>
+<li><strong>unscale</strong> (bool): Apply dataset internal Scale/Offset.</li>
+<li><strong>resampling</strong> (str): RasterIO resampling algorithm. Defaults to <code>nearest</code>.</li>
+<li><strong>reproject</strong> (str): WarpKernel resampling algorithm (only used when doing re-projection). Defaults to <code>nearest</code>.</li>
+<li><strong>algorithm</strong> (str): Custom algorithm name (e.g <code>hillshade</code>).</li>
+<li><strong>algorithm_params</strong> (str): JSON encoded algorithm parameters.</li>
+<li><strong>rescale</strong> (array[str]): Comma (',') delimited Min,Max range (e.g <code>rescale=0,1000</code>, <code>rescale=0,1000&amp;rescale=0,3000&amp;rescale=0,2000</code>).</li>
+<li><strong>color_formula</strong> (str): rio-color formula.</li>
+<li><strong>colormap</strong> (str): JSON encoded custom Colormap.</li>
+<li><strong>colormap_name</strong> (str): rio-tiler color map name.</li>
+<li><strong>return_mask</strong> (bool): Add mask to the output data. Default is True.</li>
+<li><strong>buffer</strong> (float): Buffer on each side of the given tile. It must be a multiple of <code>0.5</code>. Output <strong>tilesize</strong> will be expanded to <code>tilesize + 2 * buffer</code> (e.g 0.5 = 257x257, 1.0 = 258x258).</li>
+<li><strong>padding</strong> (int): Padding to apply to each tile edge. Helps reduce resampling artefacts along edges. Defaults to <code>0</code></li>
+<li><strong>pixel_selection</strong> (str): Pixel selection method (<a href="https://cogeotiff.github.io/rio-tiler/mosaic/">cogeotiff.github.io/rio-tiler/mosaic/</a>).</li>
+<li><strong>scan_limit</strong> (int): Return as soon as we scan N items, Default is 10,000 in PgSTAC.</li>
+<li><strong>items_limit</strong> (int): Return as soon as we have N items per geometry, Default is 100 in PgSTAC.</li>
+<li><strong>time_limit</strong> (int): Return after N seconds to avoid long requests, Default is 5sec in PgSTAC.</li>
+<li><strong>exitwhenfull</strong> (bool): Return as soon as the geometry is fully covered, Default is <code>True</code> in PgSTAC.</li>
+<li><strong>skipcovered</strong> (bool): Skip any items that would show up completely under the previous items, Default is <code>True</code> in PgSTAC.</li>
+</ul>
+</li>
+</ul>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p><strong>assets</strong> OR <strong>expression</strong> is required</p>
+</div>
+<p>Example:</p>
+<ul>
+<li><code>https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/tiles/1/2/3?assets=B01</code></li>
+<li><code>https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/tiles/1/2/3.jpg?assets=B01</code></li>
+<li><code>https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/tiles/WorldCRS84Quad/1/2/3@2x.png?assets=B01&amp;assets=B02&amp;assets=B03</code></li>
+<li><code>https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/tiles/WorldCRS84Quad/1/2/3?assets=B01&amp;rescale=0,1000&amp;colormap_name=cfastie</code></li>
+</ul>
+<h3 id="tilesjson">TilesJSON<a class="headerlink" href="#tilesjson" title="Permanent link">&para;</a></h3>
+<p><code>:endpoint:/searches/{search_id}[/{TileMatrixSetId}]/tilejson.json</code></p>
+<ul>
+<li>
+<p>PathParams:</p>
+<ul>
+<li><strong>search_id</strong>: PgSTAC Search Identifier (Hash).</li>
+<li><strong>TileMatrixSetId</strong>: TileMatrixSet name, default is <code>WebMercatorQuad</code>. OPTIONAL</li>
+</ul>
+</li>
+<li>
+<p>QueryParams:</p>
+<ul>
+<li><strong>tile_format</strong>: Output image format, default is set to None and will be either JPEG or PNG depending on masked value.</li>
+<li><strong>tile_scale</strong>: Tile size scale, default is set to 1 (256x256). OPTIONAL</li>
+<li><strong>minzoom</strong>: Overwrite default minzoom. OPTIONAL</li>
+<li><strong>maxzoom</strong>: Overwrite default maxzoom. OPTIONAL</li>
+<li><strong>expression</strong> (str): rio-tiler's math expression with asset names (e.g <code>Asset1_b1/Asset2_b1</code>).</li>
+<li><strong>asset_as_band</strong> (bool): tell rio-tiler that each asset is a 1 band dataset, so expression <code>Asset1/Asset2</code> can be passed.</li>
+<li><strong>asset_bidx</strong> (array[str]): Per asset band index (e.g <code>Asset1|1;2;3</code>).</li>
+<li><strong>nodata</strong> (str, int, float): Overwrite internal Nodata value.</li>
+<li><strong>unscale</strong> (bool): Apply dataset internal Scale/Offset.</li>
+<li><strong>resampling</strong> (str): RasterIO resampling algorithm. Defaults to <code>nearest</code>.</li>
+<li><strong>reproject</strong> (str): WarpKernel resampling algorithm (only used when doing re-projection). Defaults to <code>nearest</code>.</li>
+<li><strong>algorithm</strong> (str): Custom algorithm name (e.g <code>hillshade</code>).</li>
+<li><strong>algorithm_params</strong> (str): JSON encoded algorithm parameters.</li>
+<li><strong>rescale</strong> (array[str]): Comma (',') delimited Min,Max range (e.g <code>rescale=0,1000</code>, <code>rescale=0,1000&amp;rescale=0,3000&amp;rescale=0,2000</code>).</li>
+<li><strong>color_formula</strong> (str): rio-color formula.</li>
+<li><strong>colormap</strong> (str): JSON encoded custom Colormap.</li>
+<li><strong>colormap_name</strong> (str): rio-tiler color map name.</li>
+<li><strong>return_mask</strong> (bool): Add mask to the output data. Default is True.</li>
+<li><strong>buffer</strong> (float): Buffer on each side of the given tile. It must be a multiple of <code>0.5</code>. Output <strong>tilesize</strong> will be expanded to <code>tilesize + 2 * buffer</code> (e.g 0.5 = 257x257, 1.0 = 258x258).</li>
+<li><strong>padding</strong> (int): Padding to apply to each tile edge. Helps reduce resampling artefacts along edges. Defaults to <code>0</code></li>
+<li><strong>pixel_selection</strong> (str): Pixel selection method (<a href="https://cogeotiff.github.io/rio-tiler/mosaic/">cogeotiff.github.io/rio-tiler/mosaic/</a>).</li>
+<li><strong>scan_limit</strong> (int): Return as soon as we scan N items, Default is 10,000 in PgSTAC.</li>
+<li><strong>items_limit</strong> (int): Return as soon as we have N items per geometry, Default is 100 in PgSTAC.</li>
+<li><strong>time_limit</strong> (int): Return after N seconds to avoid long requests, Default is 5sec in PgSTAC.</li>
+<li><strong>exitwhenfull</strong> (bool): Return as soon as the geometry is fully covered, Default is <code>True</code> in PgSTAC.</li>
+<li><strong>skipcovered</strong> (bool): Skip any items that would show up completely under the previous items, Default is <code>True</code> in PgSTAC.</li>
+</ul>
+</li>
+</ul>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p><strong>assets</strong> OR <strong>expression</strong> is required</p>
+</div>
+<p>Example:</p>
+<ul>
+<li><code>https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/tilejson.json?assets=B01</code></li>
+<li><code>https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/tilejson.json?assets=B01&amp;tile_format=png</code></li>
+<li><code>https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/WorldCRS84Quad/tilejson.json?assets=B01&amp;tile_scale=2</code></li>
+</ul>
+<h3 id="wmts">WMTS<a class="headerlink" href="#wmts" title="Permanent link">&para;</a></h3>
+<p><code>:endpoint:/searches/{search_id}[/{TileMatrixSetId}]/WMTSCapabilities.xml</code></p>
+<ul>
+<li>
+<p>PathParams:</p>
+<ul>
+<li><strong>search_id</strong>: PgSTAC Search Identifier (Hash).</li>
+<li><strong>TileMatrixSetId</strong>: TileMatrixSet name, default is <code>WebMercatorQuad</code>. OPTIONAL</li>
+</ul>
+</li>
+<li>
+<p>QueryParams:</p>
+<ul>
+<li><strong>tile_format</strong>: Output image format, default is set to PNG.</li>
+<li><strong>tile_scale</strong>: Tile size scale, default is set to 1 (256x256). OPTIONAL</li>
+<li><strong>minzoom</strong>: Overwrite default minzoom. OPTIONAL</li>
+<li><strong>maxzoom</strong>: Overwrite default maxzoom. OPTIONAL</li>
+</ul>
+</li>
+</ul>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>additional query-parameters will be forwarded to the <code>tile</code> URL. If no <code>defaults</code> mosaic metadata, <strong>assets</strong> OR <strong>expression</strong> will be required</p>
+</div>
+<p>Example:</p>
+<ul>
+<li><code>https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/WMTSCapabilities.xml?assets=B01</code></li>
+<li><code>https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/WMTSCapabilities.xml?assets=B01&amp;tile_format=png</code></li>
+<li><code>https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/WorldCRS84Quad/WMTSCapabilities.xml?assets=B01&amp;tile_scale=2</code></li>
+</ul>
+<h3 id="assets">Assets<a class="headerlink" href="#assets" title="Permanent link">&para;</a></h3>
+<p><code>:endpoint:/searches/{search_id}/tiles/[{TileMatrixSetId}]/{z}/{x}/{y}/assets</code></p>
+<ul>
+<li>
+<p>PathParams:</p>
+<ul>
+<li><strong>search_id</strong>: PgSTAC Search Identifier (Hash).</li>
+<li><strong>TileMatrixSetId</strong>: TileMatrixSet name, default is <code>WebMercatorQuad</code>. OPTIONAL</li>
+<li><strong>z</strong>: Tile's zoom level.</li>
+<li><strong>x</strong>: Tile's column.</li>
+<li><strong>y</strong>: Tile's row.</li>
+</ul>
+</li>
+<li>
+<p>QueryParams:</p>
+<ul>
+<li><strong>scan_limit</strong> (int): Return as soon as we scan N items, Default is 10,000 in PgSTAC.</li>
+<li><strong>items_limit</strong> (int): Return as soon as we have N items per geometry, Default is 100 in PgSTAC.</li>
+<li><strong>time_limit</strong> (int): Return after N seconds to avoid long requests, Default is 5sec in PgSTAC.</li>
+<li><strong>exitwhenfull</strong> (bool): Return as soon as the geometry is fully covered, Default is <code>True</code> in PgSTAC.</li>
+<li><strong>skipcovered</strong> (bool): Skip any items that would show up completely under the previous items, Default is <code>True</code> in PgSTAC.</li>
+</ul>
+</li>
+</ul>
+<p>Example:</p>
+<ul>
+<li><code>https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/tiles/0/0/0/assets</code></li>
+</ul>
+<p><code>:endpoint:/searches/{search_id}/{lon},{lat}/assets</code></p>
+<ul>
+<li>
+<p>PathParams:</p>
+<ul>
+<li><strong>search_id</strong>: PgSTAC Search Identifier (Hash).</li>
+<li><strong>lon</strong>: Longitude (in WGS84 CRS).</li>
+<li><strong>lat</strong>: Latitude (in WGS84 CRS).</li>
+</ul>
+</li>
+<li>
+<p>QueryParams:</p>
+<ul>
+<li><strong>scan_limit</strong> (int): Return as soon as we scan N items, Default is 10,000 in PgSTAC.</li>
+<li><strong>items_limit</strong> (int): Return as soon as we have N items per geometry, Default is 100 in PgSTAC.</li>
+<li><strong>time_limit</strong> (int): Return after N seconds to avoid long requests, Default is 5sec in PgSTAC.</li>
+<li><strong>exitwhenfull</strong> (bool): Return as soon as the geometry is fully covered, Default is <code>True</code> in PgSTAC.</li>
+<li><strong>skipcovered</strong> (bool): Skip any items that would show up completely under the previous items, Default is <code>True</code> in PgSTAC.</li>
+</ul>
+</li>
+</ul>
+<p>Example:</p>
+<ul>
+<li><code>https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/0.0,0.0/assets</code></li>
+</ul>
+<h3 id="statistics">Statistics<a class="headerlink" href="#statistics" title="Permanent link">&para;</a></h3>
+<p><code>:endpoint:/searches/{search_id}/statistics - [POST]</code></p>
+<ul>
+<li>
+<p>Body:</p>
+<ul>
+<li><strong>feature</strong> (JSON): A valid GeoJSON feature or FeatureCollection</li>
+</ul>
+</li>
+<li>
+<p>PathParams:</p>
+<ul>
+<li><strong>search_id</strong>: PgSTAC Search Identifier (Hash).</li>
+</ul>
+</li>
+<li>
+<p>QueryParams:</p>
+<ul>
+<li><strong>assets</strong> (array[str]): asset names.</li>
+<li><strong>expression</strong> (str): rio-tiler's math expression with asset names (e.g <code>Asset1_b1/Asset2_b1</code>).</li>
+<li><strong>asset_as_band</strong> (bool): tell rio-tiler that each asset is a 1 band dataset, so expression <code>Asset1/Asset2</code> can be passed.</li>
+<li><strong>asset_bidx</strong> (array[str]): Per asset band index (e.g <code>Asset1|1;2;3</code>).</li>
+<li><strong>coord_crs</strong> (str): Coordinate Reference System of the input geometry. Default to <code>epsg:4326</code>.</li>
+<li><strong>dst_crs</strong> (str): Output Coordinate Reference System. Default to <code>coord_crs</code>.</li>
+<li><strong>max_size</strong> (int): Max image size from which to calculate statistics.</li>
+<li><strong>height</strong> (int): Force image height from which to calculate statistics.</li>
+<li><strong>width</strong> (int): Force image width from which to calculate statistics.</li>
+<li><strong>nodata</strong>: Overwrite internal Nodata value. OPTIONAL</li>
+<li><strong>unscale</strong> (bool): Apply dataset internal Scale/Offset.</li>
+<li><strong>resampling</strong> (str): RasterIO resampling algorithm. Defaults to <code>nearest</code>.</li>
+<li><strong>reproject</strong> (str): WarpKernel resampling algorithm (only used when doing re-projection). Defaults to <code>nearest</code>.</li>
+<li><strong>algorithm</strong> (str): Custom algorithm name (e.g <code>hillshade</code>).</li>
+<li><strong>algorithm_params</strong> (str): JSON encoded algorithm parameters.</li>
+<li><strong>categorical</strong> (bool): Return statistics for categorical dataset, default is false.</li>
+<li><strong>c</strong> (array[float]): Pixels values for categories.</li>
+<li><strong>p</strong> (array[int]): Percentile values.</li>
+<li><strong>histogram_bins</strong> (str): Histogram bins.</li>
+<li><strong>histogram_range</strong> (str): Comma (',') delimited Min,Max histogram bounds.</li>
+<li><strong>pixel_selection</strong> (str): Pixel selection method (<a href="https://cogeotiff.github.io/rio-tiler/mosaic/">cogeotiff.github.io/rio-tiler/mosaic/</a>).</li>
+<li><strong>scan_limit</strong> (int): Return as soon as we scan N items, Default is 10,000 in PgSTAC.</li>
+<li><strong>items_limit</strong> (int): Return as soon as we have N items per geometry, Default is 100 in PgSTAC.</li>
+<li><strong>time_limit</strong> (int): Return after N seconds to avoid long requests, Default is 5sec in PgSTAC.</li>
+<li><strong>exitwhenfull</strong> (bool): Return as soon as the geometry is fully covered, Default is <code>True</code> in PgSTAC.</li>
+<li><strong>skipcovered</strong> (bool): Skip any items that would show up completely under the previous items, Default is <code>True</code> in PgSTAC.</li>
+</ul>
+</li>
+</ul>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>if <strong>height</strong> and <strong>width</strong> are provided <strong>max_size</strong> will be ignored.</p>
+</div>
+<p>Example:</p>
+<ul>
+<li><code>https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/statistics?assets=B01</code></li>
+</ul>
+<h3 id="bboxfeature">BBOX/Feature<a class="headerlink" href="#bboxfeature" title="Permanent link">&para;</a></h3>
+<p><code>:endpoint:/searches/{search_id}/bbox/{minx},{miny},{maxx},{maxy}.{format}</code></p>
+<p><code>:endpoint:/searches/{search_id}/bbox/{minx},{miny},{maxx},{maxy}/{width}x{height}.{format}</code></p>
+<ul>
+<li>
+<p>PathParams:</p>
+<ul>
+<li><strong>search_id</strong>: PgSTAC Search Identifier (Hash).</li>
+<li><strong>minx,miny,maxx,maxy</strong> (str): Comma (',') delimited bounding box in WGS84.</li>
+<li><strong>format</strong> (str): Output image format.</li>
+<li><strong>height</strong> (int): Force output image height.</li>
+<li><strong>width</strong> (int): Force output image width.</li>
+</ul>
+</li>
+<li>
+<p>QueryParams:</p>
+<ul>
+<li><strong>assets</strong> (array[str]): asset names.</li>
+<li><strong>expression</strong> (str): rio-tiler's math expression with asset names (e.g <code>Asset1_b1/Asset2_b1</code>).</li>
+<li><strong>asset_as_band</strong> (bool): tell rio-tiler that each asset is a 1 band dataset, so expression <code>Asset1/Asset2</code> can be passed.</li>
+<li><strong>asset_bidx</strong> (array[str]): Per asset band index (e.g <code>Asset1|1;2;3</code>).</li>
+<li><strong>coord_crs</strong> (str): Coordinate Reference System of the input coordinates. Default to <code>epsg:4326</code>.</li>
+<li><strong>dst_crs</strong> (str): Output Coordinate Reference System. Default to <code>coord_crs</code>.</li>
+<li><strong>max_size</strong> (int): Max image size.</li>
+<li><strong>nodata</strong>: Overwrite internal Nodata value. OPTIONAL</li>
+<li><strong>unscale</strong> (bool): Apply dataset internal Scale/Offset.</li>
+<li><strong>resampling</strong> (str): RasterIO resampling algorithm. Defaults to <code>nearest</code>.</li>
+<li><strong>reproject</strong> (str): WarpKernel resampling algorithm (only used when doing re-projection). Defaults to <code>nearest</code>.</li>
+<li><strong>algorithm</strong> (str): Custom algorithm name (e.g <code>hillshade</code>).</li>
+<li><strong>algorithm_params</strong> (str): JSON encoded algorithm parameters.</li>
+<li><strong>rescale</strong> (array[str]): Comma (',') delimited Min,Max range (e.g <code>rescale=0,1000</code>, <code>rescale=0,1000&amp;rescale=0,3000&amp;rescale=0,2000</code>).</li>
+<li><strong>color_formula</strong> (str): rio-color formula.</li>
+<li><strong>colormap</strong> (str): JSON encoded custom Colormap.</li>
+<li><strong>colormap_name</strong> (str): rio-tiler color map name.</li>
+<li><strong>return_mask</strong> (bool): Add mask to the output data. Default is True.</li>
+<li><strong>pixel_selection</strong> (str): Pixel selection method (<a href="https://cogeotiff.github.io/rio-tiler/mosaic/">cogeotiff.github.io/rio-tiler/mosaic/</a>).</li>
+<li><strong>scan_limit</strong> (int): Return as soon as we scan N items, Default is 10,000 in PgSTAC.</li>
+<li><strong>items_limit</strong> (int): Return as soon as we have N items per geometry, Default is 100 in PgSTAC.</li>
+<li><strong>time_limit</strong> (int): Return after N seconds to avoid long requests, Default is 5sec in PgSTAC.</li>
+<li><strong>exitwhenfull</strong> (bool): Return as soon as the geometry is fully covered, Default is <code>True</code> in PgSTAC.</li>
+<li><strong>skipcovered</strong> (bool): Skip any items that would show up completely under the previous items, Default is <code>True</code> in PgSTAC.</li>
+</ul>
+</li>
+</ul>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>if <strong>height</strong> and <strong>width</strong> are provided <strong>max_size</strong> will be ignored.</p>
+</div>
+<p>Example:</p>
+<ul>
+<li><code>https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/bbox/0,0,10,10.png?assets=B01</code></li>
+<li><code>https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/bbox/0,0,10,10/400x300.png?assets=B01</code></li>
+</ul>
+<p><code>:endpoint:/searches/{search_id}/feature[/{width}x{height}][].{format}] - [POST]</code></p>
+<ul>
+<li>
+<p>Body:</p>
+<ul>
+<li><strong>feature</strong> (JSON): A valid GeoJSON feature (Polygon or MultiPolygon)</li>
+</ul>
+</li>
+<li>
+<p>PathParams:</p>
+<ul>
+<li><strong>search_id</strong>: PgSTAC Search Identifier (Hash).</li>
+<li><strong>height</strong> (int): Force output image height. <strong>Optional</strong></li>
+<li><strong>width</strong> (int): Force output image width. <strong>Optional</strong></li>
+<li><strong>format</strong> (str): Output image format, default is set to None and will be either JPEG or PNG depending on masked value. <strong>Optional</strong></li>
+</ul>
+</li>
+<li>
+<p>QueryParams:</p>
+<ul>
+<li><strong>assets</strong> (array[str]): asset names.</li>
+<li><strong>expression</strong> (str): rio-tiler's math expression with asset names (e.g <code>Asset1_b1/Asset2_b1</code>).</li>
+<li><strong>asset_as_band</strong> (bool): tell rio-tiler that each asset is a 1 band dataset, so expression <code>Asset1/Asset2</code> can be passed.</li>
+<li><strong>asset_bidx</strong> (array[str]): Per asset band index (e.g <code>Asset1|1;2;3</code>).</li>
+<li><strong>coord_crs</strong> (str): Coordinate Reference System of the input geometry. Default to <code>epsg:4326</code>.</li>
+<li><strong>dst_crs</strong> (str): Output Coordinate Reference System. Default to <code>coord_crs</code>.</li>
+<li><strong>max_size</strong> (int): Max image size.</li>
+<li><strong>nodata</strong>: Overwrite internal Nodata value. OPTIONAL</li>
+<li><strong>unscale</strong> (bool): Apply dataset internal Scale/Offset.</li>
+<li><strong>resampling</strong> (str): RasterIO resampling algorithm. Defaults to <code>nearest</code>.</li>
+<li><strong>reproject</strong> (str): WarpKernel resampling algorithm (only used when doing re-projection). Defaults to <code>nearest</code>.</li>
+<li><strong>algorithm</strong> (str): Custom algorithm name (e.g <code>hillshade</code>).</li>
+<li><strong>algorithm_params</strong> (str): JSON encoded algorithm parameters.</li>
+<li><strong>rescale</strong> (array[str]): Comma (',') delimited Min,Max range (e.g <code>rescale=0,1000</code>, <code>rescale=0,1000&amp;rescale=0,3000&amp;rescale=0,2000</code>).</li>
+<li><strong>color_formula</strong> (str): rio-color formula.</li>
+<li><strong>colormap</strong> (str): JSON encoded custom Colormap.</li>
+<li><strong>colormap_name</strong> (str): rio-tiler color map name.</li>
+<li><strong>return_mask</strong> (bool): Add mask to the output data. Default is True.</li>
+<li><strong>pixel_selection</strong> (str): Pixel selection method (<a href="https://cogeotiff.github.io/rio-tiler/mosaic/">cogeotiff.github.io/rio-tiler/mosaic/</a>).</li>
+<li><strong>scan_limit</strong> (int): Return as soon as we scan N items, Default is 10,000 in PgSTAC.</li>
+<li><strong>items_limit</strong> (int): Return as soon as we have N items per geometry, Default is 100 in PgSTAC.</li>
+<li><strong>time_limit</strong> (int): Return after N seconds to avoid long requests, Default is 5sec in PgSTAC.</li>
+<li><strong>exitwhenfull</strong> (bool): Return as soon as the geometry is fully covered, Default is <code>True</code> in PgSTAC.</li>
+<li><strong>skipcovered</strong> (bool): Skip any items that would show up completely under the previous items, Default is <code>True</code> in PgSTAC.</li>
+</ul>
+</li>
+</ul>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>if <strong>height</strong> and <strong>width</strong> are provided <strong>max_size</strong> will be ignored.</p>
+</div>
+<p>Example:</p>
+<ul>
+<li><code>https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/feature?assets=B01</code></li>
+<li><code>https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/feature.png?assets=B01f</code></li>
+<li><code>https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/feature/100x100.png?assets=B01</code></li>
+</ul>
+<h3 id="point">Point<a class="headerlink" href="#point" title="Permanent link">&para;</a></h3>
+<p><code>:endpoint:/searches/{search_id}/point/{lon},{lat}</code></p>
+<ul>
+<li>
+<p>PathParams:</p>
+<ul>
+<li><strong>search_id</strong>: PgSTAC Search Identifier (Hash).</li>
+<li><strong>lon</strong>: Longitude (in <code>coord-crs</code>, defaults to <code>WGS84</code>).</li>
+<li><strong>lat</strong>: Latitude (in <code>coord-crs</code>, defaults to <code>WGS84</code>).</li>
+</ul>
+</li>
+<li>
+<p>QueryParams:</p>
+<ul>
+<li><strong>assets</strong> (array[str]): asset names.</li>
+<li><strong>expression</strong> (str): rio-tiler's math expression with asset names (e.g <code>Asset1_b1/Asset2_b1</code>).</li>
+<li><strong>asset_as_band</strong> (bool): tell rio-tiler that each asset is a 1 band dataset, so expression <code>Asset1/Asset2</code> can be passed.</li>
+<li><strong>asset_bidx</strong> (array[str]): Per asset band index (e.g <code>Asset1|1;2;3</code>).</li>
+<li><strong>coord_crs</strong> (str): Coordinate Reference System of the input geometry. Default to <code>epsg:4326</code>.</li>
+<li><strong>nodata</strong> (str, int, float): Overwrite internal Nodata value.</li>
+<li><strong>unscale</strong> (bool): Apply dataset internal Scale/Offset.</li>
+<li><strong>resampling</strong> (str): RasterIO resampling algorithm. Defaults to <code>nearest</code>.</li>
+<li><strong>reproject</strong> (str): WarpKernel resampling algorithm (only used when doing re-projection). Defaults to <code>nearest</code>.</li>
+<li><strong>scan_limit</strong> (int): Return as soon as we scan N items, Default is 10,000 in PgSTAC.</li>
+<li><strong>items_limit</strong> (int): Return as soon as we have N items per geometry, Default is 100 in PgSTAC.</li>
+<li><strong>time_limit</strong> (int): Return after N seconds to avoid long requests, Default is 5sec in PgSTAC.</li>
+<li><strong>exitwhenfull</strong> (bool): Return as soon as the geometry is fully covered, Default is <code>True</code> in PgSTAC.</li>
+<li><strong>skipcovered</strong> (bool): Skip any items that would show up completely under the previous items, Default is <code>True</code> in PgSTAC.</li>
+</ul>
+</li>
+</ul>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p><strong>assets</strong> OR <strong>expression</strong> is required</p>
+</div>
+<p>Example:</p>
+<ul>
+<li><code>https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/point/0,0?assets=B01</code></li>
+</ul>
+<h3 id="register-a-search-request">Register a Search Request<a class="headerlink" href="#register-a-search-request" title="Permanent link">&para;</a></h3>
+<p><code>:endpoint:/searches/register - [POST]</code></p>
+<ul>
+<li><strong>Body</strong> (a combination of Search+Metadata): A JSON body composed of a valid <strong>STAC Search</strong> query (see: <a href="https://github.com/radiantearth/stac-api-spec/tree/master/item-search">github.com/radiantearth/stac-api-spec/tree/master/item-search</a>) and Mosaic's metadata.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="c1">// titiler-pgstac search body example</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="c1">// STAC search query</span>
+<span class="w">  </span><span class="nt">&quot;collections&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;string&quot;</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;ids&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;string&quot;</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;bbox&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;number&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;number&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;number&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;number&quot;</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;intersects&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Point&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;coordinates&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">&quot;number&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;number&quot;</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;query&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;additionalProp1&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span>
+<span class="w">    </span><span class="nt">&quot;additionalProp2&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span>
+<span class="w">    </span><span class="nt">&quot;additionalProp3&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;filter&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span>
+<span class="w">  </span><span class="nt">&quot;datetime&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;sortby&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;filter-lang&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;cql-json&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="c1">// titiler-pgstac mosaic metadata</span>
+<span class="w">  </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mosaic&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;bounds&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">&quot;number&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;number&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;number&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;number&quot;</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;minzoom&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;maxzoom&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;assets&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">&quot;string&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;string&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;defaults&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>In <code>titiler-pgstac</code> we extended the regular <code>stac</code> search to add a metadata entry.
+Metadata defaults to <code>{"type": "mosaic"}</code>.</p>
+</div>
+<p>Example:</p>
+<ul>
+<li><code>https://myendpoint/searches/register</code></li>
+</ul>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-X<span class="w"> </span><span class="s1">&#39;POST&#39;</span><span class="w"> </span><span class="s1">&#39;http://127.0.0.1:8081/searches/register&#39;</span><span class="w"> </span>-H<span class="w"> </span><span class="s1">&#39;accept: application/json&#39;</span><span class="w"> </span>-H<span class="w"> </span><span class="s1">&#39;Content-Type: application/json&#39;</span><span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;collections&quot;:[&quot;landsat-c2l2-sr&quot;], &quot;bbox&quot;:[-123.75,34.30714385628804,-118.125,38.82259097617712], &quot;filter-lang&quot;: &quot;cql-json&quot;}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq
+&gt;&gt;<span class="w"> </span><span class="o">{</span>
+<span class="w">  </span><span class="s2">&quot;id&quot;</span>:<span class="w"> </span><span class="s2">&quot;5a1b82d38d53a5d200273cbada886bd7&quot;</span>,
+<span class="w">  </span><span class="s2">&quot;links&quot;</span>:<span class="w"> </span><span class="o">[</span>
+<span class="w">    </span><span class="o">{</span>
+<span class="w">      </span><span class="s2">&quot;rel&quot;</span>:<span class="w"> </span><span class="s2">&quot;metadata&quot;</span>,
+<span class="w">      </span><span class="s2">&quot;type&quot;</span>:<span class="w"> </span><span class="s2">&quot;application/json&quot;</span>,
+<span class="w">      </span><span class="s2">&quot;href&quot;</span>:<span class="w"> </span><span class="s2">&quot;http://127.0.0.1:8081/searches/5a1b82d38d53a5d200273cbada886bd7/info&quot;</span>
+<span class="w">    </span><span class="o">}</span>,
+<span class="w">    </span><span class="o">{</span>
+<span class="w">      </span><span class="s2">&quot;rel&quot;</span>:<span class="w"> </span><span class="s2">&quot;tilejson&quot;</span>,
+<span class="w">      </span><span class="s2">&quot;type&quot;</span>:<span class="w"> </span><span class="s2">&quot;application/json&quot;</span>,
+<span class="w">      </span><span class="s2">&quot;href&quot;</span>:<span class="w"> </span><span class="s2">&quot;http://127.0.0.1:8081/searches/5a1b82d38d53a5d200273cbada886bd7/tilejson.json&quot;</span>
+<span class="w">    </span><span class="o">}</span>
+<span class="w">  </span><span class="o">]</span>
+<span class="o">}</span>
+
+<span class="c1"># or using CQL2</span>
+curl<span class="w"> </span>-X<span class="w"> </span><span class="s1">&#39;POST&#39;</span><span class="w"> </span><span class="s1">&#39;http://127.0.0.1:8081/searches/register&#39;</span><span class="w"> </span>-H<span class="w"> </span><span class="s1">&#39;accept: application/json&#39;</span><span class="w"> </span>-H<span class="w"> </span><span class="s1">&#39;Content-Type: application/json&#39;</span><span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;filter&quot;: {&quot;op&quot;: &quot;=&quot;, &quot;args&quot;: [{&quot;property&quot;: &quot;collection&quot;}, &quot;landsat-c2l2-sr&quot;]}}&#39;</span>
+
+<span class="c1"># or using CQL2 with metadata</span>
+curl<span class="w"> </span>-X<span class="w"> </span><span class="s1">&#39;POST&#39;</span><span class="w"> </span><span class="s1">&#39;http://127.0.0.1:8081/searches/register&#39;</span><span class="w"> </span>-H<span class="w"> </span><span class="s1">&#39;accept: application/json&#39;</span><span class="w"> </span>-H<span class="w"> </span><span class="s1">&#39;Content-Type: application/json&#39;</span><span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;filter&quot;: {&quot;op&quot;: &quot;=&quot;, &quot;args&quot;: [{&quot;property&quot;: &quot;collection&quot;}, &quot;landsat-c2l2-sr&quot;]}, &quot;metadata&quot;: {&quot;name&quot;: &quot;landsat mosaic&quot;}}&#39;</span>
+</code></pre></div>
+<h3 id="search-infos">Search infos<a class="headerlink" href="#search-infos" title="Permanent link">&para;</a></h3>
+<p><code>:endpoint:/searches/{search_id}/info - [GET]</code></p>
+<ul>
+<li>PathParams:<ul>
+<li><strong>search_id</strong>: PgSTAC Search Identifier (Hash).</li>
+</ul>
+</li>
+</ul>
+<p>Example:</p>
+<ul>
+<li><code>https://myendpoint/searches/5a1b82d38d53a5d200273cbada886bd7/info</code></li>
+</ul>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span><span class="s1">&#39;http://127.0.0.1:8081/searches/5a1b82d38d53a5d200273cbada886bd7/info&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq
+&gt;&gt;<span class="w"> </span><span class="o">{</span>
+<span class="w">  </span><span class="s2">&quot;search&quot;</span>:<span class="w"> </span><span class="o">{</span>
+<span class="w">    </span><span class="s2">&quot;hash&quot;</span>:<span class="w"> </span><span class="s2">&quot;5a1b82d38d53a5d200273cbada886bd7&quot;</span>,
+<span class="w">    </span><span class="s2">&quot;search&quot;</span>:<span class="w"> </span><span class="o">{</span>
+<span class="w">      </span><span class="s2">&quot;bbox&quot;</span>:<span class="w"> </span><span class="o">[</span>
+<span class="w">        </span>-123.75,
+<span class="w">        </span><span class="m">34</span>.30714385628804,
+<span class="w">        </span>-118.125,
+<span class="w">        </span><span class="m">38</span>.82259097617712
+<span class="w">      </span><span class="o">]</span>,
+<span class="w">      </span><span class="s2">&quot;collections&quot;</span>:<span class="w"> </span><span class="o">[</span>
+<span class="w">        </span><span class="s2">&quot;landsat-c2l2-sr&quot;</span>
+<span class="w">      </span><span class="o">]</span>,
+<span class="w">      </span><span class="s2">&quot;filter-lang&quot;</span>:<span class="w"> </span><span class="s2">&quot;cql-json&quot;</span>
+<span class="w">    </span><span class="o">}</span>,
+<span class="w">    </span><span class="s2">&quot;_where&quot;</span>:<span class="w"> </span><span class="s2">&quot;(  TRUE  )  AND collection_id = ANY (&#39;{landsat-c2l2-sr}&#39;)  AND geometry &amp;&amp; &#39;0103000020E610000001000000050000000000000000F05EC055F6687D502741400000000000F05EC02D553EA94A6943400000000000885DC02D553EA94A6943400000000000885DC055F6687D502741400000000000F05EC055F6687D50274140&#39; &quot;</span>,
+<span class="w">    </span><span class="s2">&quot;orderby&quot;</span>:<span class="w"> </span><span class="s2">&quot;datetime DESC, id DESC&quot;</span>,
+<span class="w">    </span><span class="s2">&quot;lastused&quot;</span>:<span class="w"> </span><span class="s2">&quot;2022-03-03T11:42:07.213313+00:00&quot;</span>,
+<span class="w">    </span><span class="s2">&quot;usecount&quot;</span>:<span class="w"> </span><span class="m">2</span>,
+<span class="w">    </span><span class="s2">&quot;metadata&quot;</span>:<span class="w"> </span><span class="o">{</span>
+<span class="w">      </span><span class="s2">&quot;type&quot;</span>:<span class="w"> </span><span class="s2">&quot;mosaic&quot;</span>
+<span class="w">    </span><span class="o">}</span>
+<span class="w">  </span><span class="o">}</span>,
+<span class="w">  </span><span class="s2">&quot;links&quot;</span>:<span class="w"> </span><span class="o">[</span>
+<span class="w">    </span><span class="o">{</span>
+<span class="w">      </span><span class="s2">&quot;rel&quot;</span>:<span class="w"> </span><span class="s2">&quot;self&quot;</span>,
+<span class="w">      </span><span class="s2">&quot;type&quot;</span>:<span class="w"> </span><span class="s2">&quot;application/json&quot;</span>,
+<span class="w">      </span><span class="s2">&quot;href&quot;</span>:<span class="w"> </span><span class="s2">&quot;http://127.0.0.1:8081/searches/5a1b82d38d53a5d200273cbada886bd7/info&quot;</span>
+<span class="w">    </span><span class="o">}</span>,
+<span class="w">    </span><span class="o">{</span>
+<span class="w">      </span><span class="s2">&quot;rel&quot;</span>:<span class="w"> </span><span class="s2">&quot;tilejson&quot;</span>,
+<span class="w">      </span><span class="s2">&quot;type&quot;</span>:<span class="w"> </span><span class="s2">&quot;application/json&quot;</span>,
+<span class="w">      </span><span class="s2">&quot;href&quot;</span>:<span class="w"> </span><span class="s2">&quot;http://127.0.0.1:8081/searches/5a1b82d38d53a5d200273cbada886bd7/tilejson.json&quot;</span>
+<span class="w">    </span><span class="o">}</span>
+<span class="w">  </span><span class="o">]</span>
+<span class="o">}</span>
+</code></pre></div>
+<h3 id="list-searches">List Searches<a class="headerlink" href="#list-searches" title="Permanent link">&para;</a></h3>
+<p><code>:endpoint:/searches/list - [GET]</code></p>
+<ul>
+<li>QueryParams:<ul>
+<li><strong>limit</strong> (int): Page size limit, Default is <code>10</code>.</li>
+<li><strong>offset</strong> (int): Page offset.</li>
+<li><strong>sortby</strong> (str): Sort the searches by Metadata properties (ascending (default) or descending (<code>-</code>)).</li>
+</ul>
+</li>
+</ul>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Additional query-parameters (form <code>PROP=VALUE</code>) will be considered as a <strong>property filter</strong>.</p>
+</div>
+<p>Example:</p>
+<ul>
+<li><code>https://myendpoint/searches/list</code></li>
+<li><code>https://myendpoint/searches/list?limit=100</code></li>
+<li><code>https://myendpoint/searches/list?limit=10&amp;offset=10</code> (page 2)</li>
+<li><code>https://myendpoint/searches/list?data=noaa</code> (only show mosaics with <code>metadata.data == noaa</code>)</li>
+<li><code>https://myendpoint/searches/list?sortby=lastused</code> (sort mosaic by <code>lastused</code> pgstac search property)</li>
+<li><code>https://myendpoint/searches/list?sortby=-prop</code> (sort mosaic (descending) by <code>metadata.prop</code> values)</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/stac-utils" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.annotate", "content.code.copy", "navigation.indexes", "navigation.instant", "navigation.tracking", "search.suggest", "search.share"], "search": "../../assets/javascripts/workers/search.07f07601.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.56dfad97.min.js"></script>
+      
+    
+  </body>
+</html>
