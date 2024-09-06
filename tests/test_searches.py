@@ -1056,3 +1056,77 @@ def test_cache_middleware_settings(app, search_no_bbox):
     )
     assert response.status_code == 200
     assert response.headers.get("Cache-Control")
+
+
+def test_search_ids_parameter(app):
+    """Check that ids parameter work."""
+    query = {
+        "collections": ["noaa-emergency-response"],
+    }
+    response = app.post("/searches/register", json=query)
+    assert response.status_code == 200
+    resp = response.json()
+    search_id = resp["id"]
+
+    response = app.get(f"/searches/{search_id}/-85.5,36.1624/assets")
+    assert response.status_code == 200
+    resp = response.json()
+    assert len(resp) >= 1
+
+    query = {
+        "collections": ["noaa-emergency-response"],
+        "ids": ["20200307aC0853130w361030"],
+    }
+    response = app.post("/searches/register", json=query)
+    assert response.status_code == 200
+    resp = response.json()
+    search_id = resp["id"]
+
+    response = app.get(f"/searches/{search_id}/-85.5,36.1624/assets")
+    assert response.status_code == 200
+    resp = response.json()
+    assert len(resp) == 1
+    assert resp[0]["id"] == "20200307aC0853130w361030"
+
+    query = {
+        "collections": ["noaa-emergency-response"],
+        "ids": ["20200307aC0853130w361030"],
+        "filter-lang": "cql-json",
+    }
+    response = app.post("/searches/register", json=query)
+    assert response.status_code == 200
+    resp = response.json()
+    search_id = resp["id"]
+
+    response = app.get(f"/searches/{search_id}/-85.5,36.1624/assets")
+    assert response.status_code == 200
+    resp = response.json()
+    assert len(resp) == 1
+    assert resp[0]["id"] == "20200307aC0853130w361030"
+
+    query = {
+        "filter": {
+            "op": "and",
+            "args": [
+                {
+                    "op": "=",
+                    "args": [{"property": "collection"}, "noaa-emergency-response"],
+                },
+                {
+                    "op": "=",
+                    "args": [{"property": "id"}, "20200307aC0853130w361030"],
+                },
+            ],
+        },
+        "filter-lang": "cql2-json",
+    }
+    response = app.post("/searches/register", json=query)
+    assert response.status_code == 200
+    resp = response.json()
+    search_id = resp["id"]
+
+    response = app.get(f"/searches/{search_id}/-85.5,36.1624/assets")
+    assert response.status_code == 200
+    resp = response.json()
+    assert len(resp) == 1
+    assert resp[0]["id"] == "20200307aC0853130w361030"

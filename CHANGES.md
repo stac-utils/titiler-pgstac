@@ -1,6 +1,6 @@
 # Release Notes
 
-## Unreleased
+## 1.4.0 (2024-09-06)
 
 * add `/collections/{collection_id}/items/{item_id}/assets/{asset_id}` optional endpoints (`TITILER_PGSTAC_API_ENABLE_ASSETS_ENDPOINTS=TRUE|FALSE`)
 * add `/external` optional endpoints (`TITILER_PGSTAC_API_ENABLE_EXTERNAL_DATASET_ENDPOINTS=TRUE|FALSE`)
