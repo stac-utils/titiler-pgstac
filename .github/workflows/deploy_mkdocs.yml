@@ -24,24 +24,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -e ".[psycopg-binary]"
-          python -m pip install nbconvert mkdocs mkdocs-material mkdocs-jupyter pygments pdocs mike~=2.0
-
-      - name: update API docs
-        run: |
-          pdocs as_markdown \
-            --output_dir docs/src/api \
-            --exclude_source \
-            --overwrite \
-            titiler.pgstac.db \
-            titiler.pgstac.dependencies \
-            titiler.pgstac.extensions \
-            titiler.pgstac.factory \
-            titiler.pgstac.model \
-            titiler.pgstac.mosaic \
-            titiler.pgstac.reader \
-            titiler.pgstac.settings \
-            titiler.pgstac.utils
+          python -m pip install -e ".[psycopg-binary,docs]"
 
       - name: Set module version
         id: module
