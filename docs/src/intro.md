@@ -29,7 +29,7 @@ Two other sets of endpoints can be enabled using environment variable:
 
 Before being able to create Map Tiles, the user needs to register a `Search Query` within the PgSTAC database (in the `searches` table). By default, `TiTiler.PgSTAC` has a `/searches/register (POST)` endpoint which will:
 
-  - validate the search query (based on the STAC API specification [`item-search`]((https://github.com/radiantearth/stac-api-spec/tree/master/item-search)))
+  - validate the search query (based on the STAC API specification [`item-search`](https://github.com/radiantearth/stac-api-spec/tree/master/item-search))
 
   - send the search query to the postgres database using the [`search_query`](https://github.com/stac-utils/pgstac/blob/76512ab50e1373e3f77c65843cf328cbe6dd0dec/sql/004_search.sql#L1000) PgSTAC function
 
