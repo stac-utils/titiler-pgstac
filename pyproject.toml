@@ -29,7 +29,7 @@ classifiers = [
 ]
 dependencies = [
     "titiler.core>=0.18.0,<0.19",
-    "titiler.mosaic>=0.18.0,<0.19",
+    "titiler.mosaic>=0.18.0,<0.20",
     "geojson-pydantic~=1.0",
     "pydantic>=2.4,<3.0",
     "pydantic-settings~=2.0",
