@@ -23,15 +23,9 @@ from starlette.requests import Request
 class MosaicTilerFactory(TitilerPgSTACFactory.MosaicTilerFactory):
     """Custom factory."""
 
-    def _tilejson_routes(self) -> None:
+    def tilejson(self) -> None:
         """Custom TileJSON endpoint."""
 
-        @self.router.get(
-            "/tilejson.json",
-            response_model=TileJSON,
-            responses={200: {"description": "Return a tilejson"}},
-            response_model_exclude_none=True,
-        )
         @self.router.get(
             "/{tileMatrixSetId}/tilejson.json",
             response_model=TileJSON,
@@ -40,15 +34,19 @@ class MosaicTilerFactory(TitilerPgSTACFactory.MosaicTilerFactory):
         )
         def tilejson(
             request: Request,
-            search_id=Depends(self.path_dependency),
-            tileMatrixSetId: Annotated[  # type: ignore
+            tileMatrixSetId: Annotated[
                 Literal[tuple(self.supported_tms.list())],
-                f"Identifier selecting one of the TileMatrixSetId supported (default: '{self.default_tms}')",
-            ] = self.default_tms,
+                Path(
+                    description="Identifier selecting one of the TileMatrixSetId supported."
+                ),
+            ],
+            ########################################################
+            # CUSTOM: add `layer=` query-parameter
             layer: Annotated[
                 str,
                 Query(description="Name of default configuration"),
             ] = None,
+            ########################################################
             tile_format: Annotated[
                 Optional[ImageType],
                 Query(
@@ -69,6 +67,7 @@ class MosaicTilerFactory(TitilerPgSTACFactory.MosaicTilerFactory):
                 Optional[int],
                 Query(description="Overwrite default maxzoom."),
             ] = None,
+            search_id=Depends(self.path_dependency),
             layer_params=Depends(self.layer_dependency),
             dataset_params=Depends(self.dataset_dependency),
             pixel_selection=Depends(self.pixel_selection_dependency),

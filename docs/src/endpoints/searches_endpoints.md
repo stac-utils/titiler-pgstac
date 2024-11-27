@@ -2,28 +2,29 @@
 
 | Method | URL                                                                              | Output                                  | Description
 | ------ | ---------------------------------------------------------------------------------|-----------------------------------------|--------------
-| `GET`  | `/searches/{search_id}/{lon},{lat}/assets`                                          | JSON                                    | Return a list of assets which overlap a given point
-| `GET`  | `/searches/{search_id}/tiles[/{TileMatrixSetId}]/{z}/{x}/{Y}/assets`                | JSON                                    | Return a list of assets which overlap a given tile
-| `GET`  | `/searches/{search_id}/tiles[/{TileMatrixSetId}]/{z}/{x}/{y}[@{scale}x][.{format}]` | image/bin                               | Create a web map tile image for a search query and a tile index
-| `GET`  | `/searches/{search_id}[/{TileMatrixSetId}]/tilejson.json`                           | JSON ([TileJSON][tilejson_model])       | Return a Mapbox TileJSON document
-| `GET`  | `/searches/{search_id}[/{TileMatrixSetId}]/WMTSCapabilities.xml`                    | XML                                     | return OGC WMTS Get Capabilities
-| `GET`  | `/searches/{search_id}[/{TileMatrixSetId}]/map`                                     | HTML                                    | simple map viewer
-| `POST` | `/searches/{search_id}/statistics`                                                  | GeoJSON ([Statistics][statitics_model]) | Return statistics for geojson features
+| `GET`  | `/searches/{search_id}/tiles`                                                       | JSON                                    | List of OGC Tilesets available
+| `GET`  | `/searches/{search_id}/tiles/{tileMatrixSetId}`                                     | JSON                                    | OGC Tileset metadata
+| `GET`  | `/searches/{search_id}/tiles/{TileMatrixSetId}/{z}/{x}/{Y}/assets`                  | JSON                                    | Return a list of assets which overlap a given tile
+| `GET`  | `/searches/{search_id}/tiles/{TileMatrixSetId}/{z}/{x}/{y}[@{scale}x][.{format}]`   | image/bin                               | Create a web map tile image for a search query and a tile index
+| `GET`  | `/searches/{search_id}/{TileMatrixSetId}/map`                                       | HTML                                    | simple map viewer
+| `GET`  | `/searches/{search_id}/{TileMatrixSetId}/tilejson.json`                             | JSON ([TileJSON][tilejson_model])       | Return a Mapbox TileJSON document
+| `GET`  | `/searches/{search_id}/{TileMatrixSetId}/WMTSCapabilities.xml`                      | XML                                     | return OGC WMTS Get Capabilities
 | `GET`  | `/searches/{search_id}/bbox/{minx},{miny},{maxx},{maxy}[/{width}x{height}].{format}`| image/bin                               | Create an image from part of a dataset
 | `POST` | `/searches/{search_id}/feature[/{width}x{height}][.{format}]`                       | image/bin                               | Create an image from a GeoJSON feature
 | `GET`  | `/searches/{search_id}/point/{lon},{lat}`                                           | JSON ([Point][point_model])             | Return pixel values from assets intersecting with a given point
+| `GET`  | `/searches/{search_id}/point/{lon},{lat}/assets`                                    | JSON                                    | Return a list of assets which overlap a given point
+| `POST` | `/searches/{search_id}/statistics`                                                  | GeoJSON ([Statistics][statitics_model]) | Return statistics for geojson features
 | `GET`  | `/searches/{search_id}/info`                                                        | JSON ([Info][info_model])               | Return **Search** query infos
 | `POST` | `/searches/register`                                                                | JSON ([Register][register_model])       | Register **Search** query
 | `GET`  | `/searches/list`                                                                    | JSON ([Infos][infos_model])             | Return list of **Search** entries with `Mosaic` type
 
 ### Tiles
 
-`:endpoint:/searches/{search_id}/tiles[/{TileMatrixSetId}]/{z}/{x}/{y}[@{scale}x][.{format}]`
+`:endpoint:/searches/{search_id}/tiles/{TileMatrixSetId}/{z}/{x}/{y}[@{scale}x][.{format}]`
 
 - PathParams:
     - **search_id**: PgSTAC Search Identifier (Hash).
-    - **TileMatrixSetId**: TileMatrixSet name, default is `WebMercatorQuad`. OPTIONAL
-    - **z**: Tile's zoom level.
+    - **TileMatrixSetId**: TileMatrixSet name.
     - **x**: Tile's column.
     - **y**: Tile's row.
     - **scale**: Tile size scale, default is set to 1 (256x256). OPTIONAL
@@ -59,18 +60,18 @@
 
 Example:
 
-- `https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/tiles/1/2/3?assets=B01`
-- `https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/tiles/1/2/3.jpg?assets=B01`
+- `https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/tiles/WebMercatorQuad/1/2/3?assets=B01`
+- `https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/tiles/WebMercatorQuad/1/2/3.jpg?assets=B01`
 - `https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/tiles/WorldCRS84Quad/1/2/3@2x.png?assets=B01&assets=B02&assets=B03`
 - `https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/tiles/WorldCRS84Quad/1/2/3?assets=B01&rescale=0,1000&colormap_name=cfastie`
 
 ### TilesJSON
 
-`:endpoint:/searches/{search_id}[/{TileMatrixSetId}]/tilejson.json`
+`:endpoint:/searches/{search_id}/{TileMatrixSetId}/tilejson.json`
 
 - PathParams:
     - **search_id**: PgSTAC Search Identifier (Hash).
-    - **TileMatrixSetId**: TileMatrixSet name, default is `WebMercatorQuad`. OPTIONAL
+    - **TileMatrixSetId**: TileMatrixSet name.
 
 - QueryParams:
     - **tile_format**: Output image format, default is set to None and will be either JPEG or PNG depending on masked value.
@@ -105,18 +106,18 @@ Example:
 
 Example:
 
-- `https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/tilejson.json?assets=B01`
-- `https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/tilejson.json?assets=B01&tile_format=png`
+- `https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/WebMercatorQuad/tilejson.json?assets=B01`
+- `https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/WebMercatorQuad/tilejson.json?assets=B01&tile_format=png`
 - `https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/WorldCRS84Quad/tilejson.json?assets=B01&tile_scale=2`
 
 
 ### WMTS
 
-`:endpoint:/searches/{search_id}[/{TileMatrixSetId}]/WMTSCapabilities.xml`
+`:endpoint:/searches/{search_id}/{TileMatrixSetId}/WMTSCapabilities.xml`
 
 - PathParams:
     - **search_id**: PgSTAC Search Identifier (Hash).
-    - **TileMatrixSetId**: TileMatrixSet name, default is `WebMercatorQuad`. OPTIONAL
+    - **TileMatrixSetId**: TileMatrixSet name.
 
 - QueryParams:
     - **tile_format**: Output image format, default is set to PNG.
@@ -130,18 +131,18 @@ Example:
 
 Example:
 
-- `https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/WMTSCapabilities.xml?assets=B01`
-- `https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/WMTSCapabilities.xml?assets=B01&tile_format=png`
+- `https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/WebMercatorQuad/WMTSCapabilities.xml?assets=B01`
+- `https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/WebMercatorQuad/WMTSCapabilities.xml?assets=B01&tile_format=png`
 - `https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/WorldCRS84Quad/WMTSCapabilities.xml?assets=B01&tile_scale=2`
 
 
-### Assets
+### Assets for Point or Tile
 
-`:endpoint:/searches/{search_id}/tiles/[{TileMatrixSetId}]/{z}/{x}/{y}/assets`
+`:endpoint:/searches/{search_id}/tiles/{TileMatrixSetId}/{z}/{x}/{y}/assets`
 
 - PathParams:
     - **search_id**: PgSTAC Search Identifier (Hash).
-    - **TileMatrixSetId**: TileMatrixSet name, default is `WebMercatorQuad`. OPTIONAL
+    - **TileMatrixSetId**: TileMatrixSet name.
     - **z**: Tile's zoom level.
     - **x**: Tile's column.
     - **y**: Tile's row.
@@ -155,9 +156,9 @@ Example:
 
 Example:
 
-- `https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/tiles/0/0/0/assets`
+- `https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/tiles/WebMercatorQuad/0/0/0/assets`
 
-`:endpoint:/searches/{search_id}/{lon},{lat}/assets`
+`:endpoint:/searches/{search_id}/point/{lon},{lat}/assets`
 
 - PathParams:
     - **search_id**: PgSTAC Search Identifier (Hash).
@@ -173,7 +174,7 @@ Example:
 
 Example:
 
-- `https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/0.0,0.0/assets`
+- `https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/point/0.0,0.0/assets`
 
 ### Statistics
 
@@ -426,7 +427,8 @@ curl -X 'POST' 'http://127.0.0.1:8081/searches/register' -H 'accept: application
     {
       "rel": "tilejson",
       "type": "application/json",
-      "href": "http://127.0.0.1:8081/searches/5a1b82d38d53a5d200273cbada886bd7/tilejson.json"
+      "templated": true,
+      "href": "http://127.0.0.1:8081/searches/5a1b82d38d53a5d200273cbada886bd7/{TileMatrixSetId}/tilejson.json"
     }
   ]
 }
@@ -483,7 +485,8 @@ curl 'http://127.0.0.1:8081/searches/5a1b82d38d53a5d200273cbada886bd7/info' | jq
     {
       "rel": "tilejson",
       "type": "application/json",
-      "href": "http://127.0.0.1:8081/searches/5a1b82d38d53a5d200273cbada886bd7/tilejson.json"
+      "templated": true,
+      "href": "http://127.0.0.1:8081/searches/5a1b82d38d53a5d200273cbada886bd7/{TileMatrixSetId}/tilejson.json"
     }
   ]
 }

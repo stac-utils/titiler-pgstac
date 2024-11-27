@@ -4,25 +4,27 @@
 
 | Method | URL                                                                              | Output                                  | Description
 | ------ | ---------------------------------------------------------------------------------|-----------------------------------------|--------------
-| `GET`  | `/collections/{collection_id}/{lon},{lat}/assets`                                          | JSON                                    | Return a list of assets which overlap a given point
-| `GET`  | `/collections/{collection_id}/tiles[/{TileMatrixSetId}]/{z}/{x}/{Y}/assets`                | JSON                                    | Return a list of assets which overlap a given tile
-| `GET`  | `/collections/{collection_id}/tiles[/{TileMatrixSetId}]/{z}/{x}/{y}[@{scale}x][.{format}]` | image/bin                               | Create a web map tile image for a collection and a tile index
-| `GET`  | `/collections/{collection_id}[/{TileMatrixSetId}]/tilejson.json`                           | JSON ([TileJSON][tilejson_model])       | Return a Mapbox TileJSON document
-| `GET`  | `/collections/{collection_id}[/{TileMatrixSetId}]/WMTSCapabilities.xml`                    | XML                                     | return OGC WMTS Get Capabilities
-| `GET`  | `/collections/{collection_id}[/{TileMatrixSetId}]/map`                                     | HTML                                    | simple map viewer
+| `GET`  | `/collections/{collection_id}/tiles`                                                       | JSON                                    | List of OGC Tilesets available
+| `GET`  | `/collections/{collection_id}/tiles/{tileMatrixSetId}`                                     | JSON                                    | OGC Tileset metadata
+| `GET`  | `/collections/{collection_id}/tiles/{TileMatrixSetId}/{z}/{x}/{Y}/assets`                  | JSON                                    | Return a list of assets which overlap a given tile
+| `GET`  | `/collections/{collection_id}/tiles/{TileMatrixSetId}/{z}/{x}/{y}[@{scale}x][.{format}]`   | image/bin                               | Create a web map tile image for a collection and a tile index
+| `GET`  | `/collections/{collection_id}/{TileMatrixSetId}/map`                                       | HTML                                    | simple map viewer
+| `GET`  | `/collections/{collection_id}/{TileMatrixSetId}/tilejson.json`                             | JSON ([TileJSON][tilejson_model])       | Return a Mapbox TileJSON document
+| `GET`  | `/collections/{collection_id}/{TileMatrixSetId}/WMTSCapabilities.xml`                      | XML                                     | return OGC WMTS Get Capabilities
 | `POST` | `/collections/{collection_id}/statistics`                                                  | GeoJSON ([Statistics][statitics_model]) | Return statistics for geojson features
 | `GET`  | `/collections/{collection_id}/bbox/{minx},{miny},{maxx},{maxy}[/{width}x{height}].{format}`| image/bin                               | Create an image from part of a dataset
 | `POST` | `/collections/{collection_id}/feature[/{width}x{height}][.{format}]`                       | image/bin                               | Create an image from a GeoJSON feature
 | `GET`  | `/collections/{collection_id}/point/{lon},{lat}`                                           | JSON ([Point][point_model])             | Return pixel values from assets intersecting with a given point
+| `GET`  | `/collections/{collection_id}/point/{lon},{lat}/assets`                                    | JSON                                    | Return a list of assets which overlap a given point
 | `GET`  | `/collections/{collection_id}/info`                                                        | JSON ([Info][info_model])               | Return **Search** query infos from `collection_id`
 
 ### Tiles
 
-`:endpoint:/collections/{collection_id}/tiles[/{TileMatrixSetId}]/{z}/{x}/{y}[@{scale}x][.{format}]`
+`:endpoint:/collections/{collection_id}/tiles/{TileMatrixSetId}/{z}/{x}/{y}[@{scale}x][.{format}]`
 
 - PathParams:
     - **collection_id**: STAC Collection Identifier.
-    - **TileMatrixSetId**: TileMatrixSet name, default is `WebMercatorQuad`. OPTIONAL
+    - **TileMatrixSetId**: TileMatrixSet name.
     - **z**: Tile's zoom level.
     - **x**: Tile's column.
     - **y**: Tile's row.
@@ -62,18 +64,18 @@
 
 Example:
 
-- `https://myendpoint/collections/my-collection/tiles/1/2/3?assets=B01`
-- `https://myendpoint/collections/my-collection/tiles/1/2/3.jpg?assets=B01`
+- `https://myendpoint/collections/my-collection/tiles/WebMercatorQuad/1/2/3?assets=B01`
+- `https://myendpoint/collections/my-collection/tiles/WebMercatorQuad/1/2/3.jpg?assets=B01`
 - `https://myendpoint/collections/my-collection/tiles/WorldCRS84Quad/1/2/3@2x.png?assets=B01&assets=B02&assets=B03`
 - `https://myendpoint/collections/my-collection/tiles/WorldCRS84Quad/1/2/3?assets=B01&rescale=0,1000&colormap_name=cfastie`
 
 ### TilesJSON
 
-`:endpoint:/collections/{collection_id}[/{TileMatrixSetId}]/tilejson.json`
+`:endpoint:/collections/{collection_id}/{TileMatrixSetId}/tilejson.json`
 
 - PathParams:
     - **collection_id**: STAC Collection Identifier.
-    - **TileMatrixSetId**: TileMatrixSet name, default is `WebMercatorQuad`. OPTIONAL
+    - **TileMatrixSetId**: TileMatrixSet name.
 
 - QueryParams:
     - **tile_format**: Output image format, default is set to None and will be either JPEG or PNG depending on masked value.
@@ -111,18 +113,18 @@ Example:
 
 Example:
 
-- `https://myendpoint/collections/my-collection/tilejson.json?assets=B01`
-- `https://myendpoint/collections/my-collection/tilejson.json?assets=B01&tile_format=png`
+- `https://myendpoint/collections/my-collection/WebMercatorQuad/tilejson.json?assets=B01`
+- `https://myendpoint/collections/my-collection/WebMercatorQuad/tilejson.json?assets=B01&tile_format=png`
 - `https://myendpoint/collections/my-collection/WorldCRS84Quad/tilejson.json?assets=B01&tile_scale=2`
 
 
 ### WMTS
 
-`:endpoint:/collections/{collection_id}[/{TileMatrixSetId}]/WMTSCapabilities.xml`
+`:endpoint:/collections/{collection_id}/{TileMatrixSetId}/WMTSCapabilities.xml`
 
 - PathParams:
     - **collection_id**: STAC Collection Identifier.
-    - **TileMatrixSetId**: TileMatrixSet name, default is `WebMercatorQuad`. OPTIONAL
+    - **TileMatrixSetId**: TileMatrixSet name.
 
 - QueryParams:
     - **tile_format**: Output image format, default is set to PNG.
@@ -140,18 +142,18 @@ Example:
 
 Example:
 
-- `https://myendpoint/collections/my-collection/WMTSCapabilities.xml?assets=B01`
-- `https://myendpoint/collections/my-collection/WMTSCapabilities.xml?assets=B01&tile_format=png`
+- `https://myendpoint/collections/my-collection/WebMercatorQuad/WMTSCapabilities.xml?assets=B01`
+- `https://myendpoint/collections/my-collection/WebMercatorQuad/WMTSCapabilities.xml?assets=B01&tile_format=png`
 - `https://myendpoint/collections/my-collection/WorldCRS84Quad/WMTSCapabilities.xml?assets=B01&tile_scale=2`
 
 
-### Assets
+### Assets for Point or Tile
 
-`:endpoint:/collections/{collection_id}/tiles/[{TileMatrixSetId}]/{z}/{x}/{y}/assets`
+`:endpoint:/collections/{collection_id}/tiles/{TileMatrixSetId}/{z}/{x}/{y}/assets`
 
 - PathParams:
     - **collection_id**: STAC Collection Identifier.
-    - **TileMatrixSetId**: TileMatrixSet name, default is `WebMercatorQuad`. OPTIONAL
+    - **TileMatrixSetId**: TileMatrixSet name.
     - **z**: Tile's zoom level.
     - **x**: Tile's column.
     - **y**: Tile's row.
@@ -169,9 +171,9 @@ Example:
 
 Example:
 
-- `https://myendpoint/collections/my-collection/tiles/0/0/0/assets`
+- `https://myendpoint/collections/my-collection/tiles/WebMercatorQuad/0/0/0/assets`
 
-`:endpoint:/collections/{collection_id}/{lon},{lat}/assets`
+`:endpoint:/collections/{collection_id}/point/{lon},{lat}/assets`
 
 - PathParams:
     - **collection_id**: STAC Collection Identifier.
