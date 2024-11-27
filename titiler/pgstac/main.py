@@ -191,6 +191,7 @@ add_search_register_route(
         searches.rescale_dependency,
         searches.colormap_dependency,
         searches.render_dependency,
+        searches.pgstac_dependency,
         searches.reader_dependency,
         searches.backend_dependency,
     ],
