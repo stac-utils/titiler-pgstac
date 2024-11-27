@@ -72,7 +72,7 @@ class searchInfoExtension(FactoryExtension):
                 for name, values in renders.items():
                     try:
                         check_query_params(
-                            dependencies=tile_dependencies,
+                            dependencies=tile_dependencies,  # type: ignore
                             query_params=values,
                         )
                     except Exception as e:

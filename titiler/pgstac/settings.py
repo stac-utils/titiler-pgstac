@@ -11,7 +11,7 @@ from pydantic import (
     field_validator,
     model_validator,
 )
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing_extensions import Annotated
 
 
@@ -32,11 +32,9 @@ class ApiSettings(BaseSettings):
     enable_assets_endpoints: bool = False
     enable_external_dataset_endpoints: bool = False
 
-    model_config = {
-        "env_prefix": "TITILER_PGSTAC_API_",
-        "env_file": ".env",
-        "extra": "ignore",
-    }
+    model_config = SettingsConfigDict(
+        env_prefix="TITILER_PGSTAC_API_", env_file=".env", extra="ignore"
+    )
 
     @field_validator("cors_origins")
     def parse_cors_origin(cls, v):
@@ -74,7 +72,7 @@ class PostgresSettings(BaseSettings):
         3  # Number of background worker threads used to maintain the pool state
     )
 
-    model_config = {"env_file": ".env", "extra": "ignore"}
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
     @field_validator("database_url", mode="before")
     def assemble_db_connection(cls, v: Optional[str], info: ValidationInfo) -> Any:
@@ -104,11 +102,9 @@ class CacheSettings(BaseSettings):
     # Whether or not caching is enabled
     disable: bool = False
 
-    model_config = {
-        "env_prefix": "TITILER_PGSTAC_CACHE_",
-        "env_file": ".env",
-        "extra": "ignore",
-    }
+    model_config = SettingsConfigDict(
+        env_prefix="TITILER_PGSTAC_CACHE_", env_file=".env", extra="ignore"
+    )
 
     @model_validator(mode="after")
     def check_enable(self):
@@ -138,11 +134,9 @@ class PgstacSettings(BaseSettings):
     # Skip any items that would show up completely under the previous items
     skipcovered: bool = True
 
-    model_config = {
-        "env_prefix": "TITILER_PGSTAC_SEARCH_",
-        "env_file": ".env",
-        "extra": "ignore",
-    }
+    model_config = SettingsConfigDict(
+        env_prefix="TITILER_PGSTAC_SEARCH_", env_file=".env", extra="ignore"
+    )
 
 
 class _RetrySettings(BaseSettings):
@@ -151,11 +145,9 @@ class _RetrySettings(BaseSettings):
     retry: Annotated[int, Field(ge=0)] = 3
     delay: Annotated[float, Field(ge=0.0)] = 0.0
 
-    model_config = {
-        "env_prefix": "TITILER_PGSTAC_API_",
-        "env_file": ".env",
-        "extra": "ignore",
-    }
+    model_config = SettingsConfigDict(
+        env_prefix="TITILER_PGSTAC_API_", env_file=".env", extra="ignore"
+    )
 
 
 @lru_cache()
