@@ -4,7 +4,6 @@ import json
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Type
 
 import attr
-import rasterio
 from cachetools import TTLCache, cached
 from cachetools.keys import hashkey
 from cogeo_mosaic.backends import BaseBackend
@@ -18,14 +17,13 @@ from psycopg_pool import ConnectionPool
 from rasterio.crs import CRS
 from rasterio.warp import transform, transform_bounds, transform_geom
 from rio_tiler.constants import MAX_THREADS, WEB_MERCATOR_TMS, WGS84_CRS
-from rio_tiler.errors import InvalidAssetName, PointOutsideBounds
-from rio_tiler.io import Reader
-from rio_tiler.io.base import BaseReader, MultiBaseReader
+from rio_tiler.errors import PointOutsideBounds
 from rio_tiler.models import ImageData, PointData
 from rio_tiler.mosaic import mosaic_reader
 from rio_tiler.tasks import create_tasks, filter_tasks
-from rio_tiler.types import AssetInfo, BBox
+from rio_tiler.types import BBox
 
+from titiler.pgstac.reader import SimpleSTACReader
 from titiler.pgstac.settings import CacheSettings, PgstacSettings, RetrySettings
 from titiler.pgstac.utils import retry
 
@@ -59,84 +57,6 @@ def multi_points_pgstac(
 
 
 @attr.s
-class CustomSTACReader(MultiBaseReader):
-    """Simplified STAC Reader.
-
-    Inputs should be in form of:
-    {
-        "id": "IAMASTACITEM",
-        "collection": "mycollection",
-        "bbox": (0, 0, 10, 10),
-        "assets": {
-            "COG": {
-                "href": "https://somewhereovertherainbow.io/cog.tif"
-            }
-        }
-    }
-
-    """
-
-    input: Dict[str, Any] = attr.ib()
-    tms: TileMatrixSet = attr.ib(default=WEB_MERCATOR_TMS)
-    minzoom: int = attr.ib()
-    maxzoom: int = attr.ib()
-
-    reader: Type[BaseReader] = attr.ib(default=Reader)
-    reader_options: Dict = attr.ib(factory=dict)
-
-    ctx: Any = attr.ib(default=rasterio.Env)
-
-    def __attrs_post_init__(self) -> None:
-        """Set reader spatial infos and list of valid assets."""
-        self.bounds = self.input["bbox"]
-        self.crs = WGS84_CRS  # Per specification STAC items are in WGS84
-        self.assets = list(self.input["assets"])
-
-    @minzoom.default
-    def _minzoom(self):
-        return self.tms.minzoom
-
-    @maxzoom.default
-    def _maxzoom(self):
-        return self.tms.maxzoom
-
-    def _get_asset_info(self, asset: str) -> AssetInfo:
-        """Validate asset names and return asset's url.
-
-        Args:
-            asset (str): STAC asset name.
-
-        Returns:
-            str: STAC asset href.
-
-        """
-        if asset not in self.assets:
-            raise InvalidAssetName(
-                f"{asset} is not valid. Should be one of {self.assets}"
-            )
-
-        asset_info = self.input["assets"][asset]
-        info = AssetInfo(
-            url=asset_info["href"],
-            env={},
-        )
-
-        if header_size := asset_info.get("file:header_size"):
-            info["env"]["GDAL_INGESTED_BYTES_AT_OPEN"] = header_size
-
-        if bands := asset_info.get("raster:bands"):
-            stats = [
-                (b["statistics"]["minimum"], b["statistics"]["maximum"])
-                for b in bands
-                if {"minimum", "maximum"}.issubset(b.get("statistics", {}))
-            ]
-            if len(stats) == len(bands):
-                info["dataset_statistics"] = stats
-
-        return info
-
-
-@attr.s
 class PGSTACBackend(BaseBackend):
     """PgSTAC Mosaic Backend."""
 
@@ -148,11 +68,11 @@ class PGSTACBackend(BaseBackend):
 
     # Because we are not using mosaicjson we are not limited to the WebMercator TMS
     tms: TileMatrixSet = attr.ib(default=WEB_MERCATOR_TMS)
-    minzoom: int = attr.ib()
-    maxzoom: int = attr.ib()
+    minzoom: int = attr.ib(default=None)
+    maxzoom: int = attr.ib(default=None)
 
     # Use Custom STAC reader (outside init)
-    reader: Type[CustomSTACReader] = attr.ib(init=False, default=CustomSTACReader)
+    reader: Type[SimpleSTACReader] = attr.ib(default=SimpleSTACReader)
     reader_options: Dict = attr.ib(factory=dict)
 
     # default values for bounds
@@ -168,6 +88,9 @@ class PGSTACBackend(BaseBackend):
 
     def __attrs_post_init__(self) -> None:
         """Post Init."""
+        self.minzoom = self.minzoom if self.minzoom is not None else self.tms.minzoom
+        self.maxzoom = self.maxzoom if self.maxzoom is not None else self.tms.maxzoom
+
         # Construct a FAKE mosaicJSON
         # mosaic_def has to be defined.
         # we set `tiles` to an empty list.
@@ -179,14 +102,6 @@ class PGSTACBackend(BaseBackend):
             maxzoom=self.maxzoom,
             tiles={},
         )
-
-    @minzoom.default
-    def _minzoom(self):
-        return self.tms.minzoom
-
-    @maxzoom.default
-    def _maxzoom(self):
-        return self.tms.maxzoom
 
     def write(self, overwrite: bool = True) -> None:
         """This method is not used but is required by the abstract class."""

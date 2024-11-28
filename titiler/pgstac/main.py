@@ -178,6 +178,8 @@ app.include_router(
     searches.router, tags=["STAC Search"], prefix="/searches/{search_id}"
 )
 
+add_search_list_route(app, prefix="/searches", tags=["STAC Search"])
+
 add_search_register_route(
     app,
     prefix="/searches",
@@ -195,7 +197,6 @@ add_search_register_route(
     ],
     tags=["STAC Search"],
 )
-add_search_list_route(app, prefix="/searches", tags=["STAC Search"])
 
 ###############################################################################
 # STAC COLLECTION Endpoints
@@ -219,7 +220,6 @@ app.include_router(
 stac = MultiBaseTilerFactory(
     reader=PgSTACReader,
     path_dependency=ItemIdParams,
-    optional_headers=optional_headers,
     router_prefix="/collections/{collection_id}/items/{item_id}",
     add_viewer=True,
 )
@@ -322,14 +322,22 @@ def landing(request: Request):
             },
             {
                 "title": "PgSTAC Virtual Mosaic viewer (template URL)",
-                "href": app.url_path_for("map_viewer", search_id="{search_id}"),
+                "href": app.url_path_for(
+                    "map_viewer",
+                    search_id="{search_id}",
+                    tileMatrixSetId="{tileMatrixSetId}",
+                ),
                 "type": "text/html",
                 "rel": "data",
                 "templated": True,
             },
             {
                 "title": "PgSTAC Collection viewer (template URL)",
-                "href": app.url_path_for("map_viewer", collection_id="{collection_id}"),
+                "href": app.url_path_for(
+                    "map_viewer",
+                    collection_id="{collection_id}",
+                    tileMatrixSetId="{tileMatrixSetId}",
+                ),
                 "type": "text/html",
                 "rel": "data",
                 "templated": True,
@@ -337,7 +345,10 @@ def landing(request: Request):
             {
                 "title": "PgSTAC Item viewer (template URL)",
                 "href": app.url_path_for(
-                    "map_viewer", collection_id="{collection_id}", item_id="{item_id}"
+                    "map_viewer",
+                    collection_id="{collection_id}",
+                    item_id="{item_id}",
+                    tileMatrixSetId="{tileMatrixSetId}",
                 ),
                 "type": "text/html",
                 "rel": "data",

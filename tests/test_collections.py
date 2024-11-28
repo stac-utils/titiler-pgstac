@@ -13,7 +13,7 @@ collection_id = "noaa-emergency-response"
 
 def test_assets_for_point_collections(app):
     """Get assets for a Point."""
-    response = app.get(f"/collections/{collection_id}/-85.5,36.1624/assets")
+    response = app.get(f"/collections/{collection_id}/point/-85.5,36.1624/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 2
@@ -23,7 +23,7 @@ def test_assets_for_point_collections(app):
 
     # with coord-crs
     response = app.get(
-        f"/collections/{collection_id}/-9517816.46282489,4322990.432036275/assets",
+        f"/collections/{collection_id}/point/-9517816.46282489,4322990.432036275/assets",
         params={"coord_crs": "epsg:3857"},
     )
     assert response.status_code == 200
@@ -32,7 +32,7 @@ def test_assets_for_point_collections(app):
 
     # CollectionId not found
     response = app.get(
-        "/collections/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/-85.5,36.1624/assets"
+        "/collections/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/point/-85.5,36.1624/assets"
     )
     assert response.status_code == 404
     resp = response.json()
@@ -576,7 +576,7 @@ def test_collections_additional_parameters(app):
     assert resp["search"]["search"]["ids"] == ["20200307aC0853130w361030"]
 
     response = app.get(
-        "/collections/noaa-emergency-response/-85.5,36.1624/assets",
+        "/collections/noaa-emergency-response/point/-85.5,36.1624/assets",
         params={"ids": "20200307aC0853130w361030"},
     )
     assert response.status_code == 200

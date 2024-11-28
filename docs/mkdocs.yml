@@ -31,7 +31,8 @@ nav:
     - Mosaic metadata specification: advanced/metadata.md
     - Mosaic list: advanced/searches_list.md
     - Custom search model: advanced/custom_search.md
-    - Custom TileJSON endpoint : advanced/custom_tilejson.md
+    - Custom TileJSON endpoint: advanced/custom_tilejson.md
+    - Zarr/NetCDF support: advanced/support_multidim_dataset.md
   - Examples:
     - demo: notebooks/demo.ipynb
   - API:
@@ -41,7 +42,7 @@ nav:
       - extensions: api/titiler/pgstac/extensions.md
       - factory: api/titiler/pgstac/factory.md
       - model: api/titiler/pgstac/model.md
-      - mosaic: api/titiler/pgstac/mosaic.md
+      - backend: api/titiler/pgstac/backend.md
       - reader: api/titiler/pgstac/reader.md
       - settings: api/titiler/pgstac/settings.md
       - utils: api/titiler/pgstac/utils.md

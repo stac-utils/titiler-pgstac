@@ -72,7 +72,7 @@ def test_info(app, search_no_bbox):
 
 def test_assets_for_point(app, search_no_bbox, search_bbox):
     """Get assets for a Point."""
-    response = app.get(f"/searches/{search_no_bbox}/-85.6358,36.1624/assets")
+    response = app.get(f"/searches/{search_no_bbox}/point/-85.6358,36.1624/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 1
@@ -80,14 +80,14 @@ def test_assets_for_point(app, search_no_bbox, search_bbox):
     assert resp[0]["id"] == "20200307aC0853900w361030"
 
     # make sure we can find assets when having both bbox and geometry
-    response = app.get(f"/searches/{search_bbox}/-85.5,36.1624/assets")
+    response = app.get(f"/searches/{search_bbox}/point/-85.5,36.1624/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 2
 
     # with coord-crs
     response = app.get(
-        f"/searches/{search_bbox}/-9517816.46282489,4322990.432036275/assets",
+        f"/searches/{search_bbox}/point/-9517816.46282489,4322990.432036275/assets",
         params={"coord_crs": "epsg:3857"},
     )
     assert response.status_code == 200
@@ -95,14 +95,14 @@ def test_assets_for_point(app, search_no_bbox, search_bbox):
     assert len(resp) == 2
 
     # no assets found outside the mosaic bbox
-    response = app.get(f"/searches/{search_bbox}/-85.6358,36.1624/assets")
+    response = app.get(f"/searches/{search_bbox}/point/-85.6358,36.1624/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 0
 
     # searchId not found
     response = app.get(
-        "/searches/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/-85.5,36.1624/assets"
+        "/searches/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/point/-85.5,36.1624/assets"
     )
     assert response.status_code == 404
     resp = response.json()
@@ -366,7 +366,7 @@ def test_cql2(rio, app):
     }
     assert search["metadata"] == {"type": "mosaic"}
 
-    response = app.get(f"/searches/{cql2_id}/-85.6358,36.1624/assets")
+    response = app.get(f"/searches/{cql2_id}/point/-85.6358,36.1624/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 1
@@ -466,7 +466,7 @@ def test_cql2_with_geometry(rio, app):
     assert len(resp) == 2
 
     # point is outside the geometry filter
-    response = app.get(f"/searches/{cql2_id}/-85.6358,36.1624/assets")
+    response = app.get(f"/searches/{cql2_id}/point/-85.6358,36.1624/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 0
@@ -1068,7 +1068,7 @@ def test_search_ids_parameter(app):
     resp = response.json()
     search_id = resp["id"]
 
-    response = app.get(f"/searches/{search_id}/-85.5,36.1624/assets")
+    response = app.get(f"/searches/{search_id}/point/-85.5,36.1624/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) >= 1
@@ -1082,7 +1082,7 @@ def test_search_ids_parameter(app):
     resp = response.json()
     search_id = resp["id"]
 
-    response = app.get(f"/searches/{search_id}/-85.5,36.1624/assets")
+    response = app.get(f"/searches/{search_id}/point/-85.5,36.1624/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 1
@@ -1098,7 +1098,7 @@ def test_search_ids_parameter(app):
     resp = response.json()
     search_id = resp["id"]
 
-    response = app.get(f"/searches/{search_id}/-85.5,36.1624/assets")
+    response = app.get(f"/searches/{search_id}/point/-85.5,36.1624/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 1
@@ -1125,7 +1125,7 @@ def test_search_ids_parameter(app):
     resp = response.json()
     search_id = resp["id"]
 
-    response = app.get(f"/searches/{search_id}/-85.5,36.1624/assets")
+    response = app.get(f"/searches/{search_id}/point/-85.5,36.1624/assets")
     assert response.status_code == 200
     resp = response.json()
     assert len(resp) == 1

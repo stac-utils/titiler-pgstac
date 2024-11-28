@@ -1,0 +1,57 @@
+{
+    "type": "Feature",
+    "stac_version": "1.0.0",
+    "id": "20200307aC0853900w361030",
+    "properties": {
+        "event": "Nashville Tornado",
+        "datetime": "2020-03-07T00:00:00Z"
+    },
+    "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+            [
+                [
+                    -85.6501,
+                    36.1751
+                ],
+                [
+                    -85.6501,
+                    36.1499
+                ],
+                [
+                    -85.6249,
+                    36.1499
+                ],
+                [
+                    -85.6249,
+                    36.1751
+                ],
+                [
+                    -85.6501,
+                    36.1751
+                ]
+            ]
+        ]
+    },
+    "links": [
+        {
+            "rel": "collection",
+            "href": "noaa-emergency-response",
+            "type": "application/json"
+        }
+    ],
+    "assets": {
+        "cog": {
+            "href": "tests/fixtures/20200307aC0853900w361030n.tif",
+            "type": "image/tiff; application=geotiff; profile=cloud-optimized"
+        }
+    },
+    "bbox": [
+        -85.6501,
+        36.1499,
+        -85.6249,
+        36.1751
+    ],
+    "stac_extensions": [],
+    "collection": "noaa-emergency-response"
+}
