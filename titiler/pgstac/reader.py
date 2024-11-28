@@ -57,6 +57,7 @@ class SimpleSTACReader(MultiBaseReader):
     """Simplified STAC Reader.
 
     Inputs should be in form of:
+    ```json
     {
         "id": "IAMASTACITEM",
         "collection": "mycollection",
@@ -67,6 +68,7 @@ class SimpleSTACReader(MultiBaseReader):
             }
         }
     }
+    ```
 
     """
 
@@ -152,6 +154,9 @@ class SimpleSTACReader(MultiBaseReader):
             env={},
         )
 
+        if media_type := asset_info.get("type"):
+            info["media_type"] = media_type
+
         if header_size := asset_info.get("file:header_size"):
             info["env"]["GDAL_INGESTED_BYTES_AT_OPEN"] = header_size
 
@@ -163,5 +168,9 @@ class SimpleSTACReader(MultiBaseReader):
             ]
             if len(stats) == len(bands):
                 info["dataset_statistics"] = stats
+
+        if vrt_options:
+            # Construct VRT url
+            info["url"] = f"vrt://{info['url']}?{vrt_options}"
 
         return info
