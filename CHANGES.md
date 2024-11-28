@@ -1,5 +1,43 @@
 # Release Notes
 
+## 1.5.0 (2024-11-28)
+
+* update titiler requirement to `>=0.19.0,<0.20`
+
+* Use `@attrs.define` instead of dataclass for factories **breaking change**
+
+* Remove default `WebMercatorQuad` tile matrix set in `/tiles`, `/tilesjson.json`, `/map` and `/WMTSCapabilities.xml` endpoints **breaking change**
+
+    ```
+    # Before
+    /tiles/{z}/{x}/{y}
+    /tilejson.json
+    /map
+    /WMTSCapabilities.xml
+
+    # Now
+    /tiles/WebMercatorQuad/{z}/{x}/{y}
+    /WebMercatorQuad/tilejson.json
+    /WebMercatorQuad/map
+    /WebMercatorQuad/WMTSCapabilities.xml
+    ```
+
+* Use `.as_dict()` method when passing option to rio-tiler Reader's methods to avoid parameter conflicts when using custom Readers.
+
+* add OGC Tiles `/tiles` and `/tiles/{tileMatrixSet}` endpoints
+
+* add `/point` prefix to `/{lon},{lat}/assets` endpoint **breaking change**
+
+* rename `reader` attribute to `backend` in `MosaicTilerFactory` **breaking change**
+
+* rename `titiler/pgstac/mosaic.py → titiler/pgstac/backend.py` **breaking change**
+
+* rename `titiler.pgstac.mosaic.CustomSTACReader → titiler.pgstac.reader.SimpleSTACReader` **breaking change**
+
+* rename factory's method to match the one from `titiler.core/titiler.mosaic` **breaking change**
+
+* split `_assets_routes` into `assets_tile` and `assets_point` **breaking change**
+
 ## 1.4.0 (2024-09-06)
 
 * add `/collections/{collection_id}/items/{item_id}/assets/{asset_id}` optional endpoints (`TITILER_PGSTAC_API_ENABLE_ASSETS_ENDPOINTS=TRUE|FALSE`)
