@@ -271,11 +271,14 @@ app.include_router(
     tags=["ColorMaps"],
 )
 
+
 ###############################################################################
 # Health Check Endpoint
 @app.get("/healthz", description="Health Check", tags=["Health Check"])
 def ping(
-    timeout: int = Query(1, description="Timeout getting SQL connection from the pool.")
+    timeout: int = Query(
+        1, description="Timeout getting SQL connection from the pool."
+    ),
 ) -> Dict:
     """Health check."""
     try:

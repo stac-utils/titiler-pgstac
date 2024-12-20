@@ -31,7 +31,7 @@ def SearchIdParams(
     search_id: Annotated[
         str,
         Path(description="PgSTAC Search Identifier (Hash)"),
-    ]
+    ],
 ) -> str:
     """search_id"""
     return search_id

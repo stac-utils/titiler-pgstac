@@ -1,4 +1,5 @@
 """Custom MosaicTiler Factory for PgSTAC Mosaic Backend."""
+
 import os
 import re
 import warnings
@@ -141,9 +142,9 @@ class MosaicTilerFactory(BaseFactory):
     tile_dependency: Type[DefaultDependency] = TileParams
 
     # Post Processing Dependencies (algorithm)
-    process_dependency: Callable[
-        ..., Optional[BaseAlgorithm]
-    ] = available_algorithms.dependency
+    process_dependency: Callable[..., Optional[BaseAlgorithm]] = (
+        available_algorithms.dependency
+    )
 
     # Image rendering Dependencies
     rescale_dependency: Callable[..., Optional[RescaleType]] = RescalingParams
@@ -1327,7 +1328,6 @@ def add_search_register_route(  # noqa: C901
 
         with request.app.state.dbpool.connection() as conn:
             with conn.cursor(row_factory=dict_row) as cursor:
-
                 try:
                     cursor.execute("SELECT pgstac.readonly()")
                     if cursor.fetchone()["readonly"]:
@@ -1515,9 +1515,7 @@ def add_search_list_route(  # noqa: C901
         def parse_sort_by(sortby: str) -> Generator[sql.Composable, None, None]:
             """Parse SortBy expression."""
             for s in sortby.split(","):
-                parts = re.match(
-                    "^(?P<dir>[+-]?)(?P<prop>.*)$", s.lstrip()
-                ).groupdict()  # type:ignore
+                parts = re.match("^(?P<dir>[+-]?)(?P<prop>.*)$", s.lstrip()).groupdict()  # type:ignore
 
                 prop = parts["prop"]
                 if parts["prop"] in ["lastused", "usecount"]:
