@@ -15,7 +15,6 @@ def retry(
 
     def _decorator(func: Any):
         def _newfn(*args: Any, **kwargs: Any):
-
             attempt = 0
             while attempt < tries:
                 try:
