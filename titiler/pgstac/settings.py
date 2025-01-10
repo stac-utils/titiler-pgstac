@@ -154,3 +154,26 @@ class _RetrySettings(BaseSettings):
 def RetrySettings() -> _RetrySettings:
     """This function returns a cached instance of the RetrySettings object."""
     return _RetrySettings()
+
+
+class RDSSettings(ApiSettings):
+    """Extended settings for AWS RDS
+
+    These parameters will override corresponding posgress settings if provided.
+
+    e.g. TITILER_PGSTAC_RDS_HOST_SSM_PARAM will pull the hostname from the given SSM parameter
+    and use that value instead of POSTGRES_HOST."""
+
+    use_iam_auth: bool = False
+    host_ssm_param: Optional[str] = None
+    port_ssm_param: Optional[str] = None
+    user_ssm_param: Optional[str] = None
+    pass_secret_id: Optional[str] = None
+    dbname_ssm_param: Optional[str] = None
+    region_ssm_param: Optional[str] = None
+
+    model_config = {
+        "env_prefix": "TITILER_PGSTAC_RDS_",
+        "env_file": ".env",
+        "extra": "ignore",
+    }

@@ -45,8 +45,9 @@ from titiler.pgstac.factory import (
     add_search_list_route,
     add_search_register_route,
 )
+from titiler.pgstac.rds import rds_connect_args
 from titiler.pgstac.reader import PgSTACReader
-from titiler.pgstac.settings import ApiSettings, PostgresSettings
+from titiler.pgstac.settings import ApiSettings, PostgresSettings, RDSSettings
 
 logging.getLogger("botocore.credentials").disabled = True
 logging.getLogger("botocore.utils").disabled = True
@@ -62,6 +63,7 @@ jinja2_env = jinja2.Environment(
 templates = Jinja2Templates(env=jinja2_env)
 
 postgres_settings = PostgresSettings()
+rds_settings = RDSSettings()
 settings = ApiSettings()
 
 
@@ -69,7 +71,13 @@ settings = ApiSettings()
 async def lifespan(app: FastAPI):
     """FastAPI Lifespan."""
     # Create Connection Pool
-    await connect_to_db(app, settings=postgres_settings)
+    pg_settings, conn_kwargs = rds_connect_args(postgres_settings, rds_settings)
+
+    await connect_to_db(
+        app,
+        settings=postgres_settings,
+        **conn_kwargs,
+    )
     yield
     # Close the Connection Pool
     await close_db_connection(app)
