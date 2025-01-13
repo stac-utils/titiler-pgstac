@@ -77,7 +77,7 @@ def load_json(filepath: str):
     params=[
         "0.7.10",
         "0.8.5",
-        "0.9.1",
+        "0.9.2",
     ],
     scope="session",
 )
