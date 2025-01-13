@@ -26,6 +26,7 @@ from fastapi.dependencies.utils import get_dependant, request_params_to_args
 from geojson_pydantic import Feature, FeatureCollection
 from morecantile import TileMatrixSets
 from morecantile import tms as morecantile_tms
+from morecantile.models import crs_axis_inverted
 from psycopg import errors as pgErrors
 from psycopg import sql
 from psycopg.rows import class_row, dict_row
@@ -45,7 +46,6 @@ from titiler.core.algorithm import BaseAlgorithm
 from titiler.core.algorithm import algorithms as available_algorithms
 from titiler.core.dependencies import (
     AssetsBidxExprParams,
-    ColorFormulaParams,
     ColorMapParams,
     CoordCRSParams,
     CRSParams,
@@ -55,8 +55,6 @@ from titiler.core.dependencies import (
     HistogramParams,
     ImageRenderingParams,
     PartFeatureParams,
-    RescaleType,
-    RescalingParams,
     StatisticsParams,
     TileParams,
 )
@@ -147,8 +145,6 @@ class MosaicTilerFactory(BaseFactory):
     )
 
     # Image rendering Dependencies
-    rescale_dependency: Callable[..., Optional[RescaleType]] = RescalingParams
-    color_formula_dependency: Callable[..., Optional[str]] = ColorFormulaParams
     colormap_dependency: Callable[..., Optional[ColorMapType]] = ColorMapParams
     render_dependency: Type[DefaultDependency] = ImageRenderingParams
 
@@ -173,6 +169,8 @@ class MosaicTilerFactory(BaseFactory):
     supported_tms: TileMatrixSets = morecantile_tms
 
     templates: Jinja2Templates = DEFAULT_TEMPLATES
+
+    render_func: Callable[..., Tuple[bytes, str]] = render_image
 
     optional_headers: List[OptionalHeader] = field(factory=list)
 
@@ -495,8 +493,6 @@ class MosaicTilerFactory(BaseFactory):
             pixel_selection=Depends(self.pixel_selection_dependency),
             tile_params=Depends(self.tile_dependency),
             post_process=Depends(self.process_dependency),
-            rescale=Depends(self.rescale_dependency),
-            color_formula=Depends(ColorFormulaParams),
             colormap=Depends(self.colormap_dependency),
             render_params=Depends(self.render_dependency),
             env=Depends(self.environment_dependency),
@@ -537,13 +533,7 @@ class MosaicTilerFactory(BaseFactory):
             if post_process:
                 image = post_process(image)
 
-            if rescale:
-                image.rescale(rescale)
-
-            if color_formula:
-                image.apply_color_formula(color_formula)
-
-            content, media_type = render_image(
+            content, media_type = self.render_func(
                 image,
                 output_format=format,
                 colormap=colormap,
@@ -603,8 +593,6 @@ class MosaicTilerFactory(BaseFactory):
             pixel_selection=Depends(self.pixel_selection_dependency),
             tile_params=Depends(self.tile_dependency),
             post_process=Depends(self.process_dependency),
-            rescale=Depends(self.rescale_dependency),
-            color_formula=Depends(ColorFormulaParams),
             colormap=Depends(self.colormap_dependency),
             render_params=Depends(self.render_dependency),
         ):
@@ -703,8 +691,6 @@ class MosaicTilerFactory(BaseFactory):
             pixel_selection=Depends(self.pixel_selection_dependency),
             tile_params=Depends(self.tile_dependency),
             post_process=Depends(self.process_dependency),
-            rescale=Depends(self.rescale_dependency),
-            color_formula=Depends(ColorFormulaParams),
             colormap=Depends(self.colormap_dependency),
             render_params=Depends(self.render_dependency),
         ):
@@ -828,8 +814,6 @@ class MosaicTilerFactory(BaseFactory):
                 self.pixel_selection_dependency,
                 self.tile_dependency,
                 self.process_dependency,
-                self.rescale_dependency,
-                self.colormap_dependency,
                 self.render_dependency,
                 self.pgstac_dependency,
                 self.reader_dependency,
@@ -911,6 +895,10 @@ class MosaicTilerFactory(BaseFactory):
             if tms.rasterio_geographic_crs != WGS84_CRS:
                 bbox_crs_type = "BoundingBox"
                 bbox_crs_uri = CRS_to_uri(tms.rasterio_geographic_crs)
+                # WGS88BoundingBox is always xy ordered, but BoundingBox must match the CRS order
+                if crs_axis_inverted(tms.geographic_crs):
+                    # match the bounding box coordinate order to the CRS
+                    bounds = [bounds[1], bounds[0], bounds[3], bounds[2]]
 
             return self.templates.TemplateResponse(
                 request,
@@ -1126,8 +1114,6 @@ class MosaicTilerFactory(BaseFactory):
             image_params=Depends(self.img_part_dependency),
             pgstac_params=Depends(self.pgstac_dependency),
             post_process=Depends(self.process_dependency),
-            rescale=Depends(self.rescale_dependency),
-            color_formula=Depends(ColorFormulaParams),
             colormap=Depends(self.colormap_dependency),
             render_params=Depends(self.render_dependency),
             env=Depends(self.environment_dependency),
@@ -1154,13 +1140,7 @@ class MosaicTilerFactory(BaseFactory):
             if post_process:
                 image = post_process(image)
 
-            if rescale:
-                image.rescale(rescale)
-
-            if color_formula:
-                image.apply_color_formula(color_formula)
-
-            content, media_type = render_image(
+            content, media_type = self.render_func(
                 image,
                 output_format=format,
                 colormap=colormap or dst_colormap,
@@ -1203,8 +1183,6 @@ class MosaicTilerFactory(BaseFactory):
             pixel_selection=Depends(self.pixel_selection_dependency),
             pgstac_params=Depends(self.pgstac_dependency),
             post_process=Depends(self.process_dependency),
-            rescale=Depends(self.rescale_dependency),
-            color_formula=Depends(ColorFormulaParams),
             colormap=Depends(self.colormap_dependency),
             render_params=Depends(self.render_dependency),
             env=Depends(self.environment_dependency),
@@ -1232,13 +1210,7 @@ class MosaicTilerFactory(BaseFactory):
             if post_process:
                 image = post_process(image)
 
-            if rescale:
-                image.rescale(rescale)
-
-            if color_formula:
-                image.apply_color_formula(color_formula)
-
-            content, media_type = render_image(
+            content, media_type = self.render_func(
                 image,
                 output_format=format,
                 colormap=colormap,
@@ -1274,8 +1246,6 @@ class MosaicTilerFactory(BaseFactory):
             env=Depends(self.environment_dependency),
         ):
             """Get Point value for a Mosaic."""
-            threads = int(os.getenv("MOSAIC_CONCURRENCY", MAX_THREADS))
-
             with rasterio.Env(**env):
                 with self.backend(
                     search_id,
@@ -1287,7 +1257,7 @@ class MosaicTilerFactory(BaseFactory):
                         lon,
                         lat,
                         coord_crs=coord_crs or WGS84_CRS,
-                        threads=threads,
+                        threads=MOSAIC_THREADS,
                         **layer_params.as_dict(),
                         **dataset_params.as_dict(),
                         **pgstac_params.as_dict(),
