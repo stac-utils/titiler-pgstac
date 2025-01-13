@@ -70,10 +70,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python ${{ env.LATEST_PY_VERSION }}
+      - name: Set up Python 3.12
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ env.LATEST_PY_VERSION }}
+          python-version: '3.12'
 
       - name: Launch services
         run: docker compose up -d tiler-uvicorn
