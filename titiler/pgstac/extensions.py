@@ -61,7 +61,6 @@ class searchInfoExtension(FactoryExtension):
                     factory.dataset_dependency,
                     factory.pixel_selection_dependency,
                     factory.process_dependency,
-                    factory.rescale_dependency,
                     factory.colormap_dependency,
                     factory.render_dependency,
                     factory.pgstac_dependency,

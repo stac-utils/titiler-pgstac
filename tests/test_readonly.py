@@ -134,8 +134,6 @@ def app_ro(pgstac_ro, monkeypatch):
             searches.dataset_dependency,
             searches.pixel_selection_dependency,
             searches.process_dependency,
-            searches.rescale_dependency,
-            searches.colormap_dependency,
             searches.render_dependency,
             searches.pgstac_dependency,
             searches.reader_dependency,

@@ -2,6 +2,16 @@
 
 ## unreleased
 
+* remove `rescale_dependency` and `color_formula_dependency` attributes in TilerFactory class **breaking change**
+
+* add `render_func: Callable[..., Tuple[bytes, str]] = render_image` attribute in TilerFactory class
+
+* update `/healthz` endpoint to return dependencies versions (titiler, rasterio, gdal, ...)
+
+* migrate `templates/index.html` to bootstrap5, remove unused css, reuse bs classes
+
+* Updated WMTS endpoint to return layer bounds in coordinate ordering matching CRS order if WGS84 is not used
+
 * Update package build backend from `pdm-pep517` to `pdm-backend` (https://backend.pdm-project.org/#migrate-from-pdm-pep517)
 
 * Update namespace package from using `.` to `-` as separator to comply with PEP-625 (https://peps.python.org/pep-0625/)

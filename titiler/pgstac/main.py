@@ -6,6 +6,7 @@ from contextlib import asynccontextmanager
 from typing import Dict
 
 import jinja2
+import rasterio
 from fastapi import FastAPI, Path, Query
 from psycopg import OperationalError
 from psycopg.rows import dict_row
@@ -15,6 +16,7 @@ from starlette.requests import Request
 from starlette.responses import HTMLResponse
 from starlette.templating import Jinja2Templates
 
+from titiler.core import __version__ as titiler_version
 from titiler.core.errors import DEFAULT_STATUS_CODES, add_exception_handlers
 from titiler.core.factory import (
     AlgorithmFactory,
@@ -188,8 +190,6 @@ add_search_register_route(
         searches.dataset_dependency,
         searches.pixel_selection_dependency,
         searches.process_dependency,
-        searches.rescale_dependency,
-        searches.colormap_dependency,
         searches.render_dependency,
         searches.pgstac_dependency,
         searches.reader_dependency,
@@ -288,7 +288,17 @@ def ping(
     except (OperationalError, PoolTimeout):
         db_online = False
 
-    return {"database_online": db_online}
+    return {
+        "database_online": db_online,
+        "versions": {
+            "titiler": titiler_version,
+            "titiler.pgstac": titiler_pgstac_version,
+            "rasterio": rasterio.__version__,
+            "gdal": rasterio.__gdal_version__,
+            "proj": rasterio.__proj_version__,
+            "geos": rasterio.__geos_version__,
+        },
+    }
 
 
 ###############################################################################
