@@ -6,6 +6,10 @@
 
 * Update namespace package from using `.` to `-` as separator to comply with PEP-625 (https://peps.python.org/pep-0625/)
 
+* Remove `python3.8` support
+
+* Add `python3.13` support
+
 ## 1.5.0 (2024-11-28)
 
 * update titiler requirement to `>=0.19.0,<0.20`
