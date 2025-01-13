@@ -1,6 +1,6 @@
 # Release Notes
 
-## unreleased
+## 1.6.0 (2025-01-13)
 
 * remove `rescale_dependency` and `color_formula_dependency` attributes in TilerFactory class **breaking change**
 
