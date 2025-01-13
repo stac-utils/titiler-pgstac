@@ -57,7 +57,7 @@ test = [
     "pytest-cov",
     "pytest-asyncio",
     "httpx",
-    "pypgstac>=0.7,<=0.9.2",
+    "pypgstac>=0.7,<=0.10",
     "pytest-postgresql",
 ]
 docs = [
