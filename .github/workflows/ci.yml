@@ -15,7 +15,7 @@ on:
 
   pull_request:
 env:
-  LATEST_PY_VERSION: '3.12'
+  LATEST_PY_VERSION: '3.13'
 
 jobs:
   tests:
@@ -23,11 +23,11 @@ jobs:
     strategy:
       matrix:
         python-version:
-        - '3.8'
         - '3.9'
         - '3.10'
         - '3.11'
         - '3.12'
+        - '3.13'
 
     steps:
       - uses: actions/checkout@v4
@@ -66,14 +66,14 @@ jobs:
     needs: [tests]
     runs-on: ubuntu-latest
     env:
-      PGSTAC_VERSION: '0.9.1'
+      PGSTAC_VERSION: '0.9.2'
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python ${{ env.LATEST_PY_VERSION }}
+      - name: Set up Python 3.12
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ env.LATEST_PY_VERSION }}
+          python-version: '3.12'
 
       - name: Launch services
         run: docker compose up -d tiler-uvicorn
