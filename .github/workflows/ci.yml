@@ -161,11 +161,6 @@ jobs:
     needs: [tests]
     if: github.ref == 'refs/heads/main' || startsWith(github.event.ref, 'refs/tags') || github.event_name == 'release'
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        image-version:
-        - 'uvicorn'
-        - 'gunicorn'
 
     steps:
       - name: Checkout
@@ -189,15 +184,6 @@ jobs:
         run: |
           echo "version=${GITHUB_REF#refs/*/}" >> $GITHUB_OUTPUT
 
-      - name: Image name
-        id: image
-        run: |
-          if [ ${{ matrix.image-version }} = 'uvicorn' ]; then
-            echo "name=titiler-pgstac:uvicorn-" >> $GITHUB_OUTPUT
-          else
-            echo "name=titiler-pgstac:" >> $GITHUB_OUTPUT
-          fi
-
       # Push `latest` when comiting to main
       - name: Build and push latest
         if: github.ref == 'refs/heads/main'
@@ -208,7 +194,7 @@ jobs:
           file: Dockerfile.${{ matrix.image-version }}
           push: true
           tags: |
-            ghcr.io/stac-utils/${{ steps.image.outputs.name }}latest
+            ghcr.io/stac-utils/titiler-pgstac:latest
 
       # Push `{VERSION}` when pushing a new tag
       - name: Build and push tag
@@ -220,4 +206,4 @@ jobs:
           file: Dockerfile.${{ matrix.image-version }}
           push: true
           tags: |
-            ghcr.io/stac-utils/${{ steps.image.outputs.name }}${{ steps.tag.outputs.version }}
+            ghcr.io/stac-utils/titiler-pgstac:${{ steps.tag.outputs.version }}

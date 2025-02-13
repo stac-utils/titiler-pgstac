@@ -66,9 +66,9 @@ $ python -m pip install -e .
 
 In `titiler.pgstac` setup.py, we have added three options to let users choose which psycopg install to use:
 
-- `pip install titiler.pgstac["psycopg"]`: pure python
-- `pip install titiler.pgstac["psycopg-c"]`: use the C wrapper (requires development packages installed on the client machine)
-- `pip install titiler.pgstac["psycopg-binary"]`: binary wheels
+- `python -m pip install titiler.pgstac["psycopg"]`: pure python
+- `python -m pip install titiler.pgstac["psycopg-c"]`: use the C wrapper (requires development packages installed on the client machine)
+- `python -m pip install titiler.pgstac["psycopg-binary"]`: binary wheels
 
 ## Launch
 
@@ -83,7 +83,7 @@ export POSTGRES_PORT=5432
 ```
 
 ```
-$ pip install uvicorn
+$ python -m pip install uvicorn
 $ uvicorn titiler.pgstac.main:app --reload
 ```
 
@@ -93,11 +93,7 @@ $ uvicorn titiler.pgstac.main:app --reload
 $ git clone https://github.com/stac-utils/titiler-pgstac.git
 $ cd titiler-pgstac
 $ docker compose up --build tiler
-```
-
-It runs `titiler.pgstac` using Gunicorn web server. To run Uvicorn based version:
-
-```
+# or
 $ docker compose up --build tiler-uvicorn
 ```
 

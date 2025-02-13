@@ -6,15 +6,11 @@ services:
     platform: linux/amd64
     build:
       context: .
-      dockerfile: Dockerfile.gunicorn
+      dockerfile: Dockerfile
     ports:
       - "8081:8081"
+    command: ["gunicorn", "-k", "uvicorn.workers.UvicornWorker", "titiler.pgstac.main:app", "--bind", "0.0.0.0:8081", "--workers", "1"]
     environment:
-      # Application
-      - HOST=0.0.0.0
-      - PORT=8081
-      - WEB_CONCURRENCY=1
-      - WORKERS_PER_CORE=1
       # Postgres connection
       - POSTGRES_USER=username
       - POSTGRES_PASS=password
@@ -58,86 +54,15 @@ services:
 
   tiler-uvicorn:
     container_name: tiler-pgstac-uvicorn
-    # At the time of writing, rasterio and psycopg wheels are not available for arm64 arch
-    # so we force the image to be built with linux/amd64
-    platform: linux/amd64
-    build:
-      context: .
-      dockerfile: Dockerfile.uvicorn
+    extends:
+      service: tiler
     ports:
-      - "8081:8081"
-    environment:
-      # Application
-      - HOST=0.0.0.0
-      - PORT=8081
-      - WEB_CONCURRENCY=1
-      # Postgres connection
-      - POSTGRES_USER=username
-      - POSTGRES_PASS=password
-      - POSTGRES_DBNAME=postgis
-      - POSTGRES_HOST=database
-      - POSTGRES_PORT=5432
-      # PG connection
-      - DB_MIN_CONN_SIZE=1
-      - DB_MAX_CONN_SIZE=10
-      # - DB_MAX_QUERIES=10
-      # - DB_MAX_IDLE=10
-      # GDAL Config
-      - CPL_TMPDIR=/tmp
-      # This option controls the default GDAL raster block cache size.
-      # If its value is small (less than 100000), it is assumed to be measured in megabytes, otherwise in bytes.
-      - GDAL_CACHEMAX=200
-      - GDAL_DISABLE_READDIR_ON_OPEN=EMPTY_DIR
-      - GDAL_INGESTED_BYTES_AT_OPEN=32768
-      - GDAL_HTTP_MERGE_CONSECUTIVE_RANGES=YES
-      - GDAL_HTTP_MULTIPLEX=YES
-      - GDAL_HTTP_VERSION=2
-      # The file can be cached in RAM by setting the configuration option VSI_CACHE to TRUE.
-      # The cache size defaults to 25 MB, but can be modified by setting the configuration option VSI_CACHE_SIZE (in bytes).
-      # Content in that cache is discarded when the file handle is closed.
-      - VSI_CACHE=TRUE
-      - VSI_CACHE_SIZE=536870912
-      # In addition, a global least-recently-used cache of 16 MB shared among all downloaded content is enabled by default,
-      # and content in it may be reused after a file handle has been closed and reopen,
-      # during the life-time of the process or until VSICurlClearCache() is called.
-      # Starting with GDAL 2.3, the size of this global LRU cache can be modified by
-      # setting the configuration option CPL_VSIL_CURL_CACHE_SIZE (in bytes).
-      - CPL_VSIL_CURL_CACHE_SIZE=200000000
-      # TiTiler Config
-      - MOSAIC_CONCURRENCY=5
-      # - RIO_TILER_MAX_THREADS=2
-      # AWS S3 endpoint config
-      # - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-      # - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
-    volumes:
-      - ./benchmark:/tmp/benchmark
-    depends_on:
-      - database
-
-  stac-fastapi:
-    image: ghcr.io/stac-utils/stac-fastapi-pgstac:3.0.0
-    ports:
-      - "${MY_DOCKER_IP:-127.0.0.1}:8082:8082"
-    environment:
-      # Postgres connection
-      - POSTGRES_USER=username
-      - POSTGRES_PASS=password
-      - POSTGRES_DBNAME=postgis
-      - POSTGRES_HOST_READER=database
-      - POSTGRES_HOST_WRITER=database
-      - POSTGRES_PORT=5432
-      - DB_MIN_CONN_SIZE=1
-      - DB_MAX_CONN_SIZE=1
-    depends_on:
-      - database
-    command:
-      bash -c "uvicorn stac_fastapi.pgstac.app:app --host 0.0.0.0 --port 8082"
-    volumes:
-      - ./dockerfiles/scripts:/tmp/scripts
+      - "8083:8083"
+    command: ["uvicorn", "titiler.pgstac.main:app", "--host", "0.0.0.0", "--port", "8083", "--workers", "1"]
 
   database:
     container_name: stac-db
-    image: ghcr.io/stac-utils/pgstac:v${PGSTAC_VERSION-0.9.1}
+    image: ghcr.io/stac-utils/pgstac:v${PGSTAC_VERSION-0.9.2}
     environment:
       - POSTGRES_USER=username
       - POSTGRES_PASSWORD=password
