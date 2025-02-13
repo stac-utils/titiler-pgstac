@@ -13,6 +13,8 @@ RUN cd /usr/local/share/ca-certificates/cacert.org && curl -k -O https://www.cac
 RUN update-ca-certificates
 ENV CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 
+WORKDIR /tmp
+
 RUN python -m pip install -U pip
 RUN python -m pip install uvicorn uvicorn-worker gunicorn
 
