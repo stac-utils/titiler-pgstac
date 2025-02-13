@@ -2,6 +2,7 @@
 
 import warnings
 from dataclasses import dataclass, field
+from threading import Lock
 from typing import List, Optional, Tuple
 
 import morecantile
@@ -45,6 +46,7 @@ def SearchIdParams(
         str(bbox),
         datetime,
     ),
+    lock=Lock(),
 )
 @retry(
     tries=retry_config.retry,
@@ -263,6 +265,7 @@ class PgSTACParams(DefaultDependency):
 @cached(  # type: ignore
     TTLCache(maxsize=cache_config.maxsize, ttl=cache_config.ttl),
     key=lambda pool, collection, item: hashkey(collection, item),
+    lock=Lock(),
 )
 @retry(
     tries=retry_config.retry,
