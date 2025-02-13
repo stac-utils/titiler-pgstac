@@ -1,5 +1,47 @@
 # Release Notes
 
+## 1.7.0 (2025-02-13)
+
+* update titiler requirement to `>=0.21,<0.22`
+* use `URN` style CRS notation in WMTS document
+* Unify Docker images (deprecate `uvicorn-*` tags)
+
+    ```
+    # Uvicorn
+    # before
+    docker run \
+        --platform=linux/amd64 \
+        -p 8000:8000 \
+        --env PORT=8000 \
+        --env DATABASE_URL=postgresql://username:password@0.0.0.0:5439/postgis \
+        --rm -it ghcr.io/stac-utils/titiler-pgstac:uvicorn-latest
+
+    # now
+    docker run \
+        --platform=linux/amd64 \
+        -p 8000:8000 \
+        --env DATABASE_URL=postgresql://username:password@0.0.0.0:5439/postgis \
+        --rm -it ghcr.io/stac-utils/titiler-pgstac:latest \
+        uvicorn titiler.pgstac.main:app --host 0.0.0.0 --port 8000 --workers 1
+
+    # Gunicorn
+    # before
+    docker run \
+        --platform=linux/amd64 \
+        -p 8000:8000 \
+        --env PORT=8000 \
+        --env DATABASE_URL=postgresql://username:password@0.0.0.0:5439/postgis \
+        --rm -it ghcr.io/stac-utils/titiler-pgstac:latest
+
+    # now
+    docker run \
+        --platform=linux/amd64 \
+        -p 8000:8000 \
+        --env DATABASE_URL=postgresql://username:password@0.0.0.0:5439/postgis \
+        --rm -it ghcr.io/stac-utils/titiler-pgstac:latest \
+        gunicorn -k uvicorn.workers.UvicornWorker titiler.pgstac.main:app --bind 0.0.0.0:8000 --workers 1
+    ```
+
 ## 1.6.0 (2025-01-13)
 
 * remove `rescale_dependency` and `color_formula_dependency` attributes in TilerFactory class **breaking change**

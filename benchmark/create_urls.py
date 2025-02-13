@@ -125,7 +125,7 @@ with lzma.open(FILENAME, "rt") as fin:
 with open("urls.txt", "w") as fin:
     fin.write("PROT=http\n")
     fin.write("HOST=localhost\n")
-    fin.write("PORT=8080\n")
+    fin.write("PORT=8081\n")
     fin.write("PATH=\n")
     fin.write("EXT=pbf\n")
     for zoom in range(0, maxzoom + 1):
