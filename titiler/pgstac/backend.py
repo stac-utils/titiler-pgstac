@@ -1,6 +1,7 @@
 """TiTiler.PgSTAC custom Mosaic Backend and Custom STACReader."""
 
 import json
+from threading import Lock
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Type
 
 import attr
@@ -165,6 +166,7 @@ class PGSTACBackend(BaseBackend):
     @cached(  # type: ignore
         TTLCache(maxsize=cache_config.maxsize, ttl=cache_config.ttl),
         key=lambda self, geom, **kwargs: hashkey(self.input, str(geom), **kwargs),
+        lock=Lock(),
     )
     @retry(
         tries=retry_config.retry,
