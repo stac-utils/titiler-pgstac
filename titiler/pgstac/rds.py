@@ -23,7 +23,7 @@ def rds_connect_args(
     pg_settings: PostgresSettings, rds_settings: RDSSettings
 ) -> Tuple[PostgresSettings, dict]:
     """Gather connections parameters and return them as a tuple of PostgresSettings
-    and additional kwargs to be passed directly to database.connect_to_db.
+    and additional kwargs to be passed directly to db.connect_to_db.
 
     The returned PostgresSettings will be updated with values pulled from SSM
     and SecretsManager based on the RDSSettings.

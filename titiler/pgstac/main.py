@@ -1,5 +1,6 @@
 """TiTiler+PgSTAC FastAPI application."""
 
+import os
 import logging
 import re
 from contextlib import asynccontextmanager
@@ -73,11 +74,17 @@ async def lifespan(app: FastAPI):
     # Create Connection Pool
     pg_settings, conn_kwargs = rds_connect_args(postgres_settings, rds_settings)
 
-    await connect_to_db(
-        app,
-        settings=postgres_settings,
-        **conn_kwargs,
-    )
+    if os.environ.get("TITILER_API_RDS_USE_IAM_AUTH") == "TRUE":
+        await connect_to_db(
+            app,
+            settings=pg_settings,
+            **conn_kwargs,
+        )
+    else:
+        await connect_to_db(
+            app,
+            settings=postgres_settings,
+        )
     yield
     # Close the Connection Pool
     await close_db_connection(app)
