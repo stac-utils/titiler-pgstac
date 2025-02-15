@@ -1,7 +1,7 @@
 """TiTiler+PgSTAC FastAPI application."""
 
-import os
 import logging
+import os
 import re
 from contextlib import asynccontextmanager
 from typing import Dict
