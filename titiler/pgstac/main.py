@@ -63,8 +63,8 @@ jinja2_env = jinja2.Environment(
 )
 templates = Jinja2Templates(env=jinja2_env)
 
-postgres_settings = PostgresSettings()
 rds_settings = RDSSettings()
+postgres_settings = PostgresSettings()
 settings = ApiSettings()
 
 
