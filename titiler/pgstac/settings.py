@@ -2,7 +2,6 @@
 
 from functools import lru_cache
 from typing import Any, Optional, Set
-from urllib.parse import quote_plus as quote
 
 from pydantic import (
     Field,
