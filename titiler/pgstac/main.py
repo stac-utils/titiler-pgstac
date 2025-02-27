@@ -1,7 +1,6 @@
 """TiTiler+PgSTAC FastAPI application."""
 
 import logging
-import os
 import re
 from contextlib import asynccontextmanager
 from typing import Dict
@@ -46,9 +45,8 @@ from titiler.pgstac.factory import (
     add_search_list_route,
     add_search_register_route,
 )
-from titiler.pgstac.rds import rds_connect_args
 from titiler.pgstac.reader import PgSTACReader
-from titiler.pgstac.settings import ApiSettings, PostgresSettings, RDSSettings
+from titiler.pgstac.settings import ApiSettings, PostgresSettings
 
 logging.getLogger("botocore.credentials").disabled = True
 logging.getLogger("botocore.utils").disabled = True
@@ -63,7 +61,6 @@ jinja2_env = jinja2.Environment(
 )
 templates = Jinja2Templates(env=jinja2_env)
 
-rds_settings = RDSSettings()
 postgres_settings = PostgresSettings()
 settings = ApiSettings()
 
@@ -72,19 +69,7 @@ settings = ApiSettings()
 async def lifespan(app: FastAPI):
     """FastAPI Lifespan."""
     # Create Connection Pool
-    pg_settings, conn_kwargs = rds_connect_args(postgres_settings, rds_settings)
-
-    if os.environ.get("TITILER_API_RDS_USE_IAM_AUTH") == "TRUE":
-        await connect_to_db(
-            app,
-            settings=pg_settings,
-            **conn_kwargs,
-        )
-    else:
-        await connect_to_db(
-            app,
-            settings=postgres_settings,
-        )
+    await connect_to_db(app, settings=postgres_settings)
     yield
     # Close the Connection Pool
     await close_db_connection(app)

@@ -2,15 +2,9 @@
 
 from functools import lru_cache
 from typing import Any, Optional, Set
-from urllib.parse import quote_plus as quote
 
-from pydantic import (
-    Field,
-    PostgresDsn,
-    ValidationInfo,
-    field_validator,
-    model_validator,
-)
+import boto3
+from pydantic import Field, PostgresDsn, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing_extensions import Annotated
 
@@ -51,6 +45,8 @@ class PostgresSettings(BaseSettings):
         postgres_host: database hostname.
         postgres_port: database port.
         postgres_dbname: database name.
+        iam_auth_enabled: enable AWS RDS IAM authentication.
+        aws_region: AWS region to use for generating IAM token.
     """
 
     postgres_user: Optional[str] = None
@@ -58,6 +54,9 @@ class PostgresSettings(BaseSettings):
     postgres_host: Optional[str] = None
     postgres_port: Optional[int] = None
     postgres_dbname: Optional[str] = None
+
+    iam_auth_enabled: bool = False
+    aws_region: Optional[str] = None
 
     database_url: Optional[PostgresDsn] = None
 
@@ -75,18 +74,39 @@ class PostgresSettings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
     @field_validator("database_url", mode="before")
-    def assemble_db_connection(cls, v: Optional[str], info: ValidationInfo) -> Any:
-        """Validate database config."""
+    def assemble_db_connection(cls, v: Optional[str], info: Any) -> Any:
+        """Validate and assemble the database connection string."""
         if isinstance(v, str):
             return v
 
+        username = info.data["postgres_user"]
+        host = info.data.get("postgres_host", "")
+        port = info.data.get("postgres_port", 5432)
+        dbname = info.data.get("postgres_dbname", "")
+
+        # Determine password/token based on IAM flag
+        if info.data.get("iam_auth_enabled"):
+            region = info.data.get("aws_region")
+            if not region:
+                raise ValueError(
+                    "aws_region must be provided when IAM authentication is enabled"
+                )
+            rds_client = boto3.client("rds", region_name=region)
+            password = rds_client.generate_db_auth_token(
+                DBHostname=host,
+                Port=port,
+                DBUsername=username,
+            )
+        else:
+            password = info.data["postgres_pass"]
+
         return PostgresDsn.build(
             scheme="postgresql",
-            username=info.data["postgres_user"],
-            password=quote(info.data["postgres_pass"]),
-            host=info.data.get("postgres_host", ""),
-            port=info.data.get("postgres_port", 5432),
-            path=info.data.get("postgres_dbname", ""),
+            username=username,
+            password=password,
+            host=host,
+            port=port,
+            path=dbname,
         )
 
 
@@ -154,15 +174,3 @@ class _RetrySettings(BaseSettings):
 def RetrySettings() -> _RetrySettings:
     """This function returns a cached instance of the RetrySettings object."""
     return _RetrySettings()
-
-
-class RDSSettings(ApiSettings):
-    """Extended settings for AWS RDS."""
-
-    use_iam_auth: bool = False
-
-    model_config = {
-        "env_prefix": "TITILER_PGSTAC_RDS_",
-        "env_file": ".env",
-        "extra": "ignore",
-    }
