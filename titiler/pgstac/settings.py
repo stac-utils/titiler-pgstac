@@ -97,9 +97,7 @@ class PostgresSettings(BaseSettings):
                 )
             rds_client = boto3.client("rds", region_name=region)
             password = rds_client.generate_db_auth_token(
-                DBHostname=host,
-                Port=port,
-                DBUsername=username,
+                DBHostname=host, Port=port, DBUsername=username, Region=region
             )
             logger.info(password)
         else:
