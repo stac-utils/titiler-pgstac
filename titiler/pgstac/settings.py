@@ -10,7 +10,7 @@ from pydantic import Field, PostgresDsn, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing_extensions import Annotated
 
-logger = logging.getLogger()
+logger = logging.getLogger("titiler-pgstac")
 
 
 class ApiSettings(BaseSettings):
@@ -99,11 +99,11 @@ class PostgresSettings(BaseSettings):
             password = rds_client.generate_db_auth_token(
                 DBHostname=host, Port=port, DBUsername=username, Region=region
             )
-            logger.info(password)
+            logger.info(f"password: {password}")
         else:
             password = info.data["postgres_pass"]
 
-        logger.info(password)
+        logger.info(f"password: {password}")
         return PostgresDsn.build(
             scheme="postgresql",
             username=username,
