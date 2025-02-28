@@ -1,5 +1,6 @@
 """API settings."""
 
+import logging
 from functools import lru_cache
 from typing import Any, Optional, Set
 from urllib.parse import quote_plus
@@ -8,6 +9,8 @@ import boto3
 from pydantic import Field, PostgresDsn, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing_extensions import Annotated
+
+logger = logging.getLogger()
 
 
 class ApiSettings(BaseSettings):
@@ -98,9 +101,11 @@ class PostgresSettings(BaseSettings):
                 Port=port,
                 DBUsername=username,
             )
+            logger.info(password)
         else:
             password = info.data["postgres_pass"]
 
+        logger.info(password)
         return PostgresDsn.build(
             scheme="postgresql",
             username=username,
