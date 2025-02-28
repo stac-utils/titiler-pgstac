@@ -2,7 +2,7 @@
 
 from functools import lru_cache
 from typing import Any, Optional, Set
-from urllib.parse import quote_plus as quote
+from urllib.parse import quote_plus
 
 import boto3
 from pydantic import Field, PostgresDsn, field_validator, model_validator
@@ -104,7 +104,7 @@ class PostgresSettings(BaseSettings):
         return PostgresDsn.build(
             scheme="postgresql",
             username=username,
-            password=quote(password),
+            password=quote_plus(password),
             host=host,
             port=port,
             path=dbname,
