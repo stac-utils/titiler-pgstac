@@ -96,9 +96,12 @@ class PostgresSettings(BaseSettings):
                     "aws_region must be provided when IAM authentication is enabled"
                 )
             rds_client = boto3.client("rds", region_name=region)
-            password = rds_client.generate_db_auth_token(
-                DBHostname=host, Port=port, DBUsername=username, Region=region
-            )
+            try:
+                password = rds_client.generate_db_auth_token(
+                    DBHostname=host, Port=port, DBUsername=username, Region=region
+                )
+            except ValueError:
+                print("failed to get token")
             logger.info(f"password: {password}")
         else:
             password = info.data["postgres_pass"]
