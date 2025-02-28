@@ -77,7 +77,6 @@ class PostgresSettings(BaseSettings):
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
-    @field_validator("database_url", mode="before")
     def assemble_db_connection(cls, v: Optional[str], info: Any) -> Any:
         """Validate and assemble the database connection string."""
         if isinstance(v, str):
@@ -100,6 +99,7 @@ class PostgresSettings(BaseSettings):
                 password = rds_client.generate_db_auth_token(
                     DBHostname=host, Port=port, DBUsername=username, Region=region
                 )
+                print("token retrieved")
             except ValueError:
                 print("failed to get token")
             logger.info(f"password: {password}")
