@@ -6,7 +6,13 @@ from typing import Any, Optional, Set
 from urllib.parse import quote_plus
 
 import boto3
-from pydantic import Field, PostgresDsn, field_validator, model_validator
+from pydantic import (
+    Field,
+    PostgresDsn,
+    ValidationError,
+    field_validator,
+    model_validator,
+)
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing_extensions import Annotated
 
@@ -77,6 +83,7 @@ class PostgresSettings(BaseSettings):
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
+    @field_validator("database_url", mode="before")
     def assemble_db_connection(cls, v: Optional[str], info: Any) -> Any:
         """Validate and assemble the database connection string."""
         if isinstance(v, str):
@@ -107,14 +114,21 @@ class PostgresSettings(BaseSettings):
             password = info.data["postgres_pass"]
 
         logger.info(f"password: {password}")
-        return PostgresDsn.build(
-            scheme="postgresql",
-            username=username,
-            password=quote_plus(password),
-            host=host,
-            port=port,
-            path=dbname,
-        )
+
+        try:
+            db_url = PostgresDsn.build(
+                scheme="postgresql",
+                username=username,
+                password=quote_plus(password),
+                host=host,
+                port=port,
+                path=dbname,
+            )
+        except ValidationError as e:
+            input_value = e.errors()[0]["input"]
+            print(f"Input Value: {input_value}")
+
+        return db_url
 
 
 class CacheSettings(BaseSettings):
