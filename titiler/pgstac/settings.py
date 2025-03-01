@@ -6,13 +6,7 @@ from typing import Any, Optional, Set
 from urllib.parse import quote_plus
 
 import boto3
-from pydantic import (
-    Field,
-    PostgresDsn,
-    ValidationError,
-    field_validator,
-    model_validator,
-)
+from pydantic import Field, PostgresDsn, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing_extensions import Annotated
 
@@ -102,34 +96,23 @@ class PostgresSettings(BaseSettings):
                     "aws_region must be provided when IAM authentication is enabled"
                 )
             rds_client = boto3.client("rds", region_name=region)
-            try:
-                password = rds_client.generate_db_auth_token(
-                    DBHostname=host, Port=port, DBUsername=username, Region=region
-                )
-                print("token retrieved")
-            except ValueError:
-                print("failed to get token")
+            password = rds_client.generate_db_auth_token(
+                DBHostname=host, Port=port, DBUsername=username, Region=region
+            )
             logger.info(f"password: {password}")
         else:
             password = info.data["postgres_pass"]
 
         logger.info(f"password: {password}")
 
-        try:
-            db_url = PostgresDsn.build(
-                scheme="postgresql",
-                username=username,
-                password=quote_plus(password),
-                host=host,
-                port=port,
-                path=dbname,
-                sslmode="require",
-            )
-        except ValidationError as e:
-            input_value = e.errors()[0]["input"]
-            print(f"Input Value: {input_value}")
+        token = quote_plus(password)
+        db_conn_str = (
+            f"postgresql://{username}:{token}@{host}:{port}/{dbname}?sslmode=require"
+        )
 
-        return db_url
+        logger.info(db_conn_str)
+
+        return db_conn_str
 
 
 class CacheSettings(BaseSettings):
