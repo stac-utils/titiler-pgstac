@@ -3,6 +3,7 @@
 import logging
 from functools import lru_cache
 from typing import Any, Optional, Set
+from urllib.parse import quote_plus
 
 import boto3
 from pydantic import (
@@ -115,16 +116,20 @@ class PostgresSettings(BaseSettings):
         logger.info(f"password: {password}")
 
         try:
-            db_conn_str = (
-                f"postgresql://{username}:{password}@{host}:{port}/{dbname}"
-                "?sslmode=require"
+            db_url = PostgresDsn.build(
+                scheme="postgresql",
+                username=username,
+                password=quote_plus(password),
+                host=host,
+                port=port,
+                path=dbname,
+                sslmode="require",
             )
-
         except ValidationError as e:
             input_value = e.errors()[0]["input"]
             print(f"Input Value: {input_value}")
 
-        return db_conn_str
+        return db_url
 
 
 class CacheSettings(BaseSettings):
