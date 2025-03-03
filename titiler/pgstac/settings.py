@@ -1,7 +1,9 @@
 """API settings."""
 
 import logging
+import urllib.request
 from functools import lru_cache
+from pathlib import Path
 from typing import Any, Optional, Set
 from urllib.parse import quote_plus
 
@@ -11,6 +13,11 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing_extensions import Annotated
 
 logger = logging.getLogger("titiler-pgstac")
+
+_CA_BUNDLE_URL = "https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem"
+_CA_BUNDLE_PATH = (
+    Path(__file__).absolute().parent.joinpath("certs/rds/global-bundle.pem")
+)
 
 
 class ApiSettings(BaseSettings):
@@ -101,6 +108,17 @@ class PostgresSettings(BaseSettings):
             )
             logger.info("token retrieved")
 
+            def rds_cert_path() -> str:
+                if not _CA_BUNDLE_PATH.exists():
+                    _CA_BUNDLE_PATH.parent.mkdir(parents=True, exist_ok=True)
+                    logger.info(
+                        f"Downloading AWS RDS CA bundle from {_CA_BUNDLE_URL}..."
+                    )
+                    urllib.request.urlretrieve(_CA_BUNDLE_URL, _CA_BUNDLE_PATH)
+                return str(_CA_BUNDLE_PATH.absolute())
+
+            certpath = rds_cert_path()
+
             db_url = PostgresDsn.build(
                 scheme="postgresql",
                 username=username,
@@ -108,7 +126,7 @@ class PostgresSettings(BaseSettings):
                 host=host,
                 port=port,
                 path=dbname,
-                query="sslmode=require",
+                query=f"sslmode=require&sslrootcert={certpath}",
             )
         else:
             db_url = PostgresDsn.build(
