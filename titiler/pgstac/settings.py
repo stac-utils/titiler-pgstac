@@ -138,6 +138,8 @@ class PostgresSettings(BaseSettings):
                 path=dbname,
             )
 
+            logger.info(f"url: {db_url}")
+
         return db_url
 
 
