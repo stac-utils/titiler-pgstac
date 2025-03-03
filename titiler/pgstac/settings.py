@@ -6,7 +6,6 @@ from typing import Any, Optional, Set
 from urllib.parse import quote_plus
 
 import boto3
-import pydantic
 from pydantic import Field, PostgresDsn, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing_extensions import Annotated
@@ -106,20 +105,15 @@ class PostgresSettings(BaseSettings):
 
         logger.info(f"password: {password}")
 
-        db_url = pydantic.TypeAdapter(pydantic.PostgresDsn).validate_python(
-            f"postgres://{username}:{quote_plus(password)}@{host}:{port}/{dbname}?sslmode=require"
+        db_url = PostgresDsn.build(
+            scheme="postgresql",
+            username=username,
+            password=quote_plus(password),
+            host=host,
+            port=port,
+            path=dbname,
+            query="sslmode=require",
         )
-        # db_url = PostgresDsn.build(
-        #     scheme="postgresql",
-        #     username=username,
-        #     password=quote_plus(password),
-        #     host=host,
-        #     port=port,
-        #     path=dbname,
-        #     query={
-        #         "sslmode": "require",
-        #     },
-        # )
 
         return db_url
 
