@@ -105,14 +105,21 @@ class PostgresSettings(BaseSettings):
 
         logger.info(f"password: {password}")
 
-        token = quote_plus(password)
-        db_conn_str = (
-            f"postgresql://{username}:{token}@{host}:{port}/{dbname}?sslmode=require"
+        db_url = PostgresDsn.build(
+            scheme="postgresql",
+            username=username,
+            password=quote_plus(password),
+            host=host,
+            port=port,
+            path=dbname,
+            query=str(
+                {
+                    "sslmode": "require",
+                }
+            ),
         )
 
-        logger.info(db_conn_str)
-
-        return db_conn_str
+        return db_url
 
 
 class CacheSettings(BaseSettings):
