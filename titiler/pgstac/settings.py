@@ -99,21 +99,26 @@ class PostgresSettings(BaseSettings):
             password = rds_client.generate_db_auth_token(
                 DBHostname=host, Port=port, DBUsername=username, Region=region
             )
-            logger.info(f"password: {password}")
+            logger.info("token retrieved")
+
+            db_url = PostgresDsn.build(
+                scheme="postgresql",
+                username=username,
+                password=quote_plus(password),
+                host=host,
+                port=port,
+                path=dbname,
+                query="sslmode=require",
+            )
         else:
-            password = info.data["postgres_pass"]
-
-        logger.info(f"password: {password}")
-
-        db_url = PostgresDsn.build(
-            scheme="postgresql",
-            username=username,
-            password=quote_plus(password),
-            host=host,
-            port=port,
-            path=dbname,
-            query="sslmode=require",
-        )
+            db_url = PostgresDsn.build(
+                scheme="postgresql",
+                username=username,
+                password=quote_plus(info.data["postgres_pass"]),
+                host=host,
+                port=port,
+                path=dbname,
+            )
 
         return db_url
 
