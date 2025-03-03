@@ -19,14 +19,14 @@ _CA_BUNDLE_PATH = (
     Path(__file__).absolute().parent.joinpath("certs/rds/global-bundle.pem")
 )
 
+
 def rds_cert_path() -> str:
-        if not _CA_BUNDLE_PATH.exists():
-            _CA_BUNDLE_PATH.parent.mkdir(parents=True, exist_ok=True)
-            logger.info(
-                f"Downloading AWS RDS CA bundle from {_CA_BUNDLE_URL}..."
-            )
-            urllib.request.urlretrieve(_CA_BUNDLE_URL, _CA_BUNDLE_PATH)
-        return str(_CA_BUNDLE_PATH.absolute())
+    """Download CA cert path"""
+    if not _CA_BUNDLE_PATH.exists():
+        _CA_BUNDLE_PATH.parent.mkdir(parents=True, exist_ok=True)
+        logger.info(f"Downloading AWS RDS CA bundle from {_CA_BUNDLE_URL}...")
+        urllib.request.urlretrieve(_CA_BUNDLE_URL, _CA_BUNDLE_PATH)
+    return str(_CA_BUNDLE_PATH.absolute())
 
 
 class ApiSettings(BaseSettings):
@@ -118,7 +118,7 @@ class PostgresSettings(BaseSettings):
             logger.info("token retrieved")
 
             certpath = rds_cert_path()
-            
+
             db_url = PostgresDsn.build(
                 scheme="postgresql",
                 username=username,
