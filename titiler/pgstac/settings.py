@@ -68,6 +68,7 @@ class PostgresSettings(BaseSettings):
         iam_auth_enabled: enable AWS RDS IAM authentication.
         aws_region: AWS region to use for generating IAM token.
     """
+
     logger.info("postgres settings")
     print("postgres settings")
 
