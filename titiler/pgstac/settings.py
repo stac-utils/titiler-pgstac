@@ -106,6 +106,7 @@ class PostgresSettings(BaseSettings):
 
         # Determine password/token based on IAM flag
         if info.data.get("iam_auth_enabled"):
+            logger.info("IAM enabled")
             region = info.data.get("aws_region")
             if not region:
                 raise ValueError(
@@ -115,7 +116,7 @@ class PostgresSettings(BaseSettings):
             password = rds_client.generate_db_auth_token(
                 DBHostname=host, Port=port, DBUsername=username, Region=region
             )
-            logger.info("token retrieved")
+            logger.info("token retrieved: {password}")
 
             certpath = rds_cert_path()
 
@@ -128,6 +129,7 @@ class PostgresSettings(BaseSettings):
                 path=dbname,
                 query=f"sslmode=verify-full&sslrootcert={certpath}",
             )
+            logger.info(f"url: {db_url}")
         else:
             db_url = PostgresDsn.build(
                 scheme="postgresql",
