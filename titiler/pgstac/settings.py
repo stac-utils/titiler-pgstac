@@ -68,6 +68,8 @@ class PostgresSettings(BaseSettings):
         iam_auth_enabled: enable AWS RDS IAM authentication.
         aws_region: AWS region to use for generating IAM token.
     """
+    logger.info("postgres settings")
+    print("postgres settings")
 
     postgres_user: Optional[str] = None
     postgres_pass: Optional[str] = None
@@ -99,6 +101,9 @@ class PostgresSettings(BaseSettings):
         if isinstance(v, str):
             return v
 
+        logger.info("validate db url")
+        print("validate db url")
+
         username = info.data["postgres_user"]
         host = info.data.get("postgres_host", "")
         port = info.data.get("postgres_port", 5432)
@@ -107,6 +112,7 @@ class PostgresSettings(BaseSettings):
         # Determine password/token based on IAM flag
         if info.data.get("iam_auth_enabled"):
             logger.info("IAM enabled")
+            print("IAM enabled")
             region = info.data.get("aws_region")
             if not region:
                 raise ValueError(
@@ -117,6 +123,7 @@ class PostgresSettings(BaseSettings):
                 DBHostname=host, Port=port, DBUsername=username, Region=region
             )
             logger.info("token retrieved: {password}")
+            print("token retrieved: {password}")
 
             certpath = rds_cert_path()
 
@@ -130,6 +137,7 @@ class PostgresSettings(BaseSettings):
                 query=f"sslmode=verify-full&sslrootcert={certpath}",
             )
             logger.info(f"url: {db_url}")
+            print(f"url: {db_url}")
         else:
             db_url = PostgresDsn.build(
                 scheme="postgresql",
@@ -141,6 +149,7 @@ class PostgresSettings(BaseSettings):
             )
 
             logger.info(f"url: {db_url}")
+            print(f"url: {db_url}")
 
         return db_url
 
