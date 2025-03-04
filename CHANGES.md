@@ -1,5 +1,9 @@
 # Release Notes
 
+## 1.7.1 (2025-03-04)
+
+* remove `PostgresSettings` initialization from `main.py`
+
 ## 1.7.0 (2025-02-13)
 
 * update titiler requirement to `>=0.21,<0.22`
