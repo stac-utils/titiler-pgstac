@@ -1,8 +1,6 @@
 """API settings."""
 
-import urllib.request
 from functools import lru_cache
-from pathlib import Path
 from typing import Any, Optional, Set
 from urllib.parse import quote_plus
 
@@ -99,8 +97,8 @@ class PostgresSettings(BaseSettings):
                 DBHostname=host, Port=int(port), DBUsername=username, Region=region
             )
         else:
-            password=info.data["postgres_pass"]
-        
+            password = info.data["postgres_pass"]
+
         db_url = PostgresDsn.build(
             scheme="postgresql",
             username=username,
