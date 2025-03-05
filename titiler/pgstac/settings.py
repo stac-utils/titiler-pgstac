@@ -14,9 +14,9 @@ from typing_extensions import Annotated
 
 logger = logging.getLogger("titiler-pgstac")
 
-_CA_BUNDLE_URL = "https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem"
+_CA_BUNDLE_URL = "https://truststore.pki.rds.amazonaws.com/us-east-1/us-east-1-bundle.pem"
 _CA_BUNDLE_PATH = (
-    Path(__file__).absolute().parent.joinpath("certs/rds/global-bundle.pem")
+    Path(__file__).absolute().parent.joinpath("certs/rds/us-east-1-bundle.pem")
 )
 
 
@@ -25,6 +25,7 @@ def rds_cert_path() -> str:
     if not _CA_BUNDLE_PATH.exists():
         _CA_BUNDLE_PATH.parent.mkdir(parents=True, exist_ok=True)
         logger.info(f"Downloading AWS RDS CA bundle from {_CA_BUNDLE_URL}...")
+        print((f"Downloading AWS RDS CA bundle from {_CA_BUNDLE_URL}..."))
         urllib.request.urlretrieve(_CA_BUNDLE_URL, _CA_BUNDLE_PATH)
     return str(_CA_BUNDLE_PATH.absolute())
 
@@ -121,10 +122,10 @@ class PostgresSettings(BaseSettings):
                 )
             rds_client = boto3.client("rds", region_name=region)
             password = rds_client.generate_db_auth_token(
-                DBHostname=host, Port=port, DBUsername=username, Region=region
+                DBHostname=host, Port=int(port), DBUsername=username, Region=region
             )
-            logger.info("token retrieved: {password}")
-            print("token retrieved: {password}")
+            logger.info(f"token retrieved: {password}")
+            print(f"token retrieved: {password}")
 
             certpath = rds_cert_path()
 
@@ -145,7 +146,7 @@ class PostgresSettings(BaseSettings):
                 username=username,
                 password=quote_plus(info.data["postgres_pass"]),
                 host=host,
-                port=port,
+                port=int(port),
                 path=dbname,
             )
 
