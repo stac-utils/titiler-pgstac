@@ -14,7 +14,9 @@ from typing_extensions import Annotated
 
 logger = logging.getLogger("titiler-pgstac")
 
-_CA_BUNDLE_URL = "https://truststore.pki.rds.amazonaws.com/us-east-1/us-east-1-bundle.pem"
+_CA_BUNDLE_URL = (
+    "https://truststore.pki.rds.amazonaws.com/us-east-1/us-east-1-bundle.pem"
+)
 _CA_BUNDLE_PATH = (
     Path(__file__).absolute().parent.joinpath("certs/rds/us-east-1-bundle.pem")
 )
