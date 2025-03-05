@@ -1,9 +1,6 @@
 """API settings."""
 
-import logging
-import urllib.request
 from functools import lru_cache
-from pathlib import Path
 from typing import Any, Optional, Set
 from urllib.parse import quote_plus
 
@@ -11,25 +8,6 @@ import boto3
 from pydantic import Field, PostgresDsn, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing_extensions import Annotated
-
-logger = logging.getLogger("titiler-pgstac")
-
-_CA_BUNDLE_URL = (
-    "https://truststore.pki.rds.amazonaws.com/us-east-1/us-east-1-bundle.pem"
-)
-_CA_BUNDLE_PATH = (
-    Path(__file__).absolute().parent.joinpath("certs/rds/us-east-1-bundle.pem")
-)
-
-
-def rds_cert_path() -> str:
-    """Download CA cert path"""
-    if not _CA_BUNDLE_PATH.exists():
-        _CA_BUNDLE_PATH.parent.mkdir(parents=True, exist_ok=True)
-        logger.info(f"Downloading AWS RDS CA bundle from {_CA_BUNDLE_URL}...")
-        print((f"Downloading AWS RDS CA bundle from {_CA_BUNDLE_URL}..."))
-        urllib.request.urlretrieve(_CA_BUNDLE_URL, _CA_BUNDLE_PATH)
-    return str(_CA_BUNDLE_PATH.absolute())
 
 
 class ApiSettings(BaseSettings):
@@ -72,9 +50,6 @@ class PostgresSettings(BaseSettings):
         aws_region: AWS region to use for generating IAM token.
     """
 
-    logger.info("postgres settings")
-    print("postgres settings")
-
     postgres_user: Optional[str] = None
     postgres_pass: Optional[str] = None
     postgres_host: Optional[str] = None
@@ -105,9 +80,6 @@ class PostgresSettings(BaseSettings):
         if isinstance(v, str):
             return v
 
-        logger.info("validate db url")
-        print("validate db url")
-
         username = info.data["postgres_user"]
         host = info.data.get("postgres_host", "")
         port = info.data.get("postgres_port", 5432)
@@ -115,8 +87,6 @@ class PostgresSettings(BaseSettings):
 
         # Determine password/token based on IAM flag
         if info.data.get("iam_auth_enabled"):
-            logger.info("IAM enabled")
-            print("IAM enabled")
             region = info.data.get("aws_region")
             if not region:
                 raise ValueError(
@@ -126,34 +96,17 @@ class PostgresSettings(BaseSettings):
             password = rds_client.generate_db_auth_token(
                 DBHostname=host, Port=int(port), DBUsername=username, Region=region
             )
-            logger.info(f"token retrieved: {password}")
-            print(f"token retrieved: {password}")
-
-            certpath = rds_cert_path()
-
-            db_url = PostgresDsn.build(
-                scheme="postgresql",
-                username=username,
-                password=quote_plus(password),
-                host=host,
-                port=port,
-                path=dbname,
-                query=f"sslmode=verify-full&sslrootcert={certpath}",
-            )
-            logger.info(f"url: {db_url}")
-            print(f"url: {db_url}")
         else:
-            db_url = PostgresDsn.build(
-                scheme="postgresql",
-                username=username,
-                password=quote_plus(info.data["postgres_pass"]),
-                host=host,
-                port=int(port),
-                path=dbname,
-            )
+            password = info.data["postgres_pass"]
 
-            logger.info(f"url: {db_url}")
-            print(f"url: {db_url}")
+        db_url = PostgresDsn.build(
+            scheme="postgresql",
+            username=username,
+            password=quote_plus(password),
+            host=host,
+            port=port,
+            path=dbname,
+        )
 
         return db_url
 
