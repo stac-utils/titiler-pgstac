@@ -54,6 +54,9 @@ async def connect_to_db(
             settings.postgres_user,
             settings.aws_region,
         )
+        pool_kwargs["sslmode"] = "require"
+
+        print(pool_kwargs)
 
     app.state.dbpool = ConnectionPool(
         conninfo=str(settings.database_url),
