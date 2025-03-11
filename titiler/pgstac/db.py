@@ -40,6 +40,12 @@ async def connect_to_db(
     if not settings:
         settings = PostgresSettings()
 
+    pool_kwargs = (
+        pool_kwargs
+        if pool_kwargs is not None
+        else {"options": "-c search_path=pgstac,public -c application_name=pgstac"}
+    )
+
     if os.environ.get("IAM_AUTH_ENABLED") == "TRUE":
         pool_kwargs["password"] = functools.partial(
             get_rds_token,
@@ -49,12 +55,6 @@ async def connect_to_db(
             settings.aws_region,
         )
         pool_kwargs["ssl"] = "require"
-
-    pool_kwargs = (
-        pool_kwargs
-        if pool_kwargs is not None
-        else {"options": "-c search_path=pgstac,public -c application_name=pgstac"}
-    )
 
     app.state.dbpool = ConnectionPool(
         conninfo=str(settings.database_url),
