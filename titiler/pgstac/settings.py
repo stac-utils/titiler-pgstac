@@ -2,10 +2,15 @@
 
 from functools import lru_cache
 from typing import Any, Optional, Set
-from urllib.parse import quote_plus
+from urllib.parse import quote_plus as quote
 
-import boto3
-from pydantic import Field, PostgresDsn, field_validator, model_validator
+from pydantic import (
+    Field,
+    PostgresDsn,
+    ValidationInfo,
+    field_validator,
+    model_validator,
+)
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing_extensions import Annotated
 
