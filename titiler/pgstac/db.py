@@ -40,7 +40,6 @@ async def connect_to_db(
     if not settings:
         settings = PostgresSettings()
 
-    pool_kwargs = {}
     if os.environ.get("IAM_AUTH_ENABLED") == "TRUE":
         pool_kwargs["password"] = functools.partial(
             get_rds_token,
