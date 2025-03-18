@@ -29,8 +29,8 @@ class ApiSettings(BaseSettings):
     root_path: str = "/pgtitiler"
     debug: bool = False
 
-    enable_assets_endpoints: bool = False
-    enable_external_dataset_endpoints: bool = False
+    enable_assets_endpoints: bool = True
+    enable_external_dataset_endpoints: bool = True
 
     model_config = SettingsConfigDict(
         env_prefix="TITILER_PGSTAC_API_", env_file=".env", extra="ignore"
