@@ -1,5 +1,9 @@
 # Release Notes
 
+## 1.7.2 (2025-04-03)
+
+* fix Landing page links when app is behind proxy
+
 ## 1.7.1 (2025-03-04)
 
 * remove `PostgresSettings` initialization from `main.py`

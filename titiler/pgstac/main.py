@@ -1,7 +1,6 @@
 """TiTiler+PgSTAC FastAPI application."""
 
 import logging
-import re
 from contextlib import asynccontextmanager
 from typing import Dict
 
@@ -305,6 +304,25 @@ def ping(
 @app.get("/", response_class=HTMLResponse, tags=["Landing"])
 def landing(request: Request):
     """Get landing page."""
+    urlpath = request.url.path
+    if root_path := request.scope.get("root_path"):
+        urlpath = urlpath.removeprefix(root_path)
+
+    crumbs = []
+    baseurl = str(request.base_url).rstrip("/")
+
+    crumbpath = str(baseurl)
+    if urlpath == "/":
+        urlpath = ""
+
+    for crumb in urlpath.split("/"):
+        crumbpath = crumbpath.rstrip("/")
+        part = crumb
+        if part is None or part == "":
+            part = "Home"
+        crumbpath += f"/{crumb}"
+        crumbs.append({"url": crumbpath.rstrip("/"), "part": part.capitalize()})
+
     data = {
         "title": "TiTiler-PgSTACr",
         "links": [
@@ -328,13 +346,14 @@ def landing(request: Request):
             },
             {
                 "title": "PgSTAC Virtual Mosaic list (JSON)",
-                "href": app.url_path_for("list_searches"),
+                "href": baseurl + app.url_path_for("list_searches"),
                 "type": "application/json",
                 "rel": "data",
             },
             {
                 "title": "PgSTAC Virtual Mosaic viewer (template URL)",
-                "href": app.url_path_for(
+                "href": baseurl
+                + app.url_path_for(
                     "map_viewer",
                     search_id="{search_id}",
                     tileMatrixSetId="{tileMatrixSetId}",
@@ -345,7 +364,8 @@ def landing(request: Request):
             },
             {
                 "title": "PgSTAC Collection viewer (template URL)",
-                "href": app.url_path_for(
+                "href": baseurl
+                + app.url_path_for(
                     "map_viewer",
                     collection_id="{collection_id}",
                     tileMatrixSetId="{tileMatrixSetId}",
@@ -356,7 +376,8 @@ def landing(request: Request):
             },
             {
                 "title": "PgSTAC Item viewer (template URL)",
-                "href": app.url_path_for(
+                "href": baseurl
+                + app.url_path_for(
                     "map_viewer",
                     collection_id="{collection_id}",
                     item_id="{item_id}",
@@ -381,21 +402,6 @@ def landing(request: Request):
         ],
     }
 
-    urlpath = request.url.path
-    if root_path := request.app.root_path:
-        urlpath = re.sub(r"^" + root_path, "", urlpath)
-    crumbs = []
-    baseurl = str(request.base_url).rstrip("/")
-
-    crumbpath = str(baseurl)
-    for crumb in urlpath.split("/"):
-        crumbpath = crumbpath.rstrip("/")
-        part = crumb
-        if part is None or part == "":
-            part = "Home"
-        crumbpath += f"/{crumb}"
-        crumbs.append({"url": crumbpath.rstrip("/"), "part": part.capitalize()})
-
     return templates.TemplateResponse(
         request,
         name="index.html",
@@ -410,7 +416,5 @@ def landing(request: Request):
             "crumbs": crumbs,
             "url": str(request.url),
             "baseurl": baseurl,
-            "urlpath": str(request.url.path),
-            "urlparams": str(request.url.query),
         },
     )

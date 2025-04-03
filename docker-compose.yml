@@ -60,6 +60,21 @@ services:
       - "8083:8083"
     command: ["uvicorn", "titiler.pgstac.main:app", "--host", "0.0.0.0", "--port", "8083", "--workers", "1"]
 
+  nginx:
+    image: nginx
+    ports:
+      - 8080:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - app-nginx
+    command: [ "nginx-debug", "-g", "daemon off;" ]
+
+  app-nginx:
+    extends:
+      service: tiler
+    command: bash -c "uvicorn titiler.pgstac.main:app --host 0.0.0.0 --port 8082 --proxy-headers --forwarded-allow-ips='*' --root-path=/api/v1/titiler"
+
   database:
     container_name: stac-db
     image: ghcr.io/stac-utils/pgstac:v${PGSTAC_VERSION-0.9.2}
@@ -77,4 +92,4 @@ services:
 
 networks:
   default:
-    name: stac-fastapi-network
+    name: titiler-pgstac-network
