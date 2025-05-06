@@ -43,11 +43,14 @@ class PgSTACReader(STACReader):
 
     ctx: rasterio.Env = attr.ib(default=rasterio.Env)
 
+    # item is a `input` attribute in the rio-tiler `STACReader`
+    # we move it outside the `init` method because we will take the `pystac.Item`
+    # directly as input.
     item: Any = attr.ib(init=False)
     fetch_options: Dict = attr.ib(init=False)
 
     def __attrs_post_init__(self):
-        """Check Item properties and get list of valid assets."""
+        """set self.item from input."""
         self.item = self.input
         super().__attrs_post_init__()
 

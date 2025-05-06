@@ -221,7 +221,7 @@ def test_wmts_collections(app):
     assert response.status_code == 400
     assert (
         response.json()["detail"]
-        == "assets must be defined either via expression or assets options."
+        == "Could not find any valid layers in metadata or construct one from Query Parameters."
     )
 
     response = app.get(
@@ -314,11 +314,12 @@ def test_statistics_collections(rio, app):
 
 def test_map_collection(app):
     """test /map endpoint."""
-    response = app.get(f"/collections/{collection_id}/WebMercatorQuad/map")
+    response = app.get(f"/collections/{collection_id}/WebMercatorQuad/map.html")
     assert response.status_code == 400
 
     response = app.get(
-        f"/collections/{collection_id}/WebMercatorQuad/map", params={"assets": "cog"}
+        f"/collections/{collection_id}/WebMercatorQuad/map.html",
+        params={"assets": "cog"},
     )
     assert response.status_code == 200
 

@@ -1,5 +1,11 @@
 # Release Notes
 
+## 1.8.0
+
+* update titiler requirement to `>=0.22,<0.23`
+* add `/conformance` endpoint
+* use HTML templates for landing page from `titiler.core`
+
 ## 1.7.2 (2025-04-03)
 
 * fix Landing page links when app is behind proxy

@@ -2,7 +2,7 @@
 
 import logging
 from contextlib import asynccontextmanager
-from typing import Dict
+from typing import Dict, Literal, Optional
 
 import jinja2
 import rasterio
@@ -12,8 +12,8 @@ from psycopg.rows import dict_row
 from psycopg_pool import PoolTimeout
 from starlette.middleware.cors import CORSMiddleware
 from starlette.requests import Request
-from starlette.responses import HTMLResponse
 from starlette.templating import Jinja2Templates
+from typing_extensions import Annotated
 
 from titiler.core import __version__ as titiler_version
 from titiler.core.errors import DEFAULT_STATUS_CODES, add_exception_handlers
@@ -29,7 +29,10 @@ from titiler.core.middleware import (
     LoggerMiddleware,
     TotalTimeMiddleware,
 )
-from titiler.core.resources.enums import OptionalHeader
+from titiler.core.models.OGC import Conformance, Landing
+from titiler.core.resources.enums import MediaType, OptionalHeader
+from titiler.core.templating import create_html_response
+from titiler.core.utils import accept_media_type, update_openapi
 from titiler.mosaic.errors import MOSAIC_STATUS_CODES
 from titiler.pgstac import __version__ as titiler_pgstac_version
 from titiler.pgstac.db import close_db_connection, connect_to_db
@@ -57,6 +60,7 @@ jinja2_env = jinja2.Environment(
     loader=jinja2.ChoiceLoader(
         [
             jinja2.PackageLoader(__package__, "templates"),
+            jinja2.PackageLoader("titiler.core.templating", "html"),
         ]
     ),
 )
@@ -94,9 +98,11 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-add_exception_handlers(app, DEFAULT_STATUS_CODES)
-add_exception_handlers(app, MOSAIC_STATUS_CODES)
-add_exception_handlers(app, PGSTAC_STATUS_CODES)
+# Fix OpenAPI response header for OGC Common compatibility
+update_openapi(app)
+
+ERRORS = {**DEFAULT_STATUS_CODES, **MOSAIC_STATUS_CODES, **PGSTAC_STATUS_CODES}
+add_exception_handlers(app, ERRORS)
 
 
 # Set all CORS enabled origins
@@ -161,6 +167,14 @@ if settings.debug:
         }
 
 
+TITILER_CONFORMS_TO = {
+    "http://www.opengis.net/spec/ogcapi-common-1/1.0/req/core",
+    "http://www.opengis.net/spec/ogcapi-common-1/1.0/req/landing-page",
+    "http://www.opengis.net/spec/ogcapi-common-1/1.0/req/oas30",
+    "http://www.opengis.net/spec/ogcapi-common-1/1.0/req/html",
+    "http://www.opengis.net/spec/ogcapi-common-1/1.0/req/json",
+}
+
 ###############################################################################
 # STAC Search Endpoints
 searches = MosaicTilerFactory(
@@ -189,12 +203,14 @@ add_search_register_route(
         searches.pixel_selection_dependency,
         searches.process_dependency,
         searches.render_dependency,
-        searches.pgstac_dependency,
+        searches.assets_accessor_dependency,
         searches.reader_dependency,
         searches.backend_dependency,
     ],
     tags=["STAC Search"],
 )
+
+TITILER_CONFORMS_TO.update(searches.conforms_to)
 
 ###############################################################################
 # STAC COLLECTION Endpoints
@@ -212,6 +228,7 @@ collection = MosaicTilerFactory(
 app.include_router(
     collection.router, tags=["STAC Collection"], prefix="/collections/{collection_id}"
 )
+TITILER_CONFORMS_TO.update(collection.conforms_to)
 
 ###############################################################################
 # STAC Item Endpoints
@@ -226,6 +243,7 @@ app.include_router(
     tags=["STAC Item"],
     prefix="/collections/{collection_id}/items/{item_id}",
 )
+TITILER_CONFORMS_TO.update(stac.conforms_to)
 
 ###############################################################################
 # STAC Assets Endpoints
@@ -240,6 +258,7 @@ if settings.enable_assets_endpoints:
         tags=["STAC Asset"],
         prefix="/collections/{collection_id}/items/{item_id}/assets/{asset_id}",
     )
+    TITILER_CONFORMS_TO.update(asset.conforms_to)
 
 ###############################################################################
 # External Dataset Endpoints
@@ -250,16 +269,19 @@ if settings.enable_external_dataset_endpoints:
         tags=["External Dataset"],
         prefix="/external",
     )
+    TITILER_CONFORMS_TO.update(external_cog.conforms_to)
 
 ###############################################################################
 # Tiling Schemes Endpoints
 tms = TMSFactory()
 app.include_router(tms.router, tags=["Tiling Schemes"])
+TITILER_CONFORMS_TO.update(tms.conforms_to)
 
 ###############################################################################
 # Algorithms Endpoints
 algorithms = AlgorithmFactory()
 app.include_router(algorithms.router, tags=["Algorithms"])
+TITILER_CONFORMS_TO.update(algorithms.conforms_to)
 
 ###############################################################################
 # Colormaps endpoints
@@ -268,6 +290,7 @@ app.include_router(
     cmaps.router,
     tags=["ColorMaps"],
 )
+TITILER_CONFORMS_TO.update(cmaps.conforms_to)
 
 
 ###############################################################################
@@ -299,32 +322,34 @@ def ping(
     }
 
 
-###############################################################################
-# Landing Page
-@app.get("/", response_class=HTMLResponse, tags=["Landing"])
-def landing(request: Request):
-    """Get landing page."""
-    urlpath = request.url.path
-    if root_path := request.scope.get("root_path"):
-        urlpath = urlpath.removeprefix(root_path)
-
-    crumbs = []
+@app.get(
+    "/",
+    response_model=Landing,
+    response_model_exclude_none=True,
+    responses={
+        200: {
+            "content": {
+                "text/html": {},
+                "application/json": {},
+            }
+        },
+    },
+    tags=["OGC Common"],
+)
+def landing(
+    request: Request,
+    f: Annotated[
+        Optional[Literal["html", "json"]],
+        Query(
+            description="Response MediaType. Defaults to endpoint's default or value defined in `accept` header."
+        ),
+    ] = None,
+):
+    """TiTiler landing page."""
     baseurl = str(request.base_url).rstrip("/")
 
-    crumbpath = str(baseurl)
-    if urlpath == "/":
-        urlpath = ""
-
-    for crumb in urlpath.split("/"):
-        crumbpath = crumbpath.rstrip("/")
-        part = crumb
-        if part is None or part == "":
-            part = "Home"
-        crumbpath += f"/{crumb}"
-        crumbs.append({"url": crumbpath.rstrip("/"), "part": part.capitalize()})
-
     data = {
-        "title": "TiTiler-PgSTACr",
+        "title": "TiTiler-PgSTAC",
         "links": [
             {
                 "title": "Landing page",
@@ -343,6 +368,12 @@ def landing(request: Request):
                 "href": str(request.url_for("swagger_ui_html")),
                 "type": "text/html",
                 "rel": "service-doc",
+            },
+            {
+                "title": "Conformance Declaration",
+                "href": str(request.url_for("conformance")),
+                "type": "text/html",
+                "rel": "http://www.opengis.net/def/rel/ogc/1.0/conformance",
             },
             {
                 "title": "PgSTAC Virtual Mosaic list (JSON)",
@@ -402,19 +433,76 @@ def landing(request: Request):
         ],
     }
 
-    return templates.TemplateResponse(
-        request,
-        name="index.html",
-        context={
-            "request": request,
-            "response": data,
-            "template": {
-                "api_root": baseurl,
-                "params": request.query_params,
-                "title": "TiTiler-PgSTAC",
-            },
-            "crumbs": crumbs,
-            "url": str(request.url),
-            "baseurl": baseurl,
+    output_type: Optional[MediaType]
+    if f:
+        output_type = MediaType[f]
+    else:
+        accepted_media = [MediaType.html, MediaType.json]
+        output_type = accept_media_type(
+            request.headers.get("accept", ""), accepted_media
+        )
+
+    if output_type == MediaType.html:
+        return create_html_response(
+            request,
+            data,
+            "landing",
+            templates=templates,
+            title="TiTiler-PgSTAC",
+        )
+
+    return data
+
+
+@app.get(
+    "/conformance",
+    response_model=Conformance,
+    response_model_exclude_none=True,
+    responses={
+        200: {
+            "content": {
+                "text/html": {},
+                "application/json": {},
+            }
         },
-    )
+    },
+    tags=["OGC Common"],
+)
+def conformance(
+    request: Request,
+    f: Annotated[
+        Optional[Literal["html", "json"]],
+        Query(
+            description="Response MediaType. Defaults to endpoint's default or value defined in `accept` header."
+        ),
+    ] = None,
+):
+    """Conformance classes.
+
+    Called with `GET /conformance`.
+
+    Returns:
+        Conformance classes which the server conforms to.
+
+    """
+    data = {"conformsTo": sorted(TITILER_CONFORMS_TO)}
+
+    output_type: Optional[MediaType]
+    if f:
+        output_type = MediaType[f]
+    else:
+        accepted_media = [MediaType.html, MediaType.json]
+        output_type = accept_media_type(
+            request.headers.get("accept", ""), accepted_media
+        )
+
+    if output_type == MediaType.html:
+        return create_html_response(
+            request,
+            data,
+            "conformance",
+            templates=templates,
+            title="Conformance",
+        )
+
+    return data

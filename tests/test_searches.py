@@ -307,7 +307,7 @@ def test_wmts(app, search_no_bbox):
     assert response.status_code == 400
     assert (
         response.json()["detail"]
-        == "assets must be defined either via expression or assets options."
+        == "Could not find any valid layers in metadata or construct one from Query Parameters."
     )
 
     response = app.get(
@@ -599,7 +599,7 @@ def test_query_with_metadata(app):
     assert response.status_code == 400
     assert (
         response.json()["detail"]
-        == "assets must be defined either via expression or assets options."
+        == "Could not find any valid layers in metadata or construct one from Query Parameters."
     )
 
     # 2. assets and no metadata layers
@@ -839,11 +839,11 @@ def test_mosaic_list(app):
 
 def test_map(app, search_bbox):
     """test /map endpoint."""
-    response = app.get(f"/searches/{search_bbox}/WebMercatorQuad/map")
+    response = app.get(f"/searches/{search_bbox}/WebMercatorQuad/map.html")
     assert response.status_code == 400
 
     response = app.get(
-        f"/searches/{search_bbox}/WebMercatorQuad/map", params={"assets": "cog"}
+        f"/searches/{search_bbox}/WebMercatorQuad/map.html", params={"assets": "cog"}
     )
     assert response.status_code == 200
 

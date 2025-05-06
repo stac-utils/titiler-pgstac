@@ -159,8 +159,9 @@ def CollectionIdParams(
         Optional[str],
         Query(
             description="Array of Item ids",
-            json_schema_extra={
-                "example": "item1,item2",
+            openapi_examples={
+                "user-provided": {"value": None},
+                "multiple-items": {"value": "item1,item2"},
             },
         ),
     ] = None,
@@ -168,8 +169,9 @@ def CollectionIdParams(
         Optional[str],
         Query(
             description="Filters items intersecting this bounding box",
-            json_schema_extra={
-                "example": "-175.05,-85.05,175.05,85.05",
+            openapi_examples={
+                "user-provided": {"value": None},
+                "Montreal": {"value": "-73.896103,45.364690,-73.413734,45.674283"},
             },
         ),
     ] = None,
@@ -179,6 +181,7 @@ def CollectionIdParams(
             description="""Filters items that have a temporal property that intersects this value.\n
 Either a date-time or an interval, open or closed. Date and time expressions adhere to RFC 3339. Open intervals are expressed using double-dots.""",
             openapi_examples={
+                "user-defined": {"value": None},
                 "datetime": {"value": "2018-02-12T23:20:50Z"},
                 "closed-interval": {
                     "value": "2018-02-12T00:00:00Z/2018-03-18T12:31:12Z"

@@ -271,7 +271,10 @@ class PGSTACBackend(BaseBackend):
             with self.reader(item, tms=self.tms, **self.reader_options) as src_dst:
                 return src_dst.tile(x, y, z, **kwargs)
 
-        return mosaic_reader(mosaic_assets, _reader, tile_x, tile_y, tile_z, **kwargs)
+        img, used_assets = mosaic_reader(
+            mosaic_assets, _reader, tile_x, tile_y, tile_z, **kwargs
+        )
+        return img, [x["id"] for x in used_assets]
 
     def point(
         self,
@@ -351,7 +354,7 @@ class PGSTACBackend(BaseBackend):
             with self.reader(item, **self.reader_options) as src_dst:
                 return src_dst.part(bbox, **kwargs)
 
-        return mosaic_reader(
+        img, used_assets = mosaic_reader(
             mosaic_assets,
             _reader,
             bbox,
@@ -359,6 +362,7 @@ class PGSTACBackend(BaseBackend):
             dst_crs=dst_crs or bounds_crs,
             **kwargs,
         )
+        return img, [x["id"] for x in used_assets]
 
     def feature(
         self,
@@ -398,7 +402,7 @@ class PGSTACBackend(BaseBackend):
             with self.reader(item, **self.reader_options) as src_dst:
                 return src_dst.feature(shape, **kwargs)
 
-        return mosaic_reader(
+        img, used_assets = mosaic_reader(
             mosaic_assets,
             _reader,
             shape,
@@ -407,3 +411,4 @@ class PGSTACBackend(BaseBackend):
             max_size=max_size,
             **kwargs,
         )
+        return img, [x["id"] for x in used_assets]
