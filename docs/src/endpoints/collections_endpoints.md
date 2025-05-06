@@ -6,9 +6,8 @@
 | ------ | ---------------------------------------------------------------------------------|-----------------------------------------|--------------
 | `GET`  | `/collections/{collection_id}/tiles`                                                       | JSON                                    | List of OGC Tilesets available
 | `GET`  | `/collections/{collection_id}/tiles/{tileMatrixSetId}`                                     | JSON                                    | OGC Tileset metadata
-| `GET`  | `/collections/{collection_id}/tiles/{TileMatrixSetId}/{z}/{x}/{Y}/assets`                  | JSON                                    | Return a list of assets which overlap a given tile
 | `GET`  | `/collections/{collection_id}/tiles/{TileMatrixSetId}/{z}/{x}/{y}[@{scale}x][.{format}]`   | image/bin                               | Create a web map tile image for a collection and a tile index
-| `GET`  | `/collections/{collection_id}/{TileMatrixSetId}/map`                                       | HTML                                    | simple map viewer
+| `GET`  | `/collections/{collection_id}/{TileMatrixSetId}/map.html`                                  | HTML                                    | simple map viewer
 | `GET`  | `/collections/{collection_id}/{TileMatrixSetId}/tilejson.json`                             | JSON ([TileJSON][tilejson_model])       | Return a Mapbox TileJSON document
 | `GET`  | `/collections/{collection_id}/{TileMatrixSetId}/WMTSCapabilities.xml`                      | XML                                     | return OGC WMTS Get Capabilities
 | `POST` | `/collections/{collection_id}/statistics`                                                  | GeoJSON ([Statistics][statitics_model]) | Return statistics for geojson features
@@ -16,6 +15,8 @@
 | `POST` | `/collections/{collection_id}/feature[/{width}x{height}][.{format}]`                       | image/bin                               | Create an image from a GeoJSON feature
 | `GET`  | `/collections/{collection_id}/point/{lon},{lat}`                                           | JSON ([Point][point_model])             | Return pixel values from assets intersecting with a given point
 | `GET`  | `/collections/{collection_id}/point/{lon},{lat}/assets`                                    | JSON                                    | Return a list of assets which overlap a given point
+| `GET`  | `/collections/{collection_id}/bbox/{minx},{miny},{maxx},{maxy}/assets`                     | JSON                                    | Return a list of assets which overlap a given bounding box
+| `GET`  | `/collections/{collection_id}/tiles/{TileMatrixSetId}/{z}/{x}/{Y}/assets`                  | JSON                                    | Return a list of assets which overlap a given tile
 | `GET`  | `/collections/{collection_id}/info`                                                        | JSON ([Info][info_model])               | Return **Search** query infos from `collection_id`
 
 ### Tiles
@@ -136,7 +137,6 @@ Example:
     - **datetime** (str):Filters items that have a temporal property that intersects this value. Either a date-time or an interval, open or closed.
 
 
-
 !!! important
     additional query-parameters will be forwarded to the `tile` URL. If no `defaults` mosaic metadata, **assets** OR **expression** will be required
 
@@ -147,7 +147,7 @@ Example:
 - `https://myendpoint/collections/my-collection/WorldCRS84Quad/WMTSCapabilities.xml?assets=B01&tile_scale=2`
 
 
-### Assets for Point or Tile
+### Assets for Point or Tile or bbox
 
 `:endpoint:/collections/{collection_id}/tiles/{TileMatrixSetId}/{z}/{x}/{y}/assets`
 
@@ -168,10 +168,10 @@ Example:
     - **bbox** (str): Filters items intersecting this bounding box.
     - **datetime** (str):Filters items that have a temporal property that intersects this value. Either a date-time or an interval, open or closed.
 
-
 Example:
 
 - `https://myendpoint/collections/my-collection/tiles/WebMercatorQuad/0/0/0/assets`
+
 
 `:endpoint:/collections/{collection_id}/point/{lon},{lat}/assets`
 
@@ -190,10 +190,32 @@ Example:
     - **bbox** (str): Filters items intersecting this bounding box.
     - **datetime** (str):Filters items that have a temporal property that intersects this value. Either a date-time or an interval, open or closed.
 
+Example:
+
+- `https://myendpoint/collections/my-collection/point/0.0,0.0/assets`
+
+
+`:endpoint:/collections/{collection_id}/bbox/{minx},{miny},{maxx},{maxy}/assets`
+
+- PathParams:
+    - **collection_id**: STAC Collection Identifier.
+    - **minx,miny,maxx,maxy** (str): Comma (',') delimited bounding box
+
+- QueryParams:
+    - **scan_limit** (int): Return as soon as we scan N items, Default is 10,000 in PgSTAC.
+    - **items_limit** (int): Return as soon as we have N items per geometry, Default is 100 in PgSTAC.
+    - **time_limit** (int): Return after N seconds to avoid long requests, Default is 5sec in PgSTAC.
+    - **exitwhenfull** (bool): Return as soon as the geometry is fully covered, Default is `True` in PgSTAC.
+    - **skipcovered** (bool): Skip any items that would show up completely under the previous items, Default is `True` in PgSTAC.
+    - **ids** (str): Array of Item ids to show.
+    - **bbox** (str): Filters items intersecting this bounding box.
+    - **datetime** (str):Filters items that have a temporal property that intersects this value. Either a date-time or an interval, open or closed.
+    - **coord_crs** (str): Coordinate Reference System of the input coordinates. Default to `epsg:4326`.
 
 Example:
 
-- `https://myendpoint/collections/my-collection/0.0,0.0/assets`
+- `https://myendpoint/collections/my-collection/bbox/0,0,0,0/assets`
+
 
 ### Statistics
 
@@ -237,13 +259,13 @@ Example:
     - **datetime** (str):Filters items that have a temporal property that intersects this value. Either a date-time or an interval, open or closed.
 
 !!! important
-    if **height** and **width** are provided **max_size** will be ignored.
+    if **height** or **width** is provided **max_size** will be ignored.
 
 Example:
 
 - `https://myendpoint/collections/my-collection/statistics?assets=B01`
 
-### BBOX/Feature
+### Bbox
 
 `:endpoint:/collections/{collection_id}/bbox/{minx},{miny},{maxx},{maxy}.{format}`
 
@@ -286,15 +308,20 @@ Example:
     - **datetime** (str):Filters items that have a temporal property that intersects this value. Either a date-time or an interval, open or closed.
 
 !!! important
-    if **height** and **width** are provided **max_size** will be ignored.
+    if **height** or **width** is provided **max_size** will be ignored.
 
 Example:
 
 - `https://myendpoint/collections/my-collection/bbox/0,0,10,10.png?assets=B01`
 - `https://myendpoint/collections/my-collection/bbox/0,0,10,10/400x300.png?assets=B01`
 
+### Feature
 
-`:endpoint:/collections/{collection_id}/feature[/{width}x{height}][].{format}] - [POST]`
+`:endpoint:/collections/{collection_id}/feature - [POST]`
+
+`:endpoint:/collections/{collection_id}/feature.{format} - [POST]`
+
+`:endpoint:/collections/{collection_id}/feature/{width}x{height}.{format} - [POST]`
 
 - Body:
     - **feature** (JSON): A valid GeoJSON feature (Polygon or MultiPolygon)
@@ -335,7 +362,7 @@ Example:
     - **datetime** (str):Filters items that have a temporal property that intersects this value. Either a date-time or an interval, open or closed.
 
 !!! important
-    if **height** and **width** are provided **max_size** will be ignored.
+    if **height** or **width** is provided **max_size** will be ignored.
 
 Example:
 
@@ -500,25 +527,25 @@ curl 'http://myendpoint/collections/my-collection/info' | jq
       "title": "TileJSON link for `visualr` layer (Template URL)."
     },
     {
-      "href": "http://myendpoint/collections/my-collection/{tileMatrixSetId}/map",
+      "href": "http://myendpoint/collections/my-collection/{tileMatrixSetId}/map.html",
       "rel": "map",
       "templated": true,
       "title": "Map viewer link (Template URL)."
     },
     {
-      "href": "http://myendpoint/collections/my-collection/{tileMatrixSetId}/map?colormap=%7B%221%22%3A+%5B0%2C+0%2C+0%2C+255%5D%2C+%221000%22%3A+%5B255%2C+255%2C+255%2C+255%5D%7D&assets=visual&asset_bidx=visual%7C1",
+      "href": "http://myendpoint/collections/my-collection/{tileMatrixSetId}/map.html?colormap=%7B%221%22%3A+%5B0%2C+0%2C+0%2C+255%5D%2C+%221000%22%3A+%5B255%2C+255%2C+255%2C+255%5D%7D&assets=visual&asset_bidx=visual%7C1",
       "rel": "map",
       "templated": true,
       "title": "Map viewer link for `color` layer (Template URL)."
     },
     {
-      "href": "http://myendpoint/collections/my-collection/{tileMatrixSetId}/map?maxzoom=22&minzoom=8&assets=visual&asset_bidx=visual%7C1%2C2%2C3",
+      "href": "http://myendpoint/collections/my-collection/{tileMatrixSetId}/map.html?maxzoom=22&minzoom=8&assets=visual&asset_bidx=visual%7C1%2C2%2C3",
       "rel": "map",
       "templated": true,
       "title": "Map viewer link for `visual` layer (Template URL)."
     },
     {
-      "href": "http://myendpoint/collections/my-collection/{tileMatrixSetId}/map?rescale=0%2C100&assets=visual&asset_bidx=visual%7C1",
+      "href": "http://myendpoint/collections/my-collection/{tileMatrixSetId}/map.html?rescale=0%2C100&assets=visual&asset_bidx=visual%7C1",
       "rel": "map",
       "templated": true,
       "title": "Map viewer link for `visualr` layer (Template URL)."

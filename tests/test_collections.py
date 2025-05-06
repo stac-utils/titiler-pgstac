@@ -74,6 +74,38 @@ def test_assets_for_tile_collections(app):
     assert resp["detail"] == "CollectionId `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa` not found"
 
 
+def test_assets_for_bbox_collections(app):
+    """Get assets for a Point."""
+
+    bbox = [-86.0, 36.0, -85.0, 37.0]
+    str_bbox = ",".join(map(str, bbox))
+
+    response = app.get(f"/collections/{collection_id}/bbox/{str_bbox}/assets")
+    assert response.status_code == 200
+    resp = response.json()
+    assert len(resp) == 61
+
+    bbox = [-9573476, 4300621, -9462156, 4439106]
+    str_bbox = ",".join(map(str, bbox))
+
+    # with coord-crs
+    response = app.get(
+        f"/collections/{collection_id}/bbox/{str_bbox}/assets",
+        params={"coord_crs": "epsg:3857"},
+    )
+    assert response.status_code == 200
+    resp = response.json()
+    assert len(resp) == 61
+
+    # CollectionId not found
+    response = app.get(
+        f"/collections/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/bbox/{str_bbox}/assets"
+    )
+    assert response.status_code == 404
+    resp = response.json()
+    assert resp["detail"] == "CollectionId `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa` not found"
+
+
 def test_tilejson_collections(app):
     """Create TileJSON."""
     response = app.get(f"/collections/{collection_id}/WebMercatorQuad/tilejson.json")
