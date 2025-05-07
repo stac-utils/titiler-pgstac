@@ -77,12 +77,12 @@ def test_stac_items(rio, app):
     )
 
     response = app.get(
-        "/collections/noaa-emergency-response/items/20200307aC0853900w361030/WebMercatorQuad/map",
+        "/collections/noaa-emergency-response/items/20200307aC0853900w361030/WebMercatorQuad/map.html",
     )
     assert response.status_code == 400
 
     response = app.get(
-        "/collections/noaa-emergency-response/items/20200307aC0853900w361030/WebMercatorQuad/map",
+        "/collections/noaa-emergency-response/items/20200307aC0853900w361030/WebMercatorQuad/map.html",
         params={
             "assets": "cog",
         },

@@ -14,7 +14,7 @@ The `Item` endpoints are created using TiTiler's [MultiBaseTilerFactory](https:/
 | `GET`  | `/collections/{collection_id}/items/{item_id}/tiles[/{TileMatrixSetId}]/{z}/{x}/{y}[@{scale}x][.{format}]`  | image/bin                                        | create a web map tile image from assets
 | `GET`  | `/collections/{collection_id}/items/{item_id}[/{TileMatrixSetId}]/tilejson.json`                            | JSON ([TileJSON][tilejson_model])                | return a Mapbox TileJSON document
 | `GET`  | `/collections/{collection_id}/items/{item_id}[/{TileMatrixSetId}]/WMTSCapabilities.xml`                     | XML                                              | return OGC WMTS Get Capabilities
-| `GET`  | `/collections/{collection_id}/items/{item_id}[/{TileMatrixSetId}]/map`                                      | HTML                                             | simple map viewer
+| `GET`  | `/collections/{collection_id}/items/{item_id}[/{TileMatrixSetId}]/map.html`                                 | HTML                                             | simple map viewer
 | `GET`  | `/collections/{collection_id}/items/{item_id}/point/{lon},{lat}`                                            | JSON ([Point][multipoint_model])                 | return pixel values from assets
 | `GET`  | `/collections/{collection_id}/items/{item_id}/preview[.{format}]`                                           | image/bin                                        | create a preview image from assets
 | `GET`  | `/collections/{collection_id}/items/{item_id}/bbox/{minx},{miny},{maxx},{maxy}[/{width}x{height}].{format}` | image/bin                                        | create an image from part of assets

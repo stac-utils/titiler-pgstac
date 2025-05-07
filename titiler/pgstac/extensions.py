@@ -12,8 +12,9 @@ from starlette.requests import Request
 from starlette.routing import NoMatchFound
 
 from titiler.core.factory import FactoryExtension
+from titiler.core.utils import check_query_params
 from titiler.pgstac import model
-from titiler.pgstac.factory import MosaicTilerFactory, check_query_params
+from titiler.pgstac.factory import MosaicTilerFactory
 
 
 @dataclass
@@ -28,6 +29,7 @@ class searchInfoExtension(FactoryExtension):
             responses={200: {"description": "Get Search query metadata."}},
             response_model=model.Info,
             response_model_exclude_none=True,
+            operation_id=f"{factory.operation_prefix}getInfo",
         )
         def info(  # noqa: C901
             request: Request, search_id=Depends(factory.path_dependency)
@@ -63,26 +65,20 @@ class searchInfoExtension(FactoryExtension):
                     factory.process_dependency,
                     factory.colormap_dependency,
                     factory.render_dependency,
-                    factory.pgstac_dependency,
+                    factory.assets_accessor_dependency,
                     factory.reader_dependency,
                     factory.backend_dependency,
                 ]
 
                 for name, values in renders.items():
-                    try:
-                        check_query_params(
-                            dependencies=tile_dependencies,  # type: ignore
-                            query_params=values,
-                        )
-                    except Exception as e:
+                    if check_query_params(tile_dependencies, values):
+                        layers.append((name, urlencode(values, doseq=True)))
+                    else:
                         warnings.warn(
-                            f"Cannot construct URL for layer `{name}`: {repr(e)}",
+                            f"Cannot construct URL for layer `{name}`",
                             UserWarning,
                             stacklevel=2,
                         )
-                        continue
-
-                    layers.append((name, urlencode(values, doseq=True)))
 
             try:
                 tilejson_endpoint = factory.url_for(
