@@ -127,9 +127,10 @@ class PgSTACSearch(BaseModel):
     bbox: Optional[BBox] = None
     intersects: Optional[Geometry] = None
     query: Optional[Dict[str, Dict[Operator, Any]]] = None
-    filter: Optional[Dict] = None
     datetime: Optional[str] = None
     sortby: Optional[Any] = None
+    filter: Optional[str] = None
+    filter_crs: Optional[str] = Field(default=None, alias="filter-crs")
     filter_lang: Optional[FilterLang] = Field(default=None, alias="filter-lang")
 
     model_config = {"extra": "allow"}
