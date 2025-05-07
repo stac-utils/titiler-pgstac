@@ -1,9 +1,11 @@
 """titiler-pgstac dependencies."""
 
+import json
 import warnings
 from dataclasses import dataclass, field
 from threading import Lock
 from typing import List, Optional, Tuple
+from urllib.parse import unquote_plus
 
 import morecantile
 import pystac
@@ -62,6 +64,8 @@ def get_collection_id(
     ids: Optional[List[str]] = None,
     bbox: Optional[BBox] = None,
     datetime: Optional[str] = None,
+    query: Optional[str] = None,
+    sortby: Optional[List[str]] = None,
 ) -> str:  # noqa: C901
     """Get Search Id for a Collection."""
     search = model.PgSTACSearch(
@@ -69,6 +73,8 @@ def get_collection_id(
         ids=ids,
         bbox=bbox,
         datetime=datetime,
+        query=json.loads(unquote_plus(query)) if query else None,
+        sortby=sortby,
     )
 
     with pool.connection() as conn:
@@ -191,6 +197,27 @@ Either a date-time or an interval, open or closed. Date and time expressions adh
             },
         ),
     ] = None,
+    query: Annotated[
+        Optional[str],
+        Query(
+            description="Allows additional filtering based on the properties of Item objects",
+            openapi_examples={
+                "user-provided": {"value": None},
+                "cloudy": {"value": '{"eo:cloud_cover": {"gte": 95}}'},
+            },
+        ),
+    ] = None,
+    sortby: Annotated[
+        Optional[str],
+        Query(
+            description="An array of property names, prefixed by either '+' for ascending or '-' for descending. If no prefix is provided, '+' is assumed.",
+            openapi_examples={
+                "user-provided": {"value": None},
+                "resolution": {"value": "-gsd"},
+                "resolution-and-dates": {"value": "-gsd,-datetime"},
+            },
+        ),
+    ] = None,
 ) -> str:
     """Collection endpoints Parameters"""
     return get_collection_id(
@@ -199,6 +226,8 @@ Either a date-time or an interval, open or closed. Date and time expressions adh
         ids=ids.split(",") if ids else None,
         bbox=list(map(float, bbox.split(","))) if bbox else None,
         datetime=datetime,
+        query=query,
+        sortby=sortby.split(",") if sortby else None,
     )
 
 
