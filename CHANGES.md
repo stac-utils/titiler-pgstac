@@ -5,6 +5,10 @@
 * update titiler requirement to `>=0.22,<0.23`
 * add `/conformance` endpoint
 * use HTML templates for landing page from `titiler.core`
+* add `query` and `sortby` options to `/collections`
+* update input types for `dependencies.get_collection_id` function  **breaking change**
+    - `ids`: `List[str]` -> `str`
+    - `bbox`: `List[float]` -> `str`
 
 ## 1.7.2 (2025-04-03)
 
