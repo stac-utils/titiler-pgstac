@@ -1,9 +1,12 @@
 """titiler-pgstac dependencies."""
 
+import json
+import re
 import warnings
 from dataclasses import dataclass, field
 from threading import Lock
 from typing import List, Optional, Tuple
+from urllib.parse import unquote_plus
 
 import morecantile
 import pystac
@@ -11,7 +14,6 @@ from cachetools import TTLCache, cached
 from cachetools.keys import hashkey
 from cogeo_mosaic.errors import MosaicNotFoundError
 from fastapi import HTTPException, Path, Query
-from geojson_pydantic.types import BBox
 from psycopg import errors as pgErrors
 from psycopg.rows import class_row, dict_row
 from psycopg_pool import ConnectionPool
@@ -40,11 +42,13 @@ def SearchIdParams(
 
 @cached(  # type: ignore
     TTLCache(maxsize=cache_config.maxsize, ttl=cache_config.ttl),
-    key=lambda pool, collection_id, ids, bbox, datetime: hashkey(
+    key=lambda pool, collection_id, ids, bbox, datetime, query, sortby: hashkey(
         collection_id,
-        str(ids),
-        str(bbox),
+        ids,
+        bbox,
         datetime,
+        query,
+        sortby,
     ),
     lock=Lock(),
 )
@@ -56,19 +60,34 @@ def SearchIdParams(
         pgErrors.InterfaceError,
     ),
 )
-def get_collection_id(
+def get_collection_id(  # noqa: C901
     pool: ConnectionPool,
     collection_id: str,
-    ids: Optional[List[str]] = None,
-    bbox: Optional[BBox] = None,
+    ids: Optional[str] = None,
+    bbox: Optional[str] = None,
     datetime: Optional[str] = None,
+    query: Optional[str] = None,
+    sortby: Optional[str] = None,
 ) -> str:  # noqa: C901
     """Get Search Id for a Collection."""
+    sort_param: List[model.SortExtension] = []
+    if sortby:
+        for sort in sortby.split(","):
+            if sortparts := re.match(r"^([+-]?)(.*)$", sort):
+                sort_param.append(
+                    model.SortExtension(
+                        field=sortparts.group(2).strip(),
+                        direction="desc" if sortparts.group(1) == "-" else "asc",
+                    )
+                )
+
     search = model.PgSTACSearch(
         collections=[collection_id],
-        ids=ids,
-        bbox=bbox,
+        ids=ids.split(",") if ids else None,
+        bbox=list(map(float, bbox.split(","))) if bbox else None,
         datetime=datetime,
+        query=json.loads(unquote_plus(query)) if query else None,
+        sortby=sort_param or None,
     )
 
     with pool.connection() as conn:
@@ -86,7 +105,7 @@ def get_collection_id(
             )
             metadata = model.Metadata(
                 name=f"Mosaic for '{collection_id}' Collection",
-                bounds=bbox or collection_bbox[0],
+                bounds=search.bbox or collection_bbox[0],
             )
 
             # item-assets https://github.com/stac-extensions/item-assets
@@ -191,14 +210,37 @@ Either a date-time or an interval, open or closed. Date and time expressions adh
             },
         ),
     ] = None,
+    query: Annotated[
+        Optional[str],
+        Query(
+            description="Allows additional filtering based on the properties of Item objects",
+            openapi_examples={
+                "user-provided": {"value": None},
+                "cloudy": {"value": '{"eo:cloud_cover": {"gte": 95}}'},
+            },
+        ),
+    ] = None,
+    sortby: Annotated[
+        Optional[str],
+        Query(
+            description="An array of property names, prefixed by either '+' for ascending or '-' for descending. If no prefix is provided, '+' is assumed.",
+            openapi_examples={
+                "user-provided": {"value": None},
+                "resolution": {"value": "-gsd"},
+                "resolution-and-dates": {"value": "-gsd,-datetime"},
+            },
+        ),
+    ] = None,
 ) -> str:
     """Collection endpoints Parameters"""
     return get_collection_id(
         request.app.state.dbpool,
         collection_id=collection_id,
-        ids=ids.split(",") if ids else None,
-        bbox=list(map(float, bbox.split(","))) if bbox else None,
+        ids=ids,
+        bbox=bbox,
         datetime=datetime,
+        query=query,
+        sortby=sortby,
     )
 
 

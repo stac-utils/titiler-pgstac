@@ -633,3 +633,25 @@ def test_collections_additional_parameters(app):
     assert response.status_code == 200
     resp = response.json()
     assert resp["search"]["search"]["datetime"] == "../2020-03-07T00:00:00Z"
+
+    # query
+    response = app.get(
+        "/collections/noaa-emergency-response/info",
+        params={"query": '{"eo:cloud_cover": {"gte": 95}}'},
+    )
+    assert response.status_code == 200
+    resp = response.json()
+    assert resp["search"]["search"]["query"] == {"eo:cloud_cover": {"gte": 95}}
+
+    # sortby
+    response = app.get(
+        "/collections/noaa-emergency-response/info",
+        params={"sortby": "-gsd,+datetime,cloud"},
+    )
+    assert response.status_code == 200
+    resp = response.json()
+    assert resp["search"]["search"]["sortby"] == [
+        {"field": "gsd", "direction": "desc"},
+        {"field": "datetime", "direction": "asc"},
+        {"field": "cloud", "direction": "asc"},
+    ]

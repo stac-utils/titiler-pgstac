@@ -59,6 +59,8 @@
     - **ids** (str): Array of Item ids to show.
     - **bbox** (str): Filters items intersecting this bounding box.
     - **datetime** (str):Filters items that have a temporal property that intersects this value. Either a date-time or an interval, open or closed.
+    - **query** (str): Filters items based on property values.
+    - **sortby** (str): Comma "," delimited property names, prefixed by either '+' for ascending or '-' for descending. If no prefix is provided, '+' is assumed.
 
 !!! important
     **assets** OR **expression** is required
@@ -108,6 +110,8 @@ Example:
     - **ids** (str): Array of Item ids to show.
     - **bbox** (str): Filters items intersecting this bounding box.
     - **datetime** (str):Filters items that have a temporal property that intersects this value. Either a date-time or an interval, open or closed.
+    - **query** (str): Filters items based on property values.
+    - **sortby** (str): Comma "," delimited property names, prefixed by either '+' for ascending or '-' for descending. If no prefix is provided, '+' is assumed.
 
 !!! important
     **assets** OR **expression** is required
@@ -135,6 +139,8 @@ Example:
     - **ids** (str): Array of Item ids to show.
     - **bbox** (str): Filters items intersecting this bounding box.
     - **datetime** (str):Filters items that have a temporal property that intersects this value. Either a date-time or an interval, open or closed.
+    - **query** (str): Filters items based on property values.
+    - **sortby** (str): Comma "," delimited property names, prefixed by either '+' for ascending or '-' for descending. If no prefix is provided, '+' is assumed.
 
 
 !!! important
@@ -167,6 +173,8 @@ Example:
     - **ids** (str): Array of Item ids to show.
     - **bbox** (str): Filters items intersecting this bounding box.
     - **datetime** (str):Filters items that have a temporal property that intersects this value. Either a date-time or an interval, open or closed.
+    - **query** (str): Filters items based on property values.
+    - **sortby** (str): Comma "," delimited property names, prefixed by either '+' for ascending or '-' for descending. If no prefix is provided, '+' is assumed.
 
 Example:
 
@@ -189,6 +197,8 @@ Example:
     - **ids** (str): Array of Item ids to show.
     - **bbox** (str): Filters items intersecting this bounding box.
     - **datetime** (str):Filters items that have a temporal property that intersects this value. Either a date-time or an interval, open or closed.
+    - **query** (str): Filters items based on property values.
+    - **sortby** (str): Comma "," delimited property names, prefixed by either '+' for ascending or '-' for descending. If no prefix is provided, '+' is assumed.
 
 Example:
 
@@ -202,6 +212,7 @@ Example:
     - **minx,miny,maxx,maxy** (str): Comma (',') delimited bounding box
 
 - QueryParams:
+    - **coord_crs** (str): Coordinate Reference System of the input coordinates. Default to `epsg:4326`.
     - **scan_limit** (int): Return as soon as we scan N items, Default is 10,000 in PgSTAC.
     - **items_limit** (int): Return as soon as we have N items per geometry, Default is 100 in PgSTAC.
     - **time_limit** (int): Return after N seconds to avoid long requests, Default is 5sec in PgSTAC.
@@ -210,7 +221,8 @@ Example:
     - **ids** (str): Array of Item ids to show.
     - **bbox** (str): Filters items intersecting this bounding box.
     - **datetime** (str):Filters items that have a temporal property that intersects this value. Either a date-time or an interval, open or closed.
-    - **coord_crs** (str): Coordinate Reference System of the input coordinates. Default to `epsg:4326`.
+    - **query** (str): Filters items based on property values.
+    - **sortby** (str): Comma "," delimited property names, prefixed by either '+' for ascending or '-' for descending. If no prefix is provided, '+' is assumed.
 
 Example:
 
@@ -257,6 +269,8 @@ Example:
     - **ids** (str): Array of Item ids to show.
     - **bbox** (str): Filters items intersecting this bounding box.
     - **datetime** (str):Filters items that have a temporal property that intersects this value. Either a date-time or an interval, open or closed.
+    - **query** (str): Filters items based on property values.
+    - **sortby** (str): Comma "," delimited property names, prefixed by either '+' for ascending or '-' for descending. If no prefix is provided, '+' is assumed.
 
 !!! important
     if **height** or **width** is provided **max_size** will be ignored.
@@ -306,6 +320,8 @@ Example:
     - **ids** (str): Array of Item ids to show.
     - **bbox** (str): Filters items intersecting this bounding box.
     - **datetime** (str):Filters items that have a temporal property that intersects this value. Either a date-time or an interval, open or closed.
+    - **query** (str): Filters items based on property values.
+    - **sortby** (str): Comma "," delimited property names, prefixed by either '+' for ascending or '-' for descending. If no prefix is provided, '+' is assumed.
 
 !!! important
     if **height** or **width** is provided **max_size** will be ignored.
@@ -360,6 +376,8 @@ Example:
     - **ids** (str): Array of Item ids to show.
     - **bbox** (str): Filters items intersecting this bounding box.
     - **datetime** (str):Filters items that have a temporal property that intersects this value. Either a date-time or an interval, open or closed.
+    - **query** (str): Filters items based on property values.
+    - **sortby** (str): Comma "," delimited property names, prefixed by either '+' for ascending or '-' for descending. If no prefix is provided, '+' is assumed.
 
 !!! important
     if **height** or **width** is provided **max_size** will be ignored.
@@ -398,6 +416,8 @@ Example:
     - **ids** (str): Array of Item ids to show.
     - **bbox** (str): Filters items intersecting this bounding box.
     - **datetime** (str):Filters items that have a temporal property that intersects this value. Either a date-time or an interval, open or closed.
+    - **query** (str): Filters items based on property values.
+    - **sortby** (str): Comma "," delimited property names, prefixed by either '+' for ascending or '-' for descending. If no prefix is provided, '+' is assumed.
 
 !!! important
     **assets** OR **expression** is required

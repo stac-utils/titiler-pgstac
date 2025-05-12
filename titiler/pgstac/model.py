@@ -114,7 +114,16 @@ class Metadata(BaseModel):
         return params
 
 
-class PgSTACSearch(BaseModel):
+class SortExtension(BaseModel):
+    """
+    https://github.com/radiantearth/stac-api-spec/tree/master/extensions/sort#sort-api-extension
+    """
+
+    field: str = Field(..., alias="field", min_length=1)
+    direction: Literal["asc", "desc"]
+
+
+class PgSTACSearch(BaseModel, extra="allow"):
     """Search Query model.
 
     Notes/Diff with standard model:
@@ -127,12 +136,62 @@ class PgSTACSearch(BaseModel):
     bbox: Optional[BBox] = None
     intersects: Optional[Geometry] = None
     query: Optional[Dict[str, Dict[Operator, Any]]] = None
-    filter: Optional[Dict] = None
     datetime: Optional[str] = None
-    sortby: Optional[Any] = None
-    filter_lang: Optional[FilterLang] = Field(default=None, alias="filter-lang")
-
-    model_config = {"extra": "allow"}
+    sortby: Optional[List[SortExtension]] = Field(
+        default=None,
+        description="An array of property (field) names, and direction in form of '{'field': '<property_name>', 'direction':'<direction>'}'",  # noqa: E501
+        json_schema_extra={
+            "examples": [
+                # user-provided
+                None,
+                # creation-time
+                [
+                    {
+                        "field": "properties.created",
+                        "direction": "asc",
+                    }
+                ],
+            ],
+        },
+    )
+    filter_expr: Optional[Dict[str, Any]] = Field(
+        default=None,
+        alias="filter",
+        description="A CQL filter expression for filtering items.",
+        json_schema_extra={
+            "examples": [
+                # user-provided
+                None,
+                # landsat8-item
+                {
+                    "op": "and",
+                    "args": [
+                        {
+                            "op": "=",
+                            "args": [
+                                {"property": "id"},
+                                "LC08_L1TP_060247_20180905_20180912_01_T1_L1TP",
+                            ],
+                        },
+                        {
+                            "op": "=",
+                            "args": [{"property": "collection"}, "landsat8_l1tp"],
+                        },
+                    ],
+                },
+            ],
+        },
+    )
+    filter_crs: Optional[str] = Field(
+        default=None,
+        alias="filter-crs",
+        description="The coordinate reference system (CRS) used by spatial literals in the 'filter' value. Default is `http://www.opengis.net/def/crs/OGC/1.3/CRS84`",
+    )
+    filter_lang: Optional[FilterLang] = Field(
+        default="cql2-json",
+        alias="filter-lang",
+        description="The CQL filter encoding that the 'filter' value uses.",
+    )
 
     @model_validator(mode="before")
     def validate_query_fields(cls, values: Dict) -> Dict:
