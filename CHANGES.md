@@ -1,6 +1,6 @@
 # Release Notes
 
-## 1.8.0
+## 1.8.0 (2025-05-12)
 
 * update titiler requirement to `>=0.22,<0.23`
 * add `/conformance` endpoint
