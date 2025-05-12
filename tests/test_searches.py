@@ -362,7 +362,8 @@ def test_cql2(rio, app):
         "filter": {
             "op": "=",
             "args": [{"property": "collection"}, "noaa-emergency-response"],
-        }
+        },
+        "filter-lang": "cql2-json",
     }
     assert search["metadata"] == {"type": "mosaic"}
 
@@ -521,9 +522,10 @@ def test_query_with_metadata(app):
     search = resp["search"]
     assert search["search"] == {
         "filter": {
-            "op": "=",
             "args": [{"property": "collection"}, "noaa-emergency-response"],
-        }
+            "op": "=",
+        },
+        "filter-lang": "cql2-json",
     }
     assert search["metadata"] == {
         "type": "mosaic",
