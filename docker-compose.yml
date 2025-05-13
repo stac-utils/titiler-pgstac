@@ -45,8 +45,11 @@ services:
       # TiTiler Config
       - MOSAIC_CONCURRENCY=5
       # AWS S3 endpoint config
-      # - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-      # - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_SESSION_TOKEN=${AWS_SESSION_TOKEN}
+      - TITILER_API_DEBUG=TRUE
+      - TITILER_PGSTAC_API_DEBUG=TRUE
     volumes:
       - ./benchmark:/tmp/benchmark
     depends_on:
@@ -58,7 +61,7 @@ services:
       service: tiler
     ports:
       - "8083:8083"
-    command: ["uvicorn", "titiler.pgstac.main:app", "--host", "0.0.0.0", "--port", "8083", "--workers", "1"]
+    command: ["uvicorn", "titiler.pgstac.main:app", "--host", "0.0.0.0", "--port", "8083", "--workers", "5", "--log-level", "debug"]
 
   nginx:
     image: nginx
