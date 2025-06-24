@@ -1,5 +1,6 @@
 """Custom MosaicTiler Factory for PgSTAC Mosaic Backend."""
 
+import logging
 import os
 import re
 import warnings
@@ -66,6 +67,8 @@ MOSAIC_STRICT_ZOOM = str(os.getenv("MOSAIC_STRICT_ZOOM", False)).lower() in [
     "true",
     "yes",
 ]
+
+logger = logging.getLogger(__name__)
 
 
 def _first_value(values: List[Any], default: Any = None):
@@ -196,6 +199,7 @@ class MosaicTilerFactory(BaseFactory):
             render_params=Depends(self.render_dependency),
         ):
             """Return TileJSON document for a search_id."""
+            logger.info(f"fetching search info for search {search_id}")
             with request.app.state.dbpool.connection() as conn:
                 with conn.cursor(row_factory=class_row(model.Search)) as cursor:
                     cursor.execute(
@@ -292,6 +296,7 @@ class MosaicTilerFactory(BaseFactory):
             search_id=Depends(self.path_dependency),
         ):
             """OGC WMTS endpoint."""
+            logger.info(f"fetching search info for search {search_id}")
             with request.app.state.dbpool.connection() as conn:
                 with conn.cursor(row_factory=class_row(model.Search)) as cursor:
                     cursor.execute(
@@ -486,15 +491,17 @@ class MosaicTilerFactory(BaseFactory):
                 fc = FeatureCollection(type="FeatureCollection", features=[geojson])
 
             with rasterio.Env(**env):
+                logger.info(f"opening data with backend: {self.backend}")
                 with self.backend(
                     search_id,
                     reader=self.dataset_reader,
                     reader_options=reader_params.as_dict(),
                     **backend_params.as_dict(),
                 ) as src_dst:
-                    for feature in fc.features:
+                    for i, feature in enumerate(fc.features):
                         shape = feature.model_dump(exclude_none=True)
 
+                        logger.info(f"{i}: reading data")
                         image, _ = src_dst.feature(
                             shape,
                             shape_crs=coord_crs or WGS84_CRS,
@@ -514,8 +521,10 @@ class MosaicTilerFactory(BaseFactory):
                         )
 
                         if post_process:
+                            logger.info(f"{i}: post processing image")
                             image = post_process(image)
 
+                        logger.info(f"{i}: calculating statistics")
                         stats = image.statistics(
                             **stats_params.as_dict(),
                             hist_options=histogram_params.as_dict(),
@@ -569,6 +578,7 @@ class MosaicTilerFactory(BaseFactory):
         ):
             """Create image from a bbox."""
             with rasterio.Env(**env):
+                logger.info(f"opening data with backend: {self.backend}")
                 with self.backend(
                     search_id,
                     reader=self.dataset_reader,
@@ -588,6 +598,7 @@ class MosaicTilerFactory(BaseFactory):
                     dst_colormap = getattr(src_dst, "colormap", None)
 
             if post_process:
+                logger.info("post processing image")
                 image = post_process(image)
 
             content, media_type = self.render_func(
@@ -643,6 +654,7 @@ class MosaicTilerFactory(BaseFactory):
         ):
             """Create image from a geojson feature."""
             with rasterio.Env(**env):
+                logger.info(f"opening data with backend: {self.backend}")
                 with self.backend(
                     search_id,
                     reader=self.dataset_reader,
@@ -662,6 +674,7 @@ class MosaicTilerFactory(BaseFactory):
                     )
 
             if post_process:
+                logger.info("post processing image")
                 image = post_process(image)
 
             content, media_type = self.render_func(

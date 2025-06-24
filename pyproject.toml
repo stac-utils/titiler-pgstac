@@ -47,6 +47,10 @@ psycopg-c = [  # C implementation of the libpq wrapper
 psycopg-binary = [  # pre-compiled C implementation
     "psycopg[binary,pool]"
 ]
+telemetry = [
+    "titiler.core[telemetry] @ git+https://github.com/developmentseed/titiler.git@feat/open-telemetry-hr#subdirectory=src/titiler/core",
+    "titiler.mosaic @ git+https://github.com/developmentseed/titiler.git@feat/open-telemetry-hr#subdirectory=src/titiler/mosaic"
+]
 dev = [
     "pre-commit",
     "bump-my-version",

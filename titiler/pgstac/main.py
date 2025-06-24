@@ -123,6 +123,8 @@ app.add_middleware(
 
 optional_headers = []
 if settings.debug:
+    logging.getLogger("titiler").setLevel(logging.INFO)
+
     app.add_middleware(TotalTimeMiddleware)
     app.add_middleware(LoggerMiddleware)
 
@@ -166,6 +168,33 @@ if settings.debug:
             "pgstac_readonly": pgstac_readonly,
         }
 
+
+if settings.telemetry_enabled:
+    from opentelemetry import trace
+    from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
+    from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
+    from opentelemetry.instrumentation.logging import LoggingInstrumentor
+    from opentelemetry.sdk.resources import SERVICE_NAME, SERVICE_VERSION, Resource
+    from opentelemetry.sdk.trace import TracerProvider
+    from opentelemetry.sdk.trace.export import BatchSpanProcessor
+
+    LoggingInstrumentor().instrument(set_logging_format=True)
+    FastAPIInstrumentor.instrument_app(app)
+
+    resource = Resource.create(
+        {
+            SERVICE_NAME: "titiler.pgstac",
+            SERVICE_VERSION: titiler_pgstac_version,
+        }
+    )
+
+    provider = TracerProvider(resource=resource)
+
+    # uses the OTEL_EXPORTER_OTLP_ENDPOINT env var
+    processor = BatchSpanProcessor(OTLPSpanExporter())
+    provider.add_span_processor(processor)
+
+    trace.set_tracer_provider(provider)
 
 TITILER_CONFORMS_TO = {
     "http://www.opengis.net/spec/ogcapi-common-1/1.0/req/core",

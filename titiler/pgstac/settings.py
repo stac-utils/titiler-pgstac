@@ -32,6 +32,8 @@ class ApiSettings(BaseSettings):
     enable_assets_endpoints: bool = False
     enable_external_dataset_endpoints: bool = False
 
+    telemetry_enabled: bool = False
+
     model_config = SettingsConfigDict(
         env_prefix="TITILER_PGSTAC_API_", env_file=".env", extra="ignore"
     )
