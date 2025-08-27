@@ -1,5 +1,9 @@
 # Release Notes
 
+## Unreleased 
+
+* update titiler requirement to `>=0.23,<0.24`
+
 ## 1.8.0 (2025-05-12)
 
 * update titiler requirement to `>=0.22,<0.23`

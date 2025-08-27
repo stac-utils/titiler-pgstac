@@ -28,8 +28,8 @@ classifiers = [
     "Topic :: Scientific/Engineering :: GIS",
 ]
 dependencies = [
-    "titiler.core>=0.22,<0.23",
-    "titiler.mosaic>=0.22,<0.23",
+    "titiler.core>=0.23,<0.24",
+    "titiler.mosaic>=0.23,<0.24",
     "pydantic>=2.4,<3.0",
     "pydantic-settings~=2.0",
 ]
@@ -48,8 +48,11 @@ psycopg-binary = [  # pre-compiled C implementation
     "psycopg[binary,pool]"
 ]
 telemetry = [
-    "titiler.core[telemetry] @ git+https://github.com/developmentseed/titiler.git@feat/open-telemetry-hr#subdirectory=src/titiler/core",
-    "titiler.mosaic @ git+https://github.com/developmentseed/titiler.git@feat/open-telemetry-hr#subdirectory=src/titiler/mosaic"
+    "opentelemetry-api",
+    "opentelemetry-sdk",
+    "opentelemetry-instrumentation-fastapi",
+    "opentelemetry-instrumentation-logging",
+    "opentelemetry-exporter-otlp",
 ]
 dev = [
     "pre-commit",
