@@ -1,6 +1,7 @@
 """TiTiler.PgSTAC custom Mosaic Backend and Custom STACReader."""
 
 import json
+import logging
 from threading import Lock
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Type
 
@@ -31,6 +32,8 @@ from titiler.pgstac.utils import retry
 cache_config = CacheSettings()
 pgstac_config = PgstacSettings()
 retry_config = RetrySettings()
+
+logger = logging.getLogger(__name__)
 
 
 def multi_points_pgstac(
@@ -230,7 +233,10 @@ class PGSTACBackend(BaseBackend):
                     else:
                         raise e
 
-        return resp.get("features", [])
+        features = resp.get("features", [])
+
+        logger.info(f"found {len(features)} assets")
+        return features
 
     @property
     def _quadkeys(self) -> List[str]:
@@ -271,6 +277,9 @@ class PGSTACBackend(BaseBackend):
             with self.reader(item, tms=self.tms, **self.reader_options) as src_dst:
                 return src_dst.tile(x, y, z, **kwargs)
 
+        logger.info(
+            f"reading mosaic of {len(mosaic_assets)} assets with reader: {self.reader}"
+        )
         img, used_assets = mosaic_reader(
             mosaic_assets, _reader, tile_x, tile_y, tile_z, **kwargs
         )
@@ -315,6 +324,7 @@ class PGSTACBackend(BaseBackend):
         if "allowed_exceptions" not in kwargs:
             kwargs.update({"allowed_exceptions": (PointOutsideBounds,)})
 
+        logger.info(f"reading asset values for points with reader: {self.reader}")
         return list(
             multi_points_pgstac(mosaic_assets, _reader, lon, lat, **kwargs).items()
         )
@@ -354,6 +364,9 @@ class PGSTACBackend(BaseBackend):
             with self.reader(item, **self.reader_options) as src_dst:
                 return src_dst.part(bbox, **kwargs)
 
+        logger.info(
+            f"reading mosaic of {len(mosaic_assets)} assets with reader: {self.reader}"
+        )
         img, used_assets = mosaic_reader(
             mosaic_assets,
             _reader,
@@ -402,6 +415,9 @@ class PGSTACBackend(BaseBackend):
             with self.reader(item, **self.reader_options) as src_dst:
                 return src_dst.feature(shape, **kwargs)
 
+        logger.info(
+            f"reading mosaic of {len(mosaic_assets)} assets with reader: {self.reader}"
+        )
         img, used_assets = mosaic_reader(
             mosaic_assets,
             _reader,
