@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1757340131534,
+  "lastUpdate": 1757340142686,
   "repoUrl": "https://github.com/stac-utils/titiler-pgstac",
   "entries": {
     "TiTiler-pgSTAC Benchmarks": [
@@ -7519,6 +7519,79 @@ window.BENCHMARK_DATA = {
             "unit": "iter/sec",
             "range": "stddev: 0.000632041090574701",
             "extra": "mean: 56.62041599999872 msec\nrounds: 17"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "vincent.sarago@gmail.com",
+            "name": "Vincent Sarago",
+            "username": "vincentsarago"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "415726b8dcfac268a3a31b4291761b132b8c4da0",
+          "message": "Merge pull request #226 from stac-utils/feat/telemetry\n\n[WIP] feat: add additional logging and telemetry option in application",
+          "timestamp": "2025-09-08T15:54:26+02:00",
+          "tree_id": "998a9da8fe4b632521b96821cec99778548e9628",
+          "url": "https://github.com/stac-utils/titiler-pgstac/commit/415726b8dcfac268a3a31b4291761b132b8c4da0"
+        },
+        "date": 1757340141988,
+        "tool": "pytest",
+        "benches": [
+          {
+            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "value": 4.123957903571381,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0026986688516918073",
+            "extra": "mean: 242.4855014000002 msec\nrounds: 5"
+          },
+          {
+            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "value": 9.40518065649719,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0030100563501798327",
+            "extra": "mean: 106.324379777776 msec\nrounds: 9"
+          },
+          {
+            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "value": 11.037142478834848,
+            "unit": "iter/sec",
+            "range": "stddev: 0.017742309260094204",
+            "extra": "mean: 90.60316127273248 msec\nrounds: 11"
+          },
+          {
+            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "value": 17.311357507004736,
+            "unit": "iter/sec",
+            "range": "stddev: 0.004406392500809972",
+            "extra": "mean: 57.76554493749941 msec\nrounds: 16"
+          },
+          {
+            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "value": 20.794632015029396,
+            "unit": "iter/sec",
+            "range": "stddev: 0.003100796443399585",
+            "extra": "mean: 48.089333789472505 msec\nrounds: 19"
+          },
+          {
+            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "value": 17.961437244327946,
+            "unit": "iter/sec",
+            "range": "stddev: 0.004545656657379825",
+            "extra": "mean: 55.67483194117946 msec\nrounds: 17"
+          },
+          {
+            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "value": 18.224690841170226,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0016035070721165587",
+            "extra": "mean: 54.870615294113215 msec\nrounds: 17"
           }
         ]
       }
