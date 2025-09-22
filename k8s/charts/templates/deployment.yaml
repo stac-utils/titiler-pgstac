@@ -1,0 +1,122 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "titiler.fullname" . }}
+  labels:
+    {{- include "titiler.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "titiler.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "titiler.selectorLabels" . | nindent 8 }}
+    spec:
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: [ {{ .Values.image.command }} ]
+          args: [ {{- range $arg := .Values.image.args }}
+            {{- $arg | quote }},
+            {{- end }}
+          ]
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          env:
+          {{- range $key, $val := .Values.env }}
+            - name: {{ $key }}
+              value: {{ $val | quote }}
+          {{- end }}
+          {{- if .Values.netrc }}
+            - name: NETRC
+              value: /config/netrc
+            - name: CURLOPT_NETRC
+              value: CURL_NETRC_OPTIONAL
+            - name: CURLOPT_NETRC_FILE
+              value: /config/netrc
+          {{- end }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - mountPath: /config
+              name: config
+              readOnly: true
+          {{- range .Values.extraHostPathMounts }}
+            - name: {{ .name }}
+              mountPath: {{ .mountPath }}
+              readOnly: {{ .readOnly }}
+            {{- if .mountPropagation }}
+              mountPropagation: {{ .mountPropagation }}
+            {{- end }}
+          {{- end }}
+
+        - name: cloud-sql-proxy
+          image: gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.11.4
+          args:
+            - "--structured-logs"
+            - "--port=5432"
+            - "keen-autumn-333723:us-central1:royce-infra"
+          securityContext:
+              # The default Cloud SQL Auth Proxy image runs as the
+              # "nonroot" user and group (uid: 65532) by default.
+                runAsNonRoot: true
+          resources:
+              requests:
+                  # The proxy's memory use scales linearly with the number of active
+                # connections. Fewer open connections will use less memory. Adjust
+                # this value based on your application's requirements.
+                memory: "2Gi"
+                # The proxy's CPU use scales linearly with the amount of IO between
+                # the database and the application. Adjust this value based on your
+                # application's requirements.
+                cpu: "1"
+              
+      terminationGracePeriodSeconds: {{ .Values.env.terminationGracePeriodSeconds }}
+      volumes:
+        - name: config
+          configMap:
+            name: {{ include "titiler.fullname" . }}-configmap
+      {{- range .Values.extraHostPathMounts }}
+        - name: {{ .name }}
+          hostPath:
+            path: {{ .hostPath }}
+            type: Directory
+      {{- end }}
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- range . }}
+      - name: {{ .name }}
+        {{- end }}
+      {{- end }}
+      {{- with .Values.serviceAccountName }}
+      serviceAccountName: {{ . | quote }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}

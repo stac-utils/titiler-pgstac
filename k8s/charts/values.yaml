@@ -1,0 +1,126 @@
+# Default values for titiler.
+replicaCount: 2
+
+image:
+  repository: us-central1-docker.pkg.dev/keen-autumn-333723/stac-dev-ops/titiler-pg
+  tag: v06_1
+  pullPolicy: Always
+  # command: "uvicorn"
+  # args:
+  #   - "titiler.application.main:app"
+  #   - "--host"
+  #   - "0.0.0.0"
+  #   - "--port"
+  #   - "80"
+  #   - "--workers"
+  #   - "1"
+
+nameOverride: ""
+fullnameOverride: ""
+
+terminationGracePeriodSeconds: 30
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  #create: true
+  # Annotations to add to the service account
+  #annotations: {"iam.gke.io/gcp-service-account: geoserver-sa@keen-autumn-333723.iam.gserviceaccount.com","meta.helm.sh/release-name: geoserver-eim","meta.helm.sh/release-namespace: geoserver-project-eim"}
+  #annotations: {"iam.gke.io/gcp-service-account: geoserver-sa@keen-autumn-333723.iam.gserviceaccount.com"}
+  #annotations: {"iam.gke.io/gcp-service-account: geoserver-sa@keen-autumn-333723.iam.gserviceaccount.com"}
+  #name: "geoserver-sa"
+  name: "sa-titiler"
+
+serviceAccountName: "sa-titiler"
+
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  className: ""
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    #kubernetes.io/ingress.global-static-ip-name: "project-gold-geoserver-ip"
+    #ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/rewrite-target: /pgtitiler/$2
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    #kubernetes.io/tls-acme: "true"
+  labels: {}
+  hosts: 
+    - host: "gis.roycegeo.com"
+      paths:
+        - path: /pgtitiler(/|$)(.*)
+          pathType: ImplementationSpecific
+          service:
+            name: "titiler-pg"
+            port: 80
+  tls:
+    enabled: true
+    ## Provide secret name if tls is enabled
+    #secretName: geoserver-cert
+    secretName: star-roycegeo-com
+
+extraHostPathMounts: []
+  # - name: map-sources
+  #   mountPath: /map-sources/
+  #   hostPath: /home/ubuntu/map-sources
+  #   readOnly: false
+  #   mountPropagation: HostToContainer # OPTIONAL
+
+imagePullSecrets: []
+
+env:
+  CPL_TMPDIR: /tmp  
+  PYTHONWARNINGS: "ignore"
+  postgres_user: "rg_stac_writer"
+  postgres_pass: "2?@sTZ0=poBKa"
+  postgres_dbname: "stac_db"
+  postgres_host: "localhost"
+  postgres_port: 5432
+  FORWARDED_ALLOW_IPS: "*"
+  # GDAL PERFORMANCE OPTIONS
+  # https://developmentseed.org/titiler/advanced/performance_tuning/
+  GDAL_CACHEMAX: 200  # 200 mb
+  VSI_CACHE: "TRUE"
+  VSI_CACHE_SIZE: 5000000  # 5 MB (per file-handle)
+  # VSI_CACHE_SIZE: 536870912
+  GDAL_DISABLE_READDIR_ON_OPEN: "EMPTY_DIR"
+  GDAL_HTTP_MERGE_CONSECUTIVE_RANGES: "YES"
+  GDAL_HTTP_MULTIPLEX: "YES"
+  GDAL_HTTP_VERSION: 2
+  GDAL_INGESTED_BYTES_AT_OPEN: 32000
+  CPL_VSIL_CURL_CACHE_SIZE: 200000000
+
+  
+
+resources:
+  limits:
+    cpu: 2
+    memory: 4Gi
+  requests:
+    cpu: 1
+    memory: 2Gi
+
+nodeSelector:
+  pool: e2-highmem-4
+
+tolerations: []
+
+affinity: {}
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #     - ALL
+  # readOnlyRootFilesystem: true
+  # allowPrivilegeEscalation: false
+  # runAsNonRoot: true
+  # runAsUser: 1001
+
+podSecurityContext: {}
+  # fsGroup: 1001
+  # runAsNonRoot: true
+  # runAsUser: 1001

@@ -18,7 +18,7 @@ from typing_extensions import Annotated
 class ApiSettings(BaseSettings):
     """API settings"""
 
-    name: str = "GRVTY TiTiler"
+    name: str = "TiTiler-PgSTAC"
     cors_origins: str = "*"
     cachecontrol: str = "public, max-age=3600"
     cachecontrol_exclude_paths: Set[str] = Field(
@@ -26,7 +26,7 @@ class ApiSettings(BaseSettings):
             ".+/list",
         }
     )
-    root_path: str = "/pgtitiler"
+    root_path: str = ""
     debug: bool = False
 
     enable_assets_endpoints: bool = True
