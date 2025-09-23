@@ -146,7 +146,7 @@ filterwarnings = [
 ]
 
 [tool.bumpversion]
-current_version = "1.8.0"
+current_version = "1.9.0"
 search = "{current_version}"
 replace = "{new_version}"
 regex = false
