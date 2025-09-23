@@ -2,6 +2,8 @@
 
 ## Unreleased 
 
+## 1.9.0 (2025-09-23)
+
 * update titiler requirement to `>=0.24,<0.25`
 
     * add OpenTelemetry instrumentation to the tiler factory classes
