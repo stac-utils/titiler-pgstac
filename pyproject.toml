@@ -2,7 +2,7 @@
 name = "titiler-pgstac"
 description = "Connect PgSTAC and TiTiler."
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 license = {file = "LICENSE"}
 authors = [
     {name = "Vincent Sarago", email = "vincent@developmentseed.com"},
