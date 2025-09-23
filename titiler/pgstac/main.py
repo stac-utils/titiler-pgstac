@@ -31,8 +31,7 @@ from titiler.core.middleware import (
 )
 from titiler.core.models.OGC import Conformance, Landing
 from titiler.core.resources.enums import MediaType, OptionalHeader
-from titiler.core.templating import create_html_response
-from titiler.core.utils import accept_media_type, update_openapi
+from titiler.core.utils import accept_media_type, create_html_response, update_openapi
 from titiler.mosaic.errors import MOSAIC_STATUS_CODES
 from titiler.pgstac import __version__ as titiler_pgstac_version
 from titiler.pgstac.db import close_db_connection, connect_to_db
@@ -57,10 +56,11 @@ logging.getLogger("botocore.utils").disabled = True
 logging.getLogger("rio-tiler").setLevel(logging.ERROR)
 
 jinja2_env = jinja2.Environment(
+    autoescape=jinja2.select_autoescape(["html", "xml"]),
     loader=jinja2.ChoiceLoader(
         [
             jinja2.PackageLoader(__package__, "templates"),
-            jinja2.PackageLoader("titiler.core.templating", "html"),
+            jinja2.PackageLoader("titiler.core", "templates"),
         ]
     ),
 )
@@ -197,11 +197,11 @@ if settings.telemetry_enabled:
     trace.set_tracer_provider(provider)
 
 TITILER_CONFORMS_TO = {
-    "http://www.opengis.net/spec/ogcapi-common-1/1.0/req/core",
-    "http://www.opengis.net/spec/ogcapi-common-1/1.0/req/landing-page",
-    "http://www.opengis.net/spec/ogcapi-common-1/1.0/req/oas30",
-    "http://www.opengis.net/spec/ogcapi-common-1/1.0/req/html",
-    "http://www.opengis.net/spec/ogcapi-common-1/1.0/req/json",
+    "http://www.opengis.net/spec/ogcapi-common-1/1.0/conf/core",
+    "http://www.opengis.net/spec/ogcapi-common-1/1.0/conf/landing-page",
+    "http://www.opengis.net/spec/ogcapi-common-1/1.0/conf/oas30",
+    "http://www.opengis.net/spec/ogcapi-common-1/1.0/conf/html",
+    "http://www.opengis.net/spec/ogcapi-common-1/1.0/conf/json",
 }
 
 ###############################################################################
@@ -216,6 +216,7 @@ searches = MosaicTilerFactory(
     extensions=[
         searchInfoExtension(),
     ],
+    templates=templates,
 )
 app.include_router(
     searches.router, tags=["STAC Search"], prefix="/searches/{search_id}"
@@ -253,6 +254,7 @@ collection = MosaicTilerFactory(
     extensions=[
         searchInfoExtension(),
     ],
+    templates=templates,
 )
 app.include_router(
     collection.router, tags=["STAC Collection"], prefix="/collections/{collection_id}"
@@ -266,6 +268,7 @@ stac = MultiBaseTilerFactory(
     path_dependency=ItemIdParams,
     router_prefix="/collections/{collection_id}/items/{item_id}",
     add_viewer=True,
+    templates=templates,
 )
 app.include_router(
     stac.router,
@@ -281,6 +284,7 @@ if settings.enable_assets_endpoints:
         path_dependency=AssetIdParams,
         router_prefix="/collections/{collection_id}/items/{item_id}/assets/{asset_id}",
         add_viewer=True,
+        templates=templates,
     )
     app.include_router(
         asset.router,
@@ -292,7 +296,11 @@ if settings.enable_assets_endpoints:
 ###############################################################################
 # External Dataset Endpoints
 if settings.enable_external_dataset_endpoints:
-    external_cog = TilerFactory(router_prefix="/external", add_viewer=True)
+    external_cog = TilerFactory(
+        router_prefix="/external",
+        add_viewer=True,
+        templates=templates,
+    )
     app.include_router(
         external_cog.router,
         tags=["External Dataset"],
@@ -302,19 +310,19 @@ if settings.enable_external_dataset_endpoints:
 
 ###############################################################################
 # Tiling Schemes Endpoints
-tms = TMSFactory()
+tms = TMSFactory(templates=templates)
 app.include_router(tms.router, tags=["Tiling Schemes"])
 TITILER_CONFORMS_TO.update(tms.conforms_to)
 
 ###############################################################################
 # Algorithms Endpoints
-algorithms = AlgorithmFactory()
+algorithms = AlgorithmFactory(templates=templates)
 app.include_router(algorithms.router, tags=["Algorithms"])
 TITILER_CONFORMS_TO.update(algorithms.conforms_to)
 
 ###############################################################################
 # Colormaps endpoints
-cmaps = ColorMapFactory()
+cmaps = ColorMapFactory(templates=templates)
 app.include_router(
     cmaps.router,
     tags=["ColorMaps"],
@@ -448,6 +456,24 @@ def landing(
                 "templated": True,
             },
             {
+                "title": "List of Available TileMatrixSets",
+                "href": str(request.url_for("tilematrixsets")),
+                "type": "application/json",
+                "rel": "http://www.opengis.net/def/rel/ogc/1.0/tiling-schemes",
+            },
+            {
+                "title": "List of Available Algorithms",
+                "href": str(request.url_for("available_algorithms")),
+                "type": "application/json",
+                "rel": "data",
+            },
+            {
+                "title": "List of Available ColorMaps",
+                "href": str(request.url_for("available_colormaps")),
+                "type": "application/json",
+                "rel": "data",
+            },
+            {
                 "title": "TiTiler-PgSTAC Documentation (external link)",
                 "href": "https://stac-utils.github.io/titiler-pgstac/",
                 "type": "text/html",
@@ -462,13 +488,13 @@ def landing(
         ],
     }
 
-    output_type: Optional[MediaType]
     if f:
         output_type = MediaType[f]
     else:
         accepted_media = [MediaType.html, MediaType.json]
-        output_type = accept_media_type(
-            request.headers.get("accept", ""), accepted_media
+        output_type = (
+            accept_media_type(request.headers.get("accept", ""), accepted_media)
+            or MediaType.json
         )
 
     if output_type == MediaType.html:
@@ -476,8 +502,8 @@ def landing(
             request,
             data,
             "landing",
-            templates=templates,
             title="TiTiler-PgSTAC",
+            templates=templates,
         )
 
     return data
@@ -516,13 +542,13 @@ def conformance(
     """
     data = {"conformsTo": sorted(TITILER_CONFORMS_TO)}
 
-    output_type: Optional[MediaType]
     if f:
         output_type = MediaType[f]
     else:
         accepted_media = [MediaType.html, MediaType.json]
-        output_type = accept_media_type(
-            request.headers.get("accept", ""), accepted_media
+        output_type = (
+            accept_media_type(request.headers.get("accept", ""), accepted_media)
+            or MediaType.json
         )
 
     if output_type == MediaType.html:
@@ -530,8 +556,8 @@ def conformance(
             request,
             data,
             "conformance",
-            templates=templates,
             title="Conformance",
+            templates=templates,
         )
 
     return data

@@ -2,10 +2,12 @@
 
 ## Unreleased 
 
-* update titiler requirement to `>=0.23,<0.24`
+* update titiler requirement to `>=0.24,<0.25`
 
     * add OpenTelemetry instrumentation to the tiler factory classes
     * fix layer's bounds for non-wgs84 CRS in WMTS document
+    * refactor HTML templating
+    * remove python 3.9 support 
 
 * switch from bitnami to official python:3.12 docker image
 

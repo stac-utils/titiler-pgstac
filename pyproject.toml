@@ -20,7 +20,6 @@ classifiers = [
     "Intended Audience :: Information Technology",
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -28,8 +27,8 @@ classifiers = [
     "Topic :: Scientific/Engineering :: GIS",
 ]
 dependencies = [
-    "titiler.core>=0.23,<0.24",
-    "titiler.mosaic>=0.23,<0.24",
+    "titiler.core>=0.24,<0.25",
+    "titiler.mosaic>=0.24,<0.25",
     "pydantic>=2.4,<3.0",
     "pydantic-settings~=2.0",
 ]

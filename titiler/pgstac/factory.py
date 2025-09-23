@@ -37,7 +37,6 @@ from starlette.datastructures import QueryParams
 from starlette.requests import Request
 from starlette.responses import Response
 from starlette.routing import NoMatchFound
-from starlette.templating import Jinja2Templates
 from typing_extensions import Annotated
 
 from titiler.core.dependencies import (
@@ -49,10 +48,10 @@ from titiler.core.dependencies import (
     PartFeatureParams,
     StatisticsParams,
 )
-from titiler.core.factory import DEFAULT_TEMPLATES, img_endpoint_params
+from titiler.core.factory import img_endpoint_params
 from titiler.core.models.mapbox import TileJSON
 from titiler.core.models.responses import MultiBaseStatisticsGeoJSON
-from titiler.core.resources.enums import ImageType, MediaType, OptionalHeader
+from titiler.core.resources.enums import ImageType, OptionalHeader
 from titiler.core.resources.responses import GeoJSONResponse, XMLResponse
 from titiler.core.utils import check_query_params, render_image
 from titiler.mosaic.factory import MosaicTilerFactory as BaseFactory
@@ -105,8 +104,6 @@ class MosaicTilerFactory(BaseFactory):
     img_part_dependency: Type[DefaultDependency] = PartFeatureParams
 
     supported_tms: TileMatrixSets = morecantile_tms
-
-    templates: Jinja2Templates = DEFAULT_TEMPLATES
 
     render_func: Callable[..., Tuple[bytes, str]] = render_image
 
@@ -251,6 +248,7 @@ class MosaicTilerFactory(BaseFactory):
                 "maxzoom": maxzoom,
                 "name": search_info.metadata.name or search_info.id,
                 "tiles": [tiles_url],
+                "attribution": os.environ.get("TITILER_DEFAULT_ATTRIBUTION"),
             }
 
     def wmts(self):  # noqa: C901
@@ -446,7 +444,7 @@ class MosaicTilerFactory(BaseFactory):
                     "layers": layers,
                     "media_type": tile_format.mediatype,
                 },
-                media_type=MediaType.xml.value,
+                media_type="application/xml",
             )
 
     def statistics(self):
