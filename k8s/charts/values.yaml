@@ -44,16 +44,24 @@ ingress:
   annotations:
     kubernetes.io/ingress.class: nginx
     #kubernetes.io/ingress.global-static-ip-name: "project-gold-geoserver-ip"
-    #ingress.kubernetes.io/rewrite-target: /$2
-    nginx.ingress.kubernetes.io/rewrite-target: /pgtitiler/$2
+    ingress.kubernetes.io/rewrite-target: /$2
+    #nginx.ingress.kubernetes.io/rewrite-target: /pgtitiler/$2
     nginx.ingress.kubernetes.io/use-regex: "true"
     #kubernetes.io/tls-acme: "true"
   labels: {}
+  # hosts: 
+  #   - host: "gis.roycegeo.com"
+  #     paths:
+  #       - path: /pgtitiler(/|$)(.*)
+  #         pathType: ImplementationSpecific
+  #         service:
+  #           name: "titiler-pg"
+  #           port: 80
   hosts: 
-    - host: "gis.roycegeo.com"
+    - host: "titiler.grvty.com"
       paths:
-        - path: /pgtitiler(/|$)(.*)
-          pathType: ImplementationSpecific
+        - path: /
+          pathType: Prefix
           service:
             name: "titiler-pg"
             port: 80
@@ -61,7 +69,7 @@ ingress:
     enabled: true
     ## Provide secret name if tls is enabled
     #secretName: geoserver-cert
-    secretName: star-roycegeo-com
+    secretName: star-grvty-com
 
 extraHostPathMounts: []
   # - name: map-sources
@@ -72,11 +80,18 @@ extraHostPathMounts: []
 
 imagePullSecrets: []
 
+secretName: titiler-secret
+dbuser_SecretKey: postgres_user
+dbpassword_SecretKey: postgres_pass
+keycloak_client_id_SecretKey: KEYCLOAK_CLIENT_ID
+keycloak_client_secret_SecretKey: KEYCLOAK_CLIENT_SECRET
+
+
 env:
   CPL_TMPDIR: /tmp  
   PYTHONWARNINGS: "ignore"
-  postgres_user: "rg_stac_writer"
-  postgres_pass: "2?@sTZ0=poBKa"
+  #postgres_user: "rg_stac_writer"
+  #postgres_pass: "2?@sTZ0=poBKa"
   postgres_dbname: "stac_db"
   postgres_host: "localhost"
   postgres_port: 5432
@@ -93,7 +108,6 @@ env:
   GDAL_HTTP_VERSION: 2
   GDAL_INGESTED_BYTES_AT_OPEN: 32000
   CPL_VSIL_CURL_CACHE_SIZE: 200000000
-
   
 
 resources:

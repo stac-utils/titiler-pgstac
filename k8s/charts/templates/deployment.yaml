@@ -40,6 +40,27 @@ spec:
             - name: CURLOPT_NETRC_FILE
               value: /config/netrc
           {{- end }}
+            - name: postgres_user
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretName }}
+                  key: {{ .Values.dbuser_SecretKey }}
+            - name: postgres_pass
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretName }}
+                  key: {{ .Values.dbpassword_SecretKey }}
+            - name: KEYCLOAK_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretName }}
+                  key: {{ .Values.keycloak_client_id_SecretKey }}
+            - name: KEYCLOAK_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretName }}
+                  key: {{ .Values.keycloak_client_secret_SecretKey }}
+
           ports:
             - name: http
               containerPort: 80
@@ -72,6 +93,7 @@ spec:
           args:
             - "--structured-logs"
             - "--port=5432"
+            - "--address=0.0.0.0" 
             - "keen-autumn-333723:us-central1:royce-infra"
           securityContext:
               # The default Cloud SQL Auth Proxy image runs as the

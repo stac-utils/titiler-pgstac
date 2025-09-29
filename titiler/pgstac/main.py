@@ -80,7 +80,7 @@ app = FastAPI(
     title=settings.name,
     openapi_url="/api",
     docs_url="/api.html",
-    description="""Dynamic Raster Tiler with PgSTAC backend.
+    description="""GRVTY Dynamic Raster Tiler with PgSTAC backend.
 
 ---
 
