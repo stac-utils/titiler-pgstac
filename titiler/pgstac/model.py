@@ -21,9 +21,6 @@ from titiler.core.resources.enums import MediaType
 # TODO: add "startsWith", "endsWith", "contains", "in"
 Operator = Literal["eq", "neq", "lt", "lte", "gt", "gte"]
 
-# ref: https://github.com/radiantearth/stac-api-spec/tree/master/fragments/filter#get-query-parameters-and-post-json-fields
-FilterLang = Literal["cql-json", "cql-text", "cql2-json"]
-
 
 class Metadata(BaseModel):
     """Metadata Model."""
@@ -135,8 +132,9 @@ class PgSTACSearch(BaseModel, extra="allow"):
     ids: Optional[List[str]] = None
     bbox: Optional[BBox] = None
     intersects: Optional[Geometry] = None
-    query: Optional[Dict[str, Dict[Operator, Any]]] = None
     datetime: Optional[str] = None
+    # Extensions
+    query: Optional[Dict[str, Dict[Operator, Any]]] = None
     sortby: Optional[List[SortExtension]] = Field(
         default=None,
         description="An array of property (field) names, and direction in form of '{'field': '<property_name>', 'direction':'<direction>'}'",  # noqa: E501
@@ -182,12 +180,7 @@ class PgSTACSearch(BaseModel, extra="allow"):
             ],
         },
     )
-    filter_crs: Optional[str] = Field(
-        default=None,
-        alias="filter-crs",
-        description="The coordinate reference system (CRS) used by spatial literals in the 'filter' value. Default is `http://www.opengis.net/def/crs/OGC/1.3/CRS84`",
-    )
-    filter_lang: Optional[FilterLang] = Field(
+    filter_lang: Optional[Literal["cql2-json"]] = Field(
         default="cql2-json",
         alias="filter-lang",
         description="The CQL filter encoding that the 'filter' value uses.",

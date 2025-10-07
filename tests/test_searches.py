@@ -14,7 +14,7 @@ from .conftest import mock_rasterio_open, parse_img
 @pytest.fixture
 def search_no_bbox(app):
     """Search Query without BBOX."""
-    query = {"collections": ["noaa-emergency-response"], "filter-lang": "cql-json"}
+    query = {"collections": ["noaa-emergency-response"]}
     response = app.post("/searches/register", json=query)
     assert response.status_code == 200
     resp = response.json()
@@ -34,7 +34,6 @@ def search_bbox(app):
     query = {
         "collections": ["noaa-emergency-response"],
         "bbox": [-85.535, 36.137, -85.465, 36.179],
-        "filter-lang": "cql-json",
     }
     response = app.post("/searches/register", json=query)
     assert response.status_code == 200
@@ -60,7 +59,7 @@ def test_info(app, search_no_bbox):
     search = resp["search"]
     assert search["search"] == {
         "collections": ["noaa-emergency-response"],
-        "filter-lang": "cql-json",
+        "filter-lang": "cql2-json",
     }
     assert search["metadata"] == {"type": "mosaic"}
 
@@ -1093,7 +1092,7 @@ def test_search_ids_parameter(app):
     query = {
         "collections": ["noaa-emergency-response"],
         "ids": ["20200307aC0853130w361030"],
-        "filter-lang": "cql-json",
+        "filter-lang": "cql2-json",
     }
     response = app.post("/searches/register", json=query)
     assert response.status_code == 200

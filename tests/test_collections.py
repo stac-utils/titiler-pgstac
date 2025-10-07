@@ -1,8 +1,10 @@
 """Test titiler.pgstac Mosaic endpoints."""
 
 import io
+import json
 from unittest.mock import patch
 
+import pytest
 import rasterio
 from rasterio.crs import CRS
 
@@ -655,3 +657,26 @@ def test_collections_additional_parameters(app):
         {"field": "datetime", "direction": "asc"},
         {"field": "cloud", "direction": "asc"},
     ]
+
+
+@pytest.mark.parametrize(
+    "filter_expr,filter_lang",
+    [
+        (json.dumps({"op": "=", "args": [{"property": "value"}, "1"]}), "cql2-json"),
+        ("(value = '1')", "cql2-text"),
+    ],
+)
+def test_collections_cql_filter(filter_expr, filter_lang, app):
+    """Get assets for a specific collection and filter."""
+    response = app.get(
+        f"/collections/{collection_id}/point/-85.5,36.1624/assets",
+        params={
+            "filter": filter_expr,
+            "filter-lanq": filter_lang,
+        },
+    )
+    assert response.status_code == 200
+    resp = response.json()
+    assert len(resp) == 1
+    assert list(resp[0]) == ["id", "bbox", "assets", "collection"]
+    assert resp[0]["id"] == "20200307aC0853000w361030"
