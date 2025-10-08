@@ -5,7 +5,7 @@ import re
 import warnings
 from dataclasses import dataclass, field
 from threading import Lock
-from typing import List, Optional, Tuple
+from typing import Any, Dict, List, Literal, Optional, Tuple
 from urllib.parse import unquote_plus
 
 import morecantile
@@ -13,6 +13,7 @@ import pystac
 from cachetools import TTLCache, cached
 from cachetools.keys import hashkey
 from cogeo_mosaic.errors import MosaicNotFoundError
+from cql2 import Expr
 from fastapi import HTTPException, Path, Query
 from psycopg import errors as pgErrors
 from psycopg.rows import class_row, dict_row
@@ -42,13 +43,23 @@ def SearchIdParams(
 
 @cached(  # type: ignore
     TTLCache(maxsize=cache_config.maxsize, ttl=cache_config.ttl),
-    key=lambda pool, collection_id, ids, bbox, datetime, query, sortby: hashkey(
+    key=lambda pool,
+    collection_id,
+    ids,
+    bbox,
+    datetime,
+    query,
+    sortby,
+    filter_expr,
+    filter_lang: hashkey(
         collection_id,
         ids,
         bbox,
         datetime,
         query,
         sortby,
+        filter_expr,
+        filter_lang,
     ),
     lock=Lock(),
 )
@@ -66,10 +77,23 @@ def get_collection_id(  # noqa: C901
     ids: Optional[str] = None,
     bbox: Optional[str] = None,
     datetime: Optional[str] = None,
+    # Extensions
     query: Optional[str] = None,
     sortby: Optional[str] = None,
+    filter_expr: Optional[str] = None,
+    filter_lang: Literal["cql2-text", "cql2-json"] = "cql2-json",
 ) -> str:  # noqa: C901
     """Get Search Id for a Collection."""
+    search_params: Dict[str, Any] = {
+        "collections": [collection_id],
+        "datetime": datetime,
+    }
+    if ids:
+        search_params["ids"] = ids.split(",")
+
+    if bbox:
+        search_params["bbox"] = list(map(float, bbox.split(",")))
+
     sort_param: List[model.SortExtension] = []
     if sortby:
         for sort in sortby.split(","):
@@ -80,16 +104,21 @@ def get_collection_id(  # noqa: C901
                         direction="desc" if sortparts.group(1) == "-" else "asc",
                     )
                 )
+    if sort_param:
+        search_params["sortby"] = sort_param
 
-    search = model.PgSTACSearch(
-        collections=[collection_id],
-        ids=ids.split(",") if ids else None,
-        bbox=list(map(float, bbox.split(","))) if bbox else None,
-        datetime=datetime,
-        query=json.loads(unquote_plus(query)) if query else None,
-        sortby=sort_param or None,
-    )
+    if filter_expr:
+        if filter_lang == "cql2-text":
+            search_params["filter"] = Expr(filter_expr).to_json()
+            search_params["filter-lang"] = "cql2-json"
+        else:
+            search_params["filter"] = json.loads(filter_expr)
+            search_params["filter-lang"] = filter_lang
 
+    if query:
+        search_params["query"] = json.loads(unquote_plus(query))
+
+    search = model.PgSTACSearch.model_validate(search_params)
     with pool.connection() as conn:
         with conn.cursor(row_factory=dict_row) as cursor:
             cursor.execute(
@@ -210,6 +239,7 @@ Either a date-time or an interval, open or closed. Date and time expressions adh
             },
         ),
     ] = None,
+    # Extensions
     query: Annotated[
         Optional[str],
         Query(
@@ -231,6 +261,28 @@ Either a date-time or an interval, open or closed. Date and time expressions adh
             },
         ),
     ] = None,
+    filter_expr: Annotated[
+        Optional[str],
+        Query(
+            alias="filter",
+            description="""A CQL2 filter expression for filtering items.\n
+Supports `CQL2-JSON` as defined in https://docs.ogc.org/is/21-065r2/21-065r2.htmln
+Remember to URL encode the CQL2-JSON if using GET""",
+            openapi_examples={
+                "user-provided": {"value": None},
+                "landsat8-item": {
+                    "value": "id='LC08_L1TP_060247_20180905_20180912_01_T1_L1TP' AND collection='landsat8_l1tp'"  # noqa: E501
+                },
+            },
+        ),
+    ] = None,
+    filter_lang: Annotated[
+        Literal["cql2-text", "cql2-json"],
+        Query(
+            alias="filter-lang",
+            description="The coordinate reference system (CRS) used by spatial literals in the 'filter' value. Default is `http://www.opengis.net/def/crs/OGC/1.3/CRS84`",
+        ),
+    ] = "cql2-text",
 ) -> str:
     """Collection endpoints Parameters"""
     return get_collection_id(
@@ -241,6 +293,8 @@ Either a date-time or an interval, open or closed. Date and time expressions adh
         datetime=datetime,
         query=query,
         sortby=sortby,
+        filter_expr=filter_expr,
+        filter_lang=filter_lang,
     )
 
 

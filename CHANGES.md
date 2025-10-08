@@ -2,6 +2,9 @@
 
 ## Unreleased 
 
+* remove `cql-text` support for PgSTACSearch `filter`
+* add `filter` and `filter-lang` for CollectionIdParams dependency
+
 ## 1.9.0 (2025-09-23)
 
 * update titiler requirement to `>=0.24,<0.25`
