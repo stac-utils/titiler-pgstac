@@ -13,6 +13,7 @@ from typing import Any, Dict, List, Literal, Optional
 from geojson_pydantic.geometries import Geometry
 from geojson_pydantic.types import BBox
 from pydantic import BaseModel, Field, ValidationInfo, field_validator, model_validator
+from stac_pydantic.collection import Extent
 from typing_extensions import Annotated
 
 from titiler.core.resources.enums import MediaType
@@ -29,6 +30,7 @@ class Metadata(BaseModel):
 
     # WGS84 bounds
     bounds: Optional[BBox] = None
+    extent: Optional[Extent] = None
 
     # Min/Max zoom for WebMercatorQuad TMS
     minzoom: Optional[int] = None
