@@ -1,0 +1,1 @@
+The `world.tif` was created using https://www.naturalearthdata.com/downloads/10m-raster-data/10m-natural-earth-2/

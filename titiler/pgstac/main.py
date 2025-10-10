@@ -213,6 +213,7 @@ searches = MosaicTilerFactory(
     add_statistics=True,
     add_viewer=True,
     add_part=True,
+    add_ogc_maps=True,
     extensions=[
         searchInfoExtension(),
     ],
@@ -251,6 +252,7 @@ collection = MosaicTilerFactory(
     add_statistics=True,
     add_viewer=True,
     add_part=True,
+    add_ogc_maps=True,
     extensions=[
         searchInfoExtension(),
     ],
@@ -268,6 +270,7 @@ stac = MultiBaseTilerFactory(
     path_dependency=ItemIdParams,
     router_prefix="/collections/{collection_id}/items/{item_id}",
     add_viewer=True,
+    add_ogc_maps=True,
     templates=templates,
 )
 app.include_router(

@@ -2,6 +2,9 @@
 
 import json
 import logging
+import math
+import os
+import warnings
 from threading import Lock
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Type
 
@@ -15,16 +18,28 @@ from geojson_pydantic import Point, Polygon
 from geojson_pydantic.geometries import Geometry, parse_geometry_obj
 from morecantile import Tile, TileMatrixSet
 from psycopg import errors as pgErrors
+from psycopg.rows import class_row
 from psycopg_pool import ConnectionPool
 from rasterio.crs import CRS
+from rasterio.features import rasterize
 from rasterio.warp import transform, transform_bounds, transform_geom
-from rio_tiler.constants import MAX_THREADS, WEB_MERCATOR_TMS, WGS84_CRS
+from rio_tiler.constants import (
+    MAX_THREADS,
+    WEB_MERCATOR_CRS,
+    WEB_MERCATOR_TMS,
+    WGS84_CRS,
+)
 from rio_tiler.errors import PointOutsideBounds
+from rio_tiler.io import Reader
 from rio_tiler.models import ImageData, PointData
 from rio_tiler.mosaic import mosaic_reader
+
+# _get_width_height, _missing_size were moved in `.utils` in 7.9
+from rio_tiler.reader import _get_width_height, _missing_size
 from rio_tiler.tasks import create_tasks, filter_tasks
 from rio_tiler.types import BBox
 
+from titiler.pgstac.model import Search as TiTilerPGstacSearch
 from titiler.pgstac.reader import SimpleSTACReader
 from titiler.pgstac.settings import CacheSettings, PgstacSettings, RetrySettings
 from titiler.pgstac.utils import retry
@@ -34,6 +49,8 @@ pgstac_config = PgstacSettings()
 retry_config = RetrySettings()
 
 logger = logging.getLogger(__name__)
+
+WORLD_IMG = os.path.join(os.path.dirname(__file__), "data", "world.tif")
 
 
 def multi_points_pgstac(
@@ -428,3 +445,82 @@ class PGSTACBackend(BaseBackend):
             **kwargs,
         )
         return img, [x["id"] for x in used_assets]
+
+    def preview(  # noqa: C901
+        self,
+        max_size: Optional[int] = 1024,
+        width: Optional[int] = None,
+        height: Optional[int] = None,
+        dst_crs: Optional[CRS] = None,
+        **kwargs: Any,
+    ) -> Tuple[ImageData, List[str]]:
+        """Create Preview for a Mosaic."""
+        if max_size and (width or height):
+            warnings.warn(
+                "'max_size' will be ignored with with 'height' or 'width' set.",
+                UserWarning,
+                stacklevel=2,
+            )
+            max_size = None
+
+        with self.pool.connection() as conn:
+            with conn.cursor(row_factory=class_row(TiTilerPGstacSearch)) as cursor:
+                cursor.execute(
+                    "SELECT * FROM searches WHERE hash=%s;",
+                    (self.input,),
+                )
+                search_info = cursor.fetchone()
+
+        shapes = [Polygon.from_bounds(-180, -90, 180, 90).model_dump(exclude_none=True)]
+
+        if search_info.metadata.extent and (
+            extent := search_info.metadata.extent.spatial
+        ):
+            shapes = [
+                Polygon.from_bounds(*bbox).model_dump(exclude_none=True)
+                for bbox in extent.bbox
+            ]
+        elif search_info.metadata.bounds:
+            shapes = [
+                Polygon.from_bounds(*search_info.metadata.bounds).model_dump(
+                    exclude_none=True
+                )
+            ]
+
+        with Reader(WORLD_IMG) as src:
+            image = src.read()
+
+        arr = rasterize(
+            shapes,
+            out_shape=(image.height, image.width),
+            transform=image.transform,
+            all_touched=True,
+            default_value=1,
+            fill=0,
+            dtype="uint8",
+        )
+        if not arr.all():
+            image.array[:, arr != 0] = 0
+
+        if dst_crs:
+            src_bounds = list(image.bounds)
+            if dst_crs == WEB_MERCATOR_CRS:
+                src_bounds[1] = max(src_bounds[1], -85.06)
+                src_bounds[3] = min(src_bounds[3], 85.06)
+                image = image.clip(src_bounds)
+            image = image.reproject(dst_crs)
+
+        if max_size:
+            height, width = _get_width_height(max_size, image.height, image.width)
+
+        elif _missing_size(height, width):
+            ratio = image.height / image.width
+            if width:
+                height = math.ceil(width * ratio)
+            else:
+                width = math.ceil(height / ratio)
+
+        if (height and width) and (height != image.height or width != image.width):
+            image = image.resize(height, width, resampling_method="nearest")
+
+        return image, []

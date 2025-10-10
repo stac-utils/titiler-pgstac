@@ -135,6 +135,7 @@ def get_collection_id(  # noqa: C901
             metadata = model.Metadata(
                 name=f"Mosaic for '{collection_id}' Collection",
                 bounds=search.bbox or collection_bbox[0],
+                extent=collection["extent"],
             )
 
             # item-assets https://github.com/stac-extensions/item-assets

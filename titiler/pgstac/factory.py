@@ -32,7 +32,7 @@ from psycopg import sql
 from psycopg.rows import class_row, dict_row
 from pydantic import Field
 from rio_tiler.constants import MAX_THREADS, WGS84_CRS
-from rio_tiler.utils import CRS_to_urn
+from rio_tiler.utils import CRS_to_uri, CRS_to_urn
 from starlette.datastructures import QueryParams
 from starlette.requests import Request
 from starlette.responses import Response
@@ -45,6 +45,7 @@ from titiler.core.dependencies import (
     DefaultDependency,
     DstCRSParams,
     HistogramParams,
+    OGCMapsParams,
     PartFeatureParams,
     StatisticsParams,
 )
@@ -113,6 +114,7 @@ class MosaicTilerFactory(BaseFactory):
     add_viewer: bool = False
     add_statistics: bool = False
     add_part: bool = False
+    add_ogc_maps: bool = False
 
     conforms_to: Set[str] = field(
         factory=lambda: {
@@ -141,6 +143,9 @@ class MosaicTilerFactory(BaseFactory):
 
         if self.add_part:
             self.part()
+
+        if self.add_ogc_maps:
+            self.ogc_maps()
 
         if self.add_statistics:
             self.statistics()
@@ -689,6 +694,107 @@ class MosaicTilerFactory(BaseFactory):
             )
 
             headers: Dict[str, str] = {}
+            if OptionalHeader.x_assets in self.optional_headers:
+                headers["X-Assets"] = ",".join(assets)
+
+            return Response(content, media_type=media_type, headers=headers)
+
+    ############################################################################
+    # OGC Maps (Optional)
+    ############################################################################
+    def ogc_maps(self):  # noqa: C901
+        """Register OGC Maps /map` endpoint."""
+
+        self.conforms_to.update(
+            {
+                "https://www.opengis.net/spec/ogcapi-maps-1/1.0/conf/core",
+                "https://www.opengis.net/spec/ogcapi-maps-1/1.0/conf/crs",
+                "https://www.opengis.net/spec/ogcapi-maps-1/1.0/conf/scaling",
+                "https://www.opengis.net/spec/ogcapi-maps-1/1.0/conf/scaling/width-definition",
+                "https://www.opengis.net/spec/ogcapi-maps-1/1.0/conf/scaling/height-definition",
+                "https://www.opengis.net/spec/ogcapi-maps-1/1.0/conf/spatial-subsetting",
+                "https://www.opengis.net/spec/ogcapi-maps-1/1.0/conf/spatial-subsetting/bbox-definition",
+                "https://www.opengis.net/spec/ogcapi-maps-1/1.0/conf/spatial-subsetting/bbox-crs",
+                "https://www.opengis.net/spec/ogcapi-maps-1/1.0/conf/spatial-subsetting/crs-curie",
+                "https://www.opengis.net/spec/ogcapi-maps-1/1.0/conf/png",
+                "https://www.opengis.net/spec/ogcapi-maps-1/1.0/conf/jpeg",
+                "https://www.opengis.net/spec/ogcapi-maps-1/1.0/conf/tiff",
+            }
+        )
+
+        # GET endpoints
+        @self.router.get(
+            "/map",
+            operation_id=f"{self.operation_prefix}getMap",
+            **img_endpoint_params,
+        )
+        def get_map(
+            request: Request,
+            search_id=Depends(self.path_dependency),
+            backend_params=Depends(self.backend_dependency),
+            assets_accessor_params=Depends(self.assets_accessor_dependency),
+            reader_params=Depends(self.reader_dependency),
+            ogc_params=Depends(OGCMapsParams),
+            layer_params=Depends(self.layer_dependency),
+            dataset_params=Depends(self.dataset_dependency),
+            pixel_selection=Depends(self.pixel_selection_dependency),
+            post_process=Depends(self.process_dependency),
+            colormap=Depends(self.colormap_dependency),
+            render_params=Depends(self.render_dependency),
+            env=Depends(self.environment_dependency),
+        ):
+            """OGC Maps API."""
+            with rasterio.Env(**env):
+                logger.info(
+                    f"opening data with backend: {self.backend} and reader {self.dataset_reader}"
+                )
+                with self.backend(
+                    search_id,
+                    reader=self.dataset_reader,
+                    reader_options=reader_params.as_dict(),
+                    **backend_params.as_dict(),
+                ) as src_dst:
+                    if ogc_params.bbox is not None:
+                        image, assets = src_dst.part(
+                            ogc_params.bbox,
+                            dst_crs=ogc_params.crs or src_dst.crs,
+                            bounds_crs=ogc_params.bbox_crs or WGS84_CRS,
+                            pixel_selection=pixel_selection,
+                            width=ogc_params.width,
+                            height=ogc_params.height,
+                            max_size=ogc_params.max_size,
+                            **layer_params.as_dict(),
+                            **dataset_params.as_dict(),
+                            **assets_accessor_params.as_dict(),
+                        )
+
+                    else:
+                        image, assets = src_dst.preview(
+                            width=ogc_params.width,
+                            height=ogc_params.height,
+                            max_size=ogc_params.max_size,
+                            dst_crs=ogc_params.crs,
+                            **assets_accessor_params.as_dict(),
+                        )
+
+                    dst_colormap = getattr(src_dst, "colormap", None)
+
+            if post_process:
+                logger.info("post processing image")
+                image = post_process(image)
+
+            content, media_type = self.render_func(
+                image,
+                output_format=ogc_params.format,
+                colormap=colormap or dst_colormap,
+                **render_params.as_dict(),
+            )
+
+            headers: Dict[str, str] = {}
+            if image.bounds is not None:
+                headers["Content-Bbox"] = ",".join(map(str, image.bounds))
+            if uri := CRS_to_uri(image.crs):
+                headers["Content-Crs"] = f"<{uri}>"
             if OptionalHeader.x_assets in self.optional_headers:
                 headers["X-Assets"] = ",".join(assets)
 
