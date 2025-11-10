@@ -1,9 +1,10 @@
 # Release Notes
 
-## Unreleased 
+## Unreleased
 
 * remove `cql-text` support for PgSTACSearch `filter`
 * add `filter` and `filter-lang` for CollectionIdParams dependency
+* changed container image to use non-root `user`
 
 ## 1.9.0 (2025-09-23)
 
@@ -12,7 +13,7 @@
     * add OpenTelemetry instrumentation to the tiler factory classes
     * fix layer's bounds for non-wgs84 CRS in WMTS document
     * refactor HTML templating
-    * remove python 3.9 support 
+    * remove python 3.9 support
 
 * switch from bitnami to official python:3.12 docker image
 
