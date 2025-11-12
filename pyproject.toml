@@ -2,7 +2,7 @@
 name = "titiler-pgstac"
 description = "Connect PgSTAC and TiTiler."
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 license = {file = "LICENSE"}
 authors = [
     {name = "Vincent Sarago", email = "vincent@developmentseed.com"},
@@ -20,7 +20,6 @@ classifiers = [
     "Intended Audience :: Information Technology",
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
@@ -54,17 +53,20 @@ telemetry = [
     "opentelemetry-instrumentation-logging",
     "opentelemetry-exporter-otlp",
 ]
+
+[dependency-groups]
 dev = [
-    "pre-commit",
-    "bump-my-version",
-]
-test = [
     "pytest",
     "pytest-cov",
     "pytest-asyncio",
     "httpx",
     "pypgstac>=0.7,<=0.10",
     "pytest-postgresql",
+    "pre-commit",
+    "bump-my-version",
+]
+benchmark = [
+    "pytest-benchmark",
 ]
 docs = [
     "mkdocs>=1.4.3",
@@ -82,17 +84,18 @@ Issues = "https://github.com/stac-utils/titiler-pgstac/issues"
 Source = "https://github.com/stac-utils/titiler-pgstac"
 Changelog = "https://stac-utils.github.io/titiler-pgstac/release-notes/"
 
-[build-system]
-requires = ["pdm-backend"]
-build-backend = "pdm.backend"
-
-[tool.pdm.version]
-source = "file"
+[tool.hatch.version]
 path = "titiler/pgstac/__init__.py"
 
-[tool.pdm.build]
-includes = ["titiler/pgstac"]
-excludes = ["tests/", "**/.mypy_cache", "**/.DS_Store"]
+[tool.hatch.build.targets.sdist]
+only-include = ["titiler"]
+
+[tool.hatch.build.targets.wheel]
+only-include = ["titiler"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [tool.coverage.run]
 branch = true

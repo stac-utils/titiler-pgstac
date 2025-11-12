@@ -16,10 +16,11 @@ jobs:
       - name: Checkout main
         uses: actions/checkout@v5
 
-      - name: Set up Python 3.12
-        uses: actions/setup-python@v6
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
         with:
-          python-version: 3.12
+          version: "0.9.*" 
+          enable-cache: true
 
       - name: Install dependencies
         run: |
@@ -43,3 +44,6 @@ jobs:
       - name: Deploy documentation and update alias for latest
         run: |
           mike deploy ${{ steps.module.outputs.version}} latest --push --update-aliases --config-file docs/mkdocs.yml
+     
+      - name: Deploy docs
+        run: uv run --group docs --extra psycopg mike deploy ${{ steps.module.outputs.version}} latest --push --update-aliases --config-file docs/mkdocs.yml
