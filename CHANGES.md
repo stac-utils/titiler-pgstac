@@ -5,6 +5,9 @@
 * remove `cql-text` support for PgSTACSearch `filter`
 * add `filter` and `filter-lang` for CollectionIdParams dependency
 * changed container image to use non-root `user`
+* switch to uv for development
+* switch to hatch for python package build-system
+* bump minimum python version to 3.11
 
 ## 1.9.0 (2025-09-23)
 
