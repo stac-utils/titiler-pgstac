@@ -22,17 +22,16 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version:
-        - '3.10'
-        - '3.11'
-        - '3.12'
-        - '3.13'
+        python-version: ['3.11', '3.12', '3.13']
 
     steps:
       - uses: actions/checkout@v5
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v6
+      
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
         with:
+          version: "0.9.*" 
+          enable-cache: true
           python-version: ${{ matrix.python-version }}
 
       - name: install lib postgres
@@ -40,17 +39,15 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          python -m pip install -e .["test,psycopg"]
+          uv sync --extra psycopg 
 
       - name: Run pre-commit
         if: ${{ matrix.python-version == env.LATEST_PY_VERSION }}
         run: |
-          python -m pip install pre-commit
-          pre-commit run --all-files
+          uv run pre-commit run --all-files
 
       - name: Run tests
-        run: python -m pytest --cov titiler.pgstac --cov-report xml --cov-report term-missing --asyncio-mode=strict -s -vv
+        run: uv run pytest --cov titiler.pgstac --cov-report xml --cov-report term-missing --asyncio-mode=strict -s -vv
 
       - name: Upload Results
         if: ${{ matrix.python-version == env.LATEST_PY_VERSION }}
@@ -65,14 +62,21 @@ jobs:
     needs: [tests]
     runs-on: ubuntu-latest
     env:
-      PGSTAC_VERSION: '0.9.2'
+      PGSTAC_VERSION: '0.9.8'
     steps:
       - uses: actions/checkout@v5
 
-      - name: Set up Python 3.12
-        uses: actions/setup-python@v6
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
         with:
-          python-version: '3.12'
+          version: "0.9.*" 
+          enable-cache: true
+          python-version: ${{ env.LATEST_PY_VERSION }}
+     
+      - name: Install dependencies
+        run: |
+          uv sync --extra psycopg
+          uv pip install pypgstac==${{ env.PGSTAC_VERSION }}
 
       - name: Launch services
         run: docker compose up -d tiler-uvicorn
@@ -82,15 +86,11 @@ jobs:
       - name: install lib postgres
         uses: nyurik/action-setup-postgis@v2
 
-      - name: Install python dependencies
-        run: |
-          python -m pip install pypgstac==${{ env.PGSTAC_VERSION }} psycopg[pool] httpx pytest pytest-benchmark rasterio
-
       - name: Ingest Stac Items/Collection
         run: |
-          pypgstac pgready --dsn postgresql://username:password@0.0.0.0:5439/postgis
-          pypgstac load collections benchmark/stac/collection.json --dsn postgresql://username:password@0.0.0.0:5439/postgis --method insert_ignore
-          pypgstac load items benchmark/stac/items.json --dsn postgresql://username:password@0.0.0.0:5439/postgis --method insert_ignore
+          uv run pypgstac pgready --dsn postgresql://username:password@0.0.0.0:5439/postgis
+          uv run pypgstac load collections benchmark/stac/collection.json --dsn postgresql://username:password@0.0.0.0:5439/postgis --method insert_ignore
+          uv run pypgstac load items benchmark/stac/items.json --dsn postgresql://username:password@0.0.0.0:5439/postgis --method insert_ignore
 
       - name: Sleep for 10 seconds
         run: sleep 10s
@@ -98,7 +98,7 @@ jobs:
 
       - name: Run Benchmark
         run: |
-          python -m pytest .github/workflows/tests/benchmarks.py --benchmark-only --benchmark-columns 'min, max, mean, median' --benchmark-json output.json
+          uv run --group benchmark pytest .github/workflows/tests/benchmarks.py --benchmark-only --benchmark-columns 'min, max, mean, median' --benchmark-json output.json
 
       - name: Store and benchmark result
         uses: benchmark-action/github-action-benchmark@v1
@@ -124,16 +124,13 @@ jobs:
     if: startsWith(github.event.ref, 'refs/tags') || github.event_name == 'release'
     steps:
       - uses: actions/checkout@v5
-      - name: Set up Python
-        uses: actions/setup-python@v6
+      
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
         with:
+          version: "0.9.*" 
+          enable-cache: true
           python-version: ${{ env.LATEST_PY_VERSION }}
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install wheel twine build
-          python -m pip install .
 
       - name: Set tag version
         id: tag
@@ -144,17 +141,17 @@ jobs:
       - name: Set module version
         id: module
         run: |
-          echo version=$(python -c'import titiler.pgstac; print(titiler.pgstac.__version__)') >> $GITHUB_OUTPUT
-
+          echo version=$(uv run python -c'import titiler.pgstac; print(titiler.pgstac.__version__)') >> $GITHUB_OUTPUT
+      
       - name: Build and publish
         if: ${{ steps.tag.outputs.version }} == ${{ steps.module.outputs.version}}
         env:
-          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
-          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+          UV_PUBLISH_USERNAME: ${{ secrets.PYPI_USERNAME }}
+          UV_PUBLISH_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
         run: |
           rm -rf dist
-          python -m build
-          twine upload dist/*
+          uv build
+          uv publish dist/*
 
   publish-docker:
     needs: [tests]

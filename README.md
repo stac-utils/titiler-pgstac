@@ -34,20 +34,25 @@ To install from PyPI and run:
 
 ```bash
 # Make sure to have pip up to date
-$ python -m pip install -U pip
+python -m pip install -U pip
 
 # Install `psycopg` or `psycopg["binary"]` or `psycopg["c"]`
-$ python -m pip install psycopg["binary"]
+python -m pip install psycopg["binary"]
 
-$ python -m pip install titiler.pgstac
+python -m pip install titiler.pgstac
 ```
 
 To install from sources and run for development:
 
+We recommand using [`uv`](https://docs.astral.sh/uv) as project manager for development.
+
+See https://docs.astral.sh/uv/getting-started/installation/ for installation 
+
 ```
-$ git clone https://github.com/stac-utils/titiler-pgstac.git
-$ cd titiler-pgstac
-$ python -m pip install -e .
+git clone https://github.com/stac-utils/titiler-pgstac.git
+cd titiler-pgstac
+
+uv sync --extra psycopg 
 ```
 
 ### `PgSTAC` version
