@@ -26,7 +26,7 @@ classifiers = [
     "Topic :: Scientific/Engineering :: GIS",
 ]
 dependencies = [
-    "titiler.core>=0.24,<0.25",
+    "titiler.core>=0.24,<0.26",
     "titiler.mosaic>=0.24,<0.25",
     "cql2>=0.3.6",
     "pydantic>=2.4,<3.0",
