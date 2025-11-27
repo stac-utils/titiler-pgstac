@@ -26,8 +26,10 @@ classifiers = [
     "Topic :: Scientific/Engineering :: GIS",
 ]
 dependencies = [
-    "titiler.core>=0.24,<0.25",
-    "titiler.mosaic>=0.24,<0.25",
+#    "titiler.core>=1.0,<1.1",
+#    "titiler.mosaic>=1.0,<1.1",
+    "titiler.core @ git+https://github.com/developmentseed/titiler@feature/optional-cogeo-mosaic#egg=titiler.core&subdirectory=src/titiler/core",
+    "titiler.mosaic @ git+https://github.com/developmentseed/titiler@feature/optional-cogeo-mosaic#egg=titiler.mosaic&subdirectory=src/titiler/mosaic",
     "cql2>=0.3.6",
     "pydantic>=2.4,<3.0",
     "pydantic-settings~=2.0",
@@ -60,7 +62,7 @@ dev = [
     "pytest-cov",
     "pytest-asyncio",
     "httpx",
-    "pypgstac>=0.7,<=0.10",
+    "pypgstac>=0.9.8,<=0.10",
     "pytest-postgresql",
     "pre-commit",
     "bump-my-version",
@@ -92,6 +94,9 @@ only-include = ["titiler"]
 
 [tool.hatch.build.targets.wheel]
 only-include = ["titiler"]
+
+[tool.hatch.metadata]
+allow-direct-references = true
 
 [build-system]
 requires = ["hatchling"]

@@ -5,16 +5,14 @@ from dataclasses import dataclass
 from typing import List, Tuple
 from urllib.parse import urlencode
 
-from cogeo_mosaic.errors import MosaicNotFoundError
 from fastapi import Depends
-from psycopg.rows import class_row
 from starlette.requests import Request
 from starlette.routing import NoMatchFound
 
 from titiler.core.factory import FactoryExtension
 from titiler.core.utils import check_query_params
 from titiler.pgstac import model
-from titiler.pgstac.factory import MosaicTilerFactory
+from titiler.pgstac.factory import MosaicTilerFactory, logger
 
 
 @dataclass
@@ -32,19 +30,20 @@ class searchInfoExtension(FactoryExtension):
             operation_id=f"{factory.operation_prefix}getInfo",
         )
         def info(  # noqa: C901
-            request: Request, search_id=Depends(factory.path_dependency)
+            request: Request,
+            search_id=Depends(factory.path_dependency),
+            backend_params=Depends(factory.backend_dependency),
         ):
             """Get Search query metadata."""
-            with request.app.state.dbpool.connection() as conn:
-                with conn.cursor(row_factory=class_row(model.Search)) as cursor:
-                    cursor.execute(
-                        "SELECT * FROM searches WHERE hash=%s;",
-                        (search_id,),
-                    )
-                    search_info = cursor.fetchone()
-
-            if not search_info:
-                raise MosaicNotFoundError(f"SearchId `{search_id}` not found")
+            logger.info(
+                f"opening data with backend: {factory.backend} and reader {factory.dataset_reader}"
+            )
+            with factory.backend(
+                search_id,
+                reader=factory.dataset_reader,
+                **backend_params.as_dict(),
+            ) as src_dst:
+                search_info = src_dst.info()
 
             links: List[model.Link] = [
                 model.Link(
