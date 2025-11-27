@@ -12,7 +12,6 @@ import morecantile
 import pystac
 from cachetools import TTLCache, cached
 from cachetools.keys import hashkey
-from cogeo_mosaic.errors import MosaicNotFoundError
 from cql2 import Expr
 from fastapi import HTTPException, Path, Query
 from psycopg import errors as pgErrors
@@ -23,7 +22,7 @@ from typing_extensions import Annotated
 
 from titiler.core.dependencies import DefaultDependency
 from titiler.pgstac import model
-from titiler.pgstac.errors import ReadOnlyPgSTACError
+from titiler.pgstac.errors import MosaicNotFoundError, ReadOnlyPgSTACError
 from titiler.pgstac.settings import CacheSettings, RetrySettings
 from titiler.pgstac.utils import retry
 

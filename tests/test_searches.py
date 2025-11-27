@@ -161,7 +161,6 @@ def test_tilejson(app, search_no_bbox, search_bbox):
     assert response.headers["content-type"] == "application/json"
     assert response.status_code == 200
     resp = response.json()
-    assert resp["name"] == search_no_bbox
     assert resp["minzoom"] == 0
     assert resp["maxzoom"] == 24
     assert round(resp["bounds"][0]) == -180
@@ -209,7 +208,6 @@ def test_tilejson(app, search_no_bbox, search_bbox):
     assert response.headers["content-type"] == "application/json"
     assert response.status_code == 200
     resp = response.json()
-    assert resp["name"] == search_bbox
     assert resp["minzoom"] == 0
     assert resp["maxzoom"] == 24
     assert resp["bounds"] == [-85.535, 36.137, -85.465, 36.179]
@@ -386,19 +384,18 @@ def test_cql2(rio, app):
     assert response.headers["content-type"] == "application/json"
     assert response.status_code == 200
     resp = response.json()
-    assert resp["name"] == cql2_id
     assert resp["minzoom"] == 0
     assert resp["maxzoom"] == 24
     assert round(resp["bounds"][0]) == -180
     # Make sure we return a tilejson with the `/{search_id}/tiles/{tms}` format
     assert (
-        f"/searches/{cql2_id}/tiles/WebMercatorQuad/{{z}}/{{x}}/{{y}}?assets=cog"
+        f"/searches/{cql2_id}/tiles/WebMercatorQuad/{{z}}/{{x}}/{{y}}@1x?assets=cog"
         in resp["tiles"][0]
     )
 
     z, x, y = 15, 8589, 12849
     response = app.get(
-        f"/searches/{cql2_id}/tiles/WebMercatorQuad/{z}/{x}/{y}?assets=cog"
+        f"/searches/{cql2_id}/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?assets=cog"
     )
     assert response.status_code == 200
     assert response.headers["content-type"] == "image/jpeg"
@@ -1015,10 +1012,10 @@ def test_query_point_searches(app, search_no_bbox, search_bbox):
     assert response.status_code == 200
     resp = response.json()
 
-    values = resp["values"]
+    values = resp["assets"]
     assert len(values) == 2
-    assert values[0][0] == "noaa-emergency-response/20200307aC0853130w361030"
-    assert values[0][2] == ["cog_b1", "cog_b2", "cog_b3"]
+    assert values[0]["name"] == "noaa-emergency-response/20200307aC0853130w361030"
+    assert values[0]["band_names"] == ["cog_b1", "cog_b2", "cog_b3"]
 
     # with coord-crs
     response = app.get(
@@ -1027,7 +1024,7 @@ def test_query_point_searches(app, search_no_bbox, search_bbox):
     )
     assert response.status_code == 200
     resp = response.json()
-    assert len(resp["values"]) == 2
+    assert len(resp["assets"]) == 2
 
     # SearchId not found
     response = app.get(

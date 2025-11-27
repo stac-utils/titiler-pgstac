@@ -8,6 +8,9 @@
 * switch to uv for development
 * switch to hatch for python package build-system
 * bump minimum python version to 3.11
+* update titiler requirement to `>=1.0,<1.1`
+* switch to rio-tiler mosaic backend
+* change `/point` response 
 
 ## 1.9.0 (2025-09-23)
 
