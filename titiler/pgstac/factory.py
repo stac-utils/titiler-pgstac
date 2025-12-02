@@ -20,12 +20,7 @@ from starlette.requests import Request
 from starlette.routing import NoMatchFound
 from typing_extensions import Annotated
 
-from titiler.core.dependencies import (
-    AssetsBidxExprParams,
-    DefaultDependency,
-    HistogramParams,
-    StatisticsParams,
-)
+from titiler.core.dependencies import AssetsBidxExprParams, DefaultDependency
 from titiler.core.resources.enums import ImageType
 from titiler.core.resources.responses import XMLResponse
 from titiler.core.utils import check_query_params
@@ -67,10 +62,6 @@ class MosaicTilerFactory(BaseFactory):
 
     # Assets/Indexes/Expression Dependencies
     layer_dependency: Type[DefaultDependency] = AssetsBidxExprParams
-
-    # Statistics/Histogram Dependencies
-    stats_dependency: Type[DefaultDependency] = StatisticsParams
-    histogram_dependency: Type[DefaultDependency] = HistogramParams
 
     def register_routes(self) -> None:
         """Custom: remove `self.info()."""

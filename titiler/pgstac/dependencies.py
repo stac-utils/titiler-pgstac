@@ -279,7 +279,7 @@ Remember to URL encode the CQL2-JSON if using GET""",
         Literal["cql2-text", "cql2-json"],
         Query(
             alias="filter-lang",
-            description="The coordinate reference system (CRS) used by spatial literals in the 'filter' value. Default is `http://www.opengis.net/def/crs/OGC/1.3/CRS84`",
+            description="CQL2 Language (cql2-text, cql2-json). Defaults to cql2-text.",
         ),
     ] = "cql2-text",
 ) -> str:
