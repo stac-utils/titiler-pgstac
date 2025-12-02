@@ -119,7 +119,6 @@ def test_tilejson_collections(app):
     assert response.headers["content-type"] == "application/json"
     assert response.status_code == 200
     resp = response.json()
-    assert resp["name"] == f"Mosaic for '{collection_id}' Collection"
     assert resp["minzoom"] == 0
     assert resp["maxzoom"] == 24
     assert round(resp["bounds"][0]) == -180
@@ -520,14 +519,14 @@ def test_query_point_collections(app):
     response = app.get(
         f"/collections/{collection_id}/point/-85.5,36.1624", params={"assets": "cog"}
     )
-
     assert response.status_code == 200
     resp = response.json()
-    values = resp["values"]
+    values = resp["assets"]
     assert len(values) == 2
-    assert values[0][0] == "noaa-emergency-response/20200307aC0853130w361030"
-    assert values[0][2] == ["cog_b1", "cog_b2", "cog_b3"]
-    assert values[1][0] == "noaa-emergency-response/20200307aC0853000w361030"
+    assert values[0]["name"] == "noaa-emergency-response/20200307aC0853130w361030"
+    assert values[0]["band_names"] == ["cog_b1", "cog_b2", "cog_b3"]
+    assert values[0]["values"] == [27.0, 34.0, 42.0]
+    assert values[1]["name"] == "noaa-emergency-response/20200307aC0853000w361030"
 
     # with coord-crs
     response = app.get(
@@ -536,7 +535,7 @@ def test_query_point_collections(app):
     )
     assert response.status_code == 200
     resp = response.json()
-    assert len(resp["values"]) == 2
+    assert len(resp["assets"]) == 2
 
     # CollectionId not found
     response = app.get(

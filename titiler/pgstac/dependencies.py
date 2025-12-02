@@ -12,7 +12,6 @@ import morecantile
 import pystac
 from cachetools import TTLCache, cached
 from cachetools.keys import hashkey
-from cogeo_mosaic.errors import MosaicNotFoundError
 from cql2 import Expr
 from fastapi import HTTPException, Path, Query
 from psycopg import errors as pgErrors
@@ -23,7 +22,7 @@ from typing_extensions import Annotated
 
 from titiler.core.dependencies import DefaultDependency
 from titiler.pgstac import model
-from titiler.pgstac.errors import ReadOnlyPgSTACError
+from titiler.pgstac.errors import MosaicNotFoundError, ReadOnlyPgSTACError
 from titiler.pgstac.settings import CacheSettings, RetrySettings
 from titiler.pgstac.utils import retry
 
@@ -280,7 +279,7 @@ Remember to URL encode the CQL2-JSON if using GET""",
         Literal["cql2-text", "cql2-json"],
         Query(
             alias="filter-lang",
-            description="The coordinate reference system (CRS) used by spatial literals in the 'filter' value. Default is `http://www.opengis.net/def/crs/OGC/1.3/CRS84`",
+            description="CQL2 Language (cql2-text, cql2-json). Defaults to cql2-text.",
         ),
     ] = "cql2-text",
 ) -> str:
