@@ -180,27 +180,26 @@ jobs:
         id: tag
         run: |
           echo "version=${GITHUB_REF#refs/*/}" >> $GITHUB_OUTPUT
+      
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}
+          flavor: |
+            latest=false
+          tags: |
+            type=semver,pattern={{version}}
+            type=raw,value=latest,enable={{is_default_branch}}
 
-      # Push `latest`
-      - name: Build and push latest
-        if: github.ref == 'refs/heads/main'
+      - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          platforms: linux/amd64
+          platforms: linux/amd64,linux/arm64
           context: .
           file: Dockerfile
-          push: true
-          tags: |
-            ghcr.io/stac-utils/titiler-pgstac:latest
-
-      # Push `{VERSION}`
-      - name: Build and push tag
-        if: startsWith(github.event.ref, 'refs/tags') || github.event_name == 'release'
-        uses: docker/build-push-action@v6
-        with:
-          platforms: linux/amd64
-          context: .
-          file: Dockerfile
-          push: true
-          tags: |
-            ghcr.io/stac-utils/titiler-pgstac:${{ steps.tag.outputs.version }}
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
