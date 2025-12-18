@@ -2,7 +2,7 @@
 
 import os
 import warnings
-from typing import Any, Dict
+from typing import Any
 from urllib.parse import quote_plus as quote
 
 import psycopg
@@ -21,7 +21,7 @@ collection_maxar = os.path.join(DATA_DIR, "maxar_BayOfBengal.json")
 items = os.path.join(DATA_DIR, "noaa-eri-nashville2020.json")
 
 
-def parse_img(content: bytes) -> Dict[Any, Any]:
+def parse_img(content: bytes) -> dict[Any, Any]:
     """Read tile image and return metadata."""
     with warnings.catch_warnings():
         warnings.filterwarnings(
