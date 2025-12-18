@@ -10,7 +10,32 @@
 * bump minimum python version to 3.11
 * update titiler requirement to `>=1.0,<1.1`
 * switch to rio-tiler mosaic backend
-* change `/point` response 
+* change Response model for `/point` endpoint **breaking change**
+
+    ```python
+    # before
+    class Point(BaseModel):
+        coordinates: List[float]
+        values: List[Tuple[str, List[Optional[float]], List[str]]]
+
+    # now
+    class AssetPoint(BaseModel):
+        name: str
+        values: list[float | None]
+        band_names: list[str]
+        band_descriptions: list[str] | None = None
+
+    class Point(BaseModel):
+        coordinates: list[float]
+        assets: list[AssetPoint]
+    ```
+
+* `/searches/list` endpoint is deprecated and replaced with `/searches/`
+* update `WMTSCapabilities.xml` endpoint with latest from titiler
+    - remove `{tileMatrixSetId}` prefix
+    - include all available TMS in layers
+    - move endpoint to an extension
+
 
 ## 1.9.0 (2025-09-23)
 
