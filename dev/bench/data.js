@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1766078930784,
+  "lastUpdate": 1766079116916,
   "repoUrl": "https://github.com/stac-utils/titiler-pgstac",
   "entries": {
     "TiTiler-pgSTAC Benchmarks": [
@@ -8249,6 +8249,79 @@ window.BENCHMARK_DATA = {
             "unit": "iter/sec",
             "range": "stddev: 0.00027903731751873856",
             "extra": "mean: 31.097276814813736 msec\nrounds: 27"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "vincent.sarago@gmail.com",
+            "name": "vincentsarago",
+            "username": "vincentsarago"
+          },
+          "committer": {
+            "email": "vincent.sarago@gmail.com",
+            "name": "vincentsarago",
+            "username": "vincentsarago"
+          },
+          "distinct": true,
+          "id": "98d44d6fff8141e097f302b7d04724256826871c",
+          "message": "update docker ci",
+          "timestamp": "2025-12-18T18:26:45+01:00",
+          "tree_id": "1743f428d6d4485f2368af47ade642d32e5509e4",
+          "url": "https://github.com/stac-utils/titiler-pgstac/commit/98d44d6fff8141e097f302b7d04724256826871c"
+        },
+        "date": 1766079116383,
+        "tool": "pytest",
+        "benches": [
+          {
+            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "value": 6.026038447048512,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0015073514714168828",
+            "extra": "mean: 165.94650179999917 msec\nrounds: 5"
+          },
+          {
+            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "value": 13.05717196997329,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0010249465439280921",
+            "extra": "mean: 76.58626249999874 msec\nrounds: 12"
+          },
+          {
+            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "value": 16.8729996805772,
+            "unit": "iter/sec",
+            "range": "stddev: 0.001982461779355955",
+            "extra": "mean: 59.26628453333744 msec\nrounds: 15"
+          },
+          {
+            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "value": 28.43419855609997,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0010764367585947678",
+            "extra": "mean: 35.16891809090468 msec\nrounds: 22"
+          },
+          {
+            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "value": 37.11796593388209,
+            "unit": "iter/sec",
+            "range": "stddev: 0.00023469809986459482",
+            "extra": "mean: 26.94113146666742 msec\nrounds: 30"
+          },
+          {
+            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "value": 32.54970813856922,
+            "unit": "iter/sec",
+            "range": "stddev: 0.00023452996269471255",
+            "extra": "mean: 30.722241678568757 msec\nrounds: 28"
+          },
+          {
+            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "value": 32.09864725565408,
+            "unit": "iter/sec",
+            "range": "stddev: 0.00045404302355155334",
+            "extra": "mean: 31.153960851850325 msec\nrounds: 27"
           }
         ]
       }
