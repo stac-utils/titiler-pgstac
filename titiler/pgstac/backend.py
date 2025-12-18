@@ -3,7 +3,7 @@
 import json
 import logging
 from threading import Lock
-from typing import Any, Type
+from typing import Any
 
 import attr
 from cachetools import TTLCache, cached
@@ -54,7 +54,7 @@ class PGSTACBackend(BaseBackend):
     tms: TileMatrixSet = attr.ib(default=WEB_MERCATOR_TMS)
 
     # Use Custom STAC reader (outside init)
-    reader: Type[SimpleSTACReader] = attr.ib(default=SimpleSTACReader)
+    reader: type[SimpleSTACReader] = attr.ib(default=SimpleSTACReader)
     reader_options: dict = attr.ib(factory=dict)
 
     # default values for bounds

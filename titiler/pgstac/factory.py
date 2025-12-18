@@ -4,8 +4,9 @@ import logging
 import os
 import re
 import warnings
+from collections.abc import Callable, Generator
 from enum import Enum
-from typing import Any, Callable, Generator, List, Optional, Tuple, Type
+from typing import Any
 from urllib.parse import urlencode
 
 from attrs import define
@@ -37,7 +38,7 @@ MOSAIC_STRICT_ZOOM = str(os.getenv("MOSAIC_STRICT_ZOOM", False)).lower() in [
 logger = logging.getLogger(__name__)
 
 
-def _first_value(values: List[Any], default: Any = None):
+def _first_value(values: list[Any], default: Any = None):
     """Return the first not None value."""
     return next(filter(lambda x: x is not None, values), default)
 
@@ -48,17 +49,17 @@ class MosaicTilerFactory(BaseFactory):
 
     path_dependency: Callable[..., str]
 
-    backend: Type[PGSTACBackend] = PGSTACBackend
-    backend_dependency: Type[DefaultDependency] = BackendParams
+    backend: type[PGSTACBackend] = PGSTACBackend
+    backend_dependency: type[DefaultDependency] = BackendParams
 
     # Rasterio Dataset Options (nodata, unscale, resampling, reproject)
-    dataset_reader: Type[SimpleSTACReader] = SimpleSTACReader
+    dataset_reader: type[SimpleSTACReader] = SimpleSTACReader
 
     # Backend.get_assets() Options
-    assets_accessor_dependency: Type[DefaultDependency] = PgSTACParams
+    assets_accessor_dependency: type[DefaultDependency] = PgSTACParams
 
     # Assets/Indexes/Expression Dependencies
-    layer_dependency: Type[DefaultDependency] = AssetsBidxExprParams
+    layer_dependency: type[DefaultDependency] = AssetsBidxExprParams
 
     def register_routes(self) -> None:
         """Custom: remove `self.info()."""
@@ -85,10 +86,10 @@ def add_search_register_route(  # noqa: C901
     *,
     prefix: str = "",
     search_dependency: Callable[
-        ..., Tuple[model.PgSTACSearch, model.Metadata]
+        ..., tuple[model.PgSTACSearch, model.Metadata]
     ] = SearchParams,
-    tile_dependencies: Optional[List[Callable]] = None,
-    tags: Optional[List[str | Enum]] = None,
+    tile_dependencies: list[Callable] | None = None,
+    tags: list[str | Enum] | None = None,
 ):
     """add `/register` route"""
     tile_dependencies = tile_dependencies or []
@@ -132,7 +133,7 @@ def add_search_register_route(  # noqa: C901
                 )
                 search_info = cursor.fetchone()
 
-        links: List[model.Link] = []
+        links: list[model.Link] = []
 
         base_url = str(request.base_url)
 
@@ -232,7 +233,7 @@ def add_search_list_route(  # noqa: C901
     app: FastAPI,
     *,
     prefix: str = "",
-    tags: Optional[List[str | Enum]] = None,
+    tags: list[str | Enum] | None = None,
 ):
     """Add PgSTAC Search (of type mosaic) listing route."""
     name = prefix.replace("/", ".")
@@ -273,7 +274,7 @@ def add_search_list_route(  # noqa: C901
             ),
         ] = 0,
         sortby: Annotated[
-            Optional[str],
+            str | None,
             Query(
                 description="Sort the response items by a property (ascending (default) or descending).",
             ),
@@ -401,7 +402,7 @@ def add_search_list_route(  # noqa: C901
 
         searches = []
         for search in searches_info:
-            search_links: List[model.Link] = []
+            search_links: list[model.Link] = []
             if mosaic_info_endpoint:
                 search_links.append(
                     model.Link(

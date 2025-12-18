@@ -1,6 +1,7 @@
 """Custom STAC reader."""
 
-from typing import Any, Sequence, Set, Type
+from collections.abc import Sequence
+from typing import Any
 from urllib.parse import urlparse
 
 import attr
@@ -29,16 +30,16 @@ class PgSTACReader(STACReader):
     minzoom: int = attr.ib(default=None)
     maxzoom: int = attr.ib(default=None)
 
-    include_assets: Set[str] | None = attr.ib(default=None)
-    exclude_assets: Set[str] | None = attr.ib(default=None)
+    include_assets: set[str] | None = attr.ib(default=None)
+    exclude_assets: set[str] | None = attr.ib(default=None)
 
-    include_asset_types: Set[str] = attr.ib(default=DEFAULT_VALID_TYPE)
-    exclude_asset_types: Set[str] | None = attr.ib(default=None)
+    include_asset_types: set[str] = attr.ib(default=DEFAULT_VALID_TYPE)
+    exclude_asset_types: set[str] | None = attr.ib(default=None)
 
     assets: Sequence[str] = attr.ib(init=False)
     default_assets: Sequence[str] | None = attr.ib(default=None)
 
-    reader: Type[BaseReader] = attr.ib(default=Reader)
+    reader: type[BaseReader] = attr.ib(default=Reader)
     reader_options: dict = attr.ib(factory=dict)
 
     ctx: rasterio.Env = attr.ib(default=rasterio.Env)
@@ -84,7 +85,7 @@ class SimpleSTACReader(MultiBaseReader):
     assets: Sequence[str] = attr.ib(init=False)
     default_assets: Sequence[str] | None = attr.ib(default=None)
 
-    reader: Type[BaseReader] = attr.ib(default=Reader)
+    reader: type[BaseReader] = attr.ib(default=Reader)
     reader_options: dict = attr.ib(factory=dict)
 
     ctx: Any = attr.ib(default=rasterio.Env)

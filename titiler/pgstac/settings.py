@@ -1,7 +1,7 @@
 """API settings."""
 
 from functools import lru_cache
-from typing import Any, Optional, Set
+from typing import Annotated, Any
 from urllib.parse import quote_plus as quote
 
 from pydantic import (
@@ -12,7 +12,6 @@ from pydantic import (
     model_validator,
 )
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from typing_extensions import Annotated
 
 
 class ApiSettings(BaseSettings):
@@ -21,7 +20,7 @@ class ApiSettings(BaseSettings):
     name: str = "titiler-pgstac"
     cors_origins: str = "*"
     cachecontrol: str = "public, max-age=3600"
-    cachecontrol_exclude_paths: Set[str] = Field(
+    cachecontrol_exclude_paths: set[str] = Field(
         default={
             ".+/list",
         }
@@ -55,13 +54,12 @@ class PostgresSettings(BaseSettings):
         postgres_dbname: database name.
     """
 
-    postgres_user: Optional[str] = None
-    postgres_pass: Optional[str] = None
-    postgres_host: Optional[str] = None
-    postgres_port: Optional[int] = None
-    postgres_dbname: Optional[str] = None
-
-    database_url: Optional[PostgresDsn] = None
+    postgres_user: str | None = None
+    postgres_pass: str | None = None
+    postgres_host: str | None = None
+    postgres_port: int | None = None
+    postgres_dbname: str | None = None
+    database_url: PostgresDsn | None = None
 
     # see https://www.psycopg.org/psycopg3/docs/api/pool.html#the-connectionpool-class for options
     db_min_conn_size: int = 1  # The minimum number of connection the pool will hold
@@ -77,7 +75,7 @@ class PostgresSettings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
     @field_validator("database_url", mode="before")
-    def assemble_db_connection(cls, v: Optional[str], info: ValidationInfo) -> Any:
+    def assemble_db_connection(cls, v: str | None, info: ValidationInfo) -> Any:
         """Validate database config."""
         if isinstance(v, str):
             return v

@@ -1,14 +1,15 @@
 """titiler.pgstac utilities."""
 
 import time
-from typing import Any, Sequence, Type, Union
+from collections.abc import Sequence
+from typing import Any
 
 from titiler.pgstac.logger import logger
 
 
 def retry(
     tries: int,
-    exceptions: Union[Type[Exception], Sequence[Type[Exception]]] = Exception,
+    exceptions: type[Exception] | Sequence[type[Exception]] = Exception,
     delay: float = 0.0,
 ):
     """Retry Decorator"""
