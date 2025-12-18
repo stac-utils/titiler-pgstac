@@ -63,7 +63,7 @@ class PGSTACBackend(BaseBackend):
     _backend_name = "PgSTAC"
 
     @property
-    def minzoom(self) -> int:
+    def minzoom(self) -> int:  # type: ignore [override]
         """Return minzoom."""
         info = self.info()
         return (
@@ -73,7 +73,7 @@ class PGSTACBackend(BaseBackend):
         )
 
     @property
-    def maxzoom(self) -> int:
+    def maxzoom(self) -> int:  # type: ignore [override]
         """Return maxzoom."""
         info = self.info()
         return (
@@ -83,7 +83,7 @@ class PGSTACBackend(BaseBackend):
         )
 
     @property
-    def bounds(self) -> BBox:
+    def bounds(self) -> BBox:  # type: ignore [override]
         """Return mosaic BBox."""
         info = self.info()
         return _first_value(
@@ -119,7 +119,13 @@ class PGSTACBackend(BaseBackend):
             xs, ys = transform(coord_crs, WGS84_CRS, [lng], [lat])
             lng, lat = xs[0], ys[0]
 
-        return self.get_assets(Point(type="Point", coordinates=(lng, lat)), **kwargs)
+        return self.get_assets(
+            Point(
+                type="Point",
+                coordinates=(lng, lat),  # type: ignore
+            ),
+            **kwargs,
+        )
 
     def assets_for_bbox(
         self,
@@ -195,7 +201,7 @@ class PGSTACBackend(BaseBackend):
                             skipcovered,
                         ),
                     )
-                    resp = cursor.fetchone()[0]
+                    resp = cursor.fetchone()[0]  # type: ignore
 
                 except (pgErrors.RaiseException, pgErrors.NotNullViolation) as e:
                     # Catch Invalid SearchId and raise specific Error

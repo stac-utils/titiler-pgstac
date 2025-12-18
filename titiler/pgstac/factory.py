@@ -4,6 +4,7 @@ import logging
 import os
 import re
 import warnings
+from enum import Enum
 from typing import Any, Callable, Generator, List, Optional, Tuple, Type
 from urllib.parse import urlencode
 
@@ -87,7 +88,7 @@ def add_search_register_route(  # noqa: C901
         ..., Tuple[model.PgSTACSearch, model.Metadata]
     ] = SearchParams,
     tile_dependencies: Optional[List[Callable]] = None,
-    tags: Optional[List[str]] = None,
+    tags: Optional[List[str | Enum]] = None,
 ):
     """add `/register` route"""
     tile_dependencies = tile_dependencies or []
@@ -231,7 +232,7 @@ def add_search_list_route(  # noqa: C901
     app: FastAPI,
     *,
     prefix: str = "",
-    tags: Optional[List[str]] = None,
+    tags: Optional[List[str | Enum]] = None,
 ):
     """Add PgSTAC Search (of type mosaic) listing route."""
     name = prefix.replace("/", ".")

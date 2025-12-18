@@ -1,6 +1,7 @@
 """titiler.pgstac extensions."""
 
 import warnings
+from collections.abc import Callable
 from typing import Annotated, Any
 from urllib.parse import urlencode
 
@@ -37,7 +38,7 @@ DEFAULT_TEMPLATES = Jinja2Templates(env=jinja2_env)
 class searchInfoExtension(FactoryExtension):
     """Add /info endpoint"""
 
-    def register(self, factory: MosaicTilerFactory):  # noqa: C901
+    def register(self, factory: MosaicTilerFactory):  # type: ignore [override]  # noqa: C901
         """Register endpoint to the tiler factory."""
 
         @factory.router.get(
@@ -75,7 +76,7 @@ class searchInfoExtension(FactoryExtension):
             if renders := search_info.metadata.defaults_params:
                 # List of dependencies a `/tile` URL should validate
                 # Note: Those dependencies should only require Query() inputs
-                tile_dependencies = [
+                tile_dependencies: list[Callable] = [
                     factory.layer_dependency,
                     factory.dataset_dependency,
                     factory.pixel_selection_dependency,
@@ -227,7 +228,7 @@ class wmtsExtension(FactoryExtension):
 
             # List of dependencies a `/tile` URL should validate
             # Note: Those dependencies should only require Query() inputs
-            tile_dependencies = [
+            tile_dependencies: list[Callable] = [
                 factory.assets_accessor_dependency,
                 factory.layer_dependency,
                 factory.dataset_dependency,

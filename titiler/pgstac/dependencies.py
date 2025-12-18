@@ -5,7 +5,7 @@ import re
 import warnings
 from dataclasses import dataclass, field
 from threading import Lock
-from typing import Any, Literal
+from typing import Any, Literal, cast
 from urllib.parse import unquote_plus
 
 import morecantile
@@ -125,7 +125,7 @@ def get_collection_id(  # noqa: C901
                 "SELECT * FROM pgstac.get_collection(%s);",
                 (collection_id,),
             )
-            collection = cursor.fetchone()["get_collection"]
+            collection = cursor.fetchone()["get_collection"]  # type: ignore [index]
             if not collection:
                 raise MosaicNotFoundError(f"CollectionId `{collection_id}` not found")
 
@@ -174,7 +174,7 @@ def get_collection_id(  # noqa: C901
             # we technically don't need to register the search request for /collections
             try:
                 cursor.execute("SELECT pgstac.readonly()")
-                if cursor.fetchone()["readonly"]:
+                if cursor.fetchone()["readonly"]:  # type: ignore [index]
                     raise ReadOnlyPgSTACError(
                         "PgSTAC instance is set to `read-only`, cannot register search query."
                     )
@@ -184,7 +184,7 @@ def get_collection_id(  # noqa: C901
                 conn.rollback()
                 pass
 
-            cursor.row_factory = class_row(model.Search)
+            cursor.row_factory = class_row(model.Search)  # type: ignore
             cursor.execute(
                 "SELECT * FROM search_query(%s, _metadata => %s);",
                 (
@@ -192,7 +192,7 @@ def get_collection_id(  # noqa: C901
                     metadata.model_dump_json(exclude_none=True),
                 ),
             )
-            search_info: model.Search = cursor.fetchone()
+            search_info = cast(model.Search, cursor.fetchone())
 
     return search_info.id
 
@@ -384,7 +384,7 @@ def get_stac_item(pool: ConnectionPool, collection: str, item: str) -> pystac.It
                 (search.model_dump_json(by_alias=True, exclude_none=True),),
             )
 
-            resp = cursor.fetchone()["search"]
+            resp = cursor.fetchone()["search"]  # type: ignore
             if not resp or "features" not in resp or len(resp["features"]) != 1:
                 raise HTTPException(
                     status_code=404,

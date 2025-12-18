@@ -23,7 +23,7 @@ class PgSTACReader(STACReader):
 
     """
 
-    input: pystac.Item = attr.ib()
+    input: pystac.Item = attr.ib()  # type: ignore
 
     tms: TileMatrixSet = attr.ib(default=WEB_MERCATOR_TMS)
     minzoom: int = attr.ib(default=None)
@@ -161,7 +161,7 @@ class SimpleSTACReader(MultiBaseReader):
             info["media_type"] = media_type
 
         if header_size := asset_info.get("file:header_size"):
-            info["env"]["GDAL_INGESTED_BYTES_AT_OPEN"] = header_size
+            info["env"]["GDAL_INGESTED_BYTES_AT_OPEN"] = header_size  # type: ignore
 
         if bands := asset_info.get("raster:bands"):
             stats = [
