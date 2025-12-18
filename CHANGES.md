@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-## 2.0.0 
+## 2.0.0 (2025-12-18)
 
 * change environment variable names for Postgres database connection **breaking change**
     - POSTGRES_USER -> PGUSER
