@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 2.0.0 
+
 * remove `cql-text` support for PgSTACSearch `filter`
 * add `filter` and `filter-lang` for CollectionIdParams dependency
 * changed container image to use non-root `user`

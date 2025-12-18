@@ -6,17 +6,17 @@
 | `GET`  | `/searches/{search_id}/tiles/{tileMatrixSetId}`                                     | JSON                                    | OGC Tileset metadata
 | `GET`  | `/searches/{search_id}/tiles/{TileMatrixSetId}/{z}/{x}/{Y}/assets`                  | JSON                                    | Return a list of assets which overlap a given tile
 | `GET`  | `/searches/{search_id}/tiles/{TileMatrixSetId}/{z}/{x}/{y}[@{scale}x][.{format}]`   | image/bin                               | Create a web map tile image for a search query and a tile index
-| `GET`  | `/searches/{search_id}/{TileMatrixSetId}/map`                                       | HTML                                    | simple map viewer
+| `GET`  | `/searches/{search_id}/{TileMatrixSetId}/map`                                       | HTML                                    | Simple map viewer
 | `GET`  | `/searches/{search_id}/{TileMatrixSetId}/tilejson.json`                             | JSON ([TileJSON][tilejson_model])       | Return a Mapbox TileJSON document
-| `GET`  | `/searches/{search_id}/{TileMatrixSetId}/WMTSCapabilities.xml`                      | XML                                     | return OGC WMTS Get Capabilities
 | `GET`  | `/searches/{search_id}/bbox/{minx},{miny},{maxx},{maxy}[/{width}x{height}].{format}`| image/bin                               | Create an image from part of a dataset
 | `POST` | `/searches/{search_id}/feature[/{width}x{height}][.{format}]`                       | image/bin                               | Create an image from a GeoJSON feature
 | `GET`  | `/searches/{search_id}/point/{lon},{lat}`                                           | JSON ([Point][point_model])             | Return pixel values from assets intersecting with a given point
 | `GET`  | `/searches/{search_id}/point/{lon},{lat}/assets`                                    | JSON                                    | Return a list of assets which overlap a given point
 | `POST` | `/searches/{search_id}/statistics`                                                  | GeoJSON ([Statistics][statitics_model]) | Return statistics for geojson features
 | `GET`  | `/searches/{search_id}/info`                                                        | JSON ([Info][info_model])               | Return **Search** query infos
+| `GET`  | `/searches/{search_id}/WMTSCapabilities.xml`                                        | XML                                     | Return OGC WMTS Get Capabilities
 | `POST` | `/searches/register`                                                                | JSON ([Register][register_model])       | Register **Search** query
-| `GET`  | `/searches/list`                                                                    | JSON ([Infos][infos_model])             | Return list of **Search** entries with `Mosaic` type
+| `GET`  | `/searches/`                                                                        | JSON ([Infos][infos_model])             | Return list of **Search** entries with `Mosaic` type
 
 ### Tiles
 
@@ -113,11 +113,10 @@ Example:
 
 ### WMTS
 
-`:endpoint:/searches/{search_id}/{TileMatrixSetId}/WMTSCapabilities.xml`
+`:endpoint:/searches/{search_id}/WMTSCapabilities.xml`
 
 - PathParams:
     - **search_id**: PgSTAC Search Identifier (Hash).
-    - **TileMatrixSetId**: TileMatrixSet name.
 
 - QueryParams:
     - **tile_format**: Output image format, default is set to PNG.
@@ -131,9 +130,9 @@ Example:
 
 Example:
 
-- `https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/WebMercatorQuad/WMTSCapabilities.xml?assets=B01`
-- `https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/WebMercatorQuad/WMTSCapabilities.xml?assets=B01&tile_format=png`
-- `https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/WorldCRS84Quad/WMTSCapabilities.xml?assets=B01&tile_scale=2`
+- `https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/WMTSCapabilities.xml?assets=B01`
+- `https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/WMTSCapabilities.xml?assets=B01&tile_format=png`
+- `https://myendpoint/searches/f1ed59f0a6ad91ed80ae79b7b52bc707/WMTSCapabilities.xml?assets=B01&tile_scale=2`
 
 
 ### Assets for Point or Tile

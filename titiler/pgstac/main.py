@@ -214,6 +214,7 @@ searches = MosaicTilerFactory(
     add_statistics=True,
     add_viewer=True,
     add_part=True,
+    add_ogc_maps=False,
     extensions=[
         searchInfoExtension(),
         wmtsExtension(),
@@ -253,6 +254,7 @@ collection = MosaicTilerFactory(
     add_statistics=True,
     add_viewer=True,
     add_part=True,
+    add_ogc_maps=False,
     extensions=[
         searchInfoExtension(),
         wmtsExtension(),

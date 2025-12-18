@@ -7,9 +7,8 @@
 | `GET`  | `/collections/{collection_id}/tiles`                                                       | JSON                                    | List of OGC Tilesets available
 | `GET`  | `/collections/{collection_id}/tiles/{tileMatrixSetId}`                                     | JSON                                    | OGC Tileset metadata
 | `GET`  | `/collections/{collection_id}/tiles/{TileMatrixSetId}/{z}/{x}/{y}[@{scale}x][.{format}]`   | image/bin                               | Create a web map tile image for a collection and a tile index
-| `GET`  | `/collections/{collection_id}/{TileMatrixSetId}/map.html`                                  | HTML                                    | simple map viewer
+| `GET`  | `/collections/{collection_id}/{TileMatrixSetId}/map.html`                                  | HTML                                    | Simple map viewer
 | `GET`  | `/collections/{collection_id}/{TileMatrixSetId}/tilejson.json`                             | JSON ([TileJSON][tilejson_model])       | Return a Mapbox TileJSON document
-| `GET`  | `/collections/{collection_id}/{TileMatrixSetId}/WMTSCapabilities.xml`                      | XML                                     | return OGC WMTS Get Capabilities
 | `POST` | `/collections/{collection_id}/statistics`                                                  | GeoJSON ([Statistics][statitics_model]) | Return statistics for geojson features
 | `GET`  | `/collections/{collection_id}/bbox/{minx},{miny},{maxx},{maxy}[/{width}x{height}].{format}`| image/bin                               | Create an image from part of a dataset
 | `POST` | `/collections/{collection_id}/feature[/{width}x{height}][.{format}]`                       | image/bin                               | Create an image from a GeoJSON feature
@@ -18,6 +17,7 @@
 | `GET`  | `/collections/{collection_id}/bbox/{minx},{miny},{maxx},{maxy}/assets`                     | JSON                                    | Return a list of assets which overlap a given bounding box
 | `GET`  | `/collections/{collection_id}/tiles/{TileMatrixSetId}/{z}/{x}/{Y}/assets`                  | JSON                                    | Return a list of assets which overlap a given tile
 | `GET`  | `/collections/{collection_id}/info`                                                        | JSON ([Info][info_model])               | Return **Search** query infos from `collection_id`
+| `GET`  | `/collections/{collection_id}/WMTSCapabilities.xml`                                        | XML                                     | Return OGC WMTS Get Capabilities
 
 ### Tiles
 
@@ -125,11 +125,10 @@ Example:
 
 ### WMTS
 
-`:endpoint:/collections/{collection_id}/{TileMatrixSetId}/WMTSCapabilities.xml`
+`:endpoint:/collections/{collection_id}/WMTSCapabilities.xml`
 
 - PathParams:
     - **collection_id**: STAC Collection Identifier.
-    - **TileMatrixSetId**: TileMatrixSet name.
 
 - QueryParams:
     - **tile_format**: Output image format, default is set to PNG.
@@ -148,9 +147,9 @@ Example:
 
 Example:
 
-- `https://myendpoint/collections/my-collection/WebMercatorQuad/WMTSCapabilities.xml?assets=B01`
-- `https://myendpoint/collections/my-collection/WebMercatorQuad/WMTSCapabilities.xml?assets=B01&tile_format=png`
-- `https://myendpoint/collections/my-collection/WorldCRS84Quad/WMTSCapabilities.xml?assets=B01&tile_scale=2`
+- `https://myendpoint/collections/my-collection/WMTSCapabilities.xml?assets=B01`
+- `https://myendpoint/collections/my-collection/WMTSCapabilities.xml?assets=B01&tile_format=png`
+- `https://myendpoint/collections/my-collection/WMTSCapabilities.xml?assets=B01&tile_scale=2`
 
 
 ### Assets for Point or Tile or bbox

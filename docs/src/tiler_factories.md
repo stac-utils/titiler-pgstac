@@ -44,11 +44,10 @@ app.include_router(mosaic.router)
 | `GET`  | `/tiles/{tileMatrixSetId}`                                     | JSON                                    | OGC Tileset metadata
 | `GET`  | `/tiles/{TileMatrixSetId}/{z}/{x}/{Y}/assets`                  | JSON                                    | Return a list of assets which overlap a given tile
 | `GET`  | `/tiles/{TileMatrixSetId}/{z}/{x}/{y}[@{scale}x][.{format}]`   | image/bin                               | Create a web map tile image for a search query and a tile index
-| `GET`  | `/{TileMatrixSetId}/map`                                       | HTML                                    | Simple map viewer **OPTIONAL**
 | `GET`  | `/{TileMatrixSetId}/tilejson.json`                             | JSON ([TileJSON][tilejson_model])       | Return a Mapbox TileJSON document
-| `GET`  | `/{TileMatrixSetId}/WMTSCapabilities.xml`                      | XML                                     | Return OGC WMTS Get Capabilities
 | `GET`  | `/point/{lon}x{lat}`                                           | JSON ([Point][point_model])             | Return pixel values from assets intersecting with a given point
 | `GET`  | `/point/{lon},{lat}/assets`                                    | JSON                                    | Return a list of assets which overlap a given point
+| `GET`  | `/{TileMatrixSetId}/map.html`                                 | HTML                                    | Simple map viewer **OPTIONAL**
 | `GET`  | `/bbox/{minx},{miny},{maxx},{maxy}[/{width}x{height}].{format}`| image/bin                               | Create an image from part of a dataset **OPTIONAL**
 | `POST` | `/feature[/{width}x{height}][.{format}]`                       | image/bin                               | Create an image from a GeoJSON feature **OPTIONAL**
 | `POST` | `/statistics`                                                  | GeoJSON ([Statistics][statitics_model]) | Return statistics for geojson features **OPTIONAL**
@@ -67,6 +66,24 @@ mosaic = MosaicTilerFactory(
     path_dependency=lambda: "aaaaaaaaaaaaaaaaaaaaa",
     extensions=[
         searchInfoExtension(),
+    ],
+)
+app.include_router(mosaic.router)
+```
+
+#### `wmtsExtension`
+
+| Method | URL                                                                        | Output                                  | Description
+| ------ | ---------------------------------------------------------------------------|---------------------------------------- |--------------
+| `GET`  | `/WMTSCapabilities.xml`                                        | XML                                     | Return OGC WMTS Get Capabilities
+
+
+```python
+app = FastAPI()
+mosaic = MosaicTilerFactory(
+    path_dependency=lambda: "aaaaaaaaaaaaaaaaaaaaa",
+    extensions=[
+        wmtsExtension(),
     ],
 )
 app.include_router(mosaic.router)
