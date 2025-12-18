@@ -2,7 +2,7 @@
 
 import logging
 from contextlib import asynccontextmanager
-from typing import Dict, Literal, Optional
+from typing import Any, Literal
 
 import jinja2
 import rasterio
@@ -32,6 +32,7 @@ from titiler.core.middleware import (
 from titiler.core.models.OGC import Conformance, Landing
 from titiler.core.resources.enums import MediaType, OptionalHeader
 from titiler.core.utils import accept_media_type, create_html_response, update_openapi
+from titiler.extensions.wmts import wmtsExtension as DatasetWMTSExtension
 from titiler.mosaic.errors import MOSAIC_STATUS_CODES
 from titiler.pgstac import __version__ as titiler_pgstac_version
 from titiler.pgstac.db import close_db_connection, connect_to_db
@@ -42,7 +43,7 @@ from titiler.pgstac.dependencies import (
     SearchIdParams,
 )
 from titiler.pgstac.errors import PGSTAC_STATUS_CODES
-from titiler.pgstac.extensions import searchInfoExtension
+from titiler.pgstac.extensions import searchInfoExtension, wmtsExtension
 from titiler.pgstac.factory import (
     MosaicTilerFactory,
     add_search_list_route,
@@ -153,7 +154,7 @@ if settings.debug:
                 return r.get("get_collection") or {}
 
     @app.get("/pgstac", include_in_schema=False, tags=["DEBUG"])
-    def pgstac_info(request: Request) -> Dict:
+    def pgstac_info(request: Request) -> dict:
         """Retrieve PgSTAC Info."""
         with request.app.state.dbpool.connection() as conn:
             with conn.cursor(row_factory=dict_row) as cursor:
@@ -215,6 +216,7 @@ searches = MosaicTilerFactory(
     add_part=True,
     extensions=[
         searchInfoExtension(),
+        wmtsExtension(),
     ],
     templates=templates,
 )
@@ -253,6 +255,7 @@ collection = MosaicTilerFactory(
     add_part=True,
     extensions=[
         searchInfoExtension(),
+        wmtsExtension(),
     ],
     templates=templates,
 )
@@ -268,6 +271,9 @@ stac = MultiBaseTilerFactory(
     path_dependency=ItemIdParams,
     router_prefix="/collections/{collection_id}/items/{item_id}",
     add_viewer=True,
+    extensions=[
+        DatasetWMTSExtension(),
+    ],
     templates=templates,
 )
 app.include_router(
@@ -284,6 +290,9 @@ if settings.enable_assets_endpoints:
         path_dependency=AssetIdParams,
         router_prefix="/collections/{collection_id}/items/{item_id}/assets/{asset_id}",
         add_viewer=True,
+        extensions=[
+            DatasetWMTSExtension(),
+        ],
         templates=templates,
     )
     app.include_router(
@@ -299,6 +308,9 @@ if settings.enable_external_dataset_endpoints:
     external_cog = TilerFactory(
         router_prefix="/external",
         add_viewer=True,
+        extensions=[
+            DatasetWMTSExtension(),
+        ],
         templates=templates,
     )
     app.include_router(
@@ -337,7 +349,7 @@ def ping(
     timeout: int = Query(
         1, description="Timeout getting SQL connection from the pool."
     ),
-) -> Dict:
+) -> dict[str, Any]:
     """Health check."""
     try:
         with app.state.dbpool.connection(timeout) as conn:
@@ -376,7 +388,7 @@ def ping(
 def landing(
     request: Request,
     f: Annotated[
-        Optional[Literal["html", "json"]],
+        Literal["html", "json"] | None,
         Query(
             description="Response MediaType. Defaults to endpoint's default or value defined in `accept` header."
         ),
@@ -526,7 +538,7 @@ def landing(
 def conformance(
     request: Request,
     f: Annotated[
-        Optional[Literal["html", "json"]],
+        Literal["html", "json"] | None,
         Query(
             description="Response MediaType. Defaults to endpoint's default or value defined in `accept` header."
         ),

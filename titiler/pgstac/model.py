@@ -8,7 +8,7 @@ import json
 import warnings
 from copy import deepcopy
 from datetime import datetime
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 
 from geojson_pydantic.geometries import Geometry
 from geojson_pydantic.types import BBox
@@ -28,17 +28,16 @@ class Metadata(BaseModel):
     type: Literal["mosaic", "search"] = "mosaic"
 
     # WGS84 bounds
-    bounds: Optional[BBox] = None
+    bounds: BBox | None = None
 
     # Min/Max zoom for WebMercatorQuad TMS
-    minzoom: Optional[int] = None
-    maxzoom: Optional[int] = None
-
+    minzoom: int | None = None
+    maxzoom: int | None = None
     # Name
-    name: Optional[str] = None
+    name: str | None = None
 
     # List of available assets
-    assets: Optional[List[str]] = None
+    assets: list[str] | None = None
 
     # Set of default configuration
     # e.g
@@ -53,14 +52,14 @@ class Metadata(BaseModel):
     #         "colormap_name": "viridis"
     #     }
     # }
-    defaults: Optional[Dict[str, Any]] = None
+    defaults: dict[str, Any] | None = None
 
     model_config = {"extra": "allow"}
 
     @property
-    def defaults_params(self) -> Dict[str, Any]:  # noqa: C901
+    def defaults_params(self) -> dict[str, Any]:  # noqa: C901
         """Return defaults in a form compatible with TiTiler dependencies."""
-        params: Dict[str, Any] = {}
+        params: dict[str, Any] = {}
         if self.defaults is not None:
             renders = deepcopy(self.defaults)
             for name, values in renders.items():
@@ -128,14 +127,14 @@ class PgSTACSearch(BaseModel, extra="allow"):
         - we don't set limit
     """
 
-    collections: Optional[List[str]] = None
-    ids: Optional[List[str]] = None
-    bbox: Optional[BBox] = None
-    intersects: Optional[Geometry] = None
-    datetime: Optional[str] = None
+    collections: list[str] | None = None
+    ids: list[str] | None = None
+    bbox: BBox | None = None
+    intersects: Geometry | None = None
+    datetime: str | None = None
     # Extensions
-    query: Optional[Dict[str, Dict[Operator, Any]]] = None
-    sortby: Optional[List[SortExtension]] = Field(
+    query: dict[str, dict[Operator, Any]] | None = None
+    sortby: list[SortExtension] | None = Field(
         default=None,
         description="An array of property (field) names, and direction in form of '{'field': '<property_name>', 'direction':'<direction>'}'",  # noqa: E501
         json_schema_extra={
@@ -152,7 +151,7 @@ class PgSTACSearch(BaseModel, extra="allow"):
             ],
         },
     )
-    filter_expr: Optional[Dict[str, Any]] = Field(
+    filter_expr: dict[str, Any] | None = Field(
         default=None,
         alias="filter",
         description="A CQL filter expression for filtering items.",
@@ -180,14 +179,14 @@ class PgSTACSearch(BaseModel, extra="allow"):
             ],
         },
     )
-    filter_lang: Optional[Literal["cql2-json"]] = Field(
+    filter_lang: Literal["cql2-json"] | None = Field(
         default="cql2-json",
         alias="filter-lang",
         description="The CQL filter encoding that the 'filter' value uses.",
     )
 
     @model_validator(mode="before")
-    def validate_query_fields(cls, values: Dict) -> Dict:
+    def validate_query_fields(cls, values: dict) -> dict:
         """Pgstac does not require the base validator for query fields."""
         return values
 
@@ -197,7 +196,7 @@ class PgSTACSearch(BaseModel, extra="allow"):
         return v
 
     @field_validator("intersects")
-    def validate_spatial(cls, v: Optional[Geometry], info: ValidationInfo):
+    def validate_spatial(cls, v: Geometry | None, info: ValidationInfo):
         """Make sure bbox is not used with Intersects."""
         if v and info.data["bbox"]:
             raise ValueError("intersects and bbox parameters are mutually exclusive")
@@ -248,9 +247,9 @@ class Search(BaseModel):
     """
 
     id: str = Field(alias="hash")
-    input_search: Dict[str, Any] = Field(alias="search")
-    sql_where: Optional[str] = Field(default=None, alias="_where")
-    orderby: Optional[str] = None
+    input_search: dict[str, Any] = Field(alias="search")
+    sql_where: str | None = Field(default=None, alias="_where")
+    orderby: str | None = None
     lastused: datetime
     usecount: int
     metadata: Metadata
@@ -291,7 +290,7 @@ class Link(BaseModel):
         ),
     ]
     type: Annotated[
-        Optional[MediaType],
+        MediaType | None,
         Field(
             description="A hint indicating what the media type of the result of dereferencing the link should be.",
             json_schema_extra={
@@ -300,11 +299,11 @@ class Link(BaseModel):
         ),
     ] = None
     templated: Annotated[
-        Optional[bool],
+        bool | None,
         Field(description="This flag set to true if the link is a URL template."),
     ] = None
     varBase: Annotated[
-        Optional[str],
+        str | None,
         Field(
             description="A base path to retrieve semantic information about the variables used in URL template.",
             json_schema_extra={
@@ -313,7 +312,7 @@ class Link(BaseModel):
         ),
     ] = None
     hreflang: Annotated[
-        Optional[str],
+        str | None,
         Field(
             description="A hint indicating what the language of the result of dereferencing the link should be.",
             json_schema_extra={
@@ -322,7 +321,7 @@ class Link(BaseModel):
         ),
     ] = None
     title: Annotated[
-        Optional[str],
+        str | None,
         Field(
             description="Used to label the destination of a link such that it can be used as a human-readable identifier.",
             json_schema_extra={
@@ -330,7 +329,7 @@ class Link(BaseModel):
             },
         ),
     ] = None
-    length: Optional[int] = None
+    length: int | None = None
 
     model_config = {"use_enum_values": True}
 
@@ -339,22 +338,22 @@ class RegisterResponse(BaseModel):
     """Response model for /register endpoint."""
 
     id: str
-    links: Optional[List[Link]] = None
+    links: list[Link] | None = None
 
 
 class Info(BaseModel):
     """Response model for /info endpoint."""
 
     search: Search
-    links: Optional[List[Link]] = None
+    links: list[Link] | None = None
 
 
 class Context(BaseModel):
     """Context Model."""
 
     returned: int
-    limit: Optional[int] = None
-    matched: Optional[int] = None
+    limit: int | None = None
+    matched: int | None = None
 
     @field_validator("limit")
     def validate_limit(cls, v, info: ValidationInfo):
@@ -370,6 +369,6 @@ class Context(BaseModel):
 class Infos(BaseModel):
     """Response model for /list endpoint."""
 
-    searches: List[Info]
-    links: Optional[List[Link]] = None
+    searches: list[Info]
+    links: list[Link] | None = None
     context: Context

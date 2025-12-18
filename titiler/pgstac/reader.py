@@ -1,6 +1,6 @@
 """Custom STAC reader."""
 
-from typing import Any, Dict, Optional, Sequence, Set, Tuple, Type
+from typing import Any, Sequence, Set, Type
 from urllib.parse import urlparse
 
 import attr
@@ -29,17 +29,17 @@ class PgSTACReader(STACReader):
     minzoom: int = attr.ib(default=None)
     maxzoom: int = attr.ib(default=None)
 
-    include_assets: Optional[Set[str]] = attr.ib(default=None)
-    exclude_assets: Optional[Set[str]] = attr.ib(default=None)
+    include_assets: Set[str] | None = attr.ib(default=None)
+    exclude_assets: Set[str] | None = attr.ib(default=None)
 
     include_asset_types: Set[str] = attr.ib(default=DEFAULT_VALID_TYPE)
-    exclude_asset_types: Optional[Set[str]] = attr.ib(default=None)
+    exclude_asset_types: Set[str] | None = attr.ib(default=None)
 
     assets: Sequence[str] = attr.ib(init=False)
-    default_assets: Optional[Sequence[str]] = attr.ib(default=None)
+    default_assets: Sequence[str] | None = attr.ib(default=None)
 
     reader: Type[BaseReader] = attr.ib(default=Reader)
-    reader_options: Dict = attr.ib(factory=dict)
+    reader_options: dict = attr.ib(factory=dict)
 
     ctx: rasterio.Env = attr.ib(default=rasterio.Env)
 
@@ -47,7 +47,7 @@ class PgSTACReader(STACReader):
     # we move it outside the `init` method because we will take the `pystac.Item`
     # directly as input.
     item: Any = attr.ib(init=False)
-    fetch_options: Dict = attr.ib(init=False)
+    fetch_options: dict = attr.ib(init=False)
 
     def __attrs_post_init__(self):
         """set self.item from input."""
@@ -75,17 +75,17 @@ class SimpleSTACReader(MultiBaseReader):
 
     """
 
-    input: Dict[str, Any] = attr.ib()
+    input: dict[str, Any] = attr.ib()
 
     tms: TileMatrixSet = attr.ib(default=WEB_MERCATOR_TMS)
     minzoom: int = attr.ib(default=None)
     maxzoom: int = attr.ib(default=None)
 
     assets: Sequence[str] = attr.ib(init=False)
-    default_assets: Optional[Sequence[str]] = attr.ib(default=None)
+    default_assets: Sequence[str] | None = attr.ib(default=None)
 
     reader: Type[BaseReader] = attr.ib(default=Reader)
-    reader_options: Dict = attr.ib(factory=dict)
+    reader_options: dict = attr.ib(factory=dict)
 
     ctx: Any = attr.ib(default=rasterio.Env)
 
@@ -118,7 +118,7 @@ class SimpleSTACReader(MultiBaseReader):
                 "No valid asset found. Asset's media types not supported"
             )
 
-    def _parse_vrt_asset(self, asset: str) -> Tuple[str, Optional[str]]:
+    def _parse_vrt_asset(self, asset: str) -> tuple[str, str | None]:
         if asset.startswith("vrt://") and asset not in self.assets:
             parsed = urlparse(asset)
             if not parsed.netloc:

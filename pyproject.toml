@@ -23,11 +23,13 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Topic :: Scientific/Engineering :: GIS",
 ]
 dependencies = [
-    "titiler.core>=0.24,<0.25",
-    "titiler.mosaic>=0.24,<0.25",
+    "titiler.core>=1.0,<1.1",
+    "titiler.mosaic>=1.0,<1.1",
+    "titiler.extensions>=1.0,<1.1",
     "cql2>=0.3.6",
     "pydantic>=2.4,<3.0",
     "pydantic-settings~=2.0",
@@ -60,7 +62,7 @@ dev = [
     "pytest-cov",
     "pytest-asyncio",
     "httpx",
-    "pypgstac>=0.7,<=0.10",
+    "pypgstac>=0.9.8,<=0.10",
     "pytest-postgresql",
     "pre-commit",
     "bump-my-version",
@@ -75,6 +77,9 @@ docs = [
     "griffe-inherited-docstrings>=1.0.0",
     "mkdocstrings[python]>=0.25.1",
     "mike~=2.0",
+]
+server = [
+    "uvicorn",
 ]
 
 [project.urls]
@@ -92,6 +97,9 @@ only-include = ["titiler"]
 
 [tool.hatch.build.targets.wheel]
 only-include = ["titiler"]
+
+[tool.hatch.metadata]
+allow-direct-references = true
 
 [build-system]
 requires = ["hatchling"]
