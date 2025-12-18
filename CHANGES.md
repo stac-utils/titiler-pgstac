@@ -4,6 +4,13 @@
 
 ## 2.0.0 
 
+* change environment variable names for Postgres database connection **breaking change**
+    - POSTGRES_USER -> PGUSER
+    - POSTGRES_PASS -> PGPASSWORD
+    - POSTGRES_HOST -> PGHOST
+    - POSTGRES_PORT -> PGPORT
+    - POSTGRES_DBNAME -> PGDATABASE
+
 * remove `cql-text` support for PgSTACSearch `filter`
 * add `filter` and `filter-lang` for CollectionIdParams dependency
 * changed container image to use non-root `user`
@@ -37,7 +44,6 @@
     - remove `{tileMatrixSetId}` prefix
     - include all available TMS in layers
     - move endpoint to an extension
-
 
 ## 1.9.0 (2025-09-23)
 

@@ -47,18 +47,19 @@ class PostgresSettings(BaseSettings):
     """Postgres-specific API settings.
 
     Attributes:
-        postgres_user: postgres username.
-        postgres_pass: postgres password.
-        postgres_host: database hostname.
-        postgres_port: database port.
-        postgres_dbname: database name.
+        pguser: postgres username.
+        pgpassword: postgres password.
+        pghost: database hostname.
+        pgport: database port.
+        pgdatabase: database name.
     """
 
-    postgres_user: str | None = None
-    postgres_pass: str | None = None
-    postgres_host: str | None = None
-    postgres_port: int | None = None
-    postgres_dbname: str | None = None
+    pguser: str | None = None
+    pgpassword: str | None = None
+    pghost: str | None = None
+    pgport: int | None = None
+    pgdatabase: str | None = None
+
     database_url: PostgresDsn | None = None
 
     # see https://www.psycopg.org/psycopg3/docs/api/pool.html#the-connectionpool-class for options
@@ -82,11 +83,11 @@ class PostgresSettings(BaseSettings):
 
         return PostgresDsn.build(
             scheme="postgresql",
-            username=info.data["postgres_user"],
-            password=quote(info.data["postgres_pass"]),
-            host=info.data.get("postgres_host", ""),
-            port=info.data.get("postgres_port", 5432),
-            path=info.data.get("postgres_dbname", ""),
+            username=info.data["pguser"],
+            password=quote(info.data["pgpassword"]),
+            host=info.data.get("pghost", ""),
+            port=info.data.get("pgport", 5432),
+            path=info.data.get("pgdatabase", ""),
         )
 
 

@@ -4,6 +4,22 @@ This guide covers the breaking changes and new features when upgrading from titi
 
 ## Breaking Changes
 
+### Postgres Env Variable names
+
+**Impact:** High - Affects deployment and development environments
+
+The pydantic-settings model attributes have been renamed (to match `stac-fastapi-pgstac`).
+
+- `POSTGRES_USER` -> `PGUSER`
+- `POSTGRES_PASS` -> `PGPASSWORD`
+- `POSTGRES_HOST` -> `PGHOST`
+- `POSTGRES_PORT` -> `PGPORT`
+- `POSTGRES_DBNAME` -> `PGDATABASE`
+
+**Action Required:**
+
+- Update your environments
+
 ### Python Version Requirement
 
 **Impact:** High - Affects deployment and development environments
