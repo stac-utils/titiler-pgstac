@@ -77,14 +77,14 @@ In `titiler.pgstac` setup.py, we have added three options to let users choose wh
 
 ## Launch
 
-You'll need to have `POSTGRES_USER`, `POSTGRES_PASS`, `POSTGRES_DBNAME`, `POSTGRES_HOST`, `POSTGRES_PORT` variables set in your environment pointing to your Postgres database where pgstac has been installed.
+You'll need to have `PGUSER`, `PGPASSWORD`, `PGDATABASE`, `PGHOST`, `PGPORT` variables set in your environment pointing to your Postgres database where pgstac has been installed.
 
 ```
-export POSTGRES_USER=username
-export POSTGRES_PASS=password
-export POSTGRES_DBNAME=postgis
-export POSTGRES_HOST=database
-export POSTGRES_PORT=5432
+export PGUSER=username
+export PGPASSWORD=password
+export PGDATABASE=postgis
+export PGHOST=database
+export PGPORT=5432
 ```
 
 ```
