@@ -1,6 +1,6 @@
 """Database connection handling."""
 
-from typing import Any, Dict, Optional
+from typing import Any
 
 from fastapi import FastAPI
 from psycopg_pool import ConnectionPool
@@ -10,8 +10,8 @@ from titiler.pgstac.settings import PostgresSettings
 
 async def connect_to_db(
     app: FastAPI,
-    settings: Optional[PostgresSettings] = None,
-    pool_kwargs: Optional[Dict[str, Any]] = None,
+    settings: PostgresSettings | None = None,
+    pool_kwargs: dict[str, Any] | None = None,
 ) -> None:
     """Connect to Database."""
     if not settings:

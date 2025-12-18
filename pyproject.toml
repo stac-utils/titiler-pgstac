@@ -23,13 +23,13 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Topic :: Scientific/Engineering :: GIS",
 ]
 dependencies = [
-#    "titiler.core>=1.0,<1.1",
-#    "titiler.mosaic>=1.0,<1.1",
-    "titiler.core @ git+https://github.com/developmentseed/titiler@feature/optional-cogeo-mosaic#egg=titiler.core&subdirectory=src/titiler/core",
-    "titiler.mosaic @ git+https://github.com/developmentseed/titiler@feature/optional-cogeo-mosaic#egg=titiler.mosaic&subdirectory=src/titiler/mosaic",
+    "titiler.core>=1.0,<1.1",
+    "titiler.mosaic>=1.0,<1.1",
+    "titiler.extensions>=1.0,<1.1",
     "cql2>=0.3.6",
     "pydantic>=2.4,<3.0",
     "pydantic-settings~=2.0",
@@ -77,6 +77,9 @@ docs = [
     "griffe-inherited-docstrings>=1.0.0",
     "mkdocstrings[python]>=0.25.1",
     "mike~=2.0",
+]
+server = [
+    "uvicorn",
 ]
 
 [project.urls]

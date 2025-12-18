@@ -4,31 +4,27 @@ import logging
 import os
 import re
 import warnings
-from typing import Any, Callable, Dict, Generator, List, Literal, Optional, Tuple, Type
+from typing import Any, Callable, Generator, List, Optional, Tuple, Type
 from urllib.parse import urlencode
 
 from attrs import define
-from fastapi import Depends, FastAPI, Path, Query
-from morecantile.models import crs_axis_inverted
+from fastapi import Depends, FastAPI, Query
 from psycopg import errors as pgErrors
 from psycopg import sql
 from psycopg.rows import class_row, dict_row
-from rio_tiler.constants import MAX_THREADS, WGS84_CRS
-from rio_tiler.utils import CRS_to_urn
+from rio_tiler.constants import MAX_THREADS
 from starlette.datastructures import QueryParams
 from starlette.requests import Request
 from starlette.routing import NoMatchFound
 from typing_extensions import Annotated
 
 from titiler.core.dependencies import AssetsBidxExprParams, DefaultDependency
-from titiler.core.resources.enums import ImageType
-from titiler.core.resources.responses import XMLResponse
 from titiler.core.utils import check_query_params
 from titiler.mosaic.factory import MosaicTilerFactory as BaseFactory
 from titiler.pgstac import model
 from titiler.pgstac.backend import PGSTACBackend
 from titiler.pgstac.dependencies import BackendParams, PgSTACParams, SearchParams
-from titiler.pgstac.errors import NoLayerFound, ReadOnlyPgSTACError
+from titiler.pgstac.errors import ReadOnlyPgSTACError
 from titiler.pgstac.reader import SimpleSTACReader
 
 MOSAIC_THREADS = int(os.getenv("MOSAIC_CONCURRENCY", MAX_THREADS))
@@ -70,7 +66,6 @@ class MosaicTilerFactory(BaseFactory):
         if self.add_viewer:
             self.map_viewer()
         self.tilejson()
-        self.wmts()
         self.point()
         self.assets()
 
@@ -80,196 +75,8 @@ class MosaicTilerFactory(BaseFactory):
         if self.add_statistics:
             self.statistics()
 
-    def wmts(self):  # noqa: C901
-        """Add wmts endpoint."""
-
-        @self.router.get(
-            "/{tileMatrixSetId}/WMTSCapabilities.xml",
-            response_class=XMLResponse,
-            operation_id=f"{self.operation_prefix}getWMTS",
-        )
-        def wmts(  # noqa: C901
-            request: Request,
-            tileMatrixSetId: Annotated[
-                Literal[tuple(self.supported_tms.list())],
-                Path(
-                    description="Identifier selecting one of the TileMatrixSetId supported."
-                ),
-            ],
-            tile_format: Annotated[
-                ImageType,
-                Query(description="Output image type. Default is png."),
-            ] = ImageType.png,
-            tile_scale: Annotated[
-                int,
-                Query(
-                    gt=0, lt=4, description="Tile size scale. 1=256x256, 2=512x512..."
-                ),
-            ] = 1,
-            minzoom: Annotated[
-                Optional[int],
-                Query(description="Overwrite default minzoom."),
-            ] = None,
-            maxzoom: Annotated[
-                Optional[int],
-                Query(description="Overwrite default maxzoom."),
-            ] = None,
-            use_epsg: Annotated[
-                bool,
-                Query(
-                    description="Use EPSG code, not opengis.net, for the ows:SupportedCRS in the TileMatrixSet (set to True to enable ArcMap compatability)"
-                ),
-            ] = False,
-            search_id=Depends(self.path_dependency),
-            backend_params=Depends(self.backend_dependency),
-            reader_params=Depends(self.reader_dependency),
-        ):
-            """OGC WMTS endpoint."""
-            with self.backend(
-                search_id,
-                reader=self.dataset_reader,
-                reader_options=reader_params.as_dict(),
-                **backend_params.as_dict(),
-            ) as src_dst:
-                search_info = src_dst.info()
-                minzoom = minzoom if minzoom is not None else src_dst.minzoom
-                maxzoom = maxzoom if maxzoom is not None else src_dst.maxzoom
-                bounds = src_dst.bounds
-
-            route_params = {
-                "z": "{TileMatrix}",
-                "x": "{TileCol}",
-                "y": "{TileRow}",
-                "scale": tile_scale,
-                "format": tile_format.value,
-                "tileMatrixSetId": tileMatrixSetId,
-            }
-
-            tiles_url = self.url_for(request, "tile", **route_params)
-
-            tms = self.supported_tms.get(tileMatrixSetId)
-            tileMatrix = []
-            for zoom in range(minzoom, maxzoom + 1):  # type: ignore
-                matrix = tms.matrix(zoom)
-                tm = f"""
-                        <TileMatrix>
-                            <ows:Identifier>{matrix.id}</ows:Identifier>
-                            <ScaleDenominator>{matrix.scaleDenominator}</ScaleDenominator>
-                            <TopLeftCorner>{matrix.pointOfOrigin[0]} {matrix.pointOfOrigin[1]}</TopLeftCorner>
-                            <TileWidth>{matrix.tileWidth}</TileWidth>
-                            <TileHeight>{matrix.tileHeight}</TileHeight>
-                            <MatrixWidth>{matrix.matrixWidth}</MatrixWidth>
-                            <MatrixHeight>{matrix.matrixHeight}</MatrixHeight>
-                        </TileMatrix>"""
-                tileMatrix.append(tm)
-
-            if use_epsg:
-                supported_crs = f"EPSG:{tms.crs.to_epsg()}"
-            else:
-                supported_crs = tms.crs.srs
-
-            # List of dependencies a `/tile` URL should validate
-            # Note: Those dependencies should only require Query() inputs
-            tile_dependencies = [
-                self.assets_accessor_dependency,
-                self.layer_dependency,
-                self.dataset_dependency,
-                self.pixel_selection_dependency,
-                self.tile_dependency,
-                self.process_dependency,
-                self.render_dependency,
-                self.reader_dependency,
-                self.backend_dependency,
-            ]
-
-            layers: List[Dict[str, Any]] = []
-
-            # LAYERS from mosaic metadata
-            if renders := search_info.metadata.defaults_params:
-                for name, values in renders.items():
-                    if check_query_params(tile_dependencies, values):
-                        layers.append(
-                            {
-                                "titler": search_info.metadata.name or search_id,
-                                "name": name,
-                                "tiles_url": tiles_url,
-                                "query_string": urlencode(values, doseq=True)
-                                if values
-                                else None,
-                                "bounds": bounds,
-                            }
-                        )
-                    else:
-                        warnings.warn(
-                            f"Cannot construct URL for layer `{name}`",
-                            UserWarning,
-                            stacklevel=2,
-                        )
-
-            bbox_crs_type = "WGS84BoundingBox"
-            bbox_crs_uri = "urn:ogc:def:crs:OGC:2:84"
-            if tms.rasterio_geographic_crs != WGS84_CRS:
-                bbox_crs_type = "BoundingBox"
-                bbox_crs_uri = CRS_to_urn(tms.rasterio_geographic_crs)
-                # WGS88BoundingBox is always xy ordered, but BoundingBox must match the CRS order
-                if crs_axis_inverted(tms.geographic_crs):
-                    # match the bounding box coordinate order to the CRS
-                    bounds = [bounds[1], bounds[0], bounds[3], bounds[2]]
-
-            # LAYER from query-parameters
-            qs_key_to_remove = [
-                "tilematrixsetid",
-                "tile_format",
-                "tile_scale",
-                "minzoom",
-                "maxzoom",
-                "service",
-                "use_epsg",
-                "request",
-            ]
-            qs = urlencode(
-                [
-                    (key, value)
-                    for (key, value) in request.query_params._list
-                    if key.lower() not in qs_key_to_remove
-                ],
-                doseq=True,
-            )
-
-            # Checking if we can construct a valid tile URL
-            # 1. we use `check_query_params` to validate the query-parameter
-            # 2. if there is no layers (from mosaic metadata) we raise the caught error
-            # 3. if there no errors we then add a default `layer` to the layers stack
-            if check_query_params(tile_dependencies, QueryParams(qs)):
-                layers.append(
-                    {
-                        "titler": search_info.metadata.name or search_id,
-                        "name": "default",
-                        "tiles_url": tiles_url,
-                        "query_string": qs if qs else None,
-                        "bounds": bounds,
-                    }
-                )
-
-            if not layers:
-                raise NoLayerFound(
-                    "Could not find any valid layers in metadata or construct one from Query Parameters."
-                )
-
-            return self.templates.TemplateResponse(
-                request,
-                name="wmts.xml",
-                context={
-                    "tileMatrixSetId": tms.id,
-                    "tileMatrix": tileMatrix,
-                    "supported_crs": supported_crs,
-                    "bbox_crs_type": bbox_crs_type,
-                    "bbox_crs_uri": bbox_crs_uri,
-                    "layers": layers,
-                    "media_type": tile_format.mediatype,
-                },
-                media_type="application/xml",
-            )
+        if self.add_ogc_maps:
+            self.ogc_maps()
 
 
 def add_search_register_route(  # noqa: C901
@@ -283,7 +90,6 @@ def add_search_register_route(  # noqa: C901
     tags: Optional[List[str]] = None,
 ):
     """add `/register` route"""
-
     tile_dependencies = tile_dependencies or []
 
     name = prefix.replace("/", ".")
@@ -388,15 +194,13 @@ def add_search_register_route(  # noqa: C901
             links.append(
                 model.Link(
                     rel="wmts",
-                    title="Link for WMTS (Template URL)",
+                    title="WMTS Capabilities link.",
                     href=str(
                         app.url_path_for(
                             "wmts",
                             search_id=search_info.id,
-                            tileMatrixSetId="{tileMatrixSetId}",
                         ).make_absolute_url(base_url=base_url)
                     ),
-                    templated=True,
                 )
             )
         except NoMatchFound:
@@ -430,7 +234,6 @@ def add_search_list_route(  # noqa: C901
     tags: Optional[List[str]] = None,
 ):
     """Add PgSTAC Search (of type mosaic) listing route."""
-
     name = prefix.replace("/", ".")
     operation_prefix = f"{name}." if name else ""
 

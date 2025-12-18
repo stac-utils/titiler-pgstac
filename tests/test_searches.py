@@ -298,36 +298,25 @@ def test_tiles(rio, app, search_no_bbox, search_bbox):
 def test_wmts(app, search_no_bbox):
     """Create wmts document."""
     # missing assets
-    response = app.get(
-        f"/searches/{search_no_bbox}/WebMercatorQuad/WMTSCapabilities.xml"
-    )
+    response = app.get(f"/searches/{search_no_bbox}/WMTSCapabilities.xml")
     assert response.status_code == 400
     assert (
         response.json()["detail"]
         == "Could not find any valid layers in metadata or construct one from Query Parameters."
     )
 
-    response = app.get(
-        f"/searches/{search_no_bbox}/WebMercatorQuad/WMTSCapabilities.xml?assets=cog"
-    )
+    response = app.get(f"/searches/{search_no_bbox}/WMTSCapabilities.xml?assets=cog")
     assert response.status_code == 200
     assert response.headers["content-type"] == "application/xml"
 
     # Validate it's a good WMTS
     with rasterio.open(io.BytesIO(response.content)) as src:
-        assert src.crs == "epsg:3857"
         assert src.profile["driver"] == "WMTS"
-
-    response = app.get(
-        f"/searches/{search_no_bbox}/WorldCRS84Quad/WMTSCapabilities.xml?assets=cog"
-    )
-    assert response.status_code == 200
-    assert response.headers["content-type"] == "application/xml"
-
-    # Validate it's a good WMTS
-    with rasterio.open(io.BytesIO(response.content)) as src:
-        assert src.crs == "OGC:CRS84"
-        assert src.profile["driver"] == "WMTS"
+        assert len(src.subdatasets) == 13
+        with rasterio.open(
+            io.BytesIO(response.content), layer="default_WebMercatorQuad"
+        ) as sds:
+            assert sds.crs == "EPSG:3857"
 
 
 @patch("rio_tiler.io.rasterio.rasterio")
@@ -593,7 +582,7 @@ def test_query_with_metadata(app):
 
     # Test WMTS
     # 1. missing assets and no metadata layers
-    response = app.get(f"/searches/{mosaic_id}/WebMercatorQuad/WMTSCapabilities.xml")
+    response = app.get(f"/searches/{mosaic_id}/WMTSCapabilities.xml")
     assert response.status_code == 400
     assert (
         response.json()["detail"]
@@ -602,42 +591,61 @@ def test_query_with_metadata(app):
 
     # 2. assets and no metadata layers
     response = app.get(
-        f"/searches/{mosaic_id}/WebMercatorQuad/WMTSCapabilities.xml",
+        f"/searches/{mosaic_id}/WMTSCapabilities.xml",
         params={"assets": "cog"},
     )
     assert response.status_code == 200
     assert response.headers["content-type"] == "application/xml"
 
     with rasterio.open(io.BytesIO(response.content)) as src:
-        assert src.crs == "epsg:3857"
         assert src.profile["driver"] == "WMTS"
-        assert not src.subdatasets
+        assert len(src.subdatasets) == 13
+        with rasterio.open(
+            io.BytesIO(response.content), layer="default_WebMercatorQuad"
+        ) as sds:
+            assert sds.crs == "epsg:3857"
 
     # 3. no assets and metadata layers
     with pytest.warns(UserWarning):
-        response = app.get(
-            f"/searches/{mosaic_id_metadata}/WebMercatorQuad/WMTSCapabilities.xml"
-        )
+        response = app.get(f"/searches/{mosaic_id_metadata}/WMTSCapabilities.xml")
     assert response.status_code == 200
 
     assert response.headers["content-type"] == "application/xml"
 
     with rasterio.open(io.BytesIO(response.content)) as src:
         assert src.profile["driver"] == "WMTS"
-        assert len(src.subdatasets) == 4
+        assert len(src.subdatasets) == 13 * 4  # 52 layers, 4 renders * 14 TMS
+        with rasterio.open(
+            io.BytesIO(response.content), layer="one_band_WebMercatorQuad"
+        ) as src:
+            assert src.profile["driver"] == "WMTS"
+            assert src.crs == "EPSG:3857"
+            assert not src.subdatasets
 
     # 4. assets and metadata layers
     with pytest.warns(UserWarning):
         response = app.get(
-            f"/searches/{mosaic_id_metadata}/WebMercatorQuad/WMTSCapabilities.xml",
+            f"/searches/{mosaic_id_metadata}/WMTSCapabilities.xml",
             params={"assets": "cog"},
         )
     assert response.status_code == 200
     assert response.headers["content-type"] == "application/xml"
-
     with rasterio.open(io.BytesIO(response.content)) as src:
         assert src.profile["driver"] == "WMTS"
-        assert len(src.subdatasets) == 5
+        assert len(src.subdatasets) == 5 * 13  # 65 layers, (4 renders + 1 qs) * 14 TMS
+        with rasterio.open(
+            io.BytesIO(response.content), layer="one_band_WebMercatorQuad"
+        ) as src:
+            assert src.profile["driver"] == "WMTS"
+            assert src.crs == "EPSG:3857"
+            assert not src.subdatasets
+
+        with rasterio.open(
+            io.BytesIO(response.content), layer="default_WebMercatorQuad"
+        ) as src:
+            assert src.profile["driver"] == "WMTS"
+            assert src.crs == "EPSG:3857"
+            assert not src.subdatasets
 
     with pytest.warns(UserWarning):
         response = app.get(f"/searches/{mosaic_id_metadata}/info")

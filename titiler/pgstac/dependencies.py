@@ -5,7 +5,7 @@ import re
 import warnings
 from dataclasses import dataclass, field
 from threading import Lock
-from typing import Any, Dict, List, Literal, Optional, Tuple
+from typing import Any, Literal
 from urllib.parse import unquote_plus
 
 import morecantile
@@ -28,6 +28,7 @@ from titiler.pgstac.utils import retry
 
 cache_config = CacheSettings()
 retry_config = RetrySettings()
+ttl_cache = TTLCache(maxsize=cache_config.maxsize, ttl=cache_config.ttl)  # type: ignore
 
 
 def SearchIdParams(
@@ -41,7 +42,7 @@ def SearchIdParams(
 
 
 @cached(  # type: ignore
-    TTLCache(maxsize=cache_config.maxsize, ttl=cache_config.ttl),
+    ttl_cache,
     key=lambda pool,
     collection_id,
     ids,
@@ -73,17 +74,17 @@ def SearchIdParams(
 def get_collection_id(  # noqa: C901
     pool: ConnectionPool,
     collection_id: str,
-    ids: Optional[str] = None,
-    bbox: Optional[str] = None,
-    datetime: Optional[str] = None,
+    ids: str | None = None,
+    bbox: str | None = None,
+    datetime: str | None = None,
     # Extensions
-    query: Optional[str] = None,
-    sortby: Optional[str] = None,
-    filter_expr: Optional[str] = None,
+    query: str | None = None,
+    sortby: str | None = None,
+    filter_expr: str | None = None,
     filter_lang: Literal["cql2-text", "cql2-json"] = "cql2-json",
 ) -> str:  # noqa: C901
     """Get Search Id for a Collection."""
-    search_params: Dict[str, Any] = {
+    search_params: dict[str, Any] = {
         "collections": [collection_id],
         "datetime": datetime,
     }
@@ -93,7 +94,7 @@ def get_collection_id(  # noqa: C901
     if bbox:
         search_params["bbox"] = list(map(float, bbox.split(",")))
 
-    sort_param: List[model.SortExtension] = []
+    sort_param: list[model.SortExtension] = []
     if sortby:
         for sort in sortby.split(","):
             if sortparts := re.match(r"^([+-]?)(.*)$", sort):
@@ -203,7 +204,7 @@ def CollectionIdParams(
         Path(description="STAC Collection Identifier"),
     ],
     ids: Annotated[
-        Optional[str],
+        str | None,
         Query(
             description="Array of Item ids",
             openapi_examples={
@@ -213,7 +214,7 @@ def CollectionIdParams(
         ),
     ] = None,
     bbox: Annotated[
-        Optional[str],
+        str | None,
         Query(
             description="Filters items intersecting this bounding box",
             openapi_examples={
@@ -223,7 +224,7 @@ def CollectionIdParams(
         ),
     ] = None,
     datetime: Annotated[
-        Optional[str],
+        str | None,
         Query(
             description="""Filters items that have a temporal property that intersects this value.\n
 Either a date-time or an interval, open or closed. Date and time expressions adhere to RFC 3339. Open intervals are expressed using double-dots.""",
@@ -240,7 +241,7 @@ Either a date-time or an interval, open or closed. Date and time expressions adh
     ] = None,
     # Extensions
     query: Annotated[
-        Optional[str],
+        str | None,
         Query(
             description="Allows additional filtering based on the properties of Item objects",
             openapi_examples={
@@ -250,7 +251,7 @@ Either a date-time or an interval, open or closed. Date and time expressions adh
         ),
     ] = None,
     sortby: Annotated[
-        Optional[str],
+        str | None,
         Query(
             description="An array of property names, prefixed by either '+' for ascending or '-' for descending. If no prefix is provided, '+' is assumed.",
             openapi_examples={
@@ -261,7 +262,7 @@ Either a date-time or an interval, open or closed. Date and time expressions adh
         ),
     ] = None,
     filter_expr: Annotated[
-        Optional[str],
+        str | None,
         Query(
             alias="filter",
             description="""A CQL2 filter expression for filtering items.\n
@@ -299,7 +300,7 @@ Remember to URL encode the CQL2-JSON if using GET""",
 
 def SearchParams(
     body: model.RegisterMosaic,
-) -> Tuple[model.PgSTACSearch, model.Metadata]:
+) -> tuple[model.PgSTACSearch, model.Metadata]:
     """Search parameters."""
     search = body.model_dump(
         exclude_none=True,
@@ -329,31 +330,31 @@ class PgSTACParams(DefaultDependency):
     """PgSTAC parameters."""
 
     scan_limit: Annotated[
-        Optional[int],
+        int | None,
         Query(
             description="Return as soon as we scan N items (defaults to 10000 in PgSTAC).",
         ),
     ] = None
     items_limit: Annotated[
-        Optional[int],
+        int | None,
         Query(
             description="Return as soon as we have N items per geometry (defaults to 100 in PgSTAC).",
         ),
     ] = None
     time_limit: Annotated[
-        Optional[int],
+        int | None,
         Query(
             description="Return after N seconds to avoid long requests (defaults to 5 in PgSTAC).",
         ),
     ] = None
     exitwhenfull: Annotated[
-        Optional[bool],
+        bool | None,
         Query(
             description="Return as soon as the geometry is fully covered (defaults to True in PgSTAC).",
         ),
     ] = None
     skipcovered: Annotated[
-        Optional[bool],
+        bool | None,
         Query(
             description="Skip any items that would show up completely under the previous items (defaults to True in PgSTAC).",
         ),
@@ -361,7 +362,7 @@ class PgSTACParams(DefaultDependency):
 
 
 @cached(  # type: ignore
-    TTLCache(maxsize=cache_config.maxsize, ttl=cache_config.ttl),
+    ttl_cache,
     key=lambda pool, collection, item: hashkey(collection, item),
     lock=Lock(),
 )

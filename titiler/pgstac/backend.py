@@ -35,6 +35,7 @@ def _first_value(values: list[Any], default: Any = None):
 cache_config = CacheSettings()
 pgstac_config = PgstacSettings()
 retry_config = RetrySettings()
+ttl_cache = TTLCache(maxsize=cache_config.maxsize, ttl=cache_config.ttl)  # type: ignore
 
 logger = logging.getLogger(__name__)
 
@@ -143,7 +144,7 @@ class PGSTACBackend(BaseBackend):
         return self.get_assets(Polygon.from_bounds(xmin, ymin, xmax, ymax), **kwargs)
 
     @cached(  # type: ignore
-        TTLCache(maxsize=cache_config.maxsize, ttl=cache_config.ttl),
+        ttl_cache,
         key=lambda self, geom, **kwargs: hashkey(self.input, str(geom), **kwargs),
         lock=Lock(),
     )
@@ -215,7 +216,7 @@ class PGSTACBackend(BaseBackend):
         return features
 
     @cached(  # type: ignore
-        TTLCache(maxsize=cache_config.maxsize, ttl=cache_config.ttl),
+        ttl_cache,
         key=lambda self: hashkey(self.input, "info"),
         lock=Lock(),
     )
