@@ -99,7 +99,7 @@ jobs:
 
       - name: Run Benchmark
         run: |
-          uv run --group benchmark pytest .github/workflows/tests/benchmarks.py --benchmark-only --benchmark-columns 'min, max, mean, median' --benchmark-json output.json
+          uv run --group benchmark --isolated pytest .github/workflows/tests/benchmarks.py --benchmark-only --benchmark-columns 'min, max, mean, median' --benchmark-json output.json
 
       - name: Store and benchmark result
         uses: benchmark-action/github-action-benchmark@v1
