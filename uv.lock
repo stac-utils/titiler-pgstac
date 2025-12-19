@@ -136,35 +136,6 @@ css = [
 ]
 
 [[package]]
-name = "bracex"
-version = "2.6"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/63/9a/fec38644694abfaaeca2798b58e276a8e61de49e2e37494ace423395febc/bracex-2.6.tar.gz", hash = "sha256:98f1347cd77e22ee8d967a30ad4e310b233f7754dbf31ff3fceb76145ba47dc7", size = 26642, upload-time = "2025-06-22T19:12:31.254Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/9d/2a/9186535ce58db529927f6cf5990a849aa9e052eea3e2cfefe20b9e1802da/bracex-2.6-py3-none-any.whl", hash = "sha256:0b0049264e7340b3ec782b5cb99beb325f36c3782a32e36e876452fd49a09952", size = 11508, upload-time = "2025-06-22T19:12:29.781Z" },
-]
-
-[[package]]
-name = "bump-my-version"
-version = "1.2.5"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "click" },
-    { name = "httpx" },
-    { name = "pydantic" },
-    { name = "pydantic-settings" },
-    { name = "questionary" },
-    { name = "rich" },
-    { name = "rich-click" },
-    { name = "tomlkit" },
-    { name = "wcmatch" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/c5/01/2bff065f653fed342a1a7118566ce6bebc44445ec70c1dce60fc9eeac184/bump_my_version-1.2.5.tar.gz", hash = "sha256:827af6c7b13111c62b45340f25defd105f566fe0cdbbb70e2c4b2f005b667e1f", size = 1194954, upload-time = "2025-12-13T12:37:23.568Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/85/bb/52a4a8378e0b2376a97e8ee384e4a07994447d983e30064622cb1f25cbc3/bump_my_version-1.2.5-py3-none-any.whl", hash = "sha256:57e5718d9fe7d7b6f5ceb68e70cd3c4bd0570d300b4aade15fd1e355febdd351", size = 59797, upload-time = "2025-12-13T12:37:21.614Z" },
-]
-
-[[package]]
 name = "cachetools"
 version = "6.2.4"
 source = { registry = "https://pypi.org/simple" }
@@ -2753,18 +2724,6 @@ wheels = [
 ]
 
 [[package]]
-name = "questionary"
-version = "2.1.1"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "prompt-toolkit" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/f6/45/eafb0bba0f9988f6a2520f9ca2df2c82ddfa8d67c95d6625452e97b204a5/questionary-2.1.1.tar.gz", hash = "sha256:3d7e980292bb0107abaa79c68dd3eee3c561b83a0f89ae482860b181c8bd412d", size = 25845, upload-time = "2025-08-28T19:00:20.851Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/3c/26/1062c7ec1b053db9e499b4d2d5bc231743201b74051c973dadeac80a8f43/questionary-2.1.1-py3-none-any.whl", hash = "sha256:a51af13f345f1cdea62347589fbb6df3b290306ab8930713bfae4d475a7d4a59", size = 36753, upload-time = "2025-08-28T19:00:19.56Z" },
-]
-
-[[package]]
 name = "rasterio"
 version = "1.4.4"
 source = { registry = "https://pypi.org/simple" }
@@ -2845,33 +2804,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/c9/74/b3ff8e6c8446842c3f5c837e9c3dfcfe2018ea6ecef224c710c85ef728f4/requests-2.32.5.tar.gz", hash = "sha256:dbba0bac56e100853db0ea71b82b4dfd5fe2bf6d3754a8893c3af500cec7d7cf", size = 134517, upload-time = "2025-08-18T20:46:02.573Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/1e/db/4254e3eabe8020b458f1a747140d32277ec7a271daf1d235b70dc0b4e6e3/requests-2.32.5-py3-none-any.whl", hash = "sha256:2462f94637a34fd532264295e186976db0f5d453d1cdd31473c85a6a161affb6", size = 64738, upload-time = "2025-08-18T20:46:00.542Z" },
-]
-
-[[package]]
-name = "rich"
-version = "14.2.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "markdown-it-py" },
-    { name = "pygments" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/fb/d2/8920e102050a0de7bfabeb4c4614a49248cf8d5d7a8d01885fbb24dc767a/rich-14.2.0.tar.gz", hash = "sha256:73ff50c7c0c1c77c8243079283f4edb376f0f6442433aecb8ce7e6d0b92d1fe4", size = 219990, upload-time = "2025-10-09T14:16:53.064Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/25/7a/b0178788f8dc6cafce37a212c99565fa1fe7872c70c6c9c1e1a372d9d88f/rich-14.2.0-py3-none-any.whl", hash = "sha256:76bc51fe2e57d2b1be1f96c524b890b816e334ab4c1e45888799bfaab0021edd", size = 243393, upload-time = "2025-10-09T14:16:51.245Z" },
-]
-
-[[package]]
-name = "rich-click"
-version = "1.9.4"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "click" },
-    { name = "colorama", marker = "sys_platform == 'win32'" },
-    { name = "rich" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/bf/d8/f2c1b7e9a645ba40f756d7a5b195fc104729bc6b19061ba3ab385f342931/rich_click-1.9.4.tar.gz", hash = "sha256:af73dc68e85f3bebb80ce302a642b9fe3b65f3df0ceb42eb9a27c467c1b678c8", size = 73632, upload-time = "2025-10-25T01:08:49.142Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/5b/6a/1f03adcb3cc7beb6f63aecc21565e9d515ccee653187fc4619cd0b42713b/rich_click-1.9.4-py3-none-any.whl", hash = "sha256:d70f39938bcecaf5543e8750828cbea94ef51853f7d0e174cda1e10543767389", size = 70245, upload-time = "2025-10-25T01:08:47.939Z" },
 ]
 
 [[package]]
@@ -3141,7 +3073,7 @@ wheels = [
 
 [[package]]
 name = "titiler-core"
-version = "1.0.1"
+version = "1.0.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "fastapi" },
@@ -3155,33 +3087,33 @@ dependencies = [
     { name = "simplejson" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/c8/6a/415434414159af2bfcf7bb273359ed404a8deb48b9758672810376a7375b/titiler_core-1.0.1.tar.gz", hash = "sha256:a39720d3a2e1fbdd33dcc8e130600a9954713dc5f4560e327407e632e4f2856f", size = 68037, upload-time = "2025-12-18T22:26:25.717Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/74/46/74469eb899c4939b80a346218ac4c86764bb6c0236203aab6ac0aafbbe22/titiler_core-1.0.2.tar.gz", hash = "sha256:bc3585191fc0d39e59feed0f2e6e78fa6d236bfbac0aa30f0f1a260b533f1924", size = 68579, upload-time = "2025-12-19T13:10:36.562Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/2f/37/4e51f2fed7cbb08b97f25ad74dec3fdd27a710ccb8d9df9fc2074354fbb4/titiler_core-1.0.1-py3-none-any.whl", hash = "sha256:59181b8cd1ad78544b779fee177817bda4225e018b4ad37bb63852a07344941b", size = 86271, upload-time = "2025-12-18T22:26:24.337Z" },
+    { url = "https://files.pythonhosted.org/packages/b7/07/49dded996e3ef791eecb3ad23cc8acb8e67df905a57cd5d4b251b0bc3fc2/titiler_core-1.0.2-py3-none-any.whl", hash = "sha256:e3c71511d85304445cc80141355af9317ce94e110400615adc833803eca7732a", size = 86786, upload-time = "2025-12-19T13:10:37.347Z" },
 ]
 
 [[package]]
 name = "titiler-extensions"
-version = "1.0.1"
+version = "1.0.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "titiler-core" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/db/81/b7b7684f0a2d64ed5b54a52c762a27b9c7183304cb753479c8274f5e7d36/titiler_extensions-1.0.1.tar.gz", hash = "sha256:ca386391496e3bcc209e46f299eafba30896e2d18c1f18828f604a55dd3001a5", size = 30603, upload-time = "2025-12-18T22:26:35.705Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/f6/a2/3c09675c941228c2a0e1d46c05a140ed809c0edfc5be613a1cdc55821570/titiler_extensions-1.0.2.tar.gz", hash = "sha256:34c8b24bfe526f8057a07859f17a0c5092bca33a825ab84e193af28a9f4bcb8e", size = 30294, upload-time = "2025-12-19T13:10:49.43Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/c6/b4/37483c5cd5859d73c6c7e480f6da461689f941d50473948dfed1e170b0ba/titiler_extensions-1.0.1-py3-none-any.whl", hash = "sha256:2d5c2438abcb9267010aa48d4afd27a3669be6cbfd3869b2788e857375aed6f9", size = 37305, upload-time = "2025-12-18T22:26:34.541Z" },
+    { url = "https://files.pythonhosted.org/packages/91/f5/cc9633006562b180ca5c1084c527340b57efefa3413e3e47a6ccf50ae8a5/titiler_extensions-1.0.2-py3-none-any.whl", hash = "sha256:06920dd16b0788d6531fc14987cc2ecb488526026bfc492230ffc03f038a8b5d", size = 36978, upload-time = "2025-12-19T13:10:48.657Z" },
 ]
 
 [[package]]
 name = "titiler-mosaic"
-version = "1.0.1"
+version = "1.0.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "titiler-core" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/44/d5/841910c7ea6d698b9dd35cdf963e6e850bc15a2c75b88b2cbeabaa87d3ca/titiler_mosaic-1.0.1.tar.gz", hash = "sha256:66dbff045278c77d269ce12c97705cf13aaf244d01b578ec2282353de68c2f47", size = 14206, upload-time = "2025-12-18T22:26:29.481Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/a9/5c/970c917e58033bf4f6d1e1bf99706c19283e0745226c417e16eb11fb62cf/titiler_mosaic-1.0.2.tar.gz", hash = "sha256:454ac36133b4414fce72855f83076c7d2699df41ad8386c87f64f964cda09a60", size = 13912, upload-time = "2025-12-19T13:10:41.274Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/d6/df/8ad12cdcdfc53b4def5b6665688b00f6cfb5013df84b1f3093a532886759/titiler_mosaic-1.0.1-py3-none-any.whl", hash = "sha256:aa98dceef75eea9a5898ed2414e5100a2ef707827b32572cc502c8db1d80373d", size = 16859, upload-time = "2025-12-18T22:26:30.229Z" },
+    { url = "https://files.pythonhosted.org/packages/9c/b2/3441d74167389fb7db828bb441653fdf1dd19df626c47a45259f02f4bb27/titiler_mosaic-1.0.2-py3-none-any.whl", hash = "sha256:71c535572e9ef99fe179bb4558b8b3c924ff87ea76547721de70024181dbc2b4", size = 16537, upload-time = "2025-12-19T13:10:42.951Z" },
 ]
 
 [[package]]
@@ -3219,7 +3151,6 @@ benchmark = [
     { name = "pytest-benchmark" },
 ]
 dev = [
-    { name = "bump-my-version" },
     { name = "httpx" },
     { name = "pre-commit" },
     { name = "pypgstac" },
@@ -3253,16 +3184,15 @@ requires-dist = [
     { name = "psycopg", extras = ["pool"], marker = "extra == 'psycopg'" },
     { name = "pydantic", specifier = ">=2.4,<3.0" },
     { name = "pydantic-settings", specifier = "~=2.0" },
-    { name = "titiler-core", specifier = ">=1.0.1,<1.1" },
-    { name = "titiler-extensions", specifier = ">=1.0.1,<1.1" },
-    { name = "titiler-mosaic", specifier = ">=1.0.1,<1.1" },
+    { name = "titiler-core", specifier = ">=1.0.2,<1.1" },
+    { name = "titiler-extensions", specifier = ">=1.0.2,<1.1" },
+    { name = "titiler-mosaic", specifier = ">=1.0.2,<1.1" },
 ]
 provides-extras = ["psycopg", "psycopg-binary", "psycopg-c", "telemetry"]
 
 [package.metadata.requires-dev]
 benchmark = [{ name = "pytest-benchmark" }]
 dev = [
-    { name = "bump-my-version" },
     { name = "httpx" },
     { name = "pre-commit" },
     { name = "pypgstac", specifier = ">=0.9.8,<=0.10" },
@@ -3328,15 +3258,6 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/7e/46/cc36c679f09f27ded940281c38607716c86cf8ba4a518d524e349c8b4874/tomli-2.3.0-cp314-cp314t-win32.whl", hash = "sha256:a1f7f282fe248311650081faafa5f4732bdbfef5d45fe3f2e702fbc6f2d496e0", size = 107563, upload-time = "2025-10-08T22:01:44.233Z" },
     { url = "https://files.pythonhosted.org/packages/84/ff/426ca8683cf7b753614480484f6437f568fd2fda2edbdf57a2d3d8b27a0b/tomli-2.3.0-cp314-cp314t-win_amd64.whl", hash = "sha256:70a251f8d4ba2d9ac2542eecf008b3c8a9fc5c3f9f02c56a9d7952612be2fdba", size = 119756, upload-time = "2025-10-08T22:01:45.234Z" },
     { url = "https://files.pythonhosted.org/packages/77/b8/0135fadc89e73be292b473cb820b4f5a08197779206b33191e801feeae40/tomli-2.3.0-py3-none-any.whl", hash = "sha256:e95b1af3c5b07d9e643909b5abbec77cd9f1217e6d0bca72b0234736b9fb1f1b", size = 14408, upload-time = "2025-10-08T22:01:46.04Z" },
-]
-
-[[package]]
-name = "tomlkit"
-version = "0.13.3"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/cc/18/0bbf3884e9eaa38819ebe46a7bd25dcd56b67434402b66a58c4b8e552575/tomlkit-0.13.3.tar.gz", hash = "sha256:430cf247ee57df2b94ee3fbe588e71d362a941ebb545dec29b53961d61add2a1", size = 185207, upload-time = "2025-06-05T07:13:44.947Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/bd/75/8539d011f6be8e29f339c42e633aae3cb73bffa95dd0f9adec09b9c58e85/tomlkit-0.13.3-py3-none-any.whl", hash = "sha256:c89c649d79ee40629a9fda55f8ace8c6a1b42deb912b2a8fd8d942ddadb606b0", size = 38901, upload-time = "2025-06-05T07:13:43.546Z" },
 ]
 
 [[package]]
@@ -3473,18 +3394,6 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/07/f6/d0e5b343768e8bcb4cda79f0f2f55051bf26177ecd5651f84c07567461cf/watchdog-6.0.0-py3-none-win32.whl", hash = "sha256:07df1fdd701c5d4c8e55ef6cf55b8f0120fe1aef7ef39a1c6fc6bc2e606d517a", size = 79065, upload-time = "2024-11-01T14:07:09.525Z" },
     { url = "https://files.pythonhosted.org/packages/db/d9/c495884c6e548fce18a8f40568ff120bc3a4b7b99813081c8ac0c936fa64/watchdog-6.0.0-py3-none-win_amd64.whl", hash = "sha256:cbafb470cf848d93b5d013e2ecb245d4aa1c8fd0504e863ccefa32445359d680", size = 79070, upload-time = "2024-11-01T14:07:10.686Z" },
     { url = "https://files.pythonhosted.org/packages/33/e8/e40370e6d74ddba47f002a32919d91310d6074130fe4e17dabcafc15cbf1/watchdog-6.0.0-py3-none-win_ia64.whl", hash = "sha256:a1914259fa9e1454315171103c6a30961236f508b9b623eae470268bbcc6a22f", size = 79067, upload-time = "2024-11-01T14:07:11.845Z" },
-]
-
-[[package]]
-name = "wcmatch"
-version = "10.1"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "bracex" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/79/3e/c0bdc27cf06f4e47680bd5803a07cb3dfd17de84cde92dd217dcb9e05253/wcmatch-10.1.tar.gz", hash = "sha256:f11f94208c8c8484a16f4f48638a85d771d9513f4ab3f37595978801cb9465af", size = 117421, upload-time = "2025-06-22T19:14:02.49Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/eb/d8/0d1d2e9d3fabcf5d6840362adcf05f8cf3cd06a73358140c3a97189238ae/wcmatch-10.1-py3-none-any.whl", hash = "sha256:5848ace7dbb0476e5e55ab63c6bbd529745089343427caa5537f230cc01beb8a", size = 39854, upload-time = "2025-06-22T19:14:00.978Z" },
 ]
 
 [[package]]
