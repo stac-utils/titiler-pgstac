@@ -6,7 +6,6 @@ import re
 import warnings
 from collections.abc import Callable, Generator
 from enum import Enum
-from typing import Any
 from urllib.parse import urlencode
 
 from attrs import define
@@ -36,11 +35,6 @@ MOSAIC_STRICT_ZOOM = str(os.getenv("MOSAIC_STRICT_ZOOM", False)).lower() in [
 ]
 
 logger = logging.getLogger(__name__)
-
-
-def _first_value(values: list[Any], default: Any = None):
-    """Return the first not None value."""
-    return next(filter(lambda x: x is not None, values), default)
 
 
 @define(kw_only=True)

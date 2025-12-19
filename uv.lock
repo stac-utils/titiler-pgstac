@@ -635,7 +635,7 @@ wheels = [
 
 [[package]]
 name = "fastapi"
-version = "0.124.4"
+version = "0.125.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "annotated-doc" },
@@ -643,9 +643,9 @@ dependencies = [
     { name = "starlette" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/cd/21/ade3ff6745a82ea8ad88552b4139d27941549e4f19125879f848ac8f3c3d/fastapi-0.124.4.tar.gz", hash = "sha256:0e9422e8d6b797515f33f500309f6e1c98ee4e85563ba0f2debb282df6343763", size = 378460, upload-time = "2025-12-12T15:00:43.891Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/17/71/2df15009fb4bdd522a069d2fbca6007c6c5487fce5cb965be00fc335f1d1/fastapi-0.125.0.tar.gz", hash = "sha256:16b532691a33e2c5dee1dac32feb31dc6eb41a3dd4ff29a95f9487cb21c054c0", size = 370550, upload-time = "2025-12-17T21:41:44.15Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/3e/57/aa70121b5008f44031be645a61a7c4abc24e0e888ad3fc8fda916f4d188e/fastapi-0.124.4-py3-none-any.whl", hash = "sha256:6d1e703698443ccb89e50abe4893f3c84d9d6689c0cf1ca4fad6d3c15cf69f15", size = 113281, upload-time = "2025-12-12T15:00:42.44Z" },
+    { url = "https://files.pythonhosted.org/packages/34/2f/ff2fcc98f500713368d8b650e1bbc4a0b3ebcdd3e050dcdaad5f5a13fd7e/fastapi-0.125.0-py3-none-any.whl", hash = "sha256:2570ec4f3aecf5cca8f0428aed2398b774fcdfee6c2116f86e80513f2f86a7a1", size = 112888, upload-time = "2025-12-17T21:41:41.286Z" },
 ]
 
 [[package]]
@@ -1355,7 +1355,7 @@ wheels = [
 
 [[package]]
 name = "mkdocs-material"
-version = "9.7.0"
+version = "9.7.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "babel" },
@@ -1370,9 +1370,9 @@ dependencies = [
     { name = "pymdown-extensions" },
     { name = "requests" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/9c/3b/111b84cd6ff28d9e955b5f799ef217a17bc1684ac346af333e6100e413cb/mkdocs_material-9.7.0.tar.gz", hash = "sha256:602b359844e906ee402b7ed9640340cf8a474420d02d8891451733b6b02314ec", size = 4094546, upload-time = "2025-11-11T08:49:09.73Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/27/e2/2ffc356cd72f1473d07c7719d82a8f2cbd261666828614ecb95b12169f41/mkdocs_material-9.7.1.tar.gz", hash = "sha256:89601b8f2c3e6c6ee0a918cc3566cb201d40bf37c3cd3c2067e26fadb8cce2b8", size = 4094392, upload-time = "2025-12-18T09:49:00.308Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/04/87/eefe8d5e764f4cf50ed91b943f8e8f96b5efd65489d8303b7a36e2e79834/mkdocs_material-9.7.0-py3-none-any.whl", hash = "sha256:da2866ea53601125ff5baa8aa06404c6e07af3c5ce3d5de95e3b52b80b442887", size = 9283770, upload-time = "2025-11-11T08:49:06.26Z" },
+    { url = "https://files.pythonhosted.org/packages/3e/32/ed071cb721aca8c227718cffcf7bd539620e9799bbf2619e90c757bfd030/mkdocs_material-9.7.1-py3-none-any.whl", hash = "sha256:3f6100937d7d731f87f1e3e3b021c97f7239666b9ba1151ab476cabb96c60d5c", size = 9297166, upload-time = "2025-12-18T09:48:56.664Z" },
 ]
 
 [package.optional-dependencies]
@@ -2524,14 +2524,14 @@ wheels = [
 
 [[package]]
 name = "pystac"
-version = "1.14.1"
+version = "1.14.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "python-dateutil" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/41/bf/e0d6f143b878a16f2117f24ba73f19a482d081d691bc086a9354b6e0ef24/pystac-1.14.1.tar.gz", hash = "sha256:4def289ab2168d67492ed0b5a3bd738d3dfa42390a50563776bfd1558af38d53", size = 163434, upload-time = "2025-09-18T15:13:49.091Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/1d/38/b29a8aac9249e1f579854c915e338b24260e56cc7ae027d8cf9e8ca45382/pystac-1.14.2.tar.gz", hash = "sha256:dc68bd4d24f391306caf89d2547015d8b0d6907bb72f7a431cff2dc86b6bdf16", size = 163837, upload-time = "2025-12-17T17:21:44.804Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/c0/01/eb465e19137b36ba683417e982907aa9c7df1fb0b968e1424e5d678ba0dc/pystac-1.14.1-py3-none-any.whl", hash = "sha256:19d73306d8fb94fbd66b7945ee5510e3574c8d48462f86e1e91e3f257b79722b", size = 207710, upload-time = "2025-09-18T15:13:47.189Z" },
+    { url = "https://files.pythonhosted.org/packages/9f/86/3ec01436c6235a23a80e978b261a87481c1acaf626a5c618e9edac30e5e1/pystac-1.14.2-py3-none-any.whl", hash = "sha256:5d3fbdd0f9f06c45ca67082f91a68c092a925faad02225172686c5a5dc7cce91", size = 208169, upload-time = "2025-12-17T17:21:43.154Z" },
 ]
 
 [[package]]
@@ -3075,11 +3075,11 @@ wheels = [
 
 [[package]]
 name = "soupsieve"
-version = "2.8"
+version = "2.8.1"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/6d/e6/21ccce3262dd4889aa3332e5a119a3491a95e8f60939870a3a035aabac0d/soupsieve-2.8.tar.gz", hash = "sha256:e2dd4a40a628cb5f28f6d4b0db8800b8f581b65bb380b97de22ba5ca8d72572f", size = 103472, upload-time = "2025-08-27T15:39:51.78Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/89/23/adf3796d740536d63a6fbda113d07e60c734b6ed5d3058d1e47fc0495e47/soupsieve-2.8.1.tar.gz", hash = "sha256:4cf733bc50fa805f5df4b8ef4740fc0e0fa6218cf3006269afd3f9d6d80fd350", size = 117856, upload-time = "2025-12-18T13:50:34.655Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/14/a0/bb38d3b76b8cae341dad93a2dd83ab7462e6dbcdd84d43f54ee60a8dc167/soupsieve-2.8-py3-none-any.whl", hash = "sha256:0cc76456a30e20f5d7f2e14a98a4ae2ee4e5abdc7c5ea0aafe795f344bc7984c", size = 36679, upload-time = "2025-08-27T15:39:50.179Z" },
+    { url = "https://files.pythonhosted.org/packages/48/f3/b67d6ea49ca9154453b6d70b34ea22f3996b9fa55da105a79d8732227adc/soupsieve-2.8.1-py3-none-any.whl", hash = "sha256:a11fe2a6f3d76ab3cf2de04eb339c1be5b506a8a47f2ceb6d139803177f85434", size = 36710, upload-time = "2025-12-18T13:50:33.267Z" },
 ]
 
 [[package]]
@@ -3141,7 +3141,7 @@ wheels = [
 
 [[package]]
 name = "titiler-core"
-version = "1.0.0"
+version = "1.0.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "fastapi" },
@@ -3155,33 +3155,33 @@ dependencies = [
     { name = "simplejson" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/50/4e/810d5d1657bb59c8fe17a549df67b4a1331ee9dda1d131346b0c4338f4ce/titiler_core-1.0.0.tar.gz", hash = "sha256:04db41518e902f745d64c5682cc539802f9a0cd6aa0e309951d8c5a672c21dae", size = 67878, upload-time = "2025-12-17T07:51:44.216Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/c8/6a/415434414159af2bfcf7bb273359ed404a8deb48b9758672810376a7375b/titiler_core-1.0.1.tar.gz", hash = "sha256:a39720d3a2e1fbdd33dcc8e130600a9954713dc5f4560e327407e632e4f2856f", size = 68037, upload-time = "2025-12-18T22:26:25.717Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/f2/d4/eb8cfc3da938f3df1035ece2b5962a6dab694feca6e5327e2845a2351d33/titiler_core-1.0.0-py3-none-any.whl", hash = "sha256:6952cc9799762fa9510667c45d26baed2e0411a6c384cc2203d281f514e47050", size = 86132, upload-time = "2025-12-17T07:51:42.895Z" },
+    { url = "https://files.pythonhosted.org/packages/2f/37/4e51f2fed7cbb08b97f25ad74dec3fdd27a710ccb8d9df9fc2074354fbb4/titiler_core-1.0.1-py3-none-any.whl", hash = "sha256:59181b8cd1ad78544b779fee177817bda4225e018b4ad37bb63852a07344941b", size = 86271, upload-time = "2025-12-18T22:26:24.337Z" },
 ]
 
 [[package]]
 name = "titiler-extensions"
-version = "1.0.0"
+version = "1.0.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "titiler-core" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/af/4d/a20a4af937faf07221d92d7f9e333f92253ee6805c415414ba333f75a933/titiler_extensions-1.0.0.tar.gz", hash = "sha256:17848158fe16d4d2755d0f568b71d8cf93edc6dd12062a594c6aa37605fa375c", size = 30677, upload-time = "2025-12-17T07:51:52.546Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/db/81/b7b7684f0a2d64ed5b54a52c762a27b9c7183304cb753479c8274f5e7d36/titiler_extensions-1.0.1.tar.gz", hash = "sha256:ca386391496e3bcc209e46f299eafba30896e2d18c1f18828f604a55dd3001a5", size = 30603, upload-time = "2025-12-18T22:26:35.705Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/39/01/1395c92181840c84fe1dd40de9a88a2d84b0fa880410381d08e109b8519c/titiler_extensions-1.0.0-py3-none-any.whl", hash = "sha256:93c34b3827b27a50de9f4d4cebacb3d303d1a524aa0fe0bc4a7edd3455475f30", size = 37381, upload-time = "2025-12-17T07:51:53.253Z" },
+    { url = "https://files.pythonhosted.org/packages/c6/b4/37483c5cd5859d73c6c7e480f6da461689f941d50473948dfed1e170b0ba/titiler_extensions-1.0.1-py3-none-any.whl", hash = "sha256:2d5c2438abcb9267010aa48d4afd27a3669be6cbfd3869b2788e857375aed6f9", size = 37305, upload-time = "2025-12-18T22:26:34.541Z" },
 ]
 
 [[package]]
 name = "titiler-mosaic"
-version = "1.0.0"
+version = "1.0.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "titiler-core" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/61/10/13148ee9019c86aa8fd13bed8229247623bac3dbb2573f91a76434a80e45/titiler_mosaic-1.0.0.tar.gz", hash = "sha256:863643a79b9724aea3f1cadfc8b21115acec737753680d343d263b495eeeb897", size = 14426, upload-time = "2025-12-17T07:51:48.995Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/44/d5/841910c7ea6d698b9dd35cdf963e6e850bc15a2c75b88b2cbeabaa87d3ca/titiler_mosaic-1.0.1.tar.gz", hash = "sha256:66dbff045278c77d269ce12c97705cf13aaf244d01b578ec2282353de68c2f47", size = 14206, upload-time = "2025-12-18T22:26:29.481Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/62/8c/25a57736c7c4dd04136cc4c081c030364db4f7bdd7c93a9aff52cb945870/titiler_mosaic-1.0.0-py3-none-any.whl", hash = "sha256:3b7405b16266d58f750e9933e2a88107f22097b91371248053dab6ac76a6200b", size = 17099, upload-time = "2025-12-17T07:51:47.845Z" },
+    { url = "https://files.pythonhosted.org/packages/d6/df/8ad12cdcdfc53b4def5b6665688b00f6cfb5013df84b1f3093a532886759/titiler_mosaic-1.0.1-py3-none-any.whl", hash = "sha256:aa98dceef75eea9a5898ed2414e5100a2ef707827b32572cc502c8db1d80373d", size = 16859, upload-time = "2025-12-18T22:26:30.229Z" },
 ]
 
 [[package]]
@@ -3253,9 +3253,9 @@ requires-dist = [
     { name = "psycopg", extras = ["pool"], marker = "extra == 'psycopg'" },
     { name = "pydantic", specifier = ">=2.4,<3.0" },
     { name = "pydantic-settings", specifier = "~=2.0" },
-    { name = "titiler-core", specifier = ">=1.0,<1.1" },
-    { name = "titiler-extensions", specifier = ">=1.0,<1.1" },
-    { name = "titiler-mosaic", specifier = ">=1.0,<1.1" },
+    { name = "titiler-core", specifier = ">=1.0.1,<1.1" },
+    { name = "titiler-extensions", specifier = ">=1.0.1,<1.1" },
+    { name = "titiler-mosaic", specifier = ">=1.0.1,<1.1" },
 ]
 provides-extras = ["psycopg", "psycopg-binary", "psycopg-c", "telemetry"]
 
