@@ -34,6 +34,7 @@ from titiler.core.resources.enums import MediaType, OptionalHeader
 from titiler.core.utils import accept_media_type, create_html_response, update_openapi
 from titiler.extensions import stacRenderExtension, wmtsExtension
 from titiler.mosaic.errors import MOSAIC_STATUS_CODES
+from titiler.mosaic.extensions.wmts import wmtsExtension as wmtsExtensionMosaic
 from titiler.pgstac import __version__ as titiler_pgstac_version
 from titiler.pgstac.db import close_db_connection, connect_to_db
 from titiler.pgstac.dependencies import (
@@ -43,11 +44,7 @@ from titiler.pgstac.dependencies import (
     SearchIdParams,
 )
 from titiler.pgstac.errors import PGSTAC_STATUS_CODES
-from titiler.pgstac.extensions import (
-    searchInfoExtension,
-    wmtsExtensionMosaic,
-    wmtsExtensionSTAC,
-)
+from titiler.pgstac.extensions import searchInfoExtension
 from titiler.pgstac.factory import (
     MosaicTilerFactory,
     add_search_list_route,
@@ -221,7 +218,9 @@ searches = MosaicTilerFactory(
     add_ogc_maps=False,
     extensions=[
         searchInfoExtension(),
-        wmtsExtensionMosaic(),
+        wmtsExtensionMosaic(
+            get_renders=lambda obj: obj.info().metadata.defaults_params or {}  # type: ignore [attr-defined]
+        ),
     ],
     templates=templates,
 )
@@ -261,7 +260,9 @@ collection = MosaicTilerFactory(
     add_ogc_maps=False,
     extensions=[
         searchInfoExtension(),
-        wmtsExtensionMosaic(),
+        wmtsExtensionMosaic(
+            get_renders=lambda obj: obj.info().metadata.defaults_params or {}  # type: ignore [attr-defined]
+        ),
     ],
     templates=templates,
 )
@@ -278,7 +279,7 @@ stac = MultiBaseTilerFactory(
     router_prefix="/collections/{collection_id}/items/{item_id}",
     add_viewer=True,
     extensions=[
-        wmtsExtensionSTAC(),
+        wmtsExtension(get_renders=lambda obj: obj.item.properties.get("renders", {})),  # type: ignore [attr-defined]
         stacRenderExtension(),
     ],
     templates=templates,

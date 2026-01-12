@@ -6,6 +6,7 @@ from unittest.mock import patch
 
 import pytest
 import rasterio
+from owslib.wmts import WebMapTileService
 from rasterio.crs import CRS
 
 from .conftest import mock_rasterio_open, parse_img
@@ -247,6 +248,9 @@ def test_tiles_collections(rio, app):
 
 def test_wmts_collections(app):
     """Create wmts document."""
+    response = app.get(f"/collections/{collection_id}/info")
+    search_id = response.json()["search"]["hash"]
+
     # missing assets
     response = app.get(f"/collections/{collection_id}/WMTSCapabilities.xml")
     assert response.status_code == 400
@@ -259,12 +263,22 @@ def test_wmts_collections(app):
     assert response.status_code == 200
     assert response.headers["content-type"] == "application/xml"
 
+    wmts = WebMapTileService(
+        f"/collections/{collection_id}/WMTSCapabilities.xml?assets=cog",
+        xml=response.content,
+    )
+    assert wmts.version == "1.0.0"
+    assert len(wmts.contents) == 13  # 13 TMS
+    assert f"{search_id}_WebMercatorQuad_default" in wmts.contents
+    assert f"{search_id}_WorldCRS84Quad_default" in wmts.contents
+
     # Validate it's a good WMTS
     with rasterio.open(io.BytesIO(response.content)) as src:
+        assert not src.crs
         assert src.profile["driver"] == "WMTS"
         assert len(src.subdatasets) == 13
         with rasterio.open(
-            io.BytesIO(response.content), layer="default_WebMercatorQuad"
+            io.BytesIO(response.content), layer=f"{search_id}_WebMercatorQuad_default"
         ) as sds:
             assert sds.crs == "epsg:3857"
 
@@ -545,24 +559,34 @@ def test_query_point_collections(app):
 
 def test_collections_render(app, tmp_path):
     """Create wmts document."""
+    response = app.get("/collections/MAXAR_BayofBengal_Cyclone_Mocha_May_23/info")
+    search_id = response.json()["search"]["hash"]
+
     response = app.get(
         "/collections/MAXAR_BayofBengal_Cyclone_Mocha_May_23/WMTSCapabilities.xml"
     )
     assert response.status_code == 200
     assert response.headers["content-type"] == "application/xml"
 
-    # Validate it's a good WMTS
+    wmts = WebMapTileService(
+        f"/collections/{collection_id}/WMTSCapabilities.xml?assets=cog",
+        xml=response.content,
+    )
+    assert wmts.version == "1.0.0"
+    assert len(wmts.contents) == 3 * 13  # 3 renders, 13 TMS
+    assert f"{search_id}_WebMercatorQuad_color" in wmts.contents
+    assert f"{search_id}_WorldCRS84Quad_color" in wmts.contents
+
     with rasterio.open(io.BytesIO(response.content)) as src:
         assert not src.crs
         assert src.profile["driver"] == "WMTS"
         assert len(src.subdatasets) == 3 * 13  # 3 renders, 13 TMS
         sds_names = [s.split(",layer=")[1] for s in src.subdatasets]
-        assert "color_WebMercatorQuad" in sds_names
-        assert "visualr_WebMercatorQuad" in sds_names
-        assert "color_WebMercatorQuad" in sds_names
+        assert f"{search_id}_WebMercatorQuad_color" in sds_names
+        assert f"{search_id}_WebMercatorQuad_visualr" in sds_names
 
         with rasterio.open(
-            io.BytesIO(response.content), layer="color_WebMercatorQuad"
+            io.BytesIO(response.content), layer=f"{search_id}_WebMercatorQuad_color"
         ) as sds:
             assert sds.crs == CRS.from_epsg(3857)
             assert sds.profile["driver"] == "WMTS"

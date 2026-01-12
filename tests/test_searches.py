@@ -6,6 +6,7 @@ from unittest.mock import patch
 
 import pytest
 import rasterio
+from owslib.wmts import WebMapTileService
 from rasterio.crs import CRS
 
 from .conftest import mock_rasterio_open, parse_img
@@ -309,12 +310,22 @@ def test_wmts(app, search_no_bbox):
     assert response.status_code == 200
     assert response.headers["content-type"] == "application/xml"
 
+    wmts = WebMapTileService(
+        f"/collections/{search_no_bbox}/WMTSCapabilities.xml?assets=cog",
+        xml=response.content,
+    )
+    assert wmts.version == "1.0.0"
+    assert len(wmts.contents) == 13  # 13 TMS
+    assert f"{search_no_bbox}_WebMercatorQuad_default" in wmts.contents
+    assert f"{search_no_bbox}_WorldCRS84Quad_default" in wmts.contents
+
     # Validate it's a good WMTS
     with rasterio.open(io.BytesIO(response.content)) as src:
         assert src.profile["driver"] == "WMTS"
         assert len(src.subdatasets) == 13
         with rasterio.open(
-            io.BytesIO(response.content), layer="default_WebMercatorQuad"
+            io.BytesIO(response.content),
+            layer=f"{search_no_bbox}_WebMercatorQuad_default",
         ) as sds:
             assert sds.crs == "EPSG:3857"
 
@@ -597,11 +608,20 @@ def test_query_with_metadata(app):
     assert response.status_code == 200
     assert response.headers["content-type"] == "application/xml"
 
+    wmts = WebMapTileService(
+        f"/collections/{mosaic_id}/WMTSCapabilities.xml?assets=cog",
+        xml=response.content,
+    )
+    assert wmts.version == "1.0.0"
+    assert len(wmts.contents) == 13  # 13 TMS
+    assert f"{mosaic_id}_WebMercatorQuad_default" in wmts.contents
+    assert f"{mosaic_id}_WorldCRS84Quad_default" in wmts.contents
+
     with rasterio.open(io.BytesIO(response.content)) as src:
         assert src.profile["driver"] == "WMTS"
         assert len(src.subdatasets) == 13
         with rasterio.open(
-            io.BytesIO(response.content), layer="default_WebMercatorQuad"
+            io.BytesIO(response.content), layer=f"{mosaic_id}_WebMercatorQuad_default"
         ) as sds:
             assert sds.crs == "epsg:3857"
 
@@ -609,14 +629,22 @@ def test_query_with_metadata(app):
     with pytest.warns(UserWarning):
         response = app.get(f"/searches/{mosaic_id_metadata}/WMTSCapabilities.xml")
     assert response.status_code == 200
-
     assert response.headers["content-type"] == "application/xml"
+
+    wmts = WebMapTileService(
+        f"/collections/{mosaic_id_metadata}/WMTSCapabilities.xml", xml=response.content
+    )
+    assert wmts.version == "1.0.0"
+    assert len(wmts.contents) == 4 * 13  # 4 renders * 13 TMS
+    assert f"{mosaic_id_metadata}_WebMercatorQuad_one_band" in wmts.contents
+    assert f"{mosaic_id_metadata}_WorldCRS84Quad_one_band" in wmts.contents
 
     with rasterio.open(io.BytesIO(response.content)) as src:
         assert src.profile["driver"] == "WMTS"
         assert len(src.subdatasets) == 13 * 4  # 52 layers, 4 renders * 14 TMS
         with rasterio.open(
-            io.BytesIO(response.content), layer="one_band_WebMercatorQuad"
+            io.BytesIO(response.content),
+            layer=f"{mosaic_id_metadata}_WebMercatorQuad_one_band",
         ) as src:
             assert src.profile["driver"] == "WMTS"
             assert src.crs == "EPSG:3857"
@@ -628,24 +656,14 @@ def test_query_with_metadata(app):
             f"/searches/{mosaic_id_metadata}/WMTSCapabilities.xml",
             params={"assets": "cog"},
         )
-    assert response.status_code == 200
-    assert response.headers["content-type"] == "application/xml"
-    with rasterio.open(io.BytesIO(response.content)) as src:
-        assert src.profile["driver"] == "WMTS"
-        assert len(src.subdatasets) == 5 * 13  # 65 layers, (4 renders + 1 qs) * 14 TMS
-        with rasterio.open(
-            io.BytesIO(response.content), layer="one_band_WebMercatorQuad"
-        ) as src:
-            assert src.profile["driver"] == "WMTS"
-            assert src.crs == "EPSG:3857"
-            assert not src.subdatasets
 
-        with rasterio.open(
-            io.BytesIO(response.content), layer="default_WebMercatorQuad"
-        ) as src:
-            assert src.profile["driver"] == "WMTS"
-            assert src.crs == "EPSG:3857"
-            assert not src.subdatasets
+    wmts = WebMapTileService(
+        f"/collections/{mosaic_id_metadata}/WMTSCapabilities.xml", xml=response.content
+    )
+    assert wmts.version == "1.0.0"
+    assert len(wmts.contents) == 5 * 13  # (4 renders + 1 qs) * 13 TMS
+    assert f"{mosaic_id_metadata}_WebMercatorQuad_default" in wmts.contents
+    assert f"{mosaic_id_metadata}_WorldCRS84Quad_default" in wmts.contents
 
     with pytest.warns(UserWarning):
         response = app.get(f"/searches/{mosaic_id_metadata}/info")
