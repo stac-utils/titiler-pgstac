@@ -27,9 +27,9 @@ classifiers = [
     "Topic :: Scientific/Engineering :: GIS",
 ]
 dependencies = [
-    "titiler.core>=1.0.2,<1.1",
-    "titiler.mosaic>=1.0.2,<1.1",
-    "titiler.extensions>=1.0.2,<1.1",
+    "titiler.core>=1.1,<1.2",
+    "titiler.mosaic>=1.1,<1.2",
+    "titiler.extensions>=1.1,<1.2",
     "cql2>=0.3.6",
     "pydantic>=2.4,<3.0",
     "pydantic-settings~=2.0",
@@ -64,6 +64,7 @@ dev = [
     "httpx",
     "pypgstac>=0.9.8,<=0.10",
     "pytest-postgresql",
+    "owslib",
     "pre-commit",
 ]
 benchmark = [
