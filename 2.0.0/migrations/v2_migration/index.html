@@ -1,0 +1,2383 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Dynamic Mosaics From PgSTAC database.">
+      
+      
+      
+        <link rel="canonical" href="https://stac-utils.github.io/titiler-pgstac/2.0.0/migrations/v2_migration/">
+      
+      
+        <link rel="prev" href="../v1_migration/">
+      
+      
+        <link rel="next" href="../../contributing/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../img/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>v1.9 -> v2.0 - TiTiler.PgSTAC</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../overrides/stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#migration-guide-titiler-pgstac-19-to-20" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="TiTiler.PgSTAC" class="md-header__button md-logo" aria-label="TiTiler.PgSTAC" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            TiTiler.PgSTAC
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              v1.9 -> v2.0
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/stac-utils/titiler-pgstac" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    stac-utils/titiler-pgstac
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="TiTiler.PgSTAC" class="md-nav__button md-logo" aria-label="TiTiler.PgSTAC" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    TiTiler.PgSTAC
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/stac-utils/titiler-pgstac" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    stac-utils/titiler-pgstac
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Intro
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../endpoints/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Endpoints
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Endpoints
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../endpoints/searches_endpoints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Searches
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../endpoints/collections_endpoints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Collections
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../endpoints/items_endpoints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Items
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../endpoints/tms_endpoints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TileMatrixSet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tiler_factories/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tiler Factories
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Advanced usage
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Advanced usage
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/metadata/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mosaic metadata specification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/searches_list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mosaic list
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/custom_search/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Custom search model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/custom_tilejson/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Custom TileJSON endpoint
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/support_multidim_dataset/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zarr/NetCDF support
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Examples
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Examples
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notebooks/demo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    demo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_1" id="__nav_7_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    titiler.pgstac
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    titiler.pgstac
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/titiler/pgstac/db/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    db
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/titiler/pgstac/dependencies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    dependencies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/titiler/pgstac/extensions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    extensions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/titiler/pgstac/factory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    factory
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/titiler/pgstac/model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/titiler/pgstac/backend/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    backend
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/titiler/pgstac/reader/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    reader
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/titiler/pgstac/settings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    settings
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/titiler/pgstac/utils/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    utils
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Migration Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Migration Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../v1_migration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v0.8 -> v1.0
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v1.9 -> v2.0
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v1.9 -> v2.0
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#breaking-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Breaking Changes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Breaking Changes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#postgres-env-variable-names" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Postgres Env Variable names
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#python-version-requirement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Python Version Requirement
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#titiler-dependency-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TiTiler Dependency Update
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#point-endpoint-response-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Point Endpoint Response Model
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cql-filter-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CQL Filter Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#collection-endpoint-filter-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Collection Endpoint Filter Support
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#searches-list-endpoint-deprecation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Searches List Endpoint Deprecation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wmts-endpoint-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WMTS Endpoint Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mosaic-backend-switch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mosaic Backend Switch
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docker-image-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Docker Image Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#development-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Development Changes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Development Changes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#build-system-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Build System Update
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#development-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Development Environment
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#new-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        New Features
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="New Features">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#enhanced-type-hints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enhanced Type Hints
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cql2-library-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CQL2 Library Integration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#migration-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Migration Checklist
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-your-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testing Your Migration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-help" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Getting Help
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development - Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../release-notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Release notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../benchmark.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Performance Benchmarks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#breaking-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Breaking Changes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Breaking Changes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#postgres-env-variable-names" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Postgres Env Variable names
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#python-version-requirement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Python Version Requirement
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#titiler-dependency-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TiTiler Dependency Update
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#point-endpoint-response-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Point Endpoint Response Model
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cql-filter-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CQL Filter Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#collection-endpoint-filter-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Collection Endpoint Filter Support
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#searches-list-endpoint-deprecation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Searches List Endpoint Deprecation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wmts-endpoint-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WMTS Endpoint Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mosaic-backend-switch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mosaic Backend Switch
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docker-image-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Docker Image Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#development-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Development Changes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Development Changes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#build-system-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Build System Update
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#development-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Development Environment
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#new-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        New Features
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="New Features">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#enhanced-type-hints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enhanced Type Hints
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cql2-library-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CQL2 Library Integration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#migration-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Migration Checklist
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-your-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testing Your Migration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-help" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Getting Help
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="migration-guide-titiler-pgstac-19-to-20">Migration Guide: titiler-pgstac 1.9 to 2.0<a class="headerlink" href="#migration-guide-titiler-pgstac-19-to-20" title="Permanent link">&para;</a></h1>
+<p>This guide covers the breaking changes and new features when upgrading from titiler-pgstac 1.9 to 2.0.</p>
+<h2 id="breaking-changes">Breaking Changes<a class="headerlink" href="#breaking-changes" title="Permanent link">&para;</a></h2>
+<h3 id="postgres-env-variable-names">Postgres Env Variable names<a class="headerlink" href="#postgres-env-variable-names" title="Permanent link">&para;</a></h3>
+<p><strong>Impact:</strong> High - Affects deployment and development environments</p>
+<p>The pydantic-settings model attributes have been renamed (to match <code>stac-fastapi-pgstac</code>).</p>
+<ul>
+<li><code>POSTGRES_USER</code> -&gt; <code>PGUSER</code></li>
+<li><code>POSTGRES_PASS</code> -&gt; <code>PGPASSWORD</code></li>
+<li><code>POSTGRES_HOST</code> -&gt; <code>PGHOST</code></li>
+<li><code>POSTGRES_PORT</code> -&gt; <code>PGPORT</code></li>
+<li><code>POSTGRES_DBNAME</code> -&gt; <code>PGDATABASE</code></li>
+</ul>
+<p><strong>Action Required:</strong></p>
+<ul>
+<li>Update your environments</li>
+</ul>
+<h3 id="python-version-requirement">Python Version Requirement<a class="headerlink" href="#python-version-requirement" title="Permanent link">&para;</a></h3>
+<p><strong>Impact:</strong> High - Affects deployment and development environments</p>
+<p>titiler-pgstac 2.0 requires Python 3.11 or higher. Python 3.10 and earlier versions are no longer supported.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Ensure you&#39;re using Python 3.11+</span>
+python<span class="w"> </span>--version<span class="w">  </span><span class="c1"># Should show 3.11 or higher</span>
+</code></pre></div>
+<p><strong>Action Required:</strong></p>
+<ul>
+<li>Update your Python environment to 3.11, 3.12, 3.13, or 3.14</li>
+<li>Update CI/CD pipelines and Docker base images</li>
+<li>Test your application with the new Python version</li>
+</ul>
+<h3 id="titiler-dependency-update">TiTiler Dependency Update<a class="headerlink" href="#titiler-dependency-update" title="Permanent link">&para;</a></h3>
+<p><strong>Impact:</strong> High - Affects all functionality</p>
+<p>titiler-pgstac 2.0 requires titiler <code>&gt;=1.0,&lt;1.1</code>, which includes several breaking changes. Please refer to the <a href="https://developmentseed.org/titiler/migrations/v1_migration/">TiTiler v1 Migration Guide</a> for detailed information.</p>
+<p>Key titiler 1.0 changes that affect titiler-pgstac:</p>
+<ul>
+<li>WMTS endpoints now provided via extension</li>
+<li>Point endpoint response model changes</li>
+<li>Updated mosaic backend requirements</li>
+</ul>
+<p><strong>Action Required:</strong>
+- Review the TiTiler v1 migration guide
+- Test all tile and metadata endpoints
+- Update client code parsing responses</p>
+<h3 id="point-endpoint-response-model">Point Endpoint Response Model<a class="headerlink" href="#point-endpoint-response-model" title="Permanent link">&para;</a></h3>
+<p><strong>Impact:</strong> High - Affects <code>/point</code> endpoint consumers</p>
+<p>The response model for the <code>/point</code> endpoint has been restructured to provide clearer asset information.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Before (1.9)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Point</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">coordinates</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>
+    <span class="n">values</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span>
+
+<span class="c1"># Now (2.0)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">AssetPoint</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">values</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span>
+    <span class="n">band_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">band_descriptions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Point</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">coordinates</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>
+    <span class="n">assets</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">AssetPoint</span><span class="p">]</span>
+</code></pre></div>
+<p><strong>Migration Example:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Before (1.9)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;coordinates&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">122.5</span><span class="p">,</span> <span class="mf">37.5</span><span class="p">],</span>
+    <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mf">100.0</span><span class="p">,</span> <span class="mf">200.0</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;B1&quot;</span><span class="p">,</span> <span class="s2">&quot;B2&quot;</span><span class="p">]),</span>
+        <span class="p">(</span><span class="s2">&quot;green&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mf">150.0</span><span class="p">,</span> <span class="mf">250.0</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;B1&quot;</span><span class="p">,</span> <span class="s2">&quot;B2&quot;</span><span class="p">])</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+
+<span class="c1"># Accessing values:</span>
+<span class="k">for</span> <span class="n">asset_name</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">bands</span> <span class="ow">in</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;values&quot;</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">asset_name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">values</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Now (2.0)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;coordinates&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">122.5</span><span class="p">,</span> <span class="mf">37.5</span><span class="p">],</span>
+    <span class="s2">&quot;assets&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;red&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">100.0</span><span class="p">,</span> <span class="mf">200.0</span><span class="p">],</span>
+            <span class="s2">&quot;band_names&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;B1&quot;</span><span class="p">,</span> <span class="s2">&quot;B2&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;band_descriptions&quot;</span><span class="p">:</span> <span class="kc">None</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;green&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">150.0</span><span class="p">,</span> <span class="mf">250.0</span><span class="p">],</span>
+            <span class="s2">&quot;band_names&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;B1&quot;</span><span class="p">,</span> <span class="s2">&quot;B2&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;band_descriptions&quot;</span><span class="p">:</span> <span class="kc">None</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+
+<span class="c1"># Accessing values:</span>
+<span class="k">for</span> <span class="n">asset</span> <span class="ow">in</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;assets&quot;</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">asset</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">asset</span><span class="p">[</span><span class="s1">&#39;values&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Action Required:</strong> Update all client code that parses <code>/point</code> endpoint responses to use the new structure.</p>
+<h3 id="cql-filter-changes">CQL Filter Changes<a class="headerlink" href="#cql-filter-changes" title="Permanent link">&para;</a></h3>
+<p><strong>Impact:</strong> Medium - Affects search filtering functionality</p>
+<p>Support for <code>cql-text</code> (CQL1) has been removed. Only CQL2 is now supported.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Before (1.9) - Both supported</span>
+<span class="n">search</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;collections&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;my-collection&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;filter-lang&quot;</span><span class="p">:</span> <span class="s2">&quot;cql-text&quot;</span><span class="p">,</span>  <span class="c1"># No longer supported</span>
+    <span class="s2">&quot;filter&quot;</span><span class="p">:</span> <span class="s2">&quot;landcover=&#39;urban&#39;&quot;</span>
+<span class="p">}</span>
+
+<span class="c1"># Or</span>
+<span class="n">search</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;collections&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;my-collection&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;filter-lang&quot;</span><span class="p">:</span> <span class="s2">&quot;cql2-json&quot;</span><span class="p">,</span>  <span class="c1"># Still supported</span>
+    <span class="s2">&quot;filter&quot;</span><span class="p">:</span> <span class="p">{</span><span class="o">...</span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1"># Now (2.0) - Only CQL2 supported</span>
+<span class="n">search</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;collections&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;my-collection&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;filter-lang&quot;</span><span class="p">:</span> <span class="s2">&quot;cql2-json&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;filter&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;op&quot;</span><span class="p">:</span> <span class="s2">&quot;=&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span><span class="s2">&quot;property&quot;</span><span class="p">:</span> <span class="s2">&quot;landcover&quot;</span><span class="p">},</span>
+            <span class="s2">&quot;urban&quot;</span>
+        <span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><strong>Action Required:</strong>
+- Convert any <code>cql-text</code> filters to <code>cql2-json</code> or <code>cql2-text</code> format
+- Update API calls that use the <code>filter-lang</code> parameter
+- Test all search queries with filters</p>
+<h3 id="collection-endpoint-filter-support">Collection Endpoint Filter Support<a class="headerlink" href="#collection-endpoint-filter-support" title="Permanent link">&para;</a></h3>
+<p><strong>Impact:</strong> Medium - New functionality for collection endpoints</p>
+<p>The <code>/collections/{collection_id}</code> endpoints now support <code>filter</code> and <code>filter-lang</code> parameters for more advanced querying.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># New in 2.0 - Filter support for collections</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="s2">&quot;/collections/my-collection/tiles/0/0/0&quot;</span><span class="p">,</span>
+    <span class="n">params</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;filter-lang&quot;</span><span class="p">:</span> <span class="s2">&quot;cql2-json&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;filter&quot;</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span>
+            <span class="s2">&quot;op&quot;</span><span class="p">:</span> <span class="s2">&quot;=&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;property&quot;</span><span class="p">:</span> <span class="s2">&quot;cloud_cover&quot;</span><span class="p">},</span> <span class="mi">10</span><span class="p">]</span>
+        <span class="p">})</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+</code></pre></div>
+<p><strong>Action Required:</strong> Consider using these new filtering capabilities to improve collection queries.</p>
+<h3 id="searches-list-endpoint-deprecation">Searches List Endpoint Deprecation<a class="headerlink" href="#searches-list-endpoint-deprecation" title="Permanent link">&para;</a></h3>
+<p><strong>Impact:</strong> Low - Endpoint path change</p>
+<p>The <code>/searches/list</code> endpoint is deprecated and replaced with <code>/searches/</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Before (1.9)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/searches/list&quot;</span><span class="p">)</span>
+
+<span class="c1"># Now (2.0)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/searches/&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Action Required:</strong> Update any code using <code>/searches/list</code> to use <code>/searches/</code> instead.</p>
+<h3 id="wmts-endpoint-changes">WMTS Endpoint Changes<a class="headerlink" href="#wmts-endpoint-changes" title="Permanent link">&para;</a></h3>
+<p><strong>Impact:</strong> High - Affects WMTS consumers</p>
+<p>WMTS endpoints have been updated to match the latest titiler implementation:</p>
+<ul>
+<li>Removed <code>{tileMatrixSetId}</code> prefix from paths</li>
+<li>All available TileMatrixSets now included in layers</li>
+<li>WMTS functionality moved to an extension</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="c1"># Before (1.9)</span>
+<span class="c1"># WMTS at: /searches/{search_id}/{tileMatrixSetId}/WMTSCapabilities.xml</span>
+
+<span class="c1"># Now (2.0)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">titiler.pgstac.extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">wmtsExtension</span>
+
+<span class="n">factory</span> <span class="o">=</span> <span class="n">MosaicTilerFactory</span><span class="p">(</span>
+    <span class="n">extensions</span><span class="o">=</span><span class="p">[</span><span class="n">wmtsExtension</span><span class="p">()]</span>
+<span class="p">)</span>
+<span class="c1"># WMTS at: /searches/{search_id}/WMTSCapabilities.xml</span>
+</code></pre></div>
+<p><strong>Action Required:</strong>
+- Add <code>wmtsExtension</code> to your factory if using WMTS
+- Update WMTS client URLs to remove TileMatrixSet prefix
+- Update code expecting single TMS to handle multiple TileMatrixSets</p>
+<h3 id="mosaic-backend-switch">Mosaic Backend Switch<a class="headerlink" href="#mosaic-backend-switch" title="Permanent link">&para;</a></h3>
+<p><strong>Impact:</strong> Medium - Internal implementation change</p>
+<p>titiler-pgstac now uses the rio-tiler mosaic backend instead of cogeo-mosaic.</p>
+<p>This is primarily an internal change, but may affect:
+- Custom backend implementations
+- Performance characteristics
+- Error handling behavior</p>
+<p><strong>Action Required:</strong>
+- Test mosaic operations thoroughly
+- Review any custom backend implementations for compatibility
+- Monitor performance and adjust caching as needed</p>
+<h3 id="docker-image-changes">Docker Image Changes<a class="headerlink" href="#docker-image-changes" title="Permanent link">&para;</a></h3>
+<p><strong>Impact:</strong> High - Affects container deployments</p>
+<p>The container image now uses a non-root user for improved security.</p>
+<div class="highlight"><pre><span></span><code><span class="c"># Before (1.9)</span>
+<span class="c"># Container runs as root</span>
+
+<span class="c"># Now (2.0)</span>
+<span class="c"># Container runs as user:user (UID 1000, GID 1000)</span>
+<span class="k">RUN</span><span class="w"> </span>groupadd<span class="w"> </span>-g<span class="w"> </span><span class="m">1000</span><span class="w"> </span>user<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>useradd<span class="w"> </span>-u<span class="w"> </span><span class="m">1000</span><span class="w"> </span>-g<span class="w"> </span>user<span class="w"> </span>-s<span class="w"> </span>/bin/bash<span class="w"> </span>-m<span class="w"> </span>user
+<span class="k">USER</span><span class="w"> </span><span class="s">user</span>
+</code></pre></div>
+<p>Default python version has also been upgraded to 3.14</p>
+<p><strong>Action Required:</strong>
+- Review file permissions if mounting volumes
+- Update Kubernetes security contexts if needed
+- Adjust any scripts assuming root user
+- Test container deployments thoroughly</p>
+<h2 id="development-changes">Development Changes<a class="headerlink" href="#development-changes" title="Permanent link">&para;</a></h2>
+<h3 id="build-system-update">Build System Update<a class="headerlink" href="#build-system-update" title="Permanent link">&para;</a></h3>
+<p><strong>Impact:</strong> Medium - Affects package building</p>
+<p>titiler-pgstac now uses <a href="https://hatch.pypa.io/">Hatch</a> as the build backend instead of pdm-backend.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Before (1.9)</span>
+<span class="k">[build-system]</span>
+<span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;pdm-backend&quot;</span><span class="p">]</span>
+<span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;pdm.backend&quot;</span>
+
+<span class="c1"># Now (2.0)</span>
+<span class="k">[build-system]</span>
+<span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;hatchling&quot;</span><span class="p">]</span>
+<span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;hatchling.build&quot;</span>
+</code></pre></div>
+<p><strong>Action Required:</strong>
+- Update build scripts to use <code>hatch</code> if building from source
+- No action needed if installing via pip</p>
+<h3 id="development-environment">Development Environment<a class="headerlink" href="#development-environment" title="Permanent link">&para;</a></h3>
+<p><strong>Impact:</strong> Low - Affects contributors</p>
+<p>The project now uses <a href="https://github.com/astral-sh/uv">uv</a> for dependency management during development.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Before (1.9)</span>
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[dev]&quot;</span>
+
+<span class="c1"># Now (2.0) - Recommended for development</span>
+uv<span class="w"> </span>sync
+
+<span class="c1"># Or traditional pip still works</span>
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[dev]&quot;</span>
+</code></pre></div>
+<p><strong>Action Required:</strong> Consider using <code>uv</code> for faster dependency resolution, but traditional pip still works.</p>
+<h2 id="new-features">New Features<a class="headerlink" href="#new-features" title="Permanent link">&para;</a></h2>
+<h3 id="enhanced-type-hints">Enhanced Type Hints<a class="headerlink" href="#enhanced-type-hints" title="Permanent link">&para;</a></h3>
+<p>Type hints have been updated and improved throughout the codebase for better IDE support and type checking.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Modern Python 3.11+ type syntax now used</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_collection_id</span><span class="p">(</span>
+    <span class="n">pool</span><span class="p">:</span> <span class="n">ConnectionPool</span><span class="p">,</span>
+    <span class="n">collection_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">ids</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># Instead of Optional[str]</span>
+    <span class="n">bbox</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="o">...</span>
+</code></pre></div>
+<h3 id="cql2-library-integration">CQL2 Library Integration<a class="headerlink" href="#cql2-library-integration" title="Permanent link">&para;</a></h3>
+<p>The project now uses the <a href="https://pypi.org/project/cql2/">cql2</a> library for better CQL2 support and text-to-JSON conversion.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">cql2</span><span class="w"> </span><span class="kn">import</span> <span class="n">Expr</span>
+
+<span class="c1"># Automatic conversion from cql2-text to cql2-json</span>
+<span class="n">filter_text</span> <span class="o">=</span> <span class="s2">&quot;landcover=&#39;urban&#39; AND cloud_cover &lt; 10&quot;</span>
+<span class="n">filter_json</span> <span class="o">=</span> <span class="n">Expr</span><span class="p">(</span><span class="n">filter_text</span><span class="p">)</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="migration-checklist">Migration Checklist<a class="headerlink" href="#migration-checklist" title="Permanent link">&para;</a></h2>
+<p>Use this checklist to ensure a smooth migration:</p>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Update Python to 3.11 or higher</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Update titiler-pgstac installation: <code>pip install "titiler-pgstac&gt;=2.0,&lt;2.1"</code></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Review and apply TiTiler v1 migration changes</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Update <code>/point</code> endpoint response parsing</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Convert all <code>cql-text</code> filters to CQL2 format</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Update <code>/searches/list</code> references to <code>/searches/</code></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Add <code>wmtsExtension</code> if using WMTS endpoints</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Update WMTS client URLs (remove TileMatrixSet prefix)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Test Docker containers with non-root user</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Update volume mount permissions if needed</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Test all mosaic operations</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Update CI/CD for Python 3.11+</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Review build processes if building from source</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Test all endpoints with real data</li>
+</ul>
+<h2 id="testing-your-migration">Testing Your Migration<a class="headerlink" href="#testing-your-migration" title="Permanent link">&para;</a></h2>
+<p>After completing the migration, test these key areas:</p>
+<ol>
+<li>
+<p><strong>Basic Tile Access</strong>
+   <div class="highlight"><pre><span></span><code><span class="c1"># Test tile endpoints</span>
+curl<span class="w"> </span><span class="s2">&quot;/searches/{search_id}/tiles/WebMercatorQuad/0/0/0&quot;</span>
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Point Queries</strong>
+   <div class="highlight"><pre><span></span><code><span class="c1"># Test point endpoint and verify response structure</span>
+curl<span class="w"> </span><span class="s2">&quot;/searches/{search_id}/point/-122.5,37.5?assets=visual&quot;</span>
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Search with Filters</strong>
+   <div class="highlight"><pre><span></span><code><span class="c1"># Test CQL2 filter support</span>
+curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">&quot;/searches/register&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
+<span class="s1">    &quot;collections&quot;: [&quot;my-collection&quot;],</span>
+<span class="s1">    &quot;filter-lang&quot;: &quot;cql2-json&quot;,</span>
+<span class="s1">    &quot;filter&quot;: {&quot;op&quot;: &quot;=&quot;, &quot;args&quot;: [{&quot;property&quot;: &quot;cloudCover&quot;}, 0]}</span>
+<span class="s1">  }&#39;</span>
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>WMTS</strong>
+   <div class="highlight"><pre><span></span><code><span class="c1"># Test WMTS capabilities</span>
+curl<span class="w"> </span><span class="s2">&quot;/searches/{search_id}/WMTSCapabilities.xml?assets=visual&quot;</span>
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Docker Container</strong>
+   <div class="highlight"><pre><span></span><code><span class="c1"># Test container starts and serves requests</span>
+docker<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="m">8000</span>:8000<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-e<span class="w"> </span><span class="nv">DATABASE_URL</span><span class="o">=</span>postgresql://...<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ghcr.io/stac-utils/titiler-pgstac:2.0.0<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>uvicorn<span class="w"> </span>titiler.pgstac.main:app<span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>--port<span class="w"> </span><span class="m">8000</span>
+</code></pre></div></p>
+</li>
+</ol>
+<h2 id="getting-help">Getting Help<a class="headerlink" href="#getting-help" title="Permanent link">&para;</a></h2>
+<p>If you encounter issues during migration:</p>
+<ol>
+<li>Check the <a href="https://github.com/stac-utils/titiler-pgstac/issues">GitHub Issues</a></li>
+<li>Review the <a href="https://stac-utils.github.io/titiler-pgstac/release-notes/">full CHANGELOG</a></li>
+<li>Review the <a href="https://developmentseed.org/titiler/migrations/v1_migration/">TiTiler v1 Migration Guide</a></li>
+<li>Join discussions in the <a href="https://github.com/stac-utils/titiler-pgstac">titiler-pgstac repository</a></li>
+</ol>
+<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
+<p>Version 2.0 represents a significant update to titiler-pgstac with modernized dependencies, improved type safety, enhanced security, and better CQL2 support. While there are several breaking changes, they primarily affect:</p>
+<ul>
+<li>Response models (Point endpoint)</li>
+<li>Filter syntax (CQL2 only)</li>
+<li>Python version requirements</li>
+<li>Container security (non-root user)</li>
+</ul>
+<p>Most applications can migrate by updating Python, converting CQL filters, and updating response parsing logic. The improvements in type safety, security, and standards compliance make this a worthwhile upgrade.</p>
+<hr />
+<p><em>This migration guide was generated with assistance from Claude AI and should be reviewed for accuracy and completeness.</em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/stac-utils" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["content.code.annotate", "content.code.copy", "navigation.indexes", "navigation.instant", "navigation.tracking", "search.suggest", "search.share"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
