@@ -17,7 +17,7 @@
 * switch to uv for development
 * switch to hatch for python package build-system
 * bump minimum python version to 3.11
-* update titiler requirement to `>=1.0,<1.1`
+* update titiler requirement to `>=1.1,<1.2`
 * switch to rio-tiler mosaic backend
 * change Response model for `/point` endpoint **breaking change**
 
