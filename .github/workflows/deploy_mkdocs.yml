@@ -24,13 +24,12 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          python -m pip install -e ".[psycopg-binary,docs]"
+          uv sync --group docs
 
       - name: Set module version
         id: module
         run: |
-          echo version=$(python -c'import titiler.pgstac; print(titiler.pgstac.__version__)') >> $GITHUB_OUTPUT
+          echo version=$(uv run python -c'import titiler.pgstac; print(titiler.pgstac.__version__)') >> $GITHUB_OUTPUT
 
       - name: Configure Git user
         run: |
@@ -43,7 +42,7 @@ jobs:
 
       - name: Deploy documentation and update alias for latest
         run: |
-          mike deploy ${{ steps.module.outputs.version}} latest --push --update-aliases --config-file docs/mkdocs.yml
+            uv run mike deploy ${{ steps.module.outputs.version}} latest --push --update-aliases --config-file docs/mkdocs.yml
      
       - name: Deploy docs
         run: uv run --group docs --extra psycopg mike deploy ${{ steps.module.outputs.version}} latest --push --update-aliases --config-file docs/mkdocs.yml
