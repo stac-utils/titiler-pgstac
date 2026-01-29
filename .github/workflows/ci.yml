@@ -1,10 +1,9 @@
 name: CI
 
-# On every pull request, but only on push to main
 on:
   push:
     branches:
-    - main
+    - maint-1.8.x
     tags:
     - '*'
     paths:
