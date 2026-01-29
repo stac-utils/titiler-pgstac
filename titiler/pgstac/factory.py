@@ -363,7 +363,7 @@ class MosaicTilerFactory(BaseFactory):
                     if check_query_params(tile_dependencies, values):
                         layers.append(
                             {
-                                "titler": search_info.metadata.name or search_id,
+                                "title": search_info.metadata.name or search_id,
                                 "name": name,
                                 "tiles_url": tiles_url,
                                 "query_string": urlencode(values, doseq=True)
@@ -406,7 +406,7 @@ class MosaicTilerFactory(BaseFactory):
             if check_query_params(tile_dependencies, QueryParams(qs)):
                 layers.append(
                     {
-                        "titler": search_info.metadata.name or search_id,
+                        "title": search_info.metadata.name or search_id,
                         "name": "default",
                         "tiles_url": tiles_url,
                         "query_string": qs if qs else None,
