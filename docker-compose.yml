@@ -47,6 +47,7 @@ services:
       # AWS S3 endpoint config
       # - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       # - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - TITILER_PGSTAC_API_DEBUG=TRUE
     volumes:
       - ./benchmark:/tmp/benchmark
     depends_on:
