@@ -50,6 +50,7 @@ from titiler.pgstac.factory import (
     add_search_list_route,
     add_search_register_route,
 )
+from titiler.pgstac.middleware import StripNulMiddleware
 from titiler.pgstac.reader import PgSTACReader
 from titiler.pgstac.settings import ApiSettings
 
@@ -122,6 +123,7 @@ app.add_middleware(
     cachecontrol=settings.cachecontrol,
     exclude_path=settings.cachecontrol_exclude_paths,
 )
+app.add_middleware(StripNulMiddleware)
 
 optional_headers = []
 if settings.debug:

@@ -692,3 +692,12 @@ def test_collections_cql_filter(filter_expr, filter_lang, app):
     assert len(resp) == 1
     assert list(resp[0]) == ["id", "bbox", "assets", "collection"]
     assert resp[0]["id"] == "20200307aC0853000w361030"
+
+
+def test_nul_byte_handling(app) -> None:
+    """Ensure nul bytes do not generate 500 errors"""
+    response = app.get("/collections/missing_collection%00id/tiles")
+    assert response.status_code == 404
+
+    response = app.get("/collections/missing_collection_id/tiles?param1=bad%00value")
+    assert response.status_code == 404
