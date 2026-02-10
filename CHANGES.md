@@ -3,6 +3,7 @@
 ## Unreleased
 
 * disable tests for pre-0.9 pgstac versions
+* address several instances of validation failures returning 500 instead of 4xx HTTP responses
 
 ## 2.0.0 (2026-01-13)
 

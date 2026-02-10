@@ -1,5 +1,6 @@
 """Test titiler.pgstac Mosaic endpoints."""
 
+import datetime
 import io
 import json
 from unittest.mock import patch
@@ -692,3 +693,147 @@ def test_collections_cql_filter(filter_expr, filter_lang, app):
     assert len(resp) == 1
     assert list(resp[0]) == ["id", "bbox", "assets", "collection"]
     assert resp[0]["id"] == "20200307aC0853000w361030"
+
+
+def test_datetime_validation(app) -> None:
+    """Ensure datetime parameter validation works as expected."""
+    valid_response = app.get(
+        f"/collections/{collection_id}/tiles",
+        params={
+            "datetime": datetime.datetime.now(tz=datetime.UTC).isoformat(),
+        },
+    )
+    assert valid_response.status_code == 200
+    invalid_response = app.get(
+        f"/collections/{collection_id}/tiles",
+        params={
+            "datetime": "this is not a valid datetime string",
+        },
+    )
+    assert invalid_response.status_code == 422
+
+
+def test_query_validation(app) -> None:
+    """Ensure query parameter validation works as expected."""
+    valid_response = app.get(
+        f"/collections/{collection_id}/tiles",
+        params={
+            "query": json.dumps({"eo:cloud_cover": {"gte": 95}}),
+        },
+    )
+    assert valid_response.status_code == 200
+    invalid_response = app.get(
+        f"/collections/{collection_id}/tiles",
+        params={
+            "query": "this is not a valid query string",
+        },
+    )
+    assert invalid_response.status_code == 422
+
+
+def test_query_json_content(app) -> None:
+    """Ensure valid JSON with invalid query content is validated correctly."""
+    invalid_response = app.get(
+        f"/collections/{collection_id}/tiles",
+        params={
+            "query": json.dumps({"this": "is not a valid query"}),
+        },
+    )
+    assert invalid_response.status_code == 422
+
+
+def test_filter_json_validation(app) -> None:
+    """Ensure JSON filter parameter validation works as expected."""
+    valid_response = app.get(
+        f"/collections/{collection_id}/tiles",
+        params={
+            "filter": json.dumps(
+                {
+                    "op": "lte",
+                    "args": [
+                        {
+                            "property": "gsd",
+                        },
+                        10,
+                    ],
+                }
+            ),
+            "filter-lang": "cql2-json",
+        },
+    )
+    assert valid_response.status_code == 200
+    invalid_content_response = app.get(
+        f"/collections/{collection_id}/tiles",
+        params={
+            "filter": json.dumps({"this": "is invalid content"}),
+        },
+    )
+    assert invalid_content_response.status_code == 422
+    invalid_json_response = app.get(
+        f"/collections/{collection_id}/tiles",
+        params={
+            "filter": "this is not a valid JSON string",
+            "filter-lang": "cql2-json",
+        },
+    )
+    assert invalid_json_response.status_code == 422
+
+
+def test_filter_text_validation(app) -> None:
+    """Ensure text filter parameter validation works as expected."""
+    valid_response = app.get(
+        f"/collections/{collection_id}/tiles",
+        params={
+            "filter": "id=irrelevant-value",
+            "filter-lang": "cql2-text",
+        },
+    )
+    assert valid_response.status_code == 200
+    invalid_response = app.get(
+        f"/collections/{collection_id}/tiles",
+        params={
+            "filter": "this is not a valid filter string",
+            "filter-lang": "cql2-text",
+        },
+    )
+    assert invalid_response.status_code == 422
+
+
+def test_bbox_validation(app) -> None:
+    """Ensure bbox parameter validation works as expected."""
+    valid_response_3d = app.get(
+        f"/collections/{collection_id}/tiles",
+        params={
+            "bbox": "-180,-90,-1,180,90,1",
+        },
+    )
+    assert valid_response_3d.status_code == 200
+
+    valid_response_2d = app.get(
+        f"/collections/{collection_id}/tiles",
+        params={
+            "bbox": "-180,-90,180,90",
+        },
+    )
+    assert valid_response_2d.status_code == 200
+
+    invalid_format_1_response = app.get(
+        f"/collections/{collection_id}/tiles",
+        params={
+            "bbox": "invalid bbox string",
+        },
+    )
+    assert invalid_format_1_response.status_code == 422
+
+    invalid_format_2_response = app.get(
+        f"/collections/{collection_id}/tiles",
+        params={
+            "bbox": "-180,-90,180",
+        },
+    )
+    assert invalid_format_2_response.status_code == 422
+
+    invalid_values_response = app.get(
+        f"/collections/{collection_id}/tiles", params={"bbox": "180,-90,-180,90"}
+    )
+    assert invalid_values_response.status_code == 422

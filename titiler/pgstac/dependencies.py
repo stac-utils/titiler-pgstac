@@ -17,14 +17,18 @@ from fastapi import HTTPException, Path, Query
 from psycopg import errors as pgErrors
 from psycopg.rows import class_row, dict_row
 from psycopg_pool import ConnectionPool
+from pydantic import BeforeValidator
+from stac_pydantic.shared import validate_datetime
 from starlette.requests import Request
 from typing_extensions import Annotated
 
 from titiler.core.dependencies import DefaultDependency
+from titiler.core.validation import validate_json
 from titiler.pgstac import model
 from titiler.pgstac.errors import MosaicNotFoundError, ReadOnlyPgSTACError
 from titiler.pgstac.settings import CacheSettings, RetrySettings
 from titiler.pgstac.utils import retry
+from titiler.pgstac.validation import parse_and_validate_bbox, validate_filter
 
 cache_config = CacheSettings()
 retry_config = RetrySettings()
@@ -215,6 +219,7 @@ def CollectionIdParams(
     ] = None,
     bbox: Annotated[
         str | None,
+        BeforeValidator(parse_and_validate_bbox),
         Query(
             description="Filters items intersecting this bounding box",
             openapi_examples={
@@ -225,6 +230,7 @@ def CollectionIdParams(
     ] = None,
     datetime: Annotated[
         str | None,
+        BeforeValidator(validate_datetime),
         Query(
             description="""Filters items that have a temporal property that intersects this value.\n
 Either a date-time or an interval, open or closed. Date and time expressions adhere to RFC 3339. Open intervals are expressed using double-dots.""",
@@ -242,6 +248,7 @@ Either a date-time or an interval, open or closed. Date and time expressions adh
     # Extensions
     query: Annotated[
         str | None,
+        BeforeValidator(validate_json),
         Query(
             description="Allows additional filtering based on the properties of Item objects",
             openapi_examples={
@@ -285,6 +292,7 @@ Remember to URL encode the CQL2-JSON if using GET""",
     ] = "cql2-text",
 ) -> str:
     """Collection endpoints Parameters"""
+    validate_filter(filter_expr=filter_expr, filter_lang=filter_lang)
     return get_collection_id(
         request.app.state.dbpool,
         collection_id=collection_id,

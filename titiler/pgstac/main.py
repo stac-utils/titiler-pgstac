@@ -6,10 +6,11 @@ from typing import Any, Literal
 
 import jinja2
 import rasterio
-from fastapi import FastAPI, Path, Query
+from fastapi import FastAPI, Path, Query, status
 from psycopg import OperationalError
 from psycopg.rows import dict_row
 from psycopg_pool import PoolTimeout
+from pydantic import ValidationError
 from starlette.middleware.cors import CORSMiddleware
 from starlette.requests import Request
 from starlette.templating import Jinja2Templates
@@ -103,7 +104,12 @@ app = FastAPI(
 # Fix OpenAPI response header for OGC Common compatibility
 update_openapi(app)
 
-ERRORS = {**DEFAULT_STATUS_CODES, **MOSAIC_STATUS_CODES, **PGSTAC_STATUS_CODES}
+ERRORS = {
+    **DEFAULT_STATUS_CODES,
+    **MOSAIC_STATUS_CODES,
+    **PGSTAC_STATUS_CODES,
+    ValidationError: status.HTTP_422_UNPROCESSABLE_CONTENT,
+}
 add_exception_handlers(app, ERRORS)
 
 

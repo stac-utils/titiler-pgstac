@@ -16,6 +16,7 @@ from pydantic import BaseModel, Field, ValidationInfo, field_validator, model_va
 from typing_extensions import Annotated
 
 from titiler.core.resources.enums import MediaType
+from titiler.pgstac.validation import validate_bbox as validate_bbox_common
 
 # ref: https://github.com/stac-api-extensions/query
 # TODO: add "startsWith", "endsWith", "contains", "in"
@@ -204,34 +205,9 @@ class PgSTACSearch(BaseModel, extra="allow"):
         return v
 
     @field_validator("bbox")
-    def validate_bbox(cls, v: BBox):
+    def validate_bbox(cls, value: BBox | None):
         """Validate BBOX."""
-        if v:
-            # Validate order
-            if len(v) == 4:
-                xmin, ymin, xmax, ymax = v
-            else:
-                xmin, ymin, min_elev, xmax, ymax, max_elev = v
-                if max_elev < min_elev:
-                    raise ValueError(
-                        "Maximum elevation must greater than minimum elevation"
-                    )
-
-            if xmax < xmin:
-                raise ValueError(
-                    "Maximum longitude must be greater than minimum longitude"
-                )
-
-            if ymax < ymin:
-                raise ValueError(
-                    "Maximum longitude must be greater than minimum longitude"
-                )
-
-            # Validate against WGS84
-            if xmin < -180 or ymin < -90 or xmax > 180 or ymax > 90:
-                raise ValueError("Bounding box must be within (-180, -90, 180, 90)")
-
-        return v
+        return validate_bbox_common(value)
 
 
 class RegisterMosaic(PgSTACSearch):

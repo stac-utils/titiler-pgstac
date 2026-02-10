@@ -27,12 +27,13 @@ classifiers = [
     "Topic :: Scientific/Engineering :: GIS",
 ]
 dependencies = [
-    "titiler.core>=1.1,<1.2",
-    "titiler.mosaic>=1.1,<1.2",
-    "titiler.extensions>=1.1,<1.2",
+    "titiler.core>=1.2,<1.3",
+    "titiler.mosaic>=1.2,<1.3",
+    "titiler.extensions>=1.2,<1.3",
     "cql2>=0.3.6",
     "pydantic>=2.4,<3.0",
     "pydantic-settings~=2.0",
+    "stac-pydantic>=3.5.0,<4",
 ]
 dynamic = ["version"]
 
