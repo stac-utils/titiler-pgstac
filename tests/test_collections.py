@@ -685,7 +685,7 @@ def test_collections_cql_filter(filter_expr, filter_lang, app):
         f"/collections/{collection_id}/point/-85.5,36.1624/assets",
         params={
             "filter": filter_expr,
-            "filter-lanq": filter_lang,
+            "filter-lang": filter_lang,
         },
     )
     assert response.status_code == 200
