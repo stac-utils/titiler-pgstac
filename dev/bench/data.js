@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1773676738220,
+  "lastUpdate": 1775146748790,
   "repoUrl": "https://github.com/stac-utils/titiler-pgstac",
   "entries": {
     "TiTiler-pgSTAC Benchmarks": [
@@ -9198,6 +9198,79 @@ window.BENCHMARK_DATA = {
             "unit": "iter/sec",
             "range": "stddev: 0.0003143273354094514",
             "extra": "mean: 29.164918448273134 msec\nrounds: 29"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "vincent.sarago@gmail.com",
+            "name": "Vincent Sarago",
+            "username": "vincentsarago"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "ee23d725ea194598df7cf2b376c1904c302a7e0c",
+          "message": "Merge pull request #266 from stac-utils/fix/pin-github-actions\n\nci: pin GitHub Actions to SHA digests (fix zizmor unpinned-uses)",
+          "timestamp": "2026-04-02T18:14:55+02:00",
+          "tree_id": "397c2bf3b72cddc46d35e9d07f1f5c7a1c3ca82c",
+          "url": "https://github.com/stac-utils/titiler-pgstac/commit/ee23d725ea194598df7cf2b376c1904c302a7e0c"
+        },
+        "date": 1775146747784,
+        "tool": "pytest",
+        "benches": [
+          {
+            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "value": 5.957133837429276,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0017767547358323338",
+            "extra": "mean: 167.86596160000613 msec\nrounds: 5"
+          },
+          {
+            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "value": 12.836130980915794,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0009622725452433112",
+            "extra": "mean: 77.90509472727857 msec\nrounds: 11"
+          },
+          {
+            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "value": 17.36245788722808,
+            "unit": "iter/sec",
+            "range": "stddev: 0.001522238290764253",
+            "extra": "mean: 57.595532066667 msec\nrounds: 15"
+          },
+          {
+            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "value": 27.3136140147692,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0013098729806888204",
+            "extra": "mean: 36.611778999998805 msec\nrounds: 23"
+          },
+          {
+            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "value": 37.19420643699737,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000715306066582475",
+            "extra": "mean: 26.885907666665315 msec\nrounds: 30"
+          },
+          {
+            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "value": 34.47480067337934,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0006607321405004341",
+            "extra": "mean: 29.006694178573664 msec\nrounds: 28"
+          },
+          {
+            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "value": 35.229328750361,
+            "unit": "iter/sec",
+            "range": "stddev: 0.00030209969685107154",
+            "extra": "mean: 28.385440071427784 msec\nrounds: 28"
           }
         ]
       }
