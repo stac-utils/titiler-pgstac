@@ -33,7 +33,7 @@ jobs:
 
       - name: Generate OpenAPI schema          
         run: |
-          uv run python -c'from titiler.pgstac.main import app; import json; print(json.dumps(app.openapi(), indent=4))' > docs/src/openapi.json
+          uv run --extra psycopg python -c'from titiler.pgstac.main import app; import json; print(json.dumps(app.openapi(), indent=4))' > docs/src/openapi.json
 
       - name: Configure Git user
         run: |
