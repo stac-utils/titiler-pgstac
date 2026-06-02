@@ -4,7 +4,7 @@ name: CI
 on:
   push:
     branches:
-    - main
+    - maint-2.x
     tags:
     - '*'
     paths:
