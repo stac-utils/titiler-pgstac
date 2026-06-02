@@ -31,6 +31,10 @@ jobs:
         run: |
           echo version=$(uv run python -c'import titiler.pgstac; print(titiler.pgstac.__version__)') >> $GITHUB_OUTPUT
 
+      - name: Generate OpenAPI schema          
+        run: |
+          uv run python -c'from titiler.pgstac.main import app; import json; print(json.dumps(app.openapi(), indent=4))' > docs/src/openapi.json
+
       - name: Configure Git user
         run: |
           git config user.name github-actions
