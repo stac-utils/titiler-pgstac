@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1784582857906,
+  "lastUpdate": 1784729138414,
   "repoUrl": "https://github.com/stac-utils/titiler-pgstac",
   "entries": {
     "TiTiler-pgSTAC Benchmarks": [
@@ -10220,6 +10220,79 @@ window.BENCHMARK_DATA = {
             "unit": "iter/sec",
             "range": "stddev: 0.0010688123713092678",
             "extra": "mean: 28.700818034480857 msec\nrounds: 29"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "vincent.sarago@gmail.com",
+            "name": "Vincent Sarago",
+            "username": "vincentsarago"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "781627222111964a240ff5baa4deb0278d315f33",
+          "message": "Merge pull request #289 from pantierra/fix/exclude-healthz-from-cache-control\n\nfix: exclude /healthz from default Cache-Control paths.",
+          "timestamp": "2026-07-22T10:01:10-04:00",
+          "tree_id": "c8e03022917f4443e610aa0f4ae3917e91225c52",
+          "url": "https://github.com/stac-utils/titiler-pgstac/commit/781627222111964a240ff5baa4deb0278d315f33"
+        },
+        "date": 1784729137552,
+        "tool": "pytest",
+        "benches": [
+          {
+            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "value": 5.681091802584952,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0028241123677563594",
+            "extra": "mean: 176.0225031999994 msec\nrounds: 5"
+          },
+          {
+            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "value": 12.38523617786348,
+            "unit": "iter/sec",
+            "range": "stddev: 0.002252951635575633",
+            "extra": "mean: 80.74129436363364 msec\nrounds: 11"
+          },
+          {
+            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "value": 16.136265104662158,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0042939127387405995",
+            "extra": "mean: 61.972209399997766 msec\nrounds: 15"
+          },
+          {
+            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "value": 27.473128094435047,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0019333493165233843",
+            "extra": "mean: 36.399204217395244 msec\nrounds: 23"
+          },
+          {
+            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "value": 39.14202791016292,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0002611420344934795",
+            "extra": "mean: 25.547986483867327 msec\nrounds: 31"
+          },
+          {
+            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "value": 35.93783853631304,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0010794212537477458",
+            "extra": "mean: 27.82582483333158 msec\nrounds: 30"
+          },
+          {
+            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "value": 36.331630998471546,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0007300572434252531",
+            "extra": "mean: 27.52422537931395 msec\nrounds: 29"
           }
         ]
       }
