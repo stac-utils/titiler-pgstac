@@ -5,6 +5,7 @@
 ### Added
 
 * Response compression via `starlette-cramjam` (image mediatypes excluded).
+* change: update titiler requirement to `>=2.0,<2.3`
 
 ### Fixed
 
