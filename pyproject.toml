@@ -64,6 +64,7 @@ dev = [
     "pytest",
     "pytest-cov",
     "pytest-asyncio",
+    "pytest-benchmark",
     "httpx",
     "pypgstac>=0.9.11,<0.10",
     "pytest-postgresql",
@@ -74,9 +75,6 @@ dev = [
     "jupyter",
     "matplotlib",
     "pyinstrument",
-]
-benchmark = [
-    "pytest-benchmark",
 ]
 docs = [
     "mkdocs>=1.4.3",

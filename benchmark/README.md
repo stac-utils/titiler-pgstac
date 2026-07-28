@@ -1,33 +1,17 @@
 
-### Start DB
+### Start application
+
 ```bash
-$ docker compose up database
+$ docker compose up titiler-uvicorn
 ```
 
 ### Add items/collections to the db
 
 ```bash
-$ pypgstac load collections benchmark/stac/collection.json --dsn postgresql://username:password@localhost:5439/postgis --method insert
-$ pypgstac load items benchmark/stac/items.json --dsn postgresql://username:password@localhost:5439/postgis --method insert
-```
+uv run pypgstac load collections benchmark/stac/collection.json --dsn postgresql://username:password@0.0.0.0:5439/postgis --method upsert
+uv run pypgstac load items benchmark/stac/items.json --dsn postgresql://username:password@0.0.0.0:5439/postgis --method upsert
 
-### Start API
-```bash
-# This should be done at the repo root level
-$ uvicorn titiler.pgstac.main:app --port 8081
-```
-
-## Get Mosaic ID
-
-```bash
-$ curl -X 'POST' 'http://127.0.0.1:8081/mosaic/register' \-H 'accept: application/json' \-H 'Content-Type: application/json' \
--d '{"collections":["world"]}' | jq
-
->>> {
-  "searchid": "a813b9d9afdb8ee44eb42ecdbe245e41",
-  "metadata": "http://127.0.0.1:8081/mosaic/a813b9d9afdb8ee44eb42ecdbe245e41/info",
-  "tiles": "http://127.0.0.1:8081/mosaic/a813b9d9afdb8ee44eb42ecdbe245e41/tilejson.json"
-}
+curl http://127.0.0.1:8083/collections/world/info | jq
 ```
 
 ### Create urls
@@ -41,70 +25,61 @@ $ python -m create_urls --maxzoom 6
 ```
 PROT=http
 HOST=localhost
-PORT=8081
-PATH=mosaic/a813b9d9afdb8ee44eb42ecdbe245e41/tiles/WebMercatorQuad/
+PORT=8083
+PATH=collections/world/tiles/WebMercatorQuad/
 $(PROT)://$(HOST):$(PORT)/$(PATH)0/0/0?assets=asset
 ...
-```
-
-### Environment Variable
-```
-# DB_MIN_CONN_SIZE=1
-# DB_MAX_CONN_SIZE=10
-# DB_MAX_QUERIES=10
-# DB_MAX_IDLE=10
-# WEB_CONCURRENCY=10
-```
+``` 
 
 ### Siege
 ```
 # 50 concurrents / repeat 10 times (500 tiles)
-$ siege --file benchmark/urls.txt -b -c 50 -r 10
+$ siege --file urls.txt -b -c 50 -r 10
 
-Transactions:                    500 hits
+Transactions:                 500    hits
 Availability:                 100.00 %
-Elapsed time:                  21.34 secs
-Data transferred:               6.13 MB
-Response time:                  1.88 secs
-Transaction rate:              23.43 trans/sec
-Throughput:                     0.29 MB/sec
-Concurrency:                   44.10
-Successful transactions:         500
-Failed transactions:               0
-Longest transaction:            3.84
-Shortest transaction:           0.29
+Elapsed time:                   6.39 secs
+Data transferred:               5.40 MB
+Response time:                534.70 ms
+Transaction rate:              78.25 trans/sec
+Throughput:                     0.84 MB/sec
+Concurrency:                   41.84
+Successful transactions:      500
+Failed transactions:            0
+Longest transaction:         2220.00 ms
+Shortest transaction:          50.00 ms
 
 
 # 10 concurrents / repeat 100 times (1000 tiles)
-$ siege --file benchmark/urls.txt -b -c 10 -r 100
+$ siege --file urls.txt -b -c 10 -r 100
 
-Transactions:                   1000 hits
+Transactions:                1000    hits
 Availability:                 100.00 %
-Elapsed time:                  65.78 secs
-Data transferred:              11.61 MB
-Response time:                  0.43 secs
-Transaction rate:              15.20 trans/sec
-Throughput:                     0.18 MB/sec
-Concurrency:                    6.55
-Successful transactions:        1000
-Failed transactions:               0
-Longest transaction:            1.47
-Shortest transaction:           0.07
+Elapsed time:                  17.31 secs
+Data transferred:              11.45 MB
+Response time:                127.95 ms
+Transaction rate:              57.77 trans/sec
+Throughput:                     0.66 MB/sec
+Concurrency:                    7.39
+Successful transactions:     1000
+Failed transactions:            0
+Longest transaction:          520.00 ms
+Shortest transaction:          30.00 ms
 
 
 # 200 concurrents / repeat 1 time (200 tiles)
-$ siege --file benchmark/urls.txt -b -c 200 -r 1
+$ siege --file urls.txt -b -c 200 -r 1
 
-Transactions:                    194 hits
-Availability:                  97.00 %
-Elapsed time:                   8.43 secs
-Data transferred:               2.28 MB
-Response time:                  4.81 secs
-Transaction rate:              23.01 trans/sec
-Throughput:                     0.27 MB/sec
-Concurrency:                  110.66
-Successful transactions:         194
-Failed transactions:               6
-Longest transaction:            8.43
-Shortest transaction:           0.52
+Transactions:                 200    hits
+Availability:                 100.00 %
+Elapsed time:                   2.85 secs
+Data transferred:               2.08 MB
+Response time:               1673.80 ms
+Transaction rate:              70.18 trans/sec
+Throughput:                     0.73 MB/sec
+Concurrency:                  117.46
+Successful transactions:      200
+Failed transactions:            0
+Longest transaction:         2840.00 ms
+Shortest transaction:         470.00 ms
 ```

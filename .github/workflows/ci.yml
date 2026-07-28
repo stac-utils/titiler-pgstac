@@ -76,7 +76,6 @@ jobs:
      
       - name: Install dependencies
         run: |
-          uv sync --frozen --group benchmark
           uv pip install pypgstac==${{ env.PGSTAC_VERSION }}
 
       - name: Launch services
@@ -99,7 +98,7 @@ jobs:
 
       - name: Run Benchmark
         run: |
-          uv run pytest .github/workflows/tests/benchmarks.py --benchmark-only --benchmark-columns 'min, max, mean, median' --benchmark-json output.json
+          uv run pytest ./benchmark/benchmarks.py --benchmark-only --benchmark-columns 'min, max, mean, median' --benchmark-json output.json
 
       - name: Store and benchmark result
         uses: benchmark-action/github-action-benchmark@52576c92bccf6ac60c8223ec7eb2565637cae9ba # v1
