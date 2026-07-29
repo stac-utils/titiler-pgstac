@@ -47,10 +47,11 @@ services:
       # - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       # - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
     volumes:
-      - ./benchmark:/tmp/benchmark
-    working_dir: /tmp
+      - ./benchmark/data:/data
+    working_dir: /data
     depends_on:
-      - database
+      database:
+        condition: service_healthy
 
   tiler-uvicorn:
     container_name: tiler-pgstac-uvicorn
@@ -60,8 +61,8 @@ services:
       - "8083:8083"
     command: ["uvicorn", "titiler.pgstac.main:app", "--host", "0.0.0.0", "--port", "8083", "--workers", "1"]
     volumes:
-      - ./benchmark:/tmp/benchmark
-    working_dir: /tmp
+      - ./benchmark/data:/data
+    working_dir: /data
 
   nginx:
     image: nginx
@@ -92,6 +93,12 @@ services:
     command: postgres -N 500
     volumes:
       - ./.pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-d", "postgis"]
+      interval: 30s
+      timeout: 60s
+      retries: 5
+      start_period: 80s
 
 networks:
   default:
