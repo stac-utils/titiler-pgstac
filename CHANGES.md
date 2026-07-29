@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 3.0.1 (2026-07-29)
+
 * add: response compression via `starlette-cramjam` (image mediatypes excluded).
 * fix: exclude `/healthz` from default `Cache-Control` middleware paths.
 * fix: set upper limit for fastapi to avoid breaking change in openapi tools 
