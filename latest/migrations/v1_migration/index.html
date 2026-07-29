@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../img/favicon.ico">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -31,7 +31,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
       
       
 
@@ -1808,7 +1808,9 @@ document aims to help with migrating your code and client application to use <co
 <h3 id="mosaicsearchid-searchessearch_id"><code>/mosaic/{searchid}</code> -&gt; <code>/searches/{search_id}</code><a class="headerlink" href="#mosaicsearchid-searchessearch_id" title="Permanent link">&para;</a></h3>
 <p>We chose to rename the prefix of the PgSTAC Searches endpoints from <code>/mosaic</code> to <code>/searches</code> to match the collections and items endpoint prefixes.</p>
 <p>Note: We also renamed <code>searchid</code> to <code>search_id</code> but this should be seamless for users.</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># before</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">httpx2</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">httpx</span>
+
+<span class="c1"># before</span>
 <span class="n">resp</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/mosaic/{{ searchid }}/info&quot;</span><span class="p">)</span>
 
 <span class="c1"># now</span>
@@ -1866,7 +1868,9 @@ easily revert this change in your own application.</p>
 </div>
 <h3 id="searchid-id"><code>searchid</code> -&gt; <code>id</code><a class="headerlink" href="#searchid-id" title="Permanent link">&para;</a></h3>
 <p>In <code>titiler.pgstac.model.RegisterResponse</code>, model used in <code>/register</code> endpoint, we renamed <code>searchid</code> by <code>id</code>.</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># before</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">httpx2</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">httpx</span>
+
+<span class="c1"># before</span>
 <span class="n">resp</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/mosaic/register&quot;</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;collections&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;my-collection&quot;</span><span class="p">],</span> <span class="s2">&quot;filter-lang&quot;</span><span class="p">:</span> <span class="s2">&quot;cql-json&quot;</span><span class="p">})</span>
 <span class="k">assert</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">&quot;searchid&quot;</span><span class="p">]</span>
 
@@ -2040,7 +2044,7 @@ easily revert this change in your own application.</p>
       <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["content.code.annotate", "content.code.copy", "navigation.indexes", "navigation.instant", "navigation.tracking", "search.suggest", "search.share"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>

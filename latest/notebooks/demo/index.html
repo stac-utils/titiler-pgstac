@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../img/favicon.ico">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -31,7 +31,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
       
       
 
@@ -2475,7 +2475,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>In order to run this demo you'll need to have a PgSTAC database and the titiler.pgstac application running. The easiest way to launch them is to use the repo's docker-compose.yml</p>
 <pre><code>docker compose up tiler
 </code></pre>
-<h3 id="python-requirements">Python requirements<a class="anchor-link" href="#python-requirements">¶</a></h3><pre><code>pip install httpx folium pypgstac psycopg psycopg-pool geojson-pydantic
+<h3 id="python-requirements">Python requirements<a class="anchor-link" href="#python-requirements">¶</a></h3><pre><code>pip install httpx2 folium pypgstac psycopg psycopg-pool geojson-pydantic
 </code></pre>
 <h3 id="populate-the-pgstac-db-with-data">Populate the PgSTAC db with data<a class="anchor-link" href="#populate-the-pgstac-db-with-data">¶</a></h3><pre><code>$ pypgstac load collections tests/fixtures/noaa-emergency-response.json --dsn postgresql://username:password@localhost:5439/postgis --method insert 
 $ pypgstac load items tests/fixtures/noaa-eri-nashville2020.json --dsn postgresql://username:password@localhost:5439/postgis --method insert
@@ -2483,13 +2483,13 @@ $ pypgstac load items tests/fixtures/noaa-eri-nashville2020.json --dsn postgresq
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [19]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-1">
@@ -2503,7 +2503,8 @@ $ pypgstac load items tests/fixtures/noaa-eri-nashville2020.json --dsn postgresq
 </clipboard-copy>
 </div>
 <div class="highlight-ipynb hl-python"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">httpx</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">httpx2</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">httpx</span>
+
 <span class="kn">from</span><span class="w"> </span><span class="nn">folium</span><span class="w"> </span><span class="kn">import</span> <span class="n">Map</span><span class="p">,</span> <span class="n">TileLayer</span><span class="p">,</span> <span class="n">GeoJson</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">geojson_pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Feature</span><span class="p">,</span> <span class="n">Polygon</span>
@@ -2513,7 +2514,8 @@ $ pypgstac load items tests/fixtures/noaa-eri-nashville2020.json --dsn postgresq
 <span class="nb">print</span><span class="p">(</span><span class="n">httpx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">endpoint</span><span class="si">}</span><span class="s2">/healthz"</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
 </pre></div>
 <div class="clipboard-copy-txt" id="cell-1">import json
-import httpx
+import httpx2 as httpx
+
 from folium import Map, TileLayer, GeoJson
 
 from geojson_pydantic import Feature, Polygon
@@ -2525,27 +2527,14 @@ print(httpx.get(f"{endpoint}/healthz").json())</div>
 </div>
 </div>
 </div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>{'database_online': True, 'versions': {'titiler': '2.0.2', 'titiler.pgstac': '2.1.0', 'rasterio': '1.5.0', 'gdal': '3.12.1', 'proj': '9.7.1', 'geos': '3.14.1'}}
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [20]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-2">
@@ -2613,149 +2602,6 @@ m</div>
 </div>
 </div>
 </div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[20]:</div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
-<div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -&gt; Trust Notebook</span><iframe allowfullscreen="" mozallowfullscreen="" srcdoc='&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head&gt;
-    
-    &lt;meta http-equiv="content-type" content="text/html; charset=UTF-8" /&gt;
-    &lt;script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"&gt;&lt;/script&gt;
-    &lt;script src="https://code.jquery.com/jquery-3.7.1.min.js"&gt;&lt;/script&gt;
-    &lt;script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"&gt;&lt;/script&gt;
-    &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"&gt;&lt;/script&gt;
-    &lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/&gt;
-    &lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/&gt;
-    &lt;link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/&gt;
-    &lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/&gt;
-    &lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/&gt;
-    &lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/&gt;
-    
-            &lt;meta name="viewport" content="width=device-width,
-                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" /&gt;
-            &lt;style&gt;
-                #map_dd8cf7083d6ce574ee54348f3a628a17 {
-                    position: relative;
-                    width: 100.0%;
-                    height: 100.0%;
-                    left: 0.0%;
-                    top: 0.0%;
-                }
-                .leaflet-container { font-size: 1rem; }
-            &lt;/style&gt;
-
-            &lt;style&gt;html, body {
-                width: 100%;
-                height: 100%;
-                margin: 0;
-                padding: 0;
-            }
-            &lt;/style&gt;
-
-            &lt;style&gt;#map {
-                position:absolute;
-                top:0;
-                bottom:0;
-                right:0;
-                left:0;
-                }
-            &lt;/style&gt;
-
-            &lt;script&gt;
-                L_NO_TOUCH = false;
-                L_DISABLE_3D = false;
-            &lt;/script&gt;
-
-        
-&lt;/head&gt;
-&lt;body&gt;
-    
-    
-            &lt;div class="folium-map" id="map_dd8cf7083d6ce574ee54348f3a628a17" &gt;&lt;/div&gt;
-        
-&lt;/body&gt;
-&lt;script&gt;
-    
-    
-            var map_dd8cf7083d6ce574ee54348f3a628a17 = L.map(
-                "map_dd8cf7083d6ce574ee54348f3a628a17",
-                {
-                    center: [36.162499999999994, -86.225],
-                    crs: L.CRS.EPSG3857,
-                    ...{
-  "zoom": 9,
-  "zoomControl": true,
-  "preferCanvas": false,
-}
-
-                }
-            );
-
-            
-
-        
-    
-            var tile_layer_284ac1c69250f127f8906484ad28d5b0 = L.tileLayer(
-                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-                {
-  "minZoom": 0,
-  "maxZoom": 19,
-  "maxNativeZoom": 19,
-  "noWrap": false,
-  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
-  "subdomains": "abc",
-  "detectRetina": false,
-  "tms": false,
-  "opacity": 1,
-}
-
-            );
-        
-    
-            tile_layer_284ac1c69250f127f8906484ad28d5b0.addTo(map_dd8cf7083d6ce574ee54348f3a628a17);
-        
-    
-        function geo_json_42216b800555429e19d1984925856ee9_styler(feature) {
-            switch(feature.id) {
-                default:
-                    return {"dashArray": "1", "fillOpacity": 0, "opacity": 1, "weight": 3};
-            }
-        }
-
-        function geo_json_42216b800555429e19d1984925856ee9_onEachFeature(feature, layer) {
-
-            layer.on({
-            });
-        };
-        var geo_json_42216b800555429e19d1984925856ee9 = L.geoJson(null, {
-                onEachFeature: geo_json_42216b800555429e19d1984925856ee9_onEachFeature,
-            
-                style: geo_json_42216b800555429e19d1984925856ee9_styler,
-            ...{
-}
-        });
-
-        function geo_json_42216b800555429e19d1984925856ee9_add (data) {
-            geo_json_42216b800555429e19d1984925856ee9
-                .addData(data);
-        }
-            geo_json_42216b800555429e19d1984925856ee9_add({"features": [{"geometry": {"coordinates": [[[-87.0251, 36.0999], [-85.4249, 36.0999], [-85.4249, 36.2251], [-87.0251, 36.2251], [-87.0251, 36.0999]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
-
-        
-    
-            geo_json_42216b800555429e19d1984925856ee9.addTo(map_dd8cf7083d6ce574ee54348f3a628a17);
-        
-&lt;/script&gt;
-&lt;/html&gt;' style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" webkitallowfullscreen=""></iframe></div></div>
-</div>
-</div>
-</div>
-</div>
 </div>
 </div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
@@ -2768,13 +2614,13 @@ m</div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [21]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-3">
@@ -2822,19 +2668,6 @@ searchid = response["id"]</div>
 </div>
 </div>
 </div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>{'id': 'ea0c57eac8d1ad974d89ee406847d9b6', 'links': [{'href': 'http://127.0.0.1:8081/searches/ea0c57eac8d1ad974d89ee406847d9b6/info', 'rel': 'metadata', 'title': 'Mosaic metadata'}, {'href': 'http://127.0.0.1:8081/searches/ea0c57eac8d1ad974d89ee406847d9b6/{tileMatrixSetId}/tilejson.json', 'rel': 'tilejson', 'templated': True, 'title': 'Link for TileJSON (Template URL)'}, {'href': 'http://127.0.0.1:8081/searches/ea0c57eac8d1ad974d89ee406847d9b6/{tileMatrixSetId}/map.html', 'rel': 'map', 'templated': True, 'title': 'Link for Map viewer (Template URL)'}, {'href': 'http://127.0.0.1:8081/searches/ea0c57eac8d1ad974d89ee406847d9b6/WMTSCapabilities.xml', 'rel': 'wmts', 'title': 'WMTS Capabilities link.'}]}
-</pre>
-</div>
-</div>
-</div>
-</div>
 </div>
 </div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
@@ -2847,13 +2680,13 @@ searchid = response["id"]</div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [22]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-4">
@@ -2891,60 +2724,6 @@ print(
 </div>
 </div>
 </div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>[
-    [
-        "cd576c2d50cdd09e454c24010bb79028",
-        "Mosaic for 'noaa-emergency-response' Collection"
-    ],
-    [
-        "43a44a482f99dfe682a2b7bd3e6aa604",
-        "Mosaic for 'world' Collection"
-    ],
-    [
-        "1b42336515fdeecabc6b7c1f7a6218c1",
-        "Mosaic for 'MAXAR_Marshall_Fire_21_Update' Collection"
-    ],
-    [
-        "1409af735738d4502e27e45a9dc5a280",
-        "Mosaic for 'MAXAR_kentucky_flooding_7_29_2022' Collection"
-    ],
-    [
-        "7f18b96b2e31b68972ec1e3b65d43d45",
-        null
-    ],
-    [
-        "58b83e95cf5dbf7305dd1cc7917eccb8",
-        "Mosaic for 'world' Collection"
-    ],
-    [
-        "862cc7dbaf98dc90c6135cb0b7ea1767",
-        null
-    ],
-    [
-        "6bf03e6b8cbf8b68443cf2123e901f44",
-        null
-    ],
-    [
-        "bb877b5a9882ee9c0fe7a6223321e354",
-        "Mosaic for 'MAXAR_Morocco_Earthquake_Sept_2023' Collection"
-    ],
-    [
-        "7176438ae4ef4ec7c456dba5259d6376",
-        "Mosaic for 'MAXAR_Hurricane_Idalia_Florida_Aug23' Collection"
-    ]
-]
-</pre>
-</div>
-</div>
-</div>
-</div>
 </div>
 </div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
@@ -2957,13 +2736,13 @@ print(
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [23]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-5">
@@ -2985,64 +2764,6 @@ print(json.dumps(info_response, indent=4))</div>
 </div>
 </div>
 </div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>{
-    "search": {
-        "hash": "ea0c57eac8d1ad974d89ee406847d9b6",
-        "search": {
-            "bbox": [
-                -87.0251,
-                36.0999,
-                -85.4249,
-                36.2251
-            ],
-            "collections": [
-                "noaa-emergency-response"
-            ],
-            "filter-lang": "cql2-json"
-        },
-        "lastused": "2026-05-12T09:34:34.497906Z",
-        "usecount": 2,
-        "metadata": {
-            "type": "mosaic"
-        }
-    },
-    "links": [
-        {
-            "href": "http://127.0.0.1:8081/searches/ea0c57eac8d1ad974d89ee406847d9b6/info",
-            "rel": "self",
-            "title": "Mosaic metadata"
-        },
-        {
-            "href": "http://127.0.0.1:8081/searches/ea0c57eac8d1ad974d89ee406847d9b6/{tileMatrixSetId}/tilejson.json",
-            "rel": "tilejson",
-            "templated": true,
-            "title": "TileJSON link (Template URL)."
-        },
-        {
-            "href": "http://127.0.0.1:8081/searches/ea0c57eac8d1ad974d89ee406847d9b6/{tileMatrixSetId}/map.html",
-            "rel": "map",
-            "templated": true,
-            "title": "Map viewer link (Template URL)."
-        },
-        {
-            "href": "http://127.0.0.1:8081/searches/ea0c57eac8d1ad974d89ee406847d9b6/WMTSCapabilities.xml",
-            "rel": "wmts",
-            "title": "WMTS Capabilities link."
-        }
-    ]
-}
-</pre>
-</div>
-</div>
-</div>
-</div>
 </div>
 </div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
@@ -3055,13 +2776,13 @@ print(json.dumps(info_response, indent=4))</div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [24]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-6">
@@ -3087,39 +2808,6 @@ print(json.dumps(tj_response, indent=4))</div>
 </div>
 </div>
 </div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>{
-    "tilejson": "3.0.0",
-    "version": "1.0.0",
-    "scheme": "xyz",
-    "tiles": [
-        "http://127.0.0.1:8081/searches/ea0c57eac8d1ad974d89ee406847d9b6/tiles/WebMercatorQuad/{z}/{x}/{y}?assets=cog&amp;tilesize=256"
-    ],
-    "minzoom": 14,
-    "maxzoom": 18,
-    "bounds": [
-        -87.0251,
-        36.0999,
-        -85.4249,
-        36.2251
-    ],
-    "center": [
-        -86.225,
-        36.162499999999994,
-        14
-    ]
-}
-</pre>
-</div>
-</div>
-</div>
-</div>
 </div>
 </div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
@@ -3132,13 +2820,13 @@ print(json.dumps(tj_response, indent=4))</div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [29]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-7">
@@ -3204,169 +2892,6 @@ m</div>
 </div>
 </div>
 </div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[29]:</div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
-<div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -&gt; Trust Notebook</span><iframe allowfullscreen="" mozallowfullscreen="" srcdoc='&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head&gt;
-    
-    &lt;meta http-equiv="content-type" content="text/html; charset=UTF-8" /&gt;
-    &lt;script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"&gt;&lt;/script&gt;
-    &lt;script src="https://code.jquery.com/jquery-3.7.1.min.js"&gt;&lt;/script&gt;
-    &lt;script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"&gt;&lt;/script&gt;
-    &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"&gt;&lt;/script&gt;
-    &lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/&gt;
-    &lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/&gt;
-    &lt;link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/&gt;
-    &lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/&gt;
-    &lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/&gt;
-    &lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/&gt;
-    
-            &lt;meta name="viewport" content="width=device-width,
-                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" /&gt;
-            &lt;style&gt;
-                #map_5ce19edc930780e2dc7cf0f2e3f96fee {
-                    position: relative;
-                    width: 100.0%;
-                    height: 100.0%;
-                    left: 0.0%;
-                    top: 0.0%;
-                }
-                .leaflet-container { font-size: 1rem; }
-            &lt;/style&gt;
-
-            &lt;style&gt;html, body {
-                width: 100%;
-                height: 100%;
-                margin: 0;
-                padding: 0;
-            }
-            &lt;/style&gt;
-
-            &lt;style&gt;#map {
-                position:absolute;
-                top:0;
-                bottom:0;
-                right:0;
-                left:0;
-                }
-            &lt;/style&gt;
-
-            &lt;script&gt;
-                L_NO_TOUCH = false;
-                L_DISABLE_3D = false;
-            &lt;/script&gt;
-
-        
-&lt;/head&gt;
-&lt;body&gt;
-    
-    
-            &lt;div class="folium-map" id="map_5ce19edc930780e2dc7cf0f2e3f96fee" &gt;&lt;/div&gt;
-        
-&lt;/body&gt;
-&lt;script&gt;
-    
-    
-            var map_5ce19edc930780e2dc7cf0f2e3f96fee = L.map(
-                "map_5ce19edc930780e2dc7cf0f2e3f96fee",
-                {
-                    center: [36.162499999999994, -86.225],
-                    crs: L.CRS.EPSG3857,
-                    ...{
-  "zoom": 14,
-  "zoomControl": true,
-  "preferCanvas": false,
-}
-
-                }
-            );
-
-            
-
-        
-    
-            var tile_layer_b81014b09ccb97cba31e2d68aa72d848 = L.tileLayer(
-                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-                {
-  "minZoom": 0,
-  "maxZoom": 19,
-  "maxNativeZoom": 19,
-  "noWrap": false,
-  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
-  "subdomains": "abc",
-  "detectRetina": false,
-  "tms": false,
-  "opacity": 1,
-}
-
-            );
-        
-    
-            tile_layer_b81014b09ccb97cba31e2d68aa72d848.addTo(map_5ce19edc930780e2dc7cf0f2e3f96fee);
-        
-    
-        function geo_json_a9428f260240cacdbc42526962dbf985_styler(feature) {
-            switch(feature.id) {
-                default:
-                    return {"dashArray": "1", "fillOpacity": 0, "opacity": 1, "weight": 1};
-            }
-        }
-
-        function geo_json_a9428f260240cacdbc42526962dbf985_onEachFeature(feature, layer) {
-
-            layer.on({
-            });
-        };
-        var geo_json_a9428f260240cacdbc42526962dbf985 = L.geoJson(null, {
-                onEachFeature: geo_json_a9428f260240cacdbc42526962dbf985_onEachFeature,
-            
-                style: geo_json_a9428f260240cacdbc42526962dbf985_styler,
-            ...{
-}
-        });
-
-        function geo_json_a9428f260240cacdbc42526962dbf985_add (data) {
-            geo_json_a9428f260240cacdbc42526962dbf985
-                .addData(data);
-        }
-            geo_json_a9428f260240cacdbc42526962dbf985_add({"features": [{"geometry": {"coordinates": [[[-87.0251, 36.0999], [-85.4249, 36.0999], [-85.4249, 36.2251], [-87.0251, 36.2251], [-87.0251, 36.0999]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
-
-        
-    
-            geo_json_a9428f260240cacdbc42526962dbf985.addTo(map_5ce19edc930780e2dc7cf0f2e3f96fee);
-        
-    
-            var tile_layer_0897646a7e5e74456458bfdc400885b3 = L.tileLayer(
-                "http://127.0.0.1:8081/searches/7f18b96b2e31b68972ec1e3b65d43d45/tiles/WebMercatorQuad/{z}/{x}/{y}?assets=cog\u0026tilesize=512",
-                {
-  "minZoom": 14,
-  "maxZoom": 18,
-  "maxNativeZoom": 18,
-  "noWrap": false,
-  "attribution": "Mosaic",
-  "subdomains": "abc",
-  "detectRetina": false,
-  "tms": false,
-  "opacity": 1,
-}
-
-            );
-        
-    
-            tile_layer_0897646a7e5e74456458bfdc400885b3.addTo(map_5ce19edc930780e2dc7cf0f2e3f96fee);
-        
-&lt;/script&gt;
-&lt;/html&gt;' style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" webkitallowfullscreen=""></iframe></div></div>
-</div>
-</div>
-</div>
-</div>
 </div>
 </div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
@@ -3379,13 +2904,13 @@ m</div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [26]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-8">
@@ -3471,65 +2996,14 @@ searchid = response["id"]</div>
 </div>
 </div>
 </div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>{
-    "id": "7f18b96b2e31b68972ec1e3b65d43d45",
-    "links": [
-        {
-            "href": "http://127.0.0.1:8081/searches/7f18b96b2e31b68972ec1e3b65d43d45/info",
-            "rel": "metadata",
-            "title": "Mosaic metadata"
-        },
-        {
-            "href": "http://127.0.0.1:8081/searches/7f18b96b2e31b68972ec1e3b65d43d45/{tileMatrixSetId}/tilejson.json",
-            "rel": "tilejson",
-            "templated": true,
-            "title": "Link for TileJSON (Template URL)"
-        },
-        {
-            "href": "http://127.0.0.1:8081/searches/7f18b96b2e31b68972ec1e3b65d43d45/{tileMatrixSetId}/map.html",
-            "rel": "map",
-            "templated": true,
-            "title": "Link for Map viewer (Template URL)"
-        },
-        {
-            "href": "http://127.0.0.1:8081/searches/7f18b96b2e31b68972ec1e3b65d43d45/WMTSCapabilities.xml",
-            "rel": "wmts",
-            "title": "WMTS Capabilities link."
-        },
-        {
-            "href": "http://127.0.0.1:8081/searches/7f18b96b2e31b68972ec1e3b65d43d45/{tileMatrixSetId}/tilejson.json?assets=cog%7Cbidx%3D1",
-            "rel": "tilejson",
-            "templated": true,
-            "title": "TileJSON link for `b1` layer (Template URL)."
-        },
-        {
-            "href": "http://127.0.0.1:8081/searches/7f18b96b2e31b68972ec1e3b65d43d45/{tileMatrixSetId}/tilejson.json?assets=cog%7Cbidx%3D1%2C2%2C3",
-            "rel": "tilejson",
-            "templated": true,
-            "title": "TileJSON link for `true_color` layer (Template URL)."
-        }
-    ]
-}
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [30]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-9">
@@ -3555,47 +3029,14 @@ print(json.dumps(tj_response, indent=4))</div>
 </div>
 </div>
 </div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>{
-    "tilejson": "3.0.0",
-    "version": "1.0.0",
-    "scheme": "xyz",
-    "tiles": [
-        "http://127.0.0.1:8081/searches/7f18b96b2e31b68972ec1e3b65d43d45/tiles/WebMercatorQuad/{z}/{x}/{y}?assets=cog&amp;tilesize=256"
-    ],
-    "minzoom": 14,
-    "maxzoom": 18,
-    "bounds": [
-        -87.0251,
-        36.0999,
-        -85.4249,
-        36.2251
-    ],
-    "center": [
-        -86.225,
-        36.162499999999994,
-        14
-    ]
-}
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [31]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-10">
@@ -3657,169 +3098,6 @@ aod_layer = TileLayer(
 )
 aod_layer.add_to(m)
 m</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[31]:</div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
-<div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -&gt; Trust Notebook</span><iframe allowfullscreen="" mozallowfullscreen="" srcdoc='&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head&gt;
-    
-    &lt;meta http-equiv="content-type" content="text/html; charset=UTF-8" /&gt;
-    &lt;script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"&gt;&lt;/script&gt;
-    &lt;script src="https://code.jquery.com/jquery-3.7.1.min.js"&gt;&lt;/script&gt;
-    &lt;script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"&gt;&lt;/script&gt;
-    &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"&gt;&lt;/script&gt;
-    &lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/&gt;
-    &lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/&gt;
-    &lt;link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/&gt;
-    &lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/&gt;
-    &lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/&gt;
-    &lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/&gt;
-    
-            &lt;meta name="viewport" content="width=device-width,
-                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" /&gt;
-            &lt;style&gt;
-                #map_03ac95604d82f634f0ab9c592c9e3ef0 {
-                    position: relative;
-                    width: 100.0%;
-                    height: 100.0%;
-                    left: 0.0%;
-                    top: 0.0%;
-                }
-                .leaflet-container { font-size: 1rem; }
-            &lt;/style&gt;
-
-            &lt;style&gt;html, body {
-                width: 100%;
-                height: 100%;
-                margin: 0;
-                padding: 0;
-            }
-            &lt;/style&gt;
-
-            &lt;style&gt;#map {
-                position:absolute;
-                top:0;
-                bottom:0;
-                right:0;
-                left:0;
-                }
-            &lt;/style&gt;
-
-            &lt;script&gt;
-                L_NO_TOUCH = false;
-                L_DISABLE_3D = false;
-            &lt;/script&gt;
-
-        
-&lt;/head&gt;
-&lt;body&gt;
-    
-    
-            &lt;div class="folium-map" id="map_03ac95604d82f634f0ab9c592c9e3ef0" &gt;&lt;/div&gt;
-        
-&lt;/body&gt;
-&lt;script&gt;
-    
-    
-            var map_03ac95604d82f634f0ab9c592c9e3ef0 = L.map(
-                "map_03ac95604d82f634f0ab9c592c9e3ef0",
-                {
-                    center: [36.162499999999994, -86.225],
-                    crs: L.CRS.EPSG3857,
-                    ...{
-  "zoom": 14,
-  "zoomControl": true,
-  "preferCanvas": false,
-}
-
-                }
-            );
-
-            
-
-        
-    
-            var tile_layer_0070d16a5ba3bd369152142d68108b81 = L.tileLayer(
-                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-                {
-  "minZoom": 0,
-  "maxZoom": 19,
-  "maxNativeZoom": 19,
-  "noWrap": false,
-  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
-  "subdomains": "abc",
-  "detectRetina": false,
-  "tms": false,
-  "opacity": 1,
-}
-
-            );
-        
-    
-            tile_layer_0070d16a5ba3bd369152142d68108b81.addTo(map_03ac95604d82f634f0ab9c592c9e3ef0);
-        
-    
-        function geo_json_a2761cc84ad729f218a7a9a1df5b54b5_styler(feature) {
-            switch(feature.id) {
-                default:
-                    return {"dashArray": "1", "fillOpacity": 0, "opacity": 1, "weight": 1};
-            }
-        }
-
-        function geo_json_a2761cc84ad729f218a7a9a1df5b54b5_onEachFeature(feature, layer) {
-
-            layer.on({
-            });
-        };
-        var geo_json_a2761cc84ad729f218a7a9a1df5b54b5 = L.geoJson(null, {
-                onEachFeature: geo_json_a2761cc84ad729f218a7a9a1df5b54b5_onEachFeature,
-            
-                style: geo_json_a2761cc84ad729f218a7a9a1df5b54b5_styler,
-            ...{
-}
-        });
-
-        function geo_json_a2761cc84ad729f218a7a9a1df5b54b5_add (data) {
-            geo_json_a2761cc84ad729f218a7a9a1df5b54b5
-                .addData(data);
-        }
-            geo_json_a2761cc84ad729f218a7a9a1df5b54b5_add({"features": [{"geometry": {"coordinates": [[[-87.0251, 36.0999], [-85.4249, 36.0999], [-85.4249, 36.2251], [-87.0251, 36.2251], [-87.0251, 36.0999]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
-
-        
-    
-            geo_json_a2761cc84ad729f218a7a9a1df5b54b5.addTo(map_03ac95604d82f634f0ab9c592c9e3ef0);
-        
-    
-            var tile_layer_b5a64fe09ee7c2fa3e5ebdb6beb68d83 = L.tileLayer(
-                "http://127.0.0.1:8081/searches/7f18b96b2e31b68972ec1e3b65d43d45/tiles/WebMercatorQuad/{z}/{x}/{y}?assets=cog\u0026tilesize=256",
-                {
-  "minZoom": 14,
-  "maxZoom": 18,
-  "maxNativeZoom": 18,
-  "noWrap": false,
-  "attribution": "Mosaic",
-  "subdomains": "abc",
-  "detectRetina": false,
-  "tms": false,
-  "opacity": 1,
-}
-
-            );
-        
-    
-            tile_layer_b5a64fe09ee7c2fa3e5ebdb6beb68d83.addTo(map_03ac95604d82f634f0ab9c592c9e3ef0);
-        
-&lt;/script&gt;
-&lt;/html&gt;' style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" webkitallowfullscreen=""></iframe></div></div>
 </div>
 </div>
 </div>
@@ -3928,7 +3206,7 @@ m</div>
       <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["content.code.annotate", "content.code.copy", "navigation.indexes", "navigation.instant", "navigation.tracking", "search.suggest", "search.share"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>
