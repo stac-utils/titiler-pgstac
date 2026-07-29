@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 3.0.2 (2026-07-29)
+
+* fix: exclude search's list endpoints from default `Cache-Control` middleware paths.
+
 ## 3.0.1 (2026-07-29)
 
 * add: response compression via `starlette-cramjam` (image mediatypes excluded).

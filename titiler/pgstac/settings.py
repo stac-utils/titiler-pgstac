@@ -21,10 +21,7 @@ class ApiSettings(BaseSettings):
     cors_origins: str = "*"
     cachecontrol: str = "public, max-age=3600"
     cachecontrol_exclude_paths: set[str] = Field(
-        default={
-            "/healthz",
-            ".+/list",
-        }
+        default={r"/healthz", r"/searches(/)?$", r"/searches/list$"}
     )
     root_path: str = ""
     debug: bool = False
