@@ -2,7 +2,7 @@
 
 import os
 
-import httpx
+import httpx2 as httpx
 import pytest
 
 host = os.environ.get("HOST", "0.0.0.0")

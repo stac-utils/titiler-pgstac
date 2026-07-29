@@ -167,6 +167,8 @@ search = {
 The `/collections/{collection_id}` endpoints now support `filter` and `filter-lang` parameters for more advanced querying.
 
 ```python
+import httpx2 as httpx
+
 # New in 2.0 - Filter support for collections
 response = httpx.get(
     "/collections/my-collection/tiles/0/0/0",
@@ -189,6 +191,8 @@ response = httpx.get(
 The `/searches/list` endpoint is deprecated and replaced with `/searches/`.
 
 ```python
+import httpx2 as httpx
+
 # Before (1.9)
 response = httpx.get("/searches/list")
 

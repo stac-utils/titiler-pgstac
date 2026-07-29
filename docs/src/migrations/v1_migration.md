@@ -49,6 +49,7 @@ We chose to rename the prefix of the PgSTAC Searches endpoints from `/mosaic` to
 Note: We also renamed `searchid` to `search_id` but this should be seamless for users.
 
 ```python
+import httpx2 as httpx
 
 # before
 resp = httpx.get("/mosaic/{{ searchid }}/info")
@@ -114,6 +115,8 @@ resp = httpx.get("/searches/{{ search_id }}/info")
 In `titiler.pgstac.model.RegisterResponse`, model used in `/register` endpoint, we renamed `searchid` by `id`.
 
 ```python
+import httpx2 as httpx
+
 # before
 resp = httpx.post("/mosaic/register", body={"collections": ["my-collection"], "filter-lang": "cql-json"})
 assert resp.json()["searchid"]

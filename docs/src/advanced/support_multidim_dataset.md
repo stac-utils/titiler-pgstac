@@ -31,7 +31,7 @@ class PgSTACReader(reader.PgSTACReader):
 
     Example:
 
-        import httpx
+        import httpx2 as httpx
         import pystac
 
         item = pystac.Item.from_dict(httpx.get("https://raw.githubusercontent.com/cogeotiff/rio-tiler/refs/heads/main/tests/fixtures/stac_netcdf.json").json())

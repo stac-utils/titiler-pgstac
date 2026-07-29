@@ -1088,6 +1088,18 @@ def test_cache_middleware_settings(app, search_no_bbox):
     assert response.status_code == 200
     assert not response.headers.get("Cache-Control")
 
+    response = app.get("/searches/list?limit=1")
+    assert response.status_code == 200
+    assert not response.headers.get("Cache-Control")
+
+    response = app.get("/searches")
+    assert response.status_code == 200
+    assert not response.headers.get("Cache-Control")
+
+    response = app.get("/searches?limit=1")
+    assert response.status_code == 200
+    assert not response.headers.get("Cache-Control")
+
     response = app.get(
         f"/searches/{search_no_bbox}/point/-85.5,36.1624", params={"assets": "cog"}
     )
