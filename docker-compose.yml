@@ -8,6 +8,8 @@ services:
       - "8081:8081"
     command: ["gunicorn", "-k", "uvicorn.workers.UvicornWorker", "titiler.pgstac.main:app", "--bind", "0.0.0.0:8081", "--workers", "1"]
     environment:
+      # API Configuration
+      - TITILER_PGSTAC_API_DEBUG=True
       # Postgres connection
       - PGUSER=username
       - PGPASSWORD=password

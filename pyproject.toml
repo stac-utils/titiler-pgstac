@@ -88,7 +88,9 @@ docs = [
     "mike~=2.0",
 ]
 server = [
-    "uvicorn",
+    "uvicorn[standard]>=0.12.0",
+    "uvicorn-worker",
+    "gunicorn",
 ]
 deploy = [
     "hatch",
