@@ -5150,15 +5150,12 @@ telemetry = [
 ]
 
 [package.dev-dependencies]
-benchmark = [
-    { name = "pytest-benchmark" },
-]
 deploy = [
     { name = "hatch" },
 ]
 dev = [
     { name = "folium" },
-    { name = "httpx" },
+    { name = "httpx2" },
     { name = "ipython" },
     { name = "jupyter" },
     { name = "matplotlib" },
@@ -5170,6 +5167,7 @@ dev = [
     { name = "pypgstac" },
     { name = "pytest" },
     { name = "pytest-asyncio" },
+    { name = "pytest-benchmark" },
     { name = "pytest-cov" },
     { name = "pytest-postgresql" },
 ]
@@ -5210,11 +5208,10 @@ requires-dist = [
 provides-extras = ["psycopg", "psycopg-binary", "psycopg-c", "telemetry"]
 
 [package.metadata.requires-dev]
-benchmark = [{ name = "pytest-benchmark" }]
 deploy = [{ name = "hatch" }]
 dev = [
     { name = "folium" },
-    { name = "httpx" },
+    { name = "httpx2" },
     { name = "ipython" },
     { name = "jupyter" },
     { name = "matplotlib" },
@@ -5225,6 +5222,7 @@ dev = [
     { name = "pypgstac", specifier = ">=0.9.11,<0.10" },
     { name = "pytest" },
     { name = "pytest-asyncio" },
+    { name = "pytest-benchmark" },
     { name = "pytest-cov" },
     { name = "pytest-postgresql" },
 ]

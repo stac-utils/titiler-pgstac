@@ -48,6 +48,7 @@ services:
       # - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
     volumes:
       - ./benchmark:/tmp/benchmark
+    working_dir: /tmp
     depends_on:
       - database
 
@@ -58,6 +59,9 @@ services:
     ports:
       - "8083:8083"
     command: ["uvicorn", "titiler.pgstac.main:app", "--host", "0.0.0.0", "--port", "8083", "--workers", "1"]
+    volumes:
+      - ./benchmark:/tmp/benchmark
+    working_dir: /tmp
 
   nginx:
     image: nginx
