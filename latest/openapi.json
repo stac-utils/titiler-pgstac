@@ -3,7 +3,7 @@
     "info": {
         "title": "titiler-pgstac",
         "description": "Dynamic Raster Tiler with PgSTAC backend.\n\n---\n\n**Documentation**: <a href=\"https://stac-utils.github.io/titiler-pgstac/\" target=\"_blank\">https://stac-utils.github.io/titiler-pgstac/</a>\n\n**Source Code**: <a href=\"https://github.com/stac-utils/titiler-pgstac\" target=\"_blank\">https://github.com/stac-utils/titiler-pgstac</a>\n\n---\n    ",
-        "version": "3.0.0"
+        "version": "3.0.1"
     },
     "paths": {
         "/searches/{search_id}/tiles": {
