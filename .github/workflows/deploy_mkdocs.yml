@@ -16,6 +16,10 @@ on:
       - .github/workflows/deploy_mkdocs.yml
   workflow_dispatch:
 
+concurrency:
+  group: docs-gh-pages
+  cancel-in-progress: false
+
 jobs:
   build:
     name: Deploy docs
