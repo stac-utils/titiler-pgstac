@@ -8,6 +8,8 @@ services:
       - "8081:8081"
     command: ["gunicorn", "-k", "uvicorn.workers.UvicornWorker", "titiler.pgstac.main:app", "--bind", "0.0.0.0:8081", "--workers", "1"]
     environment:
+      # API Configuration
+      - TITILER_PGSTAC_API_DEBUG=True
       # Postgres connection
       - PGUSER=username
       - PGPASSWORD=password
@@ -46,6 +48,7 @@ services:
       # - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
     volumes:
       - ./benchmark:/tmp/benchmark
+    working_dir: /tmp
     depends_on:
       - database
 
@@ -56,6 +59,9 @@ services:
     ports:
       - "8083:8083"
     command: ["uvicorn", "titiler.pgstac.main:app", "--host", "0.0.0.0", "--port", "8083", "--workers", "1"]
+    volumes:
+      - ./benchmark:/tmp/benchmark
+    working_dir: /tmp
 
   nginx:
     image: nginx

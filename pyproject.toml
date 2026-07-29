@@ -66,7 +66,8 @@ dev = [
     "pytest-cov",
     "pytest-asyncio",
     "pytest-postgresql",
-    "httpx",
+    "pytest-benchmark",
+    "httpx2",
     "pypgstac>=0.9.11,<0.10",
     "owslib",
     "pre-commit",
@@ -75,9 +76,6 @@ dev = [
     "jupyter",
     "matplotlib",
     "pyinstrument",
-]
-benchmark = [
-    "pytest-benchmark",
 ]
 docs = [
     "mkdocs>=1.4.3",
@@ -88,7 +86,9 @@ docs = [
     "mike~=2.0",
 ]
 server = [
-    "uvicorn",
+    "uvicorn[standard]>=0.12.0",
+    "uvicorn-worker",
+    "gunicorn",
 ]
 deploy = [
     "hatch",
