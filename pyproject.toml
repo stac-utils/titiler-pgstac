@@ -30,7 +30,7 @@ dependencies = [
     "titiler-core>=2.0,<2.1",
     "titiler-mosaic>=2.0,<2.1",
     "titiler-extensions>=2.0,<2.1",
-    "fastapi<0.140.3",
+    "fastapi<0.141.2",
     "cql2>=0.3.6",
     "pydantic>=2.4,<3.0",
     "pydantic-settings~=2.0",
