@@ -2914,15 +2914,17 @@
 
 <h1 id="release-notes">Release Notes<a class="headerlink" href="#release-notes" title="Permanent link">&para;</a></h1>
 <h2 id="unreleased">Unreleased<a class="headerlink" href="#unreleased" title="Permanent link">&para;</a></h2>
-<h2 id="302-2026-07-29">3.0.2 (2026-07-29)<a class="headerlink" href="#302-2026-07-29" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Response compression via <code>starlette-cramjam</code> (image mediatypes excluded).</li>
-<li>fix: exclude search's list endpoints from default <code>Cache-Control</code> middleware paths.</li>
+<li>update titiler requirement to <code>&gt;=2.2,&lt;2.3</code></li>
 <li>Optional Prometheus metrics via [metrics] extra, <code>TITILER_PGSTAC_API_METRICS_ENABLED</code>,
   and <code>/metrics</code> endpoint, with prefixed low-cardinality <code>operation</code> labels
   (<code>titiler_pgstac_http_requests_total</code>,
   <code>titiler_pgstac_http_request_duration_seconds</code>) and
   <code>PROMETHEUS_MULTIPROC_DIR</code> support for multi-worker deployments.</li>
+</ul>
+<h2 id="302-2026-07-29">3.0.2 (2026-07-29)<a class="headerlink" href="#302-2026-07-29" title="Permanent link">&para;</a></h2>
+<ul>
+<li>fix: exclude search's list endpoints from default <code>Cache-Control</code> middleware paths.</li>
 </ul>
 <h2 id="301-2026-07-29">3.0.1 (2026-07-29)<a class="headerlink" href="#301-2026-07-29" title="Permanent link">&para;</a></h2>
 <ul>
