@@ -139,6 +139,42 @@
                         "description": "PgSTAC Search Identifier (Hash)"
                     },
                     {
+                        "name": "minzoom",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "description": "Overwrite default minzoom.",
+                            "title": "Minzoom"
+                        },
+                        "description": "Overwrite default minzoom."
+                    },
+                    {
+                        "name": "maxzoom",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "description": "Overwrite default maxzoom.",
+                            "title": "Maxzoom"
+                        },
+                        "description": "Overwrite default maxzoom."
+                    },
+                    {
                         "name": "f",
                         "in": "query",
                         "required": false,
@@ -9391,6 +9427,47 @@
                         "description": "Use EPSG code, not opengis.net, for the ows:SupportedCRS in the TileMatrixSet (set to True to enable ArcMap compatability)"
                     },
                     {
+                        "name": "zooms",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "pattern": "^(\\*|\\w+)::\\d+,\\d+$"
+                                    }
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "description": "Overwrite TMS min/max zoom in form of`tileMatrixSetId::minzoom,maxzoom`",
+                            "title": "Zooms"
+                        },
+                        "description": "Overwrite TMS min/max zoom in form of`tileMatrixSetId::minzoom,maxzoom`",
+                        "examples": {
+                            "user-provided": {},
+                            "Single": {
+                                "value": [
+                                    "WebMercatorQuad::0,5"
+                                ]
+                            },
+                            "Multiples": {
+                                "value": [
+                                    "WebMercatorQuad::0,5",
+                                    "WorldCRS84Quad::0,1"
+                                ]
+                            },
+                            "All": {
+                                "value": [
+                                    "*::0,5"
+                                ]
+                            }
+                        }
+                    },
+                    {
                         "name": "assets",
                         "in": "query",
                         "required": true,
@@ -10617,6 +10694,42 @@
                             "title": "Collection Id"
                         },
                         "description": "STAC Collection Identifier"
+                    },
+                    {
+                        "name": "minzoom",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "description": "Overwrite default minzoom.",
+                            "title": "Minzoom"
+                        },
+                        "description": "Overwrite default minzoom."
+                    },
+                    {
+                        "name": "maxzoom",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "description": "Overwrite default maxzoom.",
+                            "title": "Maxzoom"
+                        },
+                        "description": "Overwrite default maxzoom."
                     },
                     {
                         "name": "f",
@@ -22795,6 +22908,47 @@
                         "description": "CQL2 Language (cql2-text, cql2-json). Defaults to cql2-text."
                     },
                     {
+                        "name": "zooms",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "pattern": "^(\\*|\\w+)::\\d+,\\d+$"
+                                    }
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "description": "Overwrite TMS min/max zoom in form of`tileMatrixSetId::minzoom,maxzoom`",
+                            "title": "Zooms"
+                        },
+                        "description": "Overwrite TMS min/max zoom in form of`tileMatrixSetId::minzoom,maxzoom`",
+                        "examples": {
+                            "user-provided": {},
+                            "Single": {
+                                "value": [
+                                    "WebMercatorQuad::0,5"
+                                ]
+                            },
+                            "Multiples": {
+                                "value": [
+                                    "WebMercatorQuad::0,5",
+                                    "WorldCRS84Quad::0,1"
+                                ]
+                            },
+                            "All": {
+                                "value": [
+                                    "*::0,5"
+                                ]
+                            }
+                        }
+                    },
+                    {
                         "name": "assets",
                         "in": "query",
                         "required": true,
@@ -25374,6 +25528,42 @@
                             "title": "Item Id"
                         },
                         "description": "STAC Item Identifier"
+                    },
+                    {
+                        "name": "minzoom",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "description": "Overwrite default minzoom.",
+                            "title": "Minzoom"
+                        },
+                        "description": "Overwrite default minzoom."
+                    },
+                    {
+                        "name": "maxzoom",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "description": "Overwrite default maxzoom.",
+                            "title": "Maxzoom"
+                        },
+                        "description": "Overwrite default maxzoom."
                     },
                     {
                         "name": "f",
@@ -34438,6 +34628,47 @@
                             "title": "Use Epsg"
                         },
                         "description": "Use EPSG code, not opengis.net, for the ows:SupportedCRS in the TileMatrixSet (set to True to enable ArcMap compatability)"
+                    },
+                    {
+                        "name": "zooms",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "pattern": "^(\\*|\\w+)::\\d+,\\d+$"
+                                    }
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "description": "Overwrite TMS min/max zoom in form of`tileMatrixSetId::minzoom,maxzoom`",
+                            "title": "Zooms"
+                        },
+                        "description": "Overwrite TMS min/max zoom in form of`tileMatrixSetId::minzoom,maxzoom`",
+                        "examples": {
+                            "user-provided": {},
+                            "Single": {
+                                "value": [
+                                    "WebMercatorQuad::0,5"
+                                ]
+                            },
+                            "Multiples": {
+                                "value": [
+                                    "WebMercatorQuad::0,5",
+                                    "WorldCRS84Quad::0,1"
+                                ]
+                            },
+                            "All": {
+                                "value": [
+                                    "*::0,5"
+                                ]
+                            }
+                        }
                     },
                     {
                         "name": "buffer",
