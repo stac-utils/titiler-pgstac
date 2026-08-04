@@ -324,6 +324,45 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#prometheus-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prometheus metrics
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Prometheus metrics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#multi-worker-deployments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-worker deployments
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custom-apps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Custom apps
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1641,6 +1680,45 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#prometheus-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prometheus metrics
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Prometheus metrics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#multi-worker-deployments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-worker deployments
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custom-apps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Custom apps
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1823,6 +1901,45 @@ uv sync --extra psycopg
 <li><code>python -m pip install titiler.pgstac["psycopg-c"]</code>: use the C wrapper (requires development packages installed on the client machine)</li>
 <li><code>python -m pip install titiler.pgstac["psycopg-binary"]</code>: binary wheels</li>
 </ul>
+<h3 id="prometheus-metrics">Prometheus metrics<a class="headerlink" href="#prometheus-metrics" title="Permanent link">&para;</a></h3>
+<p>Install the optional metrics extra and enable it:</p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>titiler-pgstac<span class="o">[</span>metrics<span class="o">]</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">TITILER_PGSTAC_API_METRICS_ENABLED</span><span class="o">=</span>TRUE
+</code></pre></div>
+<p>Once enabled, <code>/metrics</code> is available on startup and records:</p>
+<ul>
+<li><code>titiler_pgstac_http_requests_total{operation,method,status}</code></li>
+<li><code>titiler_pgstac_http_request_duration_seconds{operation,method}</code></li>
+</ul>
+<p><code>operation</code> values are low-cardinality labels such as <code>landing</code>, <code>conformance</code>,
+<code>tiles</code>, <code>point</code>, <code>search</code>, <code>search_info</code>, <code>collection</code>, <code>item</code>, <code>register_search</code>,
+<code>list_searches</code>, <code>external</code>, <code>tms</code>, <code>algorithms</code>, <code>colormaps</code>, <code>other</code>, and
+<code>unknown</code>. <code>status</code> is grouped (<code>2xx</code>, <code>3xx</code>, <code>4xx</code>, <code>5xx</code>). <code>/healthz</code> and the
+scrape endpoint are excluded from request counters. Untemplated paths (for example
+bare 404s) are also ignored.</p>
+<p>With <code>TITILER_PGSTAC_API_METRICS_ENABLED</code> left at its default (<code>FALSE</code>), <code>/metrics</code>
+is not registered even if the extra is installed.</p>
+<h4 id="multi-worker-deployments">Multi-worker deployments<a class="headerlink" href="#multi-worker-deployments" title="Permanent link">&para;</a></h4>
+<p>For multi-worker deployments (for example <code>uvicorn --workers N</code> or Gunicorn), set
+<code>PROMETHEUS_MULTIPROC_DIR</code> to an existing writable directory <strong>before</strong> the
+application is imported, and clear that directory before each server start.</p>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">PROMETHEUS_MULTIPROC_DIR</span><span class="o">=</span>/tmp/titiler-pgstac-prometheus
+mkdir<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PROMETHEUS_MULTIPROC_DIR</span><span class="s2">&quot;</span>
+rm<span class="w"> </span>-rf<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PROMETHEUS_MULTIPROC_DIR</span><span class="s2">&quot;</span>/*
+</code></pre></div>
+<p>With Gunicorn, also mark workers dead on exit so stale metric files are cleaned up:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">prometheus_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">multiprocess</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">child_exit</span><span class="p">(</span><span class="n">server</span><span class="p">,</span> <span class="n">worker</span><span class="p">):</span>
+    <span class="n">multiprocess</span><span class="o">.</span><span class="n">mark_process_dead</span><span class="p">(</span><span class="n">worker</span><span class="o">.</span><span class="n">pid</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="custom-apps">Custom apps<a class="headerlink" href="#custom-apps" title="Permanent link">&para;</a></h4>
+<p>Custom apps can enable the same instrumentation:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">titiler.pgstac.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">instrument_app</span>
+
+<span class="n">instrument_app</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+</code></pre></div>
 <h2 id="launch">Launch<a class="headerlink" href="#launch" title="Permanent link">&para;</a></h2>
 <p>You'll need to have <code>PGUSER</code>, <code>PGPASSWORD</code>, <code>PGDATABASE</code>, <code>PGHOST</code>, <code>PGPORT</code> variables set in your environment pointing to your Postgres database where pgstac has been installed.</p>
 <div class="highlight"><pre><span></span><code>export PGUSER=username
