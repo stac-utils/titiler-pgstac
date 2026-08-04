@@ -3,6 +3,7 @@
 import io
 from datetime import datetime
 from unittest.mock import patch
+from urllib.parse import parse_qs, urlparse
 
 import pytest
 import rasterio
@@ -691,8 +692,9 @@ def test_query_with_metadata(app):
         == "TileJSON link for `colormap` layer (Template URL)."
     )
 
-    assert "asset_bidx=cog%7C1" in resp["links"][2]["href"]
-    assert "assets=cog" in resp["links"][2]["href"]
+    query = urlparse(resp["links"][2]["href"])
+    query_params = parse_qs(query.query)
+    assert query_params["assets"] == ["cog|bidx=1"]
 
 
 @patch("rio_tiler.io.rasterio.rasterio")
@@ -1085,6 +1087,18 @@ def test_query_point_searches(app, search_no_bbox, search_bbox):
 def test_cache_middleware_settings(app, search_no_bbox):
     """Make sure some endpoints do not have cache-control headers."""
     response = app.get("/searches/list")
+    assert response.status_code == 200
+    assert not response.headers.get("Cache-Control")
+
+    response = app.get("/searches/list?limit=1")
+    assert response.status_code == 200
+    assert not response.headers.get("Cache-Control")
+
+    response = app.get("/searches")
+    assert response.status_code == 200
+    assert not response.headers.get("Cache-Control")
+
+    response = app.get("/searches?limit=1")
     assert response.status_code == 200
     assert not response.headers.get("Cache-Control")
 

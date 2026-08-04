@@ -249,11 +249,10 @@ searches = MosaicTilerFactory(
     add_viewer=True,
     add_part=True,
     add_ogc_maps=False,
+    get_renders=_get_renders_collection,
     extensions=[
         searchInfoExtension(),
-        wmtsExtensionMosaic(
-            get_renders=_get_renders_collection  # type: ignore [attr-defined]
-        ),
+        wmtsExtensionMosaic(),
     ],
     templates=templates,
 )
@@ -291,11 +290,10 @@ collection = MosaicTilerFactory(
     add_viewer=True,
     add_part=True,
     add_ogc_maps=False,
+    get_renders=_get_renders_collection,
     extensions=[
         searchInfoExtension(),
-        wmtsExtensionMosaic(
-            get_renders=_get_renders_collection  # type: ignore [attr-defined]
-        ),
+        wmtsExtensionMosaic(),
     ],
     templates=templates,
 )
@@ -319,8 +317,9 @@ stac = MultiBaseTilerFactory(
     path_dependency=ItemIdParams,
     router_prefix="/collections/{collection_id}/items/{item_id}",
     add_viewer=True,
+    get_renders=_get_renders_item,
     extensions=[
-        wmtsExtension(get_renders=_get_renders_item),  # type: ignore [attr-defined]
+        wmtsExtension(),
         stacRenderExtension(),
     ],
     templates=templates,

@@ -22,9 +22,10 @@ class ApiSettings(BaseSettings):
     cachecontrol: str = "public, max-age=3600"
     cachecontrol_exclude_paths: set[str] = Field(
         default={
-            "/healthz",
-            ".+/list",
-            "/metrics",
+            r"/healthz",
+            r"/searches(/)?$",
+            r"/searches/list$",
+            r"/metrics",
         }
     )
     root_path: str = ""
