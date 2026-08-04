@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1785854106545,
+  "lastUpdate": 1785858720490,
   "repoUrl": "https://github.com/stac-utils/titiler-pgstac",
   "entries": {
     "TiTiler-pgSTAC Benchmarks": [
@@ -11096,6 +11096,79 @@ window.BENCHMARK_DATA = {
             "unit": "iter/sec",
             "range": "stddev: 0.0006078412114311592",
             "extra": "mean: 24.771909617646937 msec\nrounds: 34"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "vincent.sarago@gmail.com",
+            "name": "Vincent Sarago",
+            "username": "vincentsarago"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "4cfb4dcbea6547daf17c7c763b22f743bf1cabca",
+          "message": "Merge pull request #287 from pantierra/feat/prometheus-metrics-endpoint\n\nfeat: add optional prometheus metrics endpoint.",
+          "timestamp": "2026-08-04T17:47:02+02:00",
+          "tree_id": "a1c9550de17af64711c37299758f0fd53166f83d",
+          "url": "https://github.com/stac-utils/titiler-pgstac/commit/4cfb4dcbea6547daf17c7c763b22f743bf1cabca"
+        },
+        "date": 1785858719591,
+        "tool": "pytest",
+        "benches": [
+          {
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "value": 5.263504244397246,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0015528402592896943",
+            "extra": "mean: 189.98749759999782 msec\nrounds: 5"
+          },
+          {
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "value": 11.993009375139971,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0026282974167735835",
+            "extra": "mean: 83.38190763636662 msec\nrounds: 11"
+          },
+          {
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "value": 16.883913843318993,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0015836863595852732",
+            "extra": "mean: 59.22797340000064 msec\nrounds: 15"
+          },
+          {
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "value": 29.14979359042917,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000691278165800393",
+            "extra": "mean: 34.30556023999884 msec\nrounds: 25"
+          },
+          {
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "value": 42.691474964123024,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0006732348968901226",
+            "extra": "mean: 23.423880314287057 msec\nrounds: 35"
+          },
+          {
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "value": 38.48392335653558,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0005546520196435447",
+            "extra": "mean: 25.984876612903182 msec\nrounds: 31"
+          },
+          {
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "value": 37.654027610896144,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0011907932911202558",
+            "extra": "mean: 26.557583967740673 msec\nrounds: 31"
           }
         ]
       }
