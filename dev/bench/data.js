@@ -26,49 +26,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 2.836427762281342,
             "unit": "iter/sec",
             "range": "stddev: 0.004751084014841288",
             "extra": "mean: 352.5561317999859 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 5.917599503984506,
             "unit": "iter/sec",
             "range": "stddev: 0.007658743672032181",
             "extra": "mean: 168.9874414999982 msec\nrounds: 6"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 7.267368168204441,
             "unit": "iter/sec",
             "range": "stddev: 0.0058431185355074305",
             "extra": "mean: 137.60139528572577 msec\nrounds: 7"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 15.068761581061713,
             "unit": "iter/sec",
             "range": "stddev: 0.0011903244145160692",
             "extra": "mean: 66.3624541818215 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 20.54597228552386,
             "unit": "iter/sec",
             "range": "stddev: 0.003797368674634331",
             "extra": "mean: 48.67133986667417 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 19.537290109263058,
             "unit": "iter/sec",
             "range": "stddev: 0.002932352142793612",
             "extra": "mean: 51.18417111111424 msec\nrounds: 18"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 17.792929326977454,
             "unit": "iter/sec",
             "range": "stddev: 0.005404172069647886",
@@ -99,49 +99,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 2.8689126631485315,
             "unit": "iter/sec",
             "range": "stddev: 0.005216384016774406",
             "extra": "mean: 348.5641138000119 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 6.074991013417379,
             "unit": "iter/sec",
             "range": "stddev: 0.004006033948614887",
             "extra": "mean: 164.60929700000784 msec\nrounds: 6"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 7.384512260469682,
             "unit": "iter/sec",
             "range": "stddev: 0.0018443344808471232",
             "extra": "mean: 135.41855775000045 msec\nrounds: 8"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 15.445866460293967,
             "unit": "iter/sec",
             "range": "stddev: 0.0027737597263819426",
             "extra": "mean: 64.74224042857405 msec\nrounds: 14"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 21.67631924723492,
             "unit": "iter/sec",
             "range": "stddev: 0.003800665136358353",
             "extra": "mean: 46.13329359999909 msec\nrounds: 20"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 20.12482961524685,
             "unit": "iter/sec",
             "range": "stddev: 0.0029632115097030683",
             "extra": "mean: 49.68986168421452 msec\nrounds: 19"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 18.521442344075286,
             "unit": "iter/sec",
             "range": "stddev: 0.004576092395664916",
@@ -172,49 +172,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 2.373412498133809,
             "unit": "iter/sec",
             "range": "stddev: 0.007715098733043546",
             "extra": "mean: 421.3342605999969 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 4.856247021924921,
             "unit": "iter/sec",
             "range": "stddev: 0.007761471437185086",
             "extra": "mean: 205.92033219999166 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 6.141078901198113,
             "unit": "iter/sec",
             "range": "stddev: 0.00484299147272101",
             "extra": "mean: 162.83783616668757 msec\nrounds: 6"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 12.673483139002064,
             "unit": "iter/sec",
             "range": "stddev: 0.005430939955922097",
             "extra": "mean: 78.9049063333304 msec\nrounds: 12"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 17.657737639989207,
             "unit": "iter/sec",
             "range": "stddev: 0.005733009206104463",
             "extra": "mean: 56.63239653846229 msec\nrounds: 13"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 16.76821191880671,
             "unit": "iter/sec",
             "range": "stddev: 0.00552982023967614",
             "extra": "mean: 59.63665087500658 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 15.243951005882336,
             "unit": "iter/sec",
             "range": "stddev: 0.0057357263388900384",
@@ -245,49 +245,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 2.5070024413901737,
             "unit": "iter/sec",
             "range": "stddev: 0.008836828279008382",
             "extra": "mean: 398.8827388000004 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 5.097253335559231,
             "unit": "iter/sec",
             "range": "stddev: 0.01103327559318889",
             "extra": "mean: 196.18408860000045 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 6.2613379002251595,
             "unit": "iter/sec",
             "range": "stddev: 0.005228575425339361",
             "extra": "mean: 159.71027533333407 msec\nrounds: 6"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 13.09157278604271,
             "unit": "iter/sec",
             "range": "stddev: 0.0038222967940035753",
             "extra": "mean: 76.38501625000534 msec\nrounds: 12"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 18.556870956114302,
             "unit": "iter/sec",
             "range": "stddev: 0.0045818700674059975",
             "extra": "mean: 53.88839542856821 msec\nrounds: 14"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 17.377877236533855,
             "unit": "iter/sec",
             "range": "stddev: 0.0036751510654468326",
             "extra": "mean: 57.544427687501454 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 15.437570637756767,
             "unit": "iter/sec",
             "range": "stddev: 0.0037015064515485857",
@@ -318,49 +318,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 2.975981790781622,
             "unit": "iter/sec",
             "range": "stddev: 0.004622722818727696",
             "extra": "mean: 336.02356140000325 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 6.251995402482495,
             "unit": "iter/sec",
             "range": "stddev: 0.00499436284787555",
             "extra": "mean: 159.94893400000385 msec\nrounds: 6"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 7.444703837424361,
             "unit": "iter/sec",
             "range": "stddev: 0.0032860658917885314",
             "extra": "mean: 134.3236778571395 msec\nrounds: 7"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 15.65304992682078,
             "unit": "iter/sec",
             "range": "stddev: 0.0038199177565773007",
             "extra": "mean: 63.88531338461689 msec\nrounds: 13"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 22.406851090107544,
             "unit": "iter/sec",
             "range": "stddev: 0.0018802023739444083",
             "extra": "mean: 44.629207200001986 msec\nrounds: 20"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 20.617073703619738,
             "unit": "iter/sec",
             "range": "stddev: 0.003363616482584565",
             "extra": "mean: 48.503488631581604 msec\nrounds: 19"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 18.8702325120234,
             "unit": "iter/sec",
             "range": "stddev: 0.00292692913263053",
@@ -391,49 +391,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 2.995069658892925,
             "unit": "iter/sec",
             "range": "stddev: 0.005185215285954201",
             "extra": "mean: 333.88205079999125 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 6.169577703758325,
             "unit": "iter/sec",
             "range": "stddev: 0.006003686868924205",
             "extra": "mean: 162.08564799999672 msec\nrounds: 6"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 7.450681247931083,
             "unit": "iter/sec",
             "range": "stddev: 0.0021061648212365447",
             "extra": "mean: 134.21591485713893 msec\nrounds: 7"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 15.774908844991838,
             "unit": "iter/sec",
             "range": "stddev: 0.0037614629889906152",
             "extra": "mean: 63.39180846154154 msec\nrounds: 13"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 22.624423204894203,
             "unit": "iter/sec",
             "range": "stddev: 0.002021198306675405",
             "extra": "mean: 44.20002185000129 msec\nrounds: 20"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 21.078244641517344,
             "unit": "iter/sec",
             "range": "stddev: 0.003718069148524975",
             "extra": "mean: 47.44228074999768 msec\nrounds: 20"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 19.476961161972998,
             "unit": "iter/sec",
             "range": "stddev: 0.0029570836470616535",
@@ -464,49 +464,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 2.739122684970989,
             "unit": "iter/sec",
             "range": "stddev: 0.01303936245687109",
             "extra": "mean: 365.0803979999864 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 5.836691621396926,
             "unit": "iter/sec",
             "range": "stddev: 0.005282717440124118",
             "extra": "mean: 171.32993566664823 msec\nrounds: 6"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 7.253256728331996,
             "unit": "iter/sec",
             "range": "stddev: 0.0041183495076076585",
             "extra": "mean: 137.86910314285348 msec\nrounds: 7"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 14.802984688122168,
             "unit": "iter/sec",
             "range": "stddev: 0.0017136194636239476",
             "extra": "mean: 67.55394409090988 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 20.737799274904706,
             "unit": "iter/sec",
             "range": "stddev: 0.004073547360059846",
             "extra": "mean: 48.22112446667006 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 19.537377244581183,
             "unit": "iter/sec",
             "range": "stddev: 0.0031587750329522503",
             "extra": "mean: 51.1839428333379 msec\nrounds: 18"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 17.837801827031083,
             "unit": "iter/sec",
             "range": "stddev: 0.005042955163693067",
@@ -537,49 +537,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 2.8021463477085704,
             "unit": "iter/sec",
             "range": "stddev: 0.006314087955665145",
             "extra": "mean: 356.86929799999234 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 5.825609075730566,
             "unit": "iter/sec",
             "range": "stddev: 0.006537294650032025",
             "extra": "mean: 171.65587099999394 msec\nrounds: 6"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 7.110696911886813,
             "unit": "iter/sec",
             "range": "stddev: 0.002057245982981864",
             "extra": "mean: 140.63319142858128 msec\nrounds: 7"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 15.229474562595243,
             "unit": "iter/sec",
             "range": "stddev: 0.0019208748160136095",
             "extra": "mean: 65.66214716665779 msec\nrounds: 12"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 21.16262128402774,
             "unit": "iter/sec",
             "range": "stddev: 0.0020577251415012784",
             "extra": "mean: 47.25312552631366 msec\nrounds: 19"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 20.04534539874118,
             "unit": "iter/sec",
             "range": "stddev: 0.003509918072616615",
             "extra": "mean: 49.88689294736715 msec\nrounds: 19"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 18.367561096159044,
             "unit": "iter/sec",
             "range": "stddev: 0.0028966000905907446",
@@ -610,49 +610,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 3.034431760914126,
             "unit": "iter/sec",
             "range": "stddev: 0.006349316001549449",
             "extra": "mean: 329.5509930000037 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 6.363395603599091,
             "unit": "iter/sec",
             "range": "stddev: 0.0035602935549318452",
             "extra": "mean: 157.148802666678 msec\nrounds: 6"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 7.584837092626998,
             "unit": "iter/sec",
             "range": "stddev: 0.002314822863775267",
             "extra": "mean: 131.8419878750028 msec\nrounds: 8"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 16.688431403678837,
             "unit": "iter/sec",
             "range": "stddev: 0.0028435205199221626",
             "extra": "mean: 59.92174913332823 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 23.032409983318857,
             "unit": "iter/sec",
             "range": "stddev: 0.0032555700693981775",
             "extra": "mean: 43.41708057143158 msec\nrounds: 21"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 21.630438702890437,
             "unit": "iter/sec",
             "range": "stddev: 0.0028860472544148482",
             "extra": "mean: 46.23114740000034 msec\nrounds: 20"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 19.711451019405104,
             "unit": "iter/sec",
             "range": "stddev: 0.002639221718564341",
@@ -683,49 +683,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 2.996231446153499,
             "unit": "iter/sec",
             "range": "stddev: 0.006056098751216021",
             "extra": "mean: 333.75258820001363 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 6.17571297901256,
             "unit": "iter/sec",
             "range": "stddev: 0.006415378161702739",
             "extra": "mean: 161.9246236666735 msec\nrounds: 6"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 7.604638874905728,
             "unit": "iter/sec",
             "range": "stddev: 0.00260429014628532",
             "extra": "mean: 131.498683428593 msec\nrounds: 7"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 16.401406860702224,
             "unit": "iter/sec",
             "range": "stddev: 0.003095725744893265",
             "extra": "mean: 60.97037946153268 msec\nrounds: 13"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 23.113233127997486,
             "unit": "iter/sec",
             "range": "stddev: 0.0021509103629107915",
             "extra": "mean: 43.26525823809052 msec\nrounds: 21"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 21.446613599521942,
             "unit": "iter/sec",
             "range": "stddev: 0.002398304202795905",
             "extra": "mean: 46.62740788234701 msec\nrounds: 17"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 19.546380947657823,
             "unit": "iter/sec",
             "range": "stddev: 0.002505596890127138",
@@ -756,49 +756,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 2.961546276808463,
             "unit": "iter/sec",
             "range": "stddev: 0.0053465609805415",
             "extra": "mean: 337.6614466000035 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 6.289423188347091,
             "unit": "iter/sec",
             "range": "stddev: 0.003792262593562554",
             "extra": "mean: 158.9970924285678 msec\nrounds: 7"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 7.513652689664234,
             "unit": "iter/sec",
             "range": "stddev: 0.008734714204102944",
             "extra": "mean: 133.09105987499237 msec\nrounds: 8"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 16.253358038579997,
             "unit": "iter/sec",
             "range": "stddev: 0.0035068863107501863",
             "extra": "mean: 61.525747333341016 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 22.170751492386643,
             "unit": "iter/sec",
             "range": "stddev: 0.003911057086868247",
             "extra": "mean: 45.104470200001856 msec\nrounds: 20"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 21.786124336365873,
             "unit": "iter/sec",
             "range": "stddev: 0.0027635383414914136",
             "extra": "mean: 45.900775399999816 msec\nrounds: 20"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 19.41598555649909,
             "unit": "iter/sec",
             "range": "stddev: 0.0024858474043812566",
@@ -829,49 +829,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 2.6627185197163636,
             "unit": "iter/sec",
             "range": "stddev: 0.011215616256177686",
             "extra": "mean: 375.55603140001494 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 5.712637417088481,
             "unit": "iter/sec",
             "range": "stddev: 0.0049600408757167974",
             "extra": "mean: 175.0504936666649 msec\nrounds: 6"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 6.768170812990961,
             "unit": "iter/sec",
             "range": "stddev: 0.012971334512408237",
             "extra": "mean: 147.75040814285896 msec\nrounds: 7"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 13.720310209128648,
             "unit": "iter/sec",
             "range": "stddev: 0.0050642845988278975",
             "extra": "mean: 72.88464945454817 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 18.084000437794664,
             "unit": "iter/sec",
             "range": "stddev: 0.0062587210932812274",
             "extra": "mean: 55.29749921428057 msec\nrounds: 14"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 18.16192136767742,
             "unit": "iter/sec",
             "range": "stddev: 0.005211363671565577",
             "extra": "mean: 55.0602538000021 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 16.89887629094771,
             "unit": "iter/sec",
             "range": "stddev: 0.0035315529850574374",
@@ -902,49 +902,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 2.1725708735885716,
             "unit": "iter/sec",
             "range": "stddev: 0.01236151918647516",
             "extra": "mean: 460.2841785999999 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 4.537626463286613,
             "unit": "iter/sec",
             "range": "stddev: 0.012053151157960044",
             "extra": "mean: 220.37953279999556 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 5.618077669798333,
             "unit": "iter/sec",
             "range": "stddev: 0.014854275966249924",
             "extra": "mean: 177.9968271666661 msec\nrounds: 6"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 11.830966189137149,
             "unit": "iter/sec",
             "range": "stddev: 0.005536240703839256",
             "extra": "mean: 84.52395045454284 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 15.716737088196846,
             "unit": "iter/sec",
             "range": "stddev: 0.005837632317882279",
             "extra": "mean: 63.62643813333194 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 15.627299768780256,
             "unit": "iter/sec",
             "range": "stddev: 0.0066831342638640065",
             "extra": "mean: 63.99058153333499 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 14.079614206341812,
             "unit": "iter/sec",
             "range": "stddev: 0.004228211035092095",
@@ -975,49 +975,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 2.9388076498681914,
             "unit": "iter/sec",
             "range": "stddev: 0.005156799989343685",
             "extra": "mean: 340.27405639999984 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 6.035702356400411,
             "unit": "iter/sec",
             "range": "stddev: 0.005207587434237345",
             "extra": "mean: 165.68080083332384 msec\nrounds: 6"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 7.34122806202458,
             "unit": "iter/sec",
             "range": "stddev: 0.0030537638453376386",
             "extra": "mean: 136.21699142857275 msec\nrounds: 7"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 15.63322751209617,
             "unit": "iter/sec",
             "range": "stddev: 0.003919426847718255",
             "extra": "mean: 63.966317846155086 msec\nrounds: 13"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 22.202403628410224,
             "unit": "iter/sec",
             "range": "stddev: 0.002663377367138882",
             "extra": "mean: 45.04016847619141 msec\nrounds: 21"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 20.63116585279347,
             "unit": "iter/sec",
             "range": "stddev: 0.0026876415603388957",
             "extra": "mean: 48.47035824999679 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 18.93757235375665,
             "unit": "iter/sec",
             "range": "stddev: 0.0021905702322014197",
@@ -1048,49 +1048,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 2.86281541136775,
             "unit": "iter/sec",
             "range": "stddev: 0.0090340497981933",
             "extra": "mean: 349.30648900001415 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 6.14721045137554,
             "unit": "iter/sec",
             "range": "stddev: 0.007500534272133854",
             "extra": "mean: 162.67541316667197 msec\nrounds: 6"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 7.366458945889119,
             "unit": "iter/sec",
             "range": "stddev: 0.005107220371479777",
             "extra": "mean: 135.75043414285963 msec\nrounds: 7"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 15.501332456381403,
             "unit": "iter/sec",
             "range": "stddev: 0.004072482901278997",
             "extra": "mean: 64.51058338461297 msec\nrounds: 13"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 22.476180435113456,
             "unit": "iter/sec",
             "range": "stddev: 0.0030196050516694884",
             "extra": "mean: 44.49154530000783 msec\nrounds: 20"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 20.699524662944935,
             "unit": "iter/sec",
             "range": "stddev: 0.004586866126104419",
             "extra": "mean: 48.31028810000362 msec\nrounds: 20"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 18.519383175565512,
             "unit": "iter/sec",
             "range": "stddev: 0.004624631585999585",
@@ -1121,49 +1121,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 2.4746714420671814,
             "unit": "iter/sec",
             "range": "stddev: 0.021343518322204193",
             "extra": "mean: 404.09404780000386 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 5.541887788589747,
             "unit": "iter/sec",
             "range": "stddev: 0.006294938997445834",
             "extra": "mean: 180.4439278000018 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 6.938120548320658,
             "unit": "iter/sec",
             "range": "stddev: 0.004442424298883562",
             "extra": "mean: 144.1312518333291 msec\nrounds: 6"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 14.859573832474306,
             "unit": "iter/sec",
             "range": "stddev: 0.004832504620216971",
             "extra": "mean: 67.29668100000197 msec\nrounds: 14"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 21.317599535071906,
             "unit": "iter/sec",
             "range": "stddev: 0.004140464970842513",
             "extra": "mean: 46.90959685000138 msec\nrounds: 20"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 19.367600167205627,
             "unit": "iter/sec",
             "range": "stddev: 0.005038553714810359",
             "extra": "mean: 51.63262311111004 msec\nrounds: 18"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 18.332209768372383,
             "unit": "iter/sec",
             "range": "stddev: 0.0032958483294578318",
@@ -1194,49 +1194,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 2.879286468771433,
             "unit": "iter/sec",
             "range": "stddev: 0.013211996095400262",
             "extra": "mean: 347.3082692000048 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 6.271762742326072,
             "unit": "iter/sec",
             "range": "stddev: 0.0028823049952351474",
             "extra": "mean: 159.4448070000046 msec\nrounds: 6"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 7.526708376491893,
             "unit": "iter/sec",
             "range": "stddev: 0.003408155377725737",
             "extra": "mean: 132.8602026250003 msec\nrounds: 8"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 16.249805583264287,
             "unit": "iter/sec",
             "range": "stddev: 0.00275905982552561",
             "extra": "mean: 61.539197799997204 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 22.3125802151195,
             "unit": "iter/sec",
             "range": "stddev: 0.0032480028098055423",
             "extra": "mean: 44.81776604762087 msec\nrounds: 21"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 20.44334980563837,
             "unit": "iter/sec",
             "range": "stddev: 0.0025415738384909734",
             "extra": "mean: 48.915662526314314 msec\nrounds: 19"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 18.560572752896785,
             "unit": "iter/sec",
             "range": "stddev: 0.0021054096105115982",
@@ -1267,49 +1267,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 2.7324275979969377,
             "unit": "iter/sec",
             "range": "stddev: 0.012707413563187202",
             "extra": "mean: 365.97493040001154 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 5.7592581706884785,
             "unit": "iter/sec",
             "range": "stddev: 0.006559341046244687",
             "extra": "mean: 173.63347333332987 msec\nrounds: 6"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 6.7409855508662115,
             "unit": "iter/sec",
             "range": "stddev: 0.0031443021459517475",
             "extra": "mean: 148.346260714281 msec\nrounds: 7"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 14.719145207961454,
             "unit": "iter/sec",
             "range": "stddev: 0.0023848260989555235",
             "extra": "mean: 67.93872781818261 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 20.707433975422173,
             "unit": "iter/sec",
             "range": "stddev: 0.005004999927710939",
             "extra": "mean: 48.291835733336555 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 19.325711895730628,
             "unit": "iter/sec",
             "range": "stddev: 0.004370471954448542",
             "extra": "mean: 51.74453626315917 msec\nrounds: 19"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 17.726585997318097,
             "unit": "iter/sec",
             "range": "stddev: 0.002499185487412704",
@@ -1340,49 +1340,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 2.442886073566027,
             "unit": "iter/sec",
             "range": "stddev: 0.020980969112838893",
             "extra": "mean: 409.35187720000386 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 4.933284558540893,
             "unit": "iter/sec",
             "range": "stddev: 0.009481510623495136",
             "extra": "mean: 202.70470680000017 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 6.110388568978248,
             "unit": "iter/sec",
             "range": "stddev: 0.004319548589850206",
             "extra": "mean: 163.65571333333642 msec\nrounds: 6"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 12.924497319366687,
             "unit": "iter/sec",
             "range": "stddev: 0.0059301780839550915",
             "extra": "mean: 77.37244825000289 msec\nrounds: 12"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 17.477697256710208,
             "unit": "iter/sec",
             "range": "stddev: 0.00606105207525253",
             "extra": "mean: 57.2157753571381 msec\nrounds: 14"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 16.86521675259895,
             "unit": "iter/sec",
             "range": "stddev: 0.004548249123654028",
             "extra": "mean: 59.29363462499815 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 15.415200005354357,
             "unit": "iter/sec",
             "range": "stddev: 0.004209226768718046",
@@ -1413,49 +1413,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 3.038290002357341,
             "unit": "iter/sec",
             "range": "stddev: 0.003238014956494668",
             "extra": "mean: 329.13250520000474 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 6.317067822126652,
             "unit": "iter/sec",
             "range": "stddev: 0.004218642023103951",
             "extra": "mean: 158.30129233333898 msec\nrounds: 6"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 7.68285178186055,
             "unit": "iter/sec",
             "range": "stddev: 0.0028395397336876244",
             "extra": "mean: 130.1600015714257 msec\nrounds: 7"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 16.26481344314705,
             "unit": "iter/sec",
             "range": "stddev: 0.0031659671023007365",
             "extra": "mean: 61.48241438461355 msec\nrounds: 13"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 22.69971009562324,
             "unit": "iter/sec",
             "range": "stddev: 0.0026626444592560915",
             "extra": "mean: 44.05342604762213 msec\nrounds: 21"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 21.014611343687907,
             "unit": "iter/sec",
             "range": "stddev: 0.003012596873311212",
             "extra": "mean: 47.585938357140584 msec\nrounds: 14"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 18.87212044953008,
             "unit": "iter/sec",
             "range": "stddev: 0.0031889231635406144",
@@ -1486,49 +1486,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 2.945081260281657,
             "unit": "iter/sec",
             "range": "stddev: 0.004452491919718538",
             "extra": "mean: 339.54920479999373 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 6.282939584187416,
             "unit": "iter/sec",
             "range": "stddev: 0.004419992734826145",
             "extra": "mean: 159.16116757142618 msec\nrounds: 7"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 7.63826725261975,
             "unit": "iter/sec",
             "range": "stddev: 0.005556571358003374",
             "extra": "mean: 130.91974487499414 msec\nrounds: 8"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 16.424447672104762,
             "unit": "iter/sec",
             "range": "stddev: 0.002842125277321381",
             "extra": "mean: 60.884847999996815 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 22.40012759112883,
             "unit": "iter/sec",
             "range": "stddev: 0.0037924838199335014",
             "extra": "mean: 44.64260285713874 msec\nrounds: 21"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 20.861508447450568,
             "unit": "iter/sec",
             "range": "stddev: 0.0025000031959312935",
             "extra": "mean: 47.93517221053147 msec\nrounds: 19"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 19.4740507867498,
             "unit": "iter/sec",
             "range": "stddev: 0.002869386186784479",
@@ -1559,49 +1559,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 3.15764693933518,
             "unit": "iter/sec",
             "range": "stddev: 0.00992721707231194",
             "extra": "mean: 316.6915172000017 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 6.458667267960147,
             "unit": "iter/sec",
             "range": "stddev: 0.0033085454138861064",
             "extra": "mean: 154.83070399999596 msec\nrounds: 6"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 7.600439130951908,
             "unit": "iter/sec",
             "range": "stddev: 0.00477557576962516",
             "extra": "mean: 131.57134512499624 msec\nrounds: 8"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 16.600959258318746,
             "unit": "iter/sec",
             "range": "stddev: 0.0031253667582967774",
             "extra": "mean: 60.237482933337105 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 22.4641476135316,
             "unit": "iter/sec",
             "range": "stddev: 0.0036815048315675357",
             "extra": "mean: 44.51537699999958 msec\nrounds: 21"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 21.639132756444816,
             "unit": "iter/sec",
             "range": "stddev: 0.004005384861075737",
             "extra": "mean: 46.21257290000074 msec\nrounds: 20"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 19.508111550816285,
             "unit": "iter/sec",
             "range": "stddev: 0.0032492773625569836",
@@ -1632,49 +1632,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 2.6200497356704924,
             "unit": "iter/sec",
             "range": "stddev: 0.009416500863943219",
             "extra": "mean: 381.67214400000375 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 5.3569059135420165,
             "unit": "iter/sec",
             "range": "stddev: 0.00835073434494843",
             "extra": "mean: 186.67492319998473 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 6.581136000245921,
             "unit": "iter/sec",
             "range": "stddev: 0.004119807539699674",
             "extra": "mean: 151.94945066666796 msec\nrounds: 6"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 13.835190847473365,
             "unit": "iter/sec",
             "range": "stddev: 0.0045807686026104084",
             "extra": "mean: 72.2794510769343 msec\nrounds: 13"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 18.666984488546913,
             "unit": "iter/sec",
             "range": "stddev: 0.003613657172615757",
             "extra": "mean: 53.57051647059266 msec\nrounds: 17"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 17.486170930572285,
             "unit": "iter/sec",
             "range": "stddev: 0.005200775539944293",
             "extra": "mean: 57.18804900000324 msec\nrounds: 17"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 15.813937280399744,
             "unit": "iter/sec",
             "range": "stddev: 0.005291197253726885",
@@ -1705,49 +1705,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 3.031725446060777,
             "unit": "iter/sec",
             "range": "stddev: 0.02607030370434554",
             "extra": "mean: 329.8451715999988 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 6.406869570029232,
             "unit": "iter/sec",
             "range": "stddev: 0.0046013371089499095",
             "extra": "mean: 156.08246571428757 msec\nrounds: 7"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 7.530972720939784,
             "unit": "iter/sec",
             "range": "stddev: 0.005123277130767127",
             "extra": "mean: 132.7849717499987 msec\nrounds: 8"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 16.219167333164425,
             "unit": "iter/sec",
             "range": "stddev: 0.0030839819678126954",
             "extra": "mean: 61.65544626666701 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 22.1410312947633,
             "unit": "iter/sec",
             "range": "stddev: 0.0034269347433368226",
             "extra": "mean: 45.16501452380474 msec\nrounds: 21"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 20.793610310038687,
             "unit": "iter/sec",
             "range": "stddev: 0.0026344352168050085",
             "extra": "mean: 48.09169668420797 msec\nrounds: 19"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 19.104116105037168,
             "unit": "iter/sec",
             "range": "stddev: 0.0024963010572487203",
@@ -1778,49 +1778,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 2.8543808962068526,
             "unit": "iter/sec",
             "range": "stddev: 0.03947655610911104",
             "extra": "mean: 350.3386675999991 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 6.21230320611533,
             "unit": "iter/sec",
             "range": "stddev: 0.011789696373214012",
             "extra": "mean: 160.97089385714622 msec\nrounds: 7"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 7.374179634892899,
             "unit": "iter/sec",
             "range": "stddev: 0.010017769710485862",
             "extra": "mean: 135.6083048571577 msec\nrounds: 7"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 16.130445623318533,
             "unit": "iter/sec",
             "range": "stddev: 0.003192784548133087",
             "extra": "mean: 61.99456750000617 msec\nrounds: 14"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 21.92289002917232,
             "unit": "iter/sec",
             "range": "stddev: 0.004435368775382933",
             "extra": "mean: 45.614423950004834 msec\nrounds: 20"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 20.4578629074691,
             "unit": "iter/sec",
             "range": "stddev: 0.003685943336328094",
             "extra": "mean: 48.880961052627995 msec\nrounds: 19"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 18.26205363754244,
             "unit": "iter/sec",
             "range": "stddev: 0.005084474374880506",
@@ -1851,49 +1851,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 3.0462650938430316,
             "unit": "iter/sec",
             "range": "stddev: 0.008192879959366534",
             "extra": "mean: 328.27083959999186 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 6.357742402166192,
             "unit": "iter/sec",
             "range": "stddev: 0.006362484984385347",
             "extra": "mean: 157.2885368333393 msec\nrounds: 6"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 7.740915846154953,
             "unit": "iter/sec",
             "range": "stddev: 0.0016758707012305006",
             "extra": "mean: 129.1836805714297 msec\nrounds: 7"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 16.053828040852938,
             "unit": "iter/sec",
             "range": "stddev: 0.0046010555158925515",
             "extra": "mean: 62.29043923077116 msec\nrounds: 13"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 21.995854524881672,
             "unit": "iter/sec",
             "range": "stddev: 0.003563038060857666",
             "extra": "mean: 45.46311210000056 msec\nrounds: 20"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 20.423116803801662,
             "unit": "iter/sec",
             "range": "stddev: 0.005003296642701113",
             "extra": "mean: 48.964122842104835 msec\nrounds: 19"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 19.13948702582866,
             "unit": "iter/sec",
             "range": "stddev: 0.004850153287224805",
@@ -1924,49 +1924,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 3.0816598688095125,
             "unit": "iter/sec",
             "range": "stddev: 0.01071096989453002",
             "extra": "mean: 324.5004454000025 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 6.302701490384409,
             "unit": "iter/sec",
             "range": "stddev: 0.00711531559108007",
             "extra": "mean: 158.66212314285073 msec\nrounds: 7"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 7.694440162007406,
             "unit": "iter/sec",
             "range": "stddev: 0.004847982357362645",
             "extra": "mean: 129.96397125000314 msec\nrounds: 8"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 17.02542364481147,
             "unit": "iter/sec",
             "range": "stddev: 0.002687803411617809",
             "extra": "mean: 58.73568968750753 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 22.599890304437903,
             "unit": "iter/sec",
             "range": "stddev: 0.003358171759371079",
             "extra": "mean: 44.248002380951014 msec\nrounds: 21"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 21.535696636631663,
             "unit": "iter/sec",
             "range": "stddev: 0.0033294599492440066",
             "extra": "mean: 46.434532250005134 msec\nrounds: 20"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 19.799747397323173,
             "unit": "iter/sec",
             "range": "stddev: 0.0024947333490095477",
@@ -1997,49 +1997,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 2.6242427607115917,
             "unit": "iter/sec",
             "range": "stddev: 0.007818249495675259",
             "extra": "mean: 381.06230680001545 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 5.299777263610542,
             "unit": "iter/sec",
             "range": "stddev: 0.005259479117779824",
             "extra": "mean: 188.68717500001821 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 6.140237950676635,
             "unit": "iter/sec",
             "range": "stddev: 0.005985429441653372",
             "extra": "mean: 162.86013799999446 msec\nrounds: 6"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 12.92289489714579,
             "unit": "iter/sec",
             "range": "stddev: 0.005461343150587882",
             "extra": "mean: 77.38204233332151 msec\nrounds: 12"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 17.81823951526004,
             "unit": "iter/sec",
             "range": "stddev: 0.0028530441779422125",
             "extra": "mean: 56.12226725000369 msec\nrounds: 12"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 17.12604455385229,
             "unit": "iter/sec",
             "range": "stddev: 0.0040708121064947575",
             "extra": "mean: 58.390598999992825 msec\nrounds: 17"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 15.071114507084953,
             "unit": "iter/sec",
             "range": "stddev: 0.005686965951253884",
@@ -2070,49 +2070,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 2.9753880069608027,
             "unit": "iter/sec",
             "range": "stddev: 0.029654059131826525",
             "extra": "mean: 336.0906199999931 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 6.403382973820592,
             "unit": "iter/sec",
             "range": "stddev: 0.005611470560787215",
             "extra": "mean: 156.1674514999917 msec\nrounds: 6"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 7.565791415217377,
             "unit": "iter/sec",
             "range": "stddev: 0.008427502799748897",
             "extra": "mean: 132.17387912501266 msec\nrounds: 8"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 16.058480010658545,
             "unit": "iter/sec",
             "range": "stddev: 0.005589313483648777",
             "extra": "mean: 62.27239435714133 msec\nrounds: 14"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 22.41819271610086,
             "unit": "iter/sec",
             "range": "stddev: 0.004257630257703472",
             "extra": "mean: 44.606628761907054 msec\nrounds: 21"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 20.847431560937732,
             "unit": "iter/sec",
             "range": "stddev: 0.004078416342660557",
             "extra": "mean: 47.96753965000278 msec\nrounds: 20"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 18.733678200220577,
             "unit": "iter/sec",
             "range": "stddev: 0.0044593596914140506",
@@ -2143,49 +2143,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 3.2723215010532107,
             "unit": "iter/sec",
             "range": "stddev: 0.007861939307219018",
             "extra": "mean: 305.593444800013 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 6.6446120790848715,
             "unit": "iter/sec",
             "range": "stddev: 0.005197516986349158",
             "extra": "mean: 150.4978752857044 msec\nrounds: 7"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 7.662024835795435,
             "unit": "iter/sec",
             "range": "stddev: 0.008724028206309587",
             "extra": "mean: 130.51380299998527 msec\nrounds: 8"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 17.22568643157563,
             "unit": "iter/sec",
             "range": "stddev: 0.002862940553459624",
             "extra": "mean: 58.05283893749191 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 23.849138391099096,
             "unit": "iter/sec",
             "range": "stddev: 0.0032162170662202354",
             "extra": "mean: 41.930235952390504 msec\nrounds: 21"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 21.664186407983102,
             "unit": "iter/sec",
             "range": "stddev: 0.0032382046641884635",
             "extra": "mean: 46.15913015000217 msec\nrounds: 20"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 20.32791181363287,
             "unit": "iter/sec",
             "range": "stddev: 0.002474674241939581",
@@ -2216,49 +2216,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 2.5271376729553303,
             "unit": "iter/sec",
             "range": "stddev: 0.017116648776261626",
             "extra": "mean: 395.7045991999962 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 5.231181893438,
             "unit": "iter/sec",
             "range": "stddev: 0.0031931009284519624",
             "extra": "mean: 191.16138960000626 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 6.110155919488124,
             "unit": "iter/sec",
             "range": "stddev: 0.009331234766880527",
             "extra": "mean: 163.6619446666714 msec\nrounds: 6"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 13.080680459815111,
             "unit": "iter/sec",
             "range": "stddev: 0.005424354965418072",
             "extra": "mean: 76.44862230769107 msec\nrounds: 13"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 18.031357770819334,
             "unit": "iter/sec",
             "range": "stddev: 0.003908380490088699",
             "extra": "mean: 55.4589406249999 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 16.0860755769893,
             "unit": "iter/sec",
             "range": "stddev: 0.006107296173236817",
             "extra": "mean: 62.165566437501596 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 14.505132031196093,
             "unit": "iter/sec",
             "range": "stddev: 0.0067389203025451155",
@@ -2289,49 +2289,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 2.278620562303842,
             "unit": "iter/sec",
             "range": "stddev: 0.013592144740952074",
             "extra": "mean: 438.86201000000256 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 4.794542881976636,
             "unit": "iter/sec",
             "range": "stddev: 0.006683809401733469",
             "extra": "mean: 208.57045700000754 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 5.450881560263683,
             "unit": "iter/sec",
             "range": "stddev: 0.011518470539314252",
             "extra": "mean: 183.45656366667149 msec\nrounds: 6"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 11.35109296031433,
             "unit": "iter/sec",
             "range": "stddev: 0.0066077580730807195",
             "extra": "mean: 88.09724345454644 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 15.278091871209678,
             "unit": "iter/sec",
             "range": "stddev: 0.007480775089533665",
             "extra": "mean: 65.45319981249875 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 15.182324842681734,
             "unit": "iter/sec",
             "range": "stddev: 0.004016488297138821",
             "extra": "mean: 65.86606533333565 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 14.01078784751989,
             "unit": "iter/sec",
             "range": "stddev: 0.00515860578157767",
@@ -2362,49 +2362,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 3.0804917346568232,
             "unit": "iter/sec",
             "range": "stddev: 0.007985116383091496",
             "extra": "mean: 324.6234972000025 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 6.450482293207562,
             "unit": "iter/sec",
             "range": "stddev: 0.00419396923973442",
             "extra": "mean: 155.0271676666739 msec\nrounds: 6"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 7.809855219986425,
             "unit": "iter/sec",
             "range": "stddev: 0.0037063355689232968",
             "extra": "mean: 128.0433467499975 msec\nrounds: 8"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 16.551913884504916,
             "unit": "iter/sec",
             "range": "stddev: 0.002950624449941064",
             "extra": "mean: 60.415974066669754 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 22.594702394649662,
             "unit": "iter/sec",
             "range": "stddev: 0.003187085467861386",
             "extra": "mean: 44.258162047613254 msec\nrounds: 21"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 21.56930023552218,
             "unit": "iter/sec",
             "range": "stddev: 0.0033505788172156466",
             "extra": "mean: 46.36219019999146 msec\nrounds: 20"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 19.62314289067521,
             "unit": "iter/sec",
             "range": "stddev: 0.002541398467986311",
@@ -2435,49 +2435,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 2.561999013134244,
             "unit": "iter/sec",
             "range": "stddev: 0.004826094126186881",
             "extra": "mean: 390.3202128000203 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 5.35772300287066,
             "unit": "iter/sec",
             "range": "stddev: 0.009890558830028028",
             "extra": "mean: 186.64645399999245 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 6.6676705003355,
             "unit": "iter/sec",
             "range": "stddev: 0.005170591180102109",
             "extra": "mean: 149.97741714286607 msec\nrounds: 7"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 13.756543503616,
             "unit": "iter/sec",
             "range": "stddev: 0.0068010833160209875",
             "extra": "mean: 72.69267892309891 msec\nrounds: 13"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 19.12568810281359,
             "unit": "iter/sec",
             "range": "stddev: 0.00419137107708159",
             "extra": "mean: 52.28570049999348 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 18.199604294991655,
             "unit": "iter/sec",
             "range": "stddev: 0.005472619341552828",
             "extra": "mean: 54.9462495882501 msec\nrounds: 17"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 16.21248800124085,
             "unit": "iter/sec",
             "range": "stddev: 0.0038518185239742085",
@@ -2508,49 +2508,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 3.012248647030877,
             "unit": "iter/sec",
             "range": "stddev: 0.0044750873463885055",
             "extra": "mean: 331.97790660000237 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 6.265700965505456,
             "unit": "iter/sec",
             "range": "stddev: 0.006232740628037028",
             "extra": "mean: 159.59906249999753 msec\nrounds: 6"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 7.734649663451696,
             "unit": "iter/sec",
             "range": "stddev: 0.0031915533808914254",
             "extra": "mean: 129.28833800000916 msec\nrounds: 8"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 15.978089224940529,
             "unit": "iter/sec",
             "range": "stddev: 0.003128456160816235",
             "extra": "mean: 62.58570633333799 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 21.58781027972297,
             "unit": "iter/sec",
             "range": "stddev: 0.00460577146521851",
             "extra": "mean: 46.3224378499973 msec\nrounds: 20"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 20.56810658405284,
             "unit": "iter/sec",
             "range": "stddev: 0.003275168493760069",
             "extra": "mean: 48.61896236843378 msec\nrounds: 19"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 18.60657675185482,
             "unit": "iter/sec",
             "range": "stddev: 0.004157908888417065",
@@ -2581,49 +2581,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 2.4328043053753836,
             "unit": "iter/sec",
             "range": "stddev: 0.018594305332043235",
             "extra": "mean: 411.04826960000764 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 5.181418133002949,
             "unit": "iter/sec",
             "range": "stddev: 0.01154257622329996",
             "extra": "mean: 192.99735599999508 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 6.319006160444081,
             "unit": "iter/sec",
             "range": "stddev: 0.010035278125754419",
             "extra": "mean: 158.25273383334113 msec\nrounds: 6"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 13.373898194324134,
             "unit": "iter/sec",
             "range": "stddev: 0.004607365247452833",
             "extra": "mean: 74.77251474999254 msec\nrounds: 12"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 16.69539263080154,
             "unit": "iter/sec",
             "range": "stddev: 0.006026136098012846",
             "extra": "mean: 59.89676446153698 msec\nrounds: 13"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 16.081908927479294,
             "unit": "iter/sec",
             "range": "stddev: 0.0057387134630660485",
             "extra": "mean: 62.18167286666396 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 15.147500047611144,
             "unit": "iter/sec",
             "range": "stddev: 0.004708490291997831",
@@ -2654,49 +2654,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 2.55076057285529,
             "unit": "iter/sec",
             "range": "stddev: 0.004679690831581262",
             "extra": "mean: 392.0399313999951 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 5.660928829087087,
             "unit": "iter/sec",
             "range": "stddev: 0.00941553755680749",
             "extra": "mean: 176.6494563333462 msec\nrounds: 6"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 6.760322063171795,
             "unit": "iter/sec",
             "range": "stddev: 0.008519861003098126",
             "extra": "mean: 147.92194671429928 msec\nrounds: 7"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 14.418363038413602,
             "unit": "iter/sec",
             "range": "stddev: 0.004245651369302783",
             "extra": "mean: 69.35600090910364 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 19.547849827904102,
             "unit": "iter/sec",
             "range": "stddev: 0.005619487771314775",
             "extra": "mean: 51.15652150000268 msec\nrounds: 14"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 17.82832019391831,
             "unit": "iter/sec",
             "range": "stddev: 0.004235921487784439",
             "extra": "mean: 56.09053400000777 msec\nrounds: 18"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 15.404313124698001,
             "unit": "iter/sec",
             "range": "stddev: 0.006322061233258118",
@@ -2727,49 +2727,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 2.275313822590627,
             "unit": "iter/sec",
             "range": "stddev: 0.031018673699682676",
             "extra": "mean: 439.49981320001825 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 5.070000359280044,
             "unit": "iter/sec",
             "range": "stddev: 0.009576282425448666",
             "extra": "mean: 197.23864480001794 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 5.961090300464609,
             "unit": "iter/sec",
             "range": "stddev: 0.004196439838002592",
             "extra": "mean: 167.7545465000018 msec\nrounds: 6"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 12.647999335915099,
             "unit": "iter/sec",
             "range": "stddev: 0.006120028801638101",
             "extra": "mean: 79.06388776922313 msec\nrounds: 13"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 18.617179875411026,
             "unit": "iter/sec",
             "range": "stddev: 0.0033492882370994644",
             "extra": "mean: 53.71382812499803 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 17.163054858743457,
             "unit": "iter/sec",
             "range": "stddev: 0.005414625199886117",
             "extra": "mean: 58.26468587499534 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 14.92206223415983,
             "unit": "iter/sec",
             "range": "stddev: 0.005543148509597111",
@@ -2800,49 +2800,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 2.3178437171843003,
             "unit": "iter/sec",
             "range": "stddev: 0.01045514372830979",
             "extra": "mean: 431.4354728000353 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 4.916722612496413,
             "unit": "iter/sec",
             "range": "stddev: 0.002847258850427448",
             "extra": "mean: 203.38751619999584 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 5.816189142432548,
             "unit": "iter/sec",
             "range": "stddev: 0.00594378712821577",
             "extra": "mean: 171.93388583332117 msec\nrounds: 6"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 12.131534647978654,
             "unit": "iter/sec",
             "range": "stddev: 0.005434837082621646",
             "extra": "mean: 82.42980208333488 msec\nrounds: 12"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 16.811827855446,
             "unit": "iter/sec",
             "range": "stddev: 0.005203989890387697",
             "extra": "mean: 59.48193192306935 msec\nrounds: 13"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 16.068089928997587,
             "unit": "iter/sec",
             "range": "stddev: 0.004597870875271898",
             "extra": "mean: 62.235150812501416 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 14.474409915811279,
             "unit": "iter/sec",
             "range": "stddev: 0.00402919891678058",
@@ -2873,49 +2873,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 3.1728814240964773,
             "unit": "iter/sec",
             "range": "stddev: 0.006620786318729979",
             "extra": "mean: 315.17093339999747 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 6.517209299584092,
             "unit": "iter/sec",
             "range": "stddev: 0.009710768480580145",
             "extra": "mean: 153.4399087142739 msec\nrounds: 7"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 7.737051799371939,
             "unit": "iter/sec",
             "range": "stddev: 0.003262015147741317",
             "extra": "mean: 129.24819762498885 msec\nrounds: 8"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 16.872042788555042,
             "unit": "iter/sec",
             "range": "stddev: 0.0027529624572952493",
             "extra": "mean: 59.26964579999397 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 23.53159246440274,
             "unit": "iter/sec",
             "range": "stddev: 0.003060171471657778",
             "extra": "mean: 42.49606147619391 msec\nrounds: 21"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 21.53162084314477,
             "unit": "iter/sec",
             "range": "stddev: 0.0034324918934458995",
             "extra": "mean: 46.4433219999961 msec\nrounds: 20"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 19.930171168601355,
             "unit": "iter/sec",
             "range": "stddev: 0.0025064241238868835",
@@ -2946,49 +2946,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 3.2642519944880277,
             "unit": "iter/sec",
             "range": "stddev: 0.005558203255794542",
             "extra": "mean: 306.3488975999974 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 6.681597848840124,
             "unit": "iter/sec",
             "range": "stddev: 0.00531424037106804",
             "extra": "mean: 149.6647991428566 msec\nrounds: 7"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 7.817097140167826,
             "unit": "iter/sec",
             "range": "stddev: 0.005941497143954886",
             "extra": "mean: 127.92472475000238 msec\nrounds: 8"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 17.08762719773413,
             "unit": "iter/sec",
             "range": "stddev: 0.002951705445805697",
             "extra": "mean: 58.521875999998585 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 23.55179942513349,
             "unit": "iter/sec",
             "range": "stddev: 0.003321362592470791",
             "extra": "mean: 42.45960072727361 msec\nrounds: 22"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 21.73804924812203,
             "unit": "iter/sec",
             "range": "stddev: 0.003091866473980786",
             "extra": "mean: 46.00228790476178 msec\nrounds: 21"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 20.632595374171473,
             "unit": "iter/sec",
             "range": "stddev: 0.002465435793716597",
@@ -3019,49 +3019,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 3.1292546637224676,
             "unit": "iter/sec",
             "range": "stddev: 0.0037534285084698726",
             "extra": "mean: 319.56491480000864 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 6.3539461682824045,
             "unit": "iter/sec",
             "range": "stddev: 0.007262315398799213",
             "extra": "mean: 157.38251057142958 msec\nrounds: 7"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 7.7128344604279,
             "unit": "iter/sec",
             "range": "stddev: 0.004404645505286308",
             "extra": "mean: 129.65402085714166 msec\nrounds: 7"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 16.401495811170353,
             "unit": "iter/sec",
             "range": "stddev: 0.003489241366838052",
             "extra": "mean: 60.970048799996825 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 21.86456329917388,
             "unit": "iter/sec",
             "range": "stddev: 0.004395099386952481",
             "extra": "mean: 45.73610670000363 msec\nrounds: 20"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 20.769246469984296,
             "unit": "iter/sec",
             "range": "stddev: 0.003209803752640471",
             "extra": "mean: 48.14811174999534 msec\nrounds: 20"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 18.948333649168667,
             "unit": "iter/sec",
             "range": "stddev: 0.003172482567348697",
@@ -3092,49 +3092,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 2.5366392721851807,
             "unit": "iter/sec",
             "range": "stddev: 0.008155487162338932",
             "extra": "mean: 394.222391400001 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 5.676685399214859,
             "unit": "iter/sec",
             "range": "stddev: 0.008408904030293398",
             "extra": "mean: 176.15913683331996 msec\nrounds: 6"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 6.974078587788827,
             "unit": "iter/sec",
             "range": "stddev: 0.009330520604605427",
             "extra": "mean: 143.3881174999859 msec\nrounds: 6"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 14.07994222735474,
             "unit": "iter/sec",
             "range": "stddev: 0.0024866211868194983",
             "extra": "mean: 71.0230186923057 msec\nrounds: 13"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 19.208937226974882,
             "unit": "iter/sec",
             "range": "stddev: 0.003151791395503009",
             "extra": "mean: 52.059100833320024 msec\nrounds: 18"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 17.61841900172261,
             "unit": "iter/sec",
             "range": "stddev: 0.0038886897089550256",
             "extra": "mean: 56.75878181250127 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 18.237156927910696,
             "unit": "iter/sec",
             "range": "stddev: 0.0026842544061923003",
@@ -3165,49 +3165,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 2.5918519989144815,
             "unit": "iter/sec",
             "range": "stddev: 0.01306112472235142",
             "extra": "mean: 385.8244993999733 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 5.355767032321091,
             "unit": "iter/sec",
             "range": "stddev: 0.008717743793159732",
             "extra": "mean: 186.7146188333398 msec\nrounds: 6"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 6.41382680810771,
             "unit": "iter/sec",
             "range": "stddev: 0.00393739037516865",
             "extra": "mean: 155.91315916667745 msec\nrounds: 6"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 13.580170793693657,
             "unit": "iter/sec",
             "range": "stddev: 0.006003948187873971",
             "extra": "mean: 73.63677638460769 msec\nrounds: 13"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 19.281931756049417,
             "unit": "iter/sec",
             "range": "stddev: 0.0035728310951774764",
             "extra": "mean: 51.86202361110759 msec\nrounds: 18"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 17.72084827632397,
             "unit": "iter/sec",
             "range": "stddev: 0.0062857537643453264",
             "extra": "mean: 56.43070717647614 msec\nrounds: 17"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 16.70510581118353,
             "unit": "iter/sec",
             "range": "stddev: 0.004737518958473324",
@@ -3238,49 +3238,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 2.638475314992529,
             "unit": "iter/sec",
             "range": "stddev: 0.008539802250124334",
             "extra": "mean: 379.00676739999426 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 5.218189068352598,
             "unit": "iter/sec",
             "range": "stddev: 0.011762478253970062",
             "extra": "mean: 191.6373644000032 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 6.251834092752919,
             "unit": "iter/sec",
             "range": "stddev: 0.011646686829126602",
             "extra": "mean: 159.95306100000204 msec\nrounds: 7"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 13.045953205816026,
             "unit": "iter/sec",
             "range": "stddev: 0.008093204488759227",
             "extra": "mean: 76.6521222500008 msec\nrounds: 12"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 18.24978970792853,
             "unit": "iter/sec",
             "range": "stddev: 0.005643937056266276",
             "extra": "mean: 54.795151944438835 msec\nrounds: 18"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 16.557847595383045,
             "unit": "iter/sec",
             "range": "stddev: 0.005179258651796023",
             "extra": "mean: 60.39432325001215 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 16.154306974093256,
             "unit": "iter/sec",
             "range": "stddev: 0.00463164191324969",
@@ -3311,49 +3311,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 3.103882645186873,
             "unit": "iter/sec",
             "range": "stddev: 0.007771199825156561",
             "extra": "mean: 322.1771291999971 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 6.427443458810929,
             "unit": "iter/sec",
             "range": "stddev: 0.009054492340125526",
             "extra": "mean: 155.58285442856297 msec\nrounds: 7"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 7.808565329509389,
             "unit": "iter/sec",
             "range": "stddev: 0.006204269681076905",
             "extra": "mean: 128.06449812501342 msec\nrounds: 8"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 16.58382130287634,
             "unit": "iter/sec",
             "range": "stddev: 0.0033537855678115354",
             "extra": "mean: 60.29973320000484 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 22.51450490545945,
             "unit": "iter/sec",
             "range": "stddev: 0.0039050087657066953",
             "extra": "mean: 44.415811238092736 msec\nrounds: 21"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 21.57044716985367,
             "unit": "iter/sec",
             "range": "stddev: 0.004403934506586983",
             "extra": "mean: 46.35972505000154 msec\nrounds: 20"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 19.965412341150813,
             "unit": "iter/sec",
             "range": "stddev: 0.003671157854089316",
@@ -3384,49 +3384,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 2.3807941443038305,
             "unit": "iter/sec",
             "range": "stddev: 0.017561085529793054",
             "extra": "mean: 420.02791480000496 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 5.005336284113745,
             "unit": "iter/sec",
             "range": "stddev: 0.0086034816441855",
             "extra": "mean: 199.78677620000553 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 5.750436314115982,
             "unit": "iter/sec",
             "range": "stddev: 0.0018364972249307393",
             "extra": "mean: 173.8998478333258 msec\nrounds: 6"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 12.075857202006642,
             "unit": "iter/sec",
             "range": "stddev: 0.004537456199124991",
             "extra": "mean: 82.80985633333178 msec\nrounds: 12"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 16.32577508510354,
             "unit": "iter/sec",
             "range": "stddev: 0.006707566889904753",
             "extra": "mean: 61.25283453846245 msec\nrounds: 13"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 15.995684509347914,
             "unit": "iter/sec",
             "range": "stddev: 0.005806354531109036",
             "extra": "mean: 62.51686193332944 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 14.65432816784337,
             "unit": "iter/sec",
             "range": "stddev: 0.00472913341502751",
@@ -3457,49 +3457,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 2.6740378766929735,
             "unit": "iter/sec",
             "range": "stddev: 0.006899463786214864",
             "extra": "mean: 373.966280999997 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 5.465883581332426,
             "unit": "iter/sec",
             "range": "stddev: 0.006603600733097727",
             "extra": "mean: 182.95303679999506 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 6.732433922159408,
             "unit": "iter/sec",
             "range": "stddev: 0.0029619714426611056",
             "extra": "mean: 148.53469214284587 msec\nrounds: 7"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 14.373125760985706,
             "unit": "iter/sec",
             "range": "stddev: 0.00714563872567039",
             "extra": "mean: 69.5742886153819 msec\nrounds: 13"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 20.142383954088288,
             "unit": "iter/sec",
             "range": "stddev: 0.0042187082110757826",
             "extra": "mean: 49.64655635000099 msec\nrounds: 20"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 18.567683904911487,
             "unit": "iter/sec",
             "range": "stddev: 0.005568684245569398",
             "extra": "mean: 53.85701335294069 msec\nrounds: 17"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 17.718508164235388,
             "unit": "iter/sec",
             "range": "stddev: 0.0037433942414929686",
@@ -3530,49 +3530,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 2.5015169549028413,
             "unit": "iter/sec",
             "range": "stddev: 0.008863373066375987",
             "extra": "mean: 399.75743439997586 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 5.17687922452723,
             "unit": "iter/sec",
             "range": "stddev: 0.010160423444970788",
             "extra": "mean: 193.16656939998893 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 6.237948887051647,
             "unit": "iter/sec",
             "range": "stddev: 0.0030383656891843826",
             "extra": "mean: 160.3091044999966 msec\nrounds: 6"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 13.423038605463663,
             "unit": "iter/sec",
             "range": "stddev: 0.004999019666810706",
             "extra": "mean: 74.49878000000415 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 17.740672620652187,
             "unit": "iter/sec",
             "range": "stddev: 0.0056780283371894395",
             "extra": "mean: 56.36764858824376 msec\nrounds: 17"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 16.810388943084043,
             "unit": "iter/sec",
             "range": "stddev: 0.0051613171014526",
             "extra": "mean: 59.48702337499512 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 15.04207899758891,
             "unit": "iter/sec",
             "range": "stddev: 0.006122023471623946",
@@ -3603,49 +3603,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 4.353793047403886,
             "unit": "iter/sec",
             "range": "stddev: 0.002849179252438691",
             "extra": "mean: 229.6847803999981 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 8.807826711443738,
             "unit": "iter/sec",
             "range": "stddev: 0.004404224111827514",
             "extra": "mean: 113.53538537500185 msec\nrounds: 8"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 9.859243351097607,
             "unit": "iter/sec",
             "range": "stddev: 0.0037641690896180876",
             "extra": "mean: 101.42766177778464 msec\nrounds: 9"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 22.30585451853073,
             "unit": "iter/sec",
             "range": "stddev: 0.0034349511654848787",
             "extra": "mean: 44.83127957143465 msec\nrounds: 21"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 31.01473895407288,
             "unit": "iter/sec",
             "range": "stddev: 0.003019440149818666",
             "extra": "mean: 32.24273470367801 msec\nrounds: 27"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 28.553554077961213,
             "unit": "iter/sec",
             "range": "stddev: 0.0028231945989486717",
             "extra": "mean: 35.02190996152876 msec\nrounds: 26"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 25.75150349778378,
             "unit": "iter/sec",
             "range": "stddev: 0.003189181777540428",
@@ -3676,49 +3676,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 3.1434173194026047,
             "unit": "iter/sec",
             "range": "stddev: 0.009404552700213646",
             "extra": "mean: 318.1251161999853 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 6.5239078192188895,
             "unit": "iter/sec",
             "range": "stddev: 0.006179899103655339",
             "extra": "mean: 153.2823619999785 msec\nrounds: 7"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 7.829973265877381,
             "unit": "iter/sec",
             "range": "stddev: 0.006134704165426064",
             "extra": "mean: 127.71435687500343 msec\nrounds: 8"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 16.844352443983887,
             "unit": "iter/sec",
             "range": "stddev: 0.0032825767132740077",
             "extra": "mean: 59.36707886667136 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 23.081416978086292,
             "unit": "iter/sec",
             "range": "stddev: 0.004078982380898048",
             "extra": "mean: 43.32489642856022 msec\nrounds: 21"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 21.508552825842923,
             "unit": "iter/sec",
             "range": "stddev: 0.0030551132213525365",
             "extra": "mean: 46.49313266667024 msec\nrounds: 18"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 19.523241606968313,
             "unit": "iter/sec",
             "range": "stddev: 0.003894734876568537",
@@ -3749,49 +3749,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 4.327855461364762,
             "unit": "iter/sec",
             "range": "stddev: 0.0024626709463587628",
             "extra": "mean: 231.06132099999854 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 8.913073653751589,
             "unit": "iter/sec",
             "range": "stddev: 0.003532731586328518",
             "extra": "mean: 112.1947421111113 msec\nrounds: 9"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 10.040542324310625,
             "unit": "iter/sec",
             "range": "stddev: 0.004707538951016666",
             "extra": "mean: 99.59621380000101 msec\nrounds: 10"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 22.23181408900801,
             "unit": "iter/sec",
             "range": "stddev: 0.0029555676197991878",
             "extra": "mean: 44.98058484999774 msec\nrounds: 20"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 31.08850710664927,
             "unit": "iter/sec",
             "range": "stddev: 0.002507618787962129",
             "extra": "mean: 32.166227750000836 msec\nrounds: 28"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 27.960816842614,
             "unit": "iter/sec",
             "range": "stddev: 0.002487701097992809",
             "extra": "mean: 35.76433426923131 msec\nrounds: 26"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 25.292231723716004,
             "unit": "iter/sec",
             "range": "stddev: 0.0030957151606665423",
@@ -3822,49 +3822,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 4.314994643494925,
             "unit": "iter/sec",
             "range": "stddev: 0.007890747356913783",
             "extra": "mean: 231.74999800000933 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 8.740640077378847,
             "unit": "iter/sec",
             "range": "stddev: 0.003516534579408925",
             "extra": "mean: 114.40809724999923 msec\nrounds: 8"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 9.94967056650729,
             "unit": "iter/sec",
             "range": "stddev: 0.004716384114961808",
             "extra": "mean: 100.50584019999746 msec\nrounds: 10"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 21.488583339689352,
             "unit": "iter/sec",
             "range": "stddev: 0.004147034418386272",
             "extra": "mean: 46.53633905000163 msec\nrounds: 20"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 29.5003930590098,
             "unit": "iter/sec",
             "range": "stddev: 0.0028883472758721032",
             "extra": "mean: 33.897853428586345 msec\nrounds: 28"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 26.76836615693257,
             "unit": "iter/sec",
             "range": "stddev: 0.0031436629980399343",
             "extra": "mean: 37.35752844000217 msec\nrounds: 25"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 24.792826934135608,
             "unit": "iter/sec",
             "range": "stddev: 0.0030632689007942587",
@@ -3895,49 +3895,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 3.8935354713251606,
             "unit": "iter/sec",
             "range": "stddev: 0.0030836871465401874",
             "extra": "mean: 256.83598040000675 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 9.319992018814338,
             "unit": "iter/sec",
             "range": "stddev: 0.0034898352749363594",
             "extra": "mean: 107.29622922222386 msec\nrounds: 9"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 12.519992550103066,
             "unit": "iter/sec",
             "range": "stddev: 0.003964977147196747",
             "extra": "mean: 79.87225200000363 msec\nrounds: 12"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 21.740627371501,
             "unit": "iter/sec",
             "range": "stddev: 0.0032755230210969612",
             "extra": "mean: 45.99683270000128 msec\nrounds: 20"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 28.946581161941307,
             "unit": "iter/sec",
             "range": "stddev: 0.0029263554095512127",
             "extra": "mean: 34.54639407692092 msec\nrounds: 26"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 24.064223486879328,
             "unit": "iter/sec",
             "range": "stddev: 0.0030825214558640674",
             "extra": "mean: 41.55546513043463 msec\nrounds: 23"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 24.049817310215587,
             "unit": "iter/sec",
             "range": "stddev: 0.003276621405447292",
@@ -3968,49 +3968,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 4.856575392117585,
             "unit": "iter/sec",
             "range": "stddev: 0.005436810153753326",
             "extra": "mean: 205.90640919999714 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 11.951900666649422,
             "unit": "iter/sec",
             "range": "stddev: 0.003920029152197756",
             "extra": "mean: 83.66870072727424 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 15.626521684869685,
             "unit": "iter/sec",
             "range": "stddev: 0.0036145660949407805",
             "extra": "mean: 63.99376778571561 msec\nrounds: 14"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 26.196962636393966,
             "unit": "iter/sec",
             "range": "stddev: 0.0031985936255481354",
             "extra": "mean: 38.172364249997294 msec\nrounds: 24"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 31.881665635196065,
             "unit": "iter/sec",
             "range": "stddev: 0.003590330526987624",
             "extra": "mean: 31.365989827584187 msec\nrounds: 29"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 26.586197425334312,
             "unit": "iter/sec",
             "range": "stddev: 0.002950851975215706",
             "extra": "mean: 37.61350237499883 msec\nrounds: 24"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 26.775912303179368,
             "unit": "iter/sec",
             "range": "stddev: 0.0027931364562379358",
@@ -4041,49 +4041,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.012791189405806,
             "unit": "iter/sec",
             "range": "stddev: 0.005621021118485608",
             "extra": "mean: 199.4896580000045 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 12.01236517489271,
             "unit": "iter/sec",
             "range": "stddev: 0.005418514512999066",
             "extra": "mean: 83.24755245454246 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 15.497359005167606,
             "unit": "iter/sec",
             "range": "stddev: 0.003087450191802707",
             "extra": "mean: 64.5271235999985 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 25.81127717359301,
             "unit": "iter/sec",
             "range": "stddev: 0.0035024633596858",
             "extra": "mean: 38.74275547368418 msec\nrounds: 19"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 32.08035171446338,
             "unit": "iter/sec",
             "range": "stddev: 0.0029693975631427372",
             "extra": "mean: 31.171728068964764 msec\nrounds: 29"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 26.335418009207118,
             "unit": "iter/sec",
             "range": "stddev: 0.0030205656064361914",
             "extra": "mean: 37.9716775199995 msec\nrounds: 25"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 26.513295074315955,
             "unit": "iter/sec",
             "range": "stddev: 0.0030409608099258036",
@@ -4114,49 +4114,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 4.990966380796493,
             "unit": "iter/sec",
             "range": "stddev: 0.005415693423719217",
             "extra": "mean: 200.36199880000254 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 12.073579621149442,
             "unit": "iter/sec",
             "range": "stddev: 0.002951458697033128",
             "extra": "mean: 82.82547772727546 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 15.89292338248027,
             "unit": "iter/sec",
             "range": "stddev: 0.002808726703149482",
             "extra": "mean: 62.921086066667925 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 27.74436702940725,
             "unit": "iter/sec",
             "range": "stddev: 0.0029178799983380797",
             "extra": "mean: 36.043352473677416 msec\nrounds: 19"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 33.43025834997434,
             "unit": "iter/sec",
             "range": "stddev: 0.003258647077933348",
             "extra": "mean: 29.913020399998423 msec\nrounds: 30"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 27.44777588262049,
             "unit": "iter/sec",
             "range": "stddev: 0.003261675792148392",
             "extra": "mean: 36.432824440000786 msec\nrounds: 25"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 27.612143878309155,
             "unit": "iter/sec",
             "range": "stddev: 0.0028993684189269255",
@@ -4187,49 +4187,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 4.979401103966184,
             "unit": "iter/sec",
             "range": "stddev: 0.0037012456178299796",
             "extra": "mean: 200.82736440000417 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 12.20536239912046,
             "unit": "iter/sec",
             "range": "stddev: 0.0031445362101981066",
             "extra": "mean: 81.93120099998521 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 15.809027846980646,
             "unit": "iter/sec",
             "range": "stddev: 0.0028356757171756463",
             "extra": "mean: 63.25499642857478 msec\nrounds: 14"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 26.69318999899812,
             "unit": "iter/sec",
             "range": "stddev: 0.0040752970328014875",
             "extra": "mean: 37.4627386250026 msec\nrounds: 24"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 31.292424634846117,
             "unit": "iter/sec",
             "range": "stddev: 0.004488607743465359",
             "extra": "mean: 31.956616071432062 msec\nrounds: 28"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 26.687571105168413,
             "unit": "iter/sec",
             "range": "stddev: 0.0035355440003900997",
             "extra": "mean: 37.47062615999312 msec\nrounds: 25"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 26.98616847609061,
             "unit": "iter/sec",
             "range": "stddev: 0.0031347898686231637",
@@ -4260,49 +4260,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.104238065811779,
             "unit": "iter/sec",
             "range": "stddev: 0.004148457269953647",
             "extra": "mean: 195.9156268000129 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 12.451685372505162,
             "unit": "iter/sec",
             "range": "stddev: 0.0036361414610442543",
             "extra": "mean: 80.31041341665457 msec\nrounds: 12"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 16.704273628938317,
             "unit": "iter/sec",
             "range": "stddev: 0.003719243054338092",
             "extra": "mean: 59.86491973333159 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 27.62822936481902,
             "unit": "iter/sec",
             "range": "stddev: 0.003932673987166917",
             "extra": "mean: 36.19486384000311 msec\nrounds: 25"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 34.881723395496955,
             "unit": "iter/sec",
             "range": "stddev: 0.002418855908285614",
             "extra": "mean: 28.66830829032647 msec\nrounds: 31"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 28.335614604601947,
             "unit": "iter/sec",
             "range": "stddev: 0.003512626831301473",
             "extra": "mean: 35.29127615384745 msec\nrounds: 26"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 27.571996358080682,
             "unit": "iter/sec",
             "range": "stddev: 0.0028723734750446686",
@@ -4333,49 +4333,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 4.9321008623541305,
             "unit": "iter/sec",
             "range": "stddev: 0.004853394836109235",
             "extra": "mean: 202.7533556000094 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 12.13865834940494,
             "unit": "iter/sec",
             "range": "stddev: 0.0025754004996904343",
             "extra": "mean: 82.38142727272836 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 15.526763557908586,
             "unit": "iter/sec",
             "range": "stddev: 0.00284600717688858",
             "extra": "mean: 64.40492226666568 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 24.494468498468112,
             "unit": "iter/sec",
             "range": "stddev: 0.003307791147951274",
             "extra": "mean: 40.825543941177585 msec\nrounds: 17"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 30.171978129776747,
             "unit": "iter/sec",
             "range": "stddev: 0.0032647706379280825",
             "extra": "mean: 33.143335703703805 msec\nrounds: 27"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 25.03736051463643,
             "unit": "iter/sec",
             "range": "stddev: 0.0038327167946783872",
             "extra": "mean: 39.94031237499721 msec\nrounds: 24"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 25.53932659637953,
             "unit": "iter/sec",
             "range": "stddev: 0.0032707075984460057",
@@ -4406,49 +4406,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.102793160694985,
             "unit": "iter/sec",
             "range": "stddev: 0.004157986335211631",
             "extra": "mean: 195.9711021999965 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 11.912170114297929,
             "unit": "iter/sec",
             "range": "stddev: 0.003978181195876896",
             "extra": "mean: 83.94776018180944 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 15.222597366462372,
             "unit": "iter/sec",
             "range": "stddev: 0.0033434819856290013",
             "extra": "mean: 65.69181171428389 msec\nrounds: 14"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 25.599747660391174,
             "unit": "iter/sec",
             "range": "stddev: 0.003768633426614713",
             "extra": "mean: 39.06288504348169 msec\nrounds: 23"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 30.831349670909052,
             "unit": "iter/sec",
             "range": "stddev: 0.004311231959080733",
             "extra": "mean: 32.434519107139536 msec\nrounds: 28"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 25.858027283403576,
             "unit": "iter/sec",
             "range": "stddev: 0.003515999620646764",
             "extra": "mean: 38.672710375003305 msec\nrounds: 24"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 26.21063905740468,
             "unit": "iter/sec",
             "range": "stddev: 0.0025026008741940316",
@@ -4479,49 +4479,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.088402371450165,
             "unit": "iter/sec",
             "range": "stddev: 0.005637557271094072",
             "extra": "mean: 196.52533880000647 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 12.292915157712416,
             "unit": "iter/sec",
             "range": "stddev: 0.0035324322765405316",
             "extra": "mean: 81.34766954546276 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 16.29519704563624,
             "unit": "iter/sec",
             "range": "stddev: 0.003958892715529881",
             "extra": "mean: 61.36777586668055 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 27.183857230048186,
             "unit": "iter/sec",
             "range": "stddev: 0.0029119707340245953",
             "extra": "mean: 36.78653811110482 msec\nrounds: 18"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 34.019379554369834,
             "unit": "iter/sec",
             "range": "stddev: 0.0031630857803134314",
             "extra": "mean: 29.395009935492745 msec\nrounds: 31"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 28.111914826073146,
             "unit": "iter/sec",
             "range": "stddev: 0.0029751986513337726",
             "extra": "mean: 35.572105499996866 msec\nrounds: 26"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 28.233310631755995,
             "unit": "iter/sec",
             "range": "stddev: 0.0025538450527969867",
@@ -4552,49 +4552,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.0925646759073695,
             "unit": "iter/sec",
             "range": "stddev: 0.0038671133035914802",
             "extra": "mean: 196.36471280000478 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 12.47896818100794,
             "unit": "iter/sec",
             "range": "stddev: 0.0042377145270750625",
             "extra": "mean: 80.13483050000285 msec\nrounds: 12"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 16.41952567652884,
             "unit": "iter/sec",
             "range": "stddev: 0.0028064909142955976",
             "extra": "mean: 60.903099133336504 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 27.67752247221769,
             "unit": "iter/sec",
             "range": "stddev: 0.002883163733337853",
             "extra": "mean: 36.13040151999826 msec\nrounds: 25"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 35.08542168959403,
             "unit": "iter/sec",
             "range": "stddev: 0.0023121377686130986",
             "extra": "mean: 28.501866354839613 msec\nrounds: 31"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 28.39037596828859,
             "unit": "iter/sec",
             "range": "stddev: 0.0030141084942353646",
             "extra": "mean: 35.223203846154675 msec\nrounds: 26"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 28.625590358897313,
             "unit": "iter/sec",
             "range": "stddev: 0.002518704007120946",
@@ -4625,49 +4625,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.119331017289979,
             "unit": "iter/sec",
             "range": "stddev: 0.0010996228140166802",
             "extra": "mean: 195.33802299999934 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 12.269228102559818,
             "unit": "iter/sec",
             "range": "stddev: 0.002728708448147003",
             "extra": "mean: 81.5047199091003 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 16.121430929085705,
             "unit": "iter/sec",
             "range": "stddev: 0.0028898489272486945",
             "extra": "mean: 62.029233285727514 msec\nrounds: 14"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 27.74886941205431,
             "unit": "iter/sec",
             "range": "stddev: 0.00306338188580368",
             "extra": "mean: 36.03750427271797 msec\nrounds: 22"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 33.96709959187556,
             "unit": "iter/sec",
             "range": "stddev: 0.002582486879012987",
             "extra": "mean: 29.440252833338338 msec\nrounds: 30"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 27.904266206630588,
             "unit": "iter/sec",
             "range": "stddev: 0.003078875085988459",
             "extra": "mean: 35.83681407692351 msec\nrounds: 26"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 27.941708647924816,
             "unit": "iter/sec",
             "range": "stddev: 0.003135115453876646",
@@ -4698,49 +4698,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.04929515268183,
             "unit": "iter/sec",
             "range": "stddev: 0.0025746970353627456",
             "extra": "mean: 198.04744419998315 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 12.341727152525785,
             "unit": "iter/sec",
             "range": "stddev: 0.004365214099198895",
             "extra": "mean: 81.02593645455417 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 15.490930610573725,
             "unit": "iter/sec",
             "range": "stddev: 0.0038377652164212754",
             "extra": "mean: 64.55390093332578 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 26.952944067839915,
             "unit": "iter/sec",
             "range": "stddev: 0.0036764008111911197",
             "extra": "mean: 37.10169833332581 msec\nrounds: 24"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 33.497436597290225,
             "unit": "iter/sec",
             "range": "stddev: 0.004416116596813622",
             "extra": "mean: 29.85303060715085 msec\nrounds: 28"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 28.17735711603979,
             "unit": "iter/sec",
             "range": "stddev: 0.0035461165224051293",
             "extra": "mean: 35.48948880769077 msec\nrounds: 26"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 28.26319832987422,
             "unit": "iter/sec",
             "range": "stddev: 0.0032392736981104618",
@@ -4771,49 +4771,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.022558964218954,
             "unit": "iter/sec",
             "range": "stddev: 0.006997496505915478",
             "extra": "mean: 199.10169440001937 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 12.182858499466946,
             "unit": "iter/sec",
             "range": "stddev: 0.0035254663315692197",
             "extra": "mean: 82.08254245452777 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 15.869773921708907,
             "unit": "iter/sec",
             "range": "stddev: 0.004366993357865454",
             "extra": "mean: 63.01286993333027 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 28.145382238460762,
             "unit": "iter/sec",
             "range": "stddev: 0.0030722485384948013",
             "extra": "mean: 35.52980704001584 msec\nrounds: 25"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 34.719101080802425,
             "unit": "iter/sec",
             "range": "stddev: 0.0023158361111258485",
             "extra": "mean: 28.80258903226443 msec\nrounds: 31"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 28.274229384470924,
             "unit": "iter/sec",
             "range": "stddev: 0.0031340937170349407",
             "extra": "mean: 35.36789584614571 msec\nrounds: 26"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 28.43797804685865,
             "unit": "iter/sec",
             "range": "stddev: 0.0026974187924028096",
@@ -4844,49 +4844,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.0729137348288,
             "unit": "iter/sec",
             "range": "stddev: 0.0028991515085876017",
             "extra": "mean: 197.1253706000084 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 12.34233237022318,
             "unit": "iter/sec",
             "range": "stddev: 0.004030763808497537",
             "extra": "mean: 81.02196327272603 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 15.891329377314417,
             "unit": "iter/sec",
             "range": "stddev: 0.004140305417437405",
             "extra": "mean: 62.927397466667884 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 27.251667493771986,
             "unit": "iter/sec",
             "range": "stddev: 0.003017314037042696",
             "extra": "mean: 36.695002249992115 msec\nrounds: 24"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 33.85828535661307,
             "unit": "iter/sec",
             "range": "stddev: 0.0026603681617030257",
             "extra": "mean: 29.53486833333348 msec\nrounds: 30"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 27.573737949854262,
             "unit": "iter/sec",
             "range": "stddev: 0.002858599266802289",
             "extra": "mean: 36.266392384616296 msec\nrounds: 26"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 27.895450821920914,
             "unit": "iter/sec",
             "range": "stddev: 0.0025515025596013242",
@@ -4917,49 +4917,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 4.974077164115252,
             "unit": "iter/sec",
             "range": "stddev: 0.0044826507406381085",
             "extra": "mean: 201.04231739996976 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 11.866346470207704,
             "unit": "iter/sec",
             "range": "stddev: 0.00317668678887008",
             "extra": "mean: 84.27193681818194 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 15.174468719656778,
             "unit": "iter/sec",
             "range": "stddev: 0.00318269928961086",
             "extra": "mean: 65.90016550000298 msec\nrounds: 14"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 26.341154908302666,
             "unit": "iter/sec",
             "range": "stddev: 0.002907428735636284",
             "extra": "mean: 37.96340758334793 msec\nrounds: 24"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 32.548510209536296,
             "unit": "iter/sec",
             "range": "stddev: 0.0028920657511911393",
             "extra": "mean: 30.72337239284804 msec\nrounds: 28"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 26.12685731623673,
             "unit": "iter/sec",
             "range": "stddev: 0.0028539808936295704",
             "extra": "mean: 38.274790875002886 msec\nrounds: 24"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 26.328050781812138,
             "unit": "iter/sec",
             "range": "stddev: 0.003345351826497996",
@@ -4990,49 +4990,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.10452425071258,
             "unit": "iter/sec",
             "range": "stddev: 0.001433847366731103",
             "extra": "mean: 195.90464280004198 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 12.33383856538999,
             "unit": "iter/sec",
             "range": "stddev: 0.0036339775719132455",
             "extra": "mean: 81.07775975000209 msec\nrounds: 12"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 15.756844676814199,
             "unit": "iter/sec",
             "range": "stddev: 0.0035799453737043",
             "extra": "mean: 63.46448292858245 msec\nrounds: 14"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 26.883790403683744,
             "unit": "iter/sec",
             "range": "stddev: 0.0036397371971827945",
             "extra": "mean: 37.19713570832539 msec\nrounds: 24"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 34.53819699225926,
             "unit": "iter/sec",
             "range": "stddev: 0.0026400516406208715",
             "extra": "mean: 28.953451166664003 msec\nrounds: 30"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 28.02523343297698,
             "unit": "iter/sec",
             "range": "stddev: 0.002950446847462082",
             "extra": "mean: 35.68212919230536 msec\nrounds: 26"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 28.252318884554242,
             "unit": "iter/sec",
             "range": "stddev: 0.0025331957190563846",
@@ -5063,49 +5063,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 4.6434969603530485,
             "unit": "iter/sec",
             "range": "stddev: 0.001516196462355559",
             "extra": "mean: 215.35493799999585 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 11.149548125260704,
             "unit": "iter/sec",
             "range": "stddev: 0.003202849388461052",
             "extra": "mean: 89.68973349999487 msec\nrounds: 10"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 14.531004823675413,
             "unit": "iter/sec",
             "range": "stddev: 0.002665187438381134",
             "extra": "mean: 68.81836542856945 msec\nrounds: 14"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 25.15182662597152,
             "unit": "iter/sec",
             "range": "stddev: 0.0028485413144167674",
             "extra": "mean: 39.758543777787104 msec\nrounds: 18"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 31.173785626094276,
             "unit": "iter/sec",
             "range": "stddev: 0.003272496029873164",
             "extra": "mean: 32.0782343214339 msec\nrounds: 28"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 25.374557147784707,
             "unit": "iter/sec",
             "range": "stddev: 0.003807133877650444",
             "extra": "mean: 39.40955478260647 msec\nrounds: 23"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 25.879405908600916,
             "unit": "iter/sec",
             "range": "stddev: 0.0030696846627961",
@@ -5136,49 +5136,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 4.688736308407341,
             "unit": "iter/sec",
             "range": "stddev: 0.0019375606529130412",
             "extra": "mean: 213.27708239998628 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 11.366161188434663,
             "unit": "iter/sec",
             "range": "stddev: 0.0037619495053305453",
             "extra": "mean: 87.98045210000396 msec\nrounds: 10"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 14.404293468697853,
             "unit": "iter/sec",
             "range": "stddev: 0.0035009186010380193",
             "extra": "mean: 69.4237452307614 msec\nrounds: 13"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 24.323122931092925,
             "unit": "iter/sec",
             "range": "stddev: 0.0037364963707822853",
             "extra": "mean: 41.11314171428506 msec\nrounds: 21"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 29.421022392734425,
             "unit": "iter/sec",
             "range": "stddev: 0.0034007202637675923",
             "extra": "mean: 33.98930148147917 msec\nrounds: 27"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 24.265333146646324,
             "unit": "iter/sec",
             "range": "stddev: 0.003754490245154876",
             "extra": "mean: 41.21105586956298 msec\nrounds: 23"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 24.734964133390825,
             "unit": "iter/sec",
             "range": "stddev: 0.0033888477951269586",
@@ -5209,49 +5209,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 4.78792890652583,
             "unit": "iter/sec",
             "range": "stddev: 0.006682692796433244",
             "extra": "mean: 208.8585731999956 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 11.32806182593941,
             "unit": "iter/sec",
             "range": "stddev: 0.003463963088283591",
             "extra": "mean: 88.27635436365324 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 14.911185808695821,
             "unit": "iter/sec",
             "range": "stddev: 0.0029222719301315167",
             "extra": "mean: 67.06374750000269 msec\nrounds: 14"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 25.781267429497493,
             "unit": "iter/sec",
             "range": "stddev: 0.004391301705028234",
             "extra": "mean: 38.787852565225535 msec\nrounds: 23"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 32.15271598127464,
             "unit": "iter/sec",
             "range": "stddev: 0.003287924076663777",
             "extra": "mean: 31.101571655171778 msec\nrounds: 29"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 26.262799603471986,
             "unit": "iter/sec",
             "range": "stddev: 0.003903535987015426",
             "extra": "mean: 38.07667175999768 msec\nrounds: 25"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 26.687951866857755,
             "unit": "iter/sec",
             "range": "stddev: 0.0034781296012749902",
@@ -5282,49 +5282,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 4.395105810937854,
             "unit": "iter/sec",
             "range": "stddev: 0.011697102050587528",
             "extra": "mean: 227.52580779997515 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 11.024163036144943,
             "unit": "iter/sec",
             "range": "stddev: 0.005035540505830536",
             "extra": "mean: 90.70983409092358 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 14.366470842395795,
             "unit": "iter/sec",
             "range": "stddev: 0.0037758235558356134",
             "extra": "mean: 69.60651721430266 msec\nrounds: 14"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 25.165605778772285,
             "unit": "iter/sec",
             "range": "stddev: 0.0025193297390828672",
             "extra": "mean: 39.736774421044174 msec\nrounds: 19"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 32.00237797784523,
             "unit": "iter/sec",
             "range": "stddev: 0.0027860540978216415",
             "extra": "mean: 31.247677928567846 msec\nrounds: 28"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 25.85282020265735,
             "unit": "iter/sec",
             "range": "stddev: 0.0029315033358565533",
             "extra": "mean: 38.680499541679104 msec\nrounds: 24"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 26.68855068516197,
             "unit": "iter/sec",
             "range": "stddev: 0.002065148571530413",
@@ -5355,49 +5355,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 4.390771698042269,
             "unit": "iter/sec",
             "range": "stddev: 0.00460208893100353",
             "extra": "mean: 227.7503976000105 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 10.42300516754175,
             "unit": "iter/sec",
             "range": "stddev: 0.004914560686876836",
             "extra": "mean: 95.94161989999748 msec\nrounds: 10"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 13.943646766608499,
             "unit": "iter/sec",
             "range": "stddev: 0.004064200458908511",
             "extra": "mean: 71.71724992307944 msec\nrounds: 13"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 22.14838467567025,
             "unit": "iter/sec",
             "range": "stddev: 0.0061122012564945715",
             "extra": "mean: 45.150019499999416 msec\nrounds: 20"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 29.109679077122063,
             "unit": "iter/sec",
             "range": "stddev: 0.003607727351087623",
             "extra": "mean: 34.35283492307279 msec\nrounds: 26"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 23.862257746345648,
             "unit": "iter/sec",
             "range": "stddev: 0.003627945483672226",
             "extra": "mean: 41.90718290909181 msec\nrounds: 22"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 23.93275334930989,
             "unit": "iter/sec",
             "range": "stddev: 0.003950241620377645",
@@ -5428,49 +5428,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 3.8509420363874662,
             "unit": "iter/sec",
             "range": "stddev: 0.010249559048479013",
             "extra": "mean: 259.6767208000074 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 8.47452409540885,
             "unit": "iter/sec",
             "range": "stddev: 0.005199487683702892",
             "extra": "mean: 118.00072650000004 msec\nrounds: 8"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 10.522572135218033,
             "unit": "iter/sec",
             "range": "stddev: 0.004115577111321165",
             "extra": "mean: 95.0337984999976 msec\nrounds: 10"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 15.06111119667381,
             "unit": "iter/sec",
             "range": "stddev: 0.004916736063989323",
             "extra": "mean: 66.39616340000505 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 17.614712318556126,
             "unit": "iter/sec",
             "range": "stddev: 0.004390699494524057",
             "extra": "mean: 56.77072562499674 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 15.8184836175918,
             "unit": "iter/sec",
             "range": "stddev: 0.0034665874723311335",
             "extra": "mean: 63.21718466667031 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 15.867692186724758,
             "unit": "iter/sec",
             "range": "stddev: 0.0032868533795963046",
@@ -5501,49 +5501,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 3.9884032580631197,
             "unit": "iter/sec",
             "range": "stddev: 0.010858023805875002",
             "extra": "mean: 250.7269038000004 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 8.78892620298006,
             "unit": "iter/sec",
             "range": "stddev: 0.0040567888499914205",
             "extra": "mean: 113.77954222222621 msec\nrounds: 9"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 10.939338175530008,
             "unit": "iter/sec",
             "range": "stddev: 0.003500365453624698",
             "extra": "mean: 91.41320836363579 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 16.200312955702024,
             "unit": "iter/sec",
             "range": "stddev: 0.003310850780497118",
             "extra": "mean: 61.72720259999854 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 18.557360150097814,
             "unit": "iter/sec",
             "range": "stddev: 0.0026418849059582318",
             "extra": "mean: 53.88697486666653 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 16.361453098772024,
             "unit": "iter/sec",
             "range": "stddev: 0.002924153907591438",
             "extra": "mean: 61.119265749999485 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 16.76875319417335,
             "unit": "iter/sec",
             "range": "stddev: 0.0033259505607251692",
@@ -5574,49 +5574,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 4.064323654148877,
             "unit": "iter/sec",
             "range": "stddev: 0.004353601811506807",
             "extra": "mean: 246.04339740000682 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 8.55314176189609,
             "unit": "iter/sec",
             "range": "stddev: 0.0049808125942115075",
             "extra": "mean: 116.91610262499808 msec\nrounds: 8"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 10.616680227078325,
             "unit": "iter/sec",
             "range": "stddev: 0.004470375625716558",
             "extra": "mean: 94.19140245455021 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 15.88018650821697,
             "unit": "iter/sec",
             "range": "stddev: 0.004446749885041133",
             "extra": "mean: 62.9715526000003 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 18.241318494861897,
             "unit": "iter/sec",
             "range": "stddev: 0.003114076233553978",
             "extra": "mean: 54.820598647059086 msec\nrounds: 17"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 16.014657673805136,
             "unit": "iter/sec",
             "range": "stddev: 0.0034864355030675355",
             "extra": "mean: 62.44279586666911 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 16.299373788708397,
             "unit": "iter/sec",
             "range": "stddev: 0.0036665018983231623",
@@ -5647,49 +5647,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 3.9575251677783845,
             "unit": "iter/sec",
             "range": "stddev: 0.004965201056081449",
             "extra": "mean: 252.68316880000157 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 8.58756770266539,
             "unit": "iter/sec",
             "range": "stddev: 0.004681909682391005",
             "extra": "mean: 116.44740800001172 msec\nrounds: 9"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 10.645980770874537,
             "unit": "iter/sec",
             "range": "stddev: 0.003933798701371202",
             "extra": "mean: 93.93216289999486 msec\nrounds: 10"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 15.738770208820698,
             "unit": "iter/sec",
             "range": "stddev: 0.004133020818466837",
             "extra": "mean: 63.537365800001076 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 17.66441211583889,
             "unit": "iter/sec",
             "range": "stddev: 0.0036028064170984335",
             "extra": "mean: 56.61099805882272 msec\nrounds: 17"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 15.67267986748735,
             "unit": "iter/sec",
             "range": "stddev: 0.0060860984710864405",
             "extra": "mean: 63.80529739999853 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 16.030826484200563,
             "unit": "iter/sec",
             "range": "stddev: 0.003643027013828016",
@@ -5720,49 +5720,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 3.9380546430493584,
             "unit": "iter/sec",
             "range": "stddev: 0.005317570835781217",
             "extra": "mean: 253.9324845999772 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 8.271674984167555,
             "unit": "iter/sec",
             "range": "stddev: 0.003009335879478299",
             "extra": "mean: 120.89449862501311 msec\nrounds: 8"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 10.313712747260878,
             "unit": "iter/sec",
             "range": "stddev: 0.004045177223703337",
             "extra": "mean: 96.95829469999353 msec\nrounds: 10"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 14.761093073997401,
             "unit": "iter/sec",
             "range": "stddev: 0.005489788328733566",
             "extra": "mean: 67.74566050000479 msec\nrounds: 14"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 16.948527601326028,
             "unit": "iter/sec",
             "range": "stddev: 0.004514426351480194",
             "extra": "mean: 59.00217549999809 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 15.301112536855205,
             "unit": "iter/sec",
             "range": "stddev: 0.0030779945038376046",
             "extra": "mean: 65.3547248666617 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 15.183944114452808,
             "unit": "iter/sec",
             "range": "stddev: 0.004143625195841926",
@@ -5793,49 +5793,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 3.9501192466737405,
             "unit": "iter/sec",
             "range": "stddev: 0.004089320383097411",
             "extra": "mean: 253.15691440000592 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 8.372602154377857,
             "unit": "iter/sec",
             "range": "stddev: 0.004700179197517284",
             "extra": "mean: 119.43718112500079 msec\nrounds: 8"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 10.55494986855171,
             "unit": "iter/sec",
             "range": "stddev: 0.006136452986502329",
             "extra": "mean: 94.74227850001284 msec\nrounds: 10"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 15.550216885041156,
             "unit": "iter/sec",
             "range": "stddev: 0.003836168579491439",
             "extra": "mean: 64.30778473334158 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 17.587499080431503,
             "unit": "iter/sec",
             "range": "stddev: 0.004474013086190436",
             "extra": "mean: 56.85856729412067 msec\nrounds: 17"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 15.537328825597372,
             "unit": "iter/sec",
             "range": "stddev: 0.00397836583035833",
             "extra": "mean: 64.36112740000226 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 15.932946073233866,
             "unit": "iter/sec",
             "range": "stddev: 0.0032429412447198226",
@@ -5866,49 +5866,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 3.9859064057312255,
             "unit": "iter/sec",
             "range": "stddev: 0.004659359621959488",
             "extra": "mean: 250.88396419999415 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 8.787526691988946,
             "unit": "iter/sec",
             "range": "stddev: 0.0036891781777446445",
             "extra": "mean: 113.79766287499749 msec\nrounds: 8"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 10.758116193765279,
             "unit": "iter/sec",
             "range": "stddev: 0.003971525095465446",
             "extra": "mean: 92.95307672727465 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 15.766422477505731,
             "unit": "iter/sec",
             "range": "stddev: 0.0037690818840366226",
             "extra": "mean: 63.42592946667007 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 18.127759342214677,
             "unit": "iter/sec",
             "range": "stddev: 0.0037388119660807426",
             "extra": "mean: 55.16401564705622 msec\nrounds: 17"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 16.17883946773888,
             "unit": "iter/sec",
             "range": "stddev: 0.003264556428178012",
             "extra": "mean: 61.80913049999859 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 16.285807708551204,
             "unit": "iter/sec",
             "range": "stddev: 0.0038694891260814958",
@@ -5939,49 +5939,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 3.991628035996556,
             "unit": "iter/sec",
             "range": "stddev: 0.004094050784253072",
             "extra": "mean: 250.52434520000023 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 8.592985001118487,
             "unit": "iter/sec",
             "range": "stddev: 0.005378689915541577",
             "extra": "mean: 116.37399575000273 msec\nrounds: 8"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 10.436753575994816,
             "unit": "iter/sec",
             "range": "stddev: 0.005609199880079651",
             "extra": "mean: 95.81523533333798 msec\nrounds: 6"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 14.989366864346659,
             "unit": "iter/sec",
             "range": "stddev: 0.004205298104843871",
             "extra": "mean: 66.71395857143077 msec\nrounds: 14"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 17.872238046014925,
             "unit": "iter/sec",
             "range": "stddev: 0.003913011846116271",
             "extra": "mean: 55.95270147059035 msec\nrounds: 17"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 15.423934346983412,
             "unit": "iter/sec",
             "range": "stddev: 0.004121573231845095",
             "extra": "mean: 64.83430086666431 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 15.444865360843204,
             "unit": "iter/sec",
             "range": "stddev: 0.0037608569028174093",
@@ -6012,49 +6012,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 3.938807850276372,
             "unit": "iter/sec",
             "range": "stddev: 0.005995950693102152",
             "extra": "mean: 253.8839257999939 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 8.467745473669801,
             "unit": "iter/sec",
             "range": "stddev: 0.004093080885959114",
             "extra": "mean: 118.0951887500008 msec\nrounds: 8"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 10.471480266408836,
             "unit": "iter/sec",
             "range": "stddev: 0.006646178743755634",
             "extra": "mean: 95.4974821666686 msec\nrounds: 6"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 15.157171302605823,
             "unit": "iter/sec",
             "range": "stddev: 0.003922118397291482",
             "extra": "mean: 65.97537100000181 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 17.603650748643215,
             "unit": "iter/sec",
             "range": "stddev: 0.0037003666702724357",
             "extra": "mean: 56.80639852941153 msec\nrounds: 17"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 15.8427059265665,
             "unit": "iter/sec",
             "range": "stddev: 0.0006835586784788722",
             "extra": "mean: 63.12053033333835 msec\nrounds: 12"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 15.78495759122777,
             "unit": "iter/sec",
             "range": "stddev: 0.002182524780586326",
@@ -6085,49 +6085,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 3.930139321159451,
             "unit": "iter/sec",
             "range": "stddev: 0.002915475111089344",
             "extra": "mean: 254.44390600000023 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 8.421318851629925,
             "unit": "iter/sec",
             "range": "stddev: 0.0032648314942081134",
             "extra": "mean: 118.74624599998995 msec\nrounds: 8"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 10.4323784988212,
             "unit": "iter/sec",
             "range": "stddev: 0.0044015077176807645",
             "extra": "mean: 95.8554178333344 msec\nrounds: 6"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 15.378490892167902,
             "unit": "iter/sec",
             "range": "stddev: 0.0037179484693804247",
             "extra": "mean: 65.02588628571411 msec\nrounds: 14"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 17.38978884774071,
             "unit": "iter/sec",
             "range": "stddev: 0.002920039253481462",
             "extra": "mean: 57.505011058827236 msec\nrounds: 17"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 15.444927239370502,
             "unit": "iter/sec",
             "range": "stddev: 0.0030849684475468516",
             "extra": "mean: 64.74617746666429 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 15.658537766094769,
             "unit": "iter/sec",
             "range": "stddev: 0.0028923970501664826",
@@ -6158,49 +6158,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 3.886345036404542,
             "unit": "iter/sec",
             "range": "stddev: 0.007790063978532519",
             "extra": "mean: 257.31117300000506 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 8.448864693312002,
             "unit": "iter/sec",
             "range": "stddev: 0.0011934240016917513",
             "extra": "mean: 118.35909749999729 msec\nrounds: 8"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 10.534172818700894,
             "unit": "iter/sec",
             "range": "stddev: 0.0030807729351780195",
             "extra": "mean: 94.92914319999954 msec\nrounds: 10"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 15.284183952428373,
             "unit": "iter/sec",
             "range": "stddev: 0.0034869336261507014",
             "extra": "mean: 65.42711100000328 msec\nrounds: 14"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 17.86134756416999,
             "unit": "iter/sec",
             "range": "stddev: 0.003109035959520804",
             "extra": "mean: 55.98681714284583 msec\nrounds: 14"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 15.807345120216985,
             "unit": "iter/sec",
             "range": "stddev: 0.0029773499885220765",
             "extra": "mean: 63.261730062503574 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 15.717485894704174,
             "unit": "iter/sec",
             "range": "stddev: 0.0042173348034722355",
@@ -6231,49 +6231,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 3.8601762064359963,
             "unit": "iter/sec",
             "range": "stddev: 0.0036201672892803563",
             "extra": "mean: 259.05553180000425 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 8.613800081680541,
             "unit": "iter/sec",
             "range": "stddev: 0.003264892598233714",
             "extra": "mean: 116.09278025000336 msec\nrounds: 8"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 10.57961693528291,
             "unit": "iter/sec",
             "range": "stddev: 0.00427212502685629",
             "extra": "mean: 94.52138069999592 msec\nrounds: 10"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 15.256202270365131,
             "unit": "iter/sec",
             "range": "stddev: 0.004492490418518522",
             "extra": "mean: 65.54711207142816 msec\nrounds: 14"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 18.004737415512572,
             "unit": "iter/sec",
             "range": "stddev: 0.000985747638263516",
             "extra": "mean: 55.54093774999558 msec\nrounds: 12"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 16.17680352429789,
             "unit": "iter/sec",
             "range": "stddev: 0.0024192563545426308",
             "extra": "mean: 61.816909533331454 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 16.31301203581722,
             "unit": "iter/sec",
             "range": "stddev: 0.0034880086086456425",
@@ -6304,49 +6304,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 3.9825947768365952,
             "unit": "iter/sec",
             "range": "stddev: 0.006417356205036935",
             "extra": "mean: 251.09258060000457 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 8.772302676280175,
             "unit": "iter/sec",
             "range": "stddev: 0.002475644085395324",
             "extra": "mean: 113.99515462501597 msec\nrounds: 8"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 10.736485038249862,
             "unit": "iter/sec",
             "range": "stddev: 0.004338076155951703",
             "extra": "mean: 93.14035240000749 msec\nrounds: 10"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 15.767925634201392,
             "unit": "iter/sec",
             "range": "stddev: 0.005012889292376414",
             "extra": "mean: 63.41988307142645 msec\nrounds: 14"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 18.494924523735456,
             "unit": "iter/sec",
             "range": "stddev: 0.0035497406249403512",
             "extra": "mean: 54.06888785713347 msec\nrounds: 14"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 16.297099231741303,
             "unit": "iter/sec",
             "range": "stddev: 0.003436192423873304",
             "extra": "mean: 61.36061306249729 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 16.46414378928668,
             "unit": "iter/sec",
             "range": "stddev: 0.0037005469900337116",
@@ -6377,49 +6377,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 4.185839850289609,
             "unit": "iter/sec",
             "range": "stddev: 0.002088139411963734",
             "extra": "mean: 238.90068320000637 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 9.29134763568497,
             "unit": "iter/sec",
             "range": "stddev: 0.005505807340551629",
             "extra": "mean: 107.62701377777893 msec\nrounds: 9"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 11.949466345578015,
             "unit": "iter/sec",
             "range": "stddev: 0.005244295997116864",
             "extra": "mean: 83.68574554545334 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 17.784375153276166,
             "unit": "iter/sec",
             "range": "stddev: 0.0033721645271968977",
             "extra": "mean: 56.229133235293 msec\nrounds: 17"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 20.344903181739266,
             "unit": "iter/sec",
             "range": "stddev: 0.0042931196640869865",
             "extra": "mean: 49.15235973683857 msec\nrounds: 19"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 17.871741930196674,
             "unit": "iter/sec",
             "range": "stddev: 0.002663231902696807",
             "extra": "mean: 55.95425470588111 msec\nrounds: 17"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 17.489569390567368,
             "unit": "iter/sec",
             "range": "stddev: 0.007332570968928304",
@@ -6450,49 +6450,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 4.246767976210312,
             "unit": "iter/sec",
             "range": "stddev: 0.00599629164359797",
             "extra": "mean: 235.473189399994 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 9.342312872431668,
             "unit": "iter/sec",
             "range": "stddev: 0.0033966423771287333",
             "extra": "mean: 107.03987477778772 msec\nrounds: 9"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 11.8521371204211,
             "unit": "iter/sec",
             "range": "stddev: 0.0036584244844678634",
             "extra": "mean: 84.37296918182048 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 17.56773049639638,
             "unit": "iter/sec",
             "range": "stddev: 0.0032621262767050987",
             "extra": "mean: 56.92254900000471 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 20.153626512606312,
             "unit": "iter/sec",
             "range": "stddev: 0.0044177022060922526",
             "extra": "mean: 49.61886136842365 msec\nrounds: 19"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 17.601402922096756,
             "unit": "iter/sec",
             "range": "stddev: 0.0022535589669361125",
             "extra": "mean: 56.81365311765021 msec\nrounds: 17"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 17.320422269450535,
             "unit": "iter/sec",
             "range": "stddev: 0.004951805566462652",
@@ -6523,49 +6523,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 4.209399674840555,
             "unit": "iter/sec",
             "range": "stddev: 0.004062404559319385",
             "extra": "mean: 237.56356659999938 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 9.16254881107366,
             "unit": "iter/sec",
             "range": "stddev: 0.003925171398304687",
             "extra": "mean: 109.13993699999953 msec\nrounds: 9"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 11.366806446180476,
             "unit": "iter/sec",
             "range": "stddev: 0.010153068961215555",
             "extra": "mean: 87.97545772726907 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 17.28147385671772,
             "unit": "iter/sec",
             "range": "stddev: 0.003560190336245658",
             "extra": "mean: 57.86543487500495 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 20.18459616325879,
             "unit": "iter/sec",
             "range": "stddev: 0.0033682979361170473",
             "extra": "mean: 49.54273010526017 msec\nrounds: 19"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 17.957782590456986,
             "unit": "iter/sec",
             "range": "stddev: 0.0022370645103040932",
             "extra": "mean: 55.68616252941016 msec\nrounds: 17"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 17.749939098131968,
             "unit": "iter/sec",
             "range": "stddev: 0.00451685140302089",
@@ -6596,49 +6596,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 4.2301988278308835,
             "unit": "iter/sec",
             "range": "stddev: 0.004004998521362798",
             "extra": "mean: 236.395507799989 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 9.362072158361087,
             "unit": "iter/sec",
             "range": "stddev: 0.003767593114572627",
             "extra": "mean: 106.81395988888198 msec\nrounds: 9"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 11.977966426221608,
             "unit": "iter/sec",
             "range": "stddev: 0.0037749777279288002",
             "extra": "mean: 83.48662572728927 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 18.257479167216047,
             "unit": "iter/sec",
             "range": "stddev: 0.003564400659600017",
             "extra": "mean: 54.77207399998818 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 20.91426610821335,
             "unit": "iter/sec",
             "range": "stddev: 0.00395843394456144",
             "extra": "mean: 47.81425247368755 msec\nrounds: 19"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 18.380545911705333,
             "unit": "iter/sec",
             "range": "stddev: 0.0022747978991917005",
             "extra": "mean: 54.4053481764743 msec\nrounds: 17"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 18.06802944261165,
             "unit": "iter/sec",
             "range": "stddev: 0.004945165589722626",
@@ -6669,49 +6669,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 4.150002807642928,
             "unit": "iter/sec",
             "range": "stddev: 0.004026457617693486",
             "extra": "mean: 240.9636923999983 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 9.212884725383299,
             "unit": "iter/sec",
             "range": "stddev: 0.0033547041267275356",
             "extra": "mean: 108.54363533332882 msec\nrounds: 9"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 11.588369017389022,
             "unit": "iter/sec",
             "range": "stddev: 0.004687974052534334",
             "extra": "mean: 86.2934204545473 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 17.228687690969796,
             "unit": "iter/sec",
             "range": "stddev: 0.0038994638223579983",
             "extra": "mean: 58.042726058824414 msec\nrounds: 17"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 20.524548921457118,
             "unit": "iter/sec",
             "range": "stddev: 0.004321141074069952",
             "extra": "mean: 48.72214263157634 msec\nrounds: 19"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 17.708944162780668,
             "unit": "iter/sec",
             "range": "stddev: 0.003333745148204099",
             "extra": "mean: 56.46864041176012 msec\nrounds: 17"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 17.948913881552727,
             "unit": "iter/sec",
             "range": "stddev: 0.0030266628915788137",
@@ -6742,49 +6742,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 3.9317672400367862,
             "unit": "iter/sec",
             "range": "stddev: 0.025621431402954146",
             "extra": "mean: 254.33855539999968 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 8.953225119860189,
             "unit": "iter/sec",
             "range": "stddev: 0.0035929578178406202",
             "extra": "mean: 111.69159566665915 msec\nrounds: 9"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 11.270488454466157,
             "unit": "iter/sec",
             "range": "stddev: 0.006879485215851147",
             "extra": "mean: 88.72729909090408 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 17.53329030488741,
             "unit": "iter/sec",
             "range": "stddev: 0.003919644296026683",
             "extra": "mean: 57.03436049999411 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 20.73274964873675,
             "unit": "iter/sec",
             "range": "stddev: 0.0027536981697934854",
             "extra": "mean: 48.23286910527713 msec\nrounds: 19"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 17.90265899484885,
             "unit": "iter/sec",
             "range": "stddev: 0.0008526772815781615",
             "extra": "mean: 55.85762429411917 msec\nrounds: 17"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 17.796284470150788,
             "unit": "iter/sec",
             "range": "stddev: 0.00392157834035508",
@@ -6815,49 +6815,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 3.945891271463108,
             "unit": "iter/sec",
             "range": "stddev: 0.02658146657422327",
             "extra": "mean: 253.4281690000057 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 9.110189574045876,
             "unit": "iter/sec",
             "range": "stddev: 0.003727405661330095",
             "extra": "mean: 109.76719988889272 msec\nrounds: 9"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 11.644473283310576,
             "unit": "iter/sec",
             "range": "stddev: 0.0036671392735106016",
             "extra": "mean: 85.87764990909879 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 17.23168463087722,
             "unit": "iter/sec",
             "range": "stddev: 0.004016635647965399",
             "extra": "mean: 58.03263125000058 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 20.712263083714312,
             "unit": "iter/sec",
             "range": "stddev: 0.0028234619470718756",
             "extra": "mean: 48.28057638888734 msec\nrounds: 18"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 18.10972501288184,
             "unit": "iter/sec",
             "range": "stddev: 0.00028970957454915204",
             "extra": "mean: 55.21894999999605 msec\nrounds: 17"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 17.512537669003876,
             "unit": "iter/sec",
             "range": "stddev: 0.004976978482288895",
@@ -6888,49 +6888,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 3.755362153937455,
             "unit": "iter/sec",
             "range": "stddev: 0.03152628933646748",
             "extra": "mean: 266.2859023999886 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 8.590128200619654,
             "unit": "iter/sec",
             "range": "stddev: 0.005662053049080378",
             "extra": "mean: 116.41269799999776 msec\nrounds: 8"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 10.86701033172028,
             "unit": "iter/sec",
             "range": "stddev: 0.005014600044324898",
             "extra": "mean: 92.02162963635435 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 16.090184048492024,
             "unit": "iter/sec",
             "range": "stddev: 0.004251076281561773",
             "extra": "mean: 62.14969306666944 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 19.2429967366397,
             "unit": "iter/sec",
             "range": "stddev: 0.0029592084077886354",
             "extra": "mean: 51.96695783333717 msec\nrounds: 18"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 16.665142188062422,
             "unit": "iter/sec",
             "range": "stddev: 0.0031678349010940145",
             "extra": "mean: 60.00548862501276 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 16.71935969676008,
             "unit": "iter/sec",
             "range": "stddev: 0.0035742263802238487",
@@ -6961,49 +6961,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 3.794526084668165,
             "unit": "iter/sec",
             "range": "stddev: 0.02879354848165339",
             "extra": "mean: 263.5375216 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 8.891098219224826,
             "unit": "iter/sec",
             "range": "stddev: 0.003101226568723661",
             "extra": "mean: 112.47204511111401 msec\nrounds: 9"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 11.085429340195004,
             "unit": "iter/sec",
             "range": "stddev: 0.004491106899604093",
             "extra": "mean: 90.20850427272751 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 16.17326972126195,
             "unit": "iter/sec",
             "range": "stddev: 0.007376421044595872",
             "extra": "mean: 61.83041631250141 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 19.73647005548914,
             "unit": "iter/sec",
             "range": "stddev: 0.002932937279066525",
             "extra": "mean: 50.66762177777977 msec\nrounds: 18"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 17.252257639599875,
             "unit": "iter/sec",
             "range": "stddev: 0.001213080661904608",
             "extra": "mean: 57.96342837500035 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 17.0853499661334,
             "unit": "iter/sec",
             "range": "stddev: 0.003910019167409532",
@@ -7034,49 +7034,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 3.9706087661442386,
             "unit": "iter/sec",
             "range": "stddev: 0.006530871887421856",
             "extra": "mean: 251.85054959999886 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 9.08718863066162,
             "unit": "iter/sec",
             "range": "stddev: 0.003726968005081493",
             "extra": "mean: 110.04503600000565 msec\nrounds: 9"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 11.608521910911913,
             "unit": "iter/sec",
             "range": "stddev: 0.004199374879245329",
             "extra": "mean: 86.14361136364903 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 17.286602851674953,
             "unit": "iter/sec",
             "range": "stddev: 0.0034199497971719303",
             "extra": "mean: 57.84826599999704 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 20.606930344723914,
             "unit": "iter/sec",
             "range": "stddev: 0.002207288526189913",
             "extra": "mean: 48.52736352632136 msec\nrounds: 19"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 17.446228698872968,
             "unit": "iter/sec",
             "range": "stddev: 0.005036696618779298",
             "extra": "mean: 57.318978058828286 msec\nrounds: 17"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 17.72242458080641,
             "unit": "iter/sec",
             "range": "stddev: 0.002076141160115306",
@@ -7107,49 +7107,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 4.020128574727083,
             "unit": "iter/sec",
             "range": "stddev: 0.004519423405224957",
             "extra": "mean: 248.74826299999313 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 8.793479179490896,
             "unit": "iter/sec",
             "range": "stddev: 0.005692974968738951",
             "extra": "mean: 113.72063088888733 msec\nrounds: 9"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 11.198841055966898,
             "unit": "iter/sec",
             "range": "stddev: 0.004434263883939756",
             "extra": "mean: 89.2949542727179 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 16.52915098092289,
             "unit": "iter/sec",
             "range": "stddev: 0.004117914049249554",
             "extra": "mean: 60.499175133323504 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 19.23117588560339,
             "unit": "iter/sec",
             "range": "stddev: 0.004704800503962692",
             "extra": "mean: 51.998900428580036 msec\nrounds: 14"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 16.788658920928828,
             "unit": "iter/sec",
             "range": "stddev: 0.0038763936600337404",
             "extra": "mean: 59.564019062499085 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 17.018611698408794,
             "unit": "iter/sec",
             "range": "stddev: 0.0041395637449007806",
@@ -7180,49 +7180,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 3.9989201667888845,
             "unit": "iter/sec",
             "range": "stddev: 0.0042665153213347585",
             "extra": "mean: 250.06750779998583 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 8.77596466091851,
             "unit": "iter/sec",
             "range": "stddev: 0.002692784714920636",
             "extra": "mean: 113.94758737500865 msec\nrounds: 8"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 11.308365872630908,
             "unit": "iter/sec",
             "range": "stddev: 0.0040979709721589664",
             "extra": "mean: 88.43010663638427 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 16.79410447748782,
             "unit": "iter/sec",
             "range": "stddev: 0.004395335466821683",
             "extra": "mean: 59.544705187494884 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 19.34881134272916,
             "unit": "iter/sec",
             "range": "stddev: 0.004425450676029699",
             "extra": "mean: 51.68276140000595 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 17.240630234684623,
             "unit": "iter/sec",
             "range": "stddev: 0.0034298237971861073",
             "extra": "mean: 58.00252000000583 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 17.108597036754443,
             "unit": "iter/sec",
             "range": "stddev: 0.003965782979852611",
@@ -7253,49 +7253,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 4.101743326476301,
             "unit": "iter/sec",
             "range": "stddev: 0.0038821615680505748",
             "extra": "mean: 243.79877539998915 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 9.169381930364429,
             "unit": "iter/sec",
             "range": "stddev: 0.0038806753361125663",
             "extra": "mean: 109.05860477776565 msec\nrounds: 9"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 11.572495288124616,
             "unit": "iter/sec",
             "range": "stddev: 0.005111205166035833",
             "extra": "mean: 86.41178718181663 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 17.389343575847427,
             "unit": "iter/sec",
             "range": "stddev: 0.0037424951139356385",
             "extra": "mean: 57.50648353333645 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 21.176788975025413,
             "unit": "iter/sec",
             "range": "stddev: 0.002731901350946487",
             "extra": "mean: 47.221512250008146 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 18.708254712236386,
             "unit": "iter/sec",
             "range": "stddev: 0.0028305117039632037",
             "extra": "mean: 53.452340444452936 msec\nrounds: 18"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 18.441840344117118,
             "unit": "iter/sec",
             "range": "stddev: 0.004119852145381482",
@@ -7326,49 +7326,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 4.073107499415612,
             "unit": "iter/sec",
             "range": "stddev: 0.004234938069388153",
             "extra": "mean: 245.5127933999961 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 9.161460731923315,
             "unit": "iter/sec",
             "range": "stddev: 0.0030613718210892138",
             "extra": "mean: 109.15289922222529 msec\nrounds: 9"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 11.713813921108885,
             "unit": "iter/sec",
             "range": "stddev: 0.003534650703206332",
             "extra": "mean: 85.36929190909798 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 17.659922889205284,
             "unit": "iter/sec",
             "range": "stddev: 0.0035073990738586514",
             "extra": "mean: 56.62538881249901 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 21.15390654525152,
             "unit": "iter/sec",
             "range": "stddev: 0.001969790601041623",
             "extra": "mean: 47.272592315790156 msec\nrounds: 19"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 17.789295041769353,
             "unit": "iter/sec",
             "range": "stddev: 0.003937081738019926",
             "extra": "mean: 56.21358224999895 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 18.476860705112458,
             "unit": "iter/sec",
             "range": "stddev: 0.0024357052882009165",
@@ -7399,49 +7399,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 4.105352889413963,
             "unit": "iter/sec",
             "range": "stddev: 0.0045608974930851105",
             "extra": "mean: 243.58441939999693 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 9.302296871670848,
             "unit": "iter/sec",
             "range": "stddev: 0.004263876629439692",
             "extra": "mean: 107.50033177777772 msec\nrounds: 9"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 10.884633734393605,
             "unit": "iter/sec",
             "range": "stddev: 0.01592388706837928",
             "extra": "mean: 91.87263663637748 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 17.45526287981371,
             "unit": "iter/sec",
             "range": "stddev: 0.003291033650336563",
             "extra": "mean: 57.289311933334375 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 20.384668938110778,
             "unit": "iter/sec",
             "range": "stddev: 0.002445673227436763",
             "extra": "mean: 49.05647489473913 msec\nrounds: 19"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 17.81884346175809,
             "unit": "iter/sec",
             "range": "stddev: 0.004493505459602021",
             "extra": "mean: 56.12036505882944 msec\nrounds: 17"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 17.930478646648663,
             "unit": "iter/sec",
             "range": "stddev: 0.004182001370613977",
@@ -7472,49 +7472,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 4.080665691856703,
             "unit": "iter/sec",
             "range": "stddev: 0.004681116196920656",
             "extra": "mean: 245.05805559999203 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 8.950800217004984,
             "unit": "iter/sec",
             "range": "stddev: 0.002967020003468026",
             "extra": "mean: 111.72185455554819 msec\nrounds: 9"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 10.49828921501421,
             "unit": "iter/sec",
             "range": "stddev: 0.019377132500594245",
             "extra": "mean: 95.25361509090854 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 16.920526989897166,
             "unit": "iter/sec",
             "range": "stddev: 0.005806761514476007",
             "extra": "mean: 59.09981412500187 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 20.20522665655298,
             "unit": "iter/sec",
             "range": "stddev: 0.0026885259020957854",
             "extra": "mean: 49.4921446315812 msec\nrounds: 19"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 17.037541956426438,
             "unit": "iter/sec",
             "range": "stddev: 0.005267082398301438",
             "extra": "mean: 58.693912687493466 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 17.66147391075372,
             "unit": "iter/sec",
             "range": "stddev: 0.000632041090574701",
@@ -7545,49 +7545,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 4.123957903571381,
             "unit": "iter/sec",
             "range": "stddev: 0.0026986688516918073",
             "extra": "mean: 242.4855014000002 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 9.40518065649719,
             "unit": "iter/sec",
             "range": "stddev: 0.0030100563501798327",
             "extra": "mean: 106.324379777776 msec\nrounds: 9"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 11.037142478834848,
             "unit": "iter/sec",
             "range": "stddev: 0.017742309260094204",
             "extra": "mean: 90.60316127273248 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 17.311357507004736,
             "unit": "iter/sec",
             "range": "stddev: 0.004406392500809972",
             "extra": "mean: 57.76554493749941 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 20.794632015029396,
             "unit": "iter/sec",
             "range": "stddev: 0.003100796443399585",
             "extra": "mean: 48.089333789472505 msec\nrounds: 19"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 17.961437244327946,
             "unit": "iter/sec",
             "range": "stddev: 0.004545656657379825",
             "extra": "mean: 55.67483194117946 msec\nrounds: 17"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 18.224690841170226,
             "unit": "iter/sec",
             "range": "stddev: 0.0016035070721165587",
@@ -7618,49 +7618,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 4.014555158335567,
             "unit": "iter/sec",
             "range": "stddev: 0.002616119283842601",
             "extra": "mean: 249.09360079999487 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 8.87599071339616,
             "unit": "iter/sec",
             "range": "stddev: 0.006074041215501652",
             "extra": "mean: 112.66347975001167 msec\nrounds: 8"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 11.160694605025624,
             "unit": "iter/sec",
             "range": "stddev: 0.003943915844259321",
             "extra": "mean: 89.6001579999961 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 16.614915842148772,
             "unit": "iter/sec",
             "range": "stddev: 0.004726700098900807",
             "extra": "mean: 60.18688325000099 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 19.61559988905323,
             "unit": "iter/sec",
             "range": "stddev: 0.0025595561335123554",
             "extra": "mean: 50.97983266665551 msec\nrounds: 18"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 16.955152690717604,
             "unit": "iter/sec",
             "range": "stddev: 0.006007822813784351",
             "extra": "mean: 58.97912087500501 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 17.450412860463043,
             "unit": "iter/sec",
             "range": "stddev: 0.003083211289250466",
@@ -7691,49 +7691,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 4.128847070909263,
             "unit": "iter/sec",
             "range": "stddev: 0.007693718563306635",
             "extra": "mean: 242.19836259999283 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 9.198768319672515,
             "unit": "iter/sec",
             "range": "stddev: 0.0037251301249116324",
             "extra": "mean: 108.71020611111565 msec\nrounds: 9"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 11.795189180043948,
             "unit": "iter/sec",
             "range": "stddev: 0.004480511595758071",
             "extra": "mean: 84.78032736362385 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 17.60841706697532,
             "unit": "iter/sec",
             "range": "stddev: 0.004241254630103141",
             "extra": "mean: 56.79102194117751 msec\nrounds: 17"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 20.86917499724665,
             "unit": "iter/sec",
             "range": "stddev: 0.00039560553916959026",
             "extra": "mean: 47.917562631581454 msec\nrounds: 19"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 17.77084256824532,
             "unit": "iter/sec",
             "range": "stddev: 0.0046504503490380576",
             "extra": "mean: 56.27195200000803 msec\nrounds: 17"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 18.37197875281562,
             "unit": "iter/sec",
             "range": "stddev: 0.0005540502270058069",
@@ -7764,49 +7764,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 4.285203560462167,
             "unit": "iter/sec",
             "range": "stddev: 0.0038165814060630255",
             "extra": "mean: 233.36114279998128 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 9.49643186345118,
             "unit": "iter/sec",
             "range": "stddev: 0.002563349653528931",
             "extra": "mean: 105.30270888887117 msec\nrounds: 9"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 12.000113416343792,
             "unit": "iter/sec",
             "range": "stddev: 0.0037718903350512983",
             "extra": "mean: 83.33254572727871 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 17.691196805074295,
             "unit": "iter/sec",
             "range": "stddev: 0.005311219089318057",
             "extra": "mean: 56.52528831249981 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 21.523861661366002,
             "unit": "iter/sec",
             "range": "stddev: 0.00233396926431466",
             "extra": "mean: 46.46006445000239 msec\nrounds: 20"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 18.410663158065415,
             "unit": "iter/sec",
             "range": "stddev: 0.004303538664733102",
             "extra": "mean: 54.31634870588115 msec\nrounds: 17"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 19.076513849506096,
             "unit": "iter/sec",
             "range": "stddev: 0.00030451469666176076",
@@ -7837,49 +7837,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 4.098494350639077,
             "unit": "iter/sec",
             "range": "stddev: 0.005505975287645602",
             "extra": "mean: 243.99204059999988 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 9.036705833959047,
             "unit": "iter/sec",
             "range": "stddev: 0.004484611216926512",
             "extra": "mean: 110.65979333332938 msec\nrounds: 9"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 11.503188086095118,
             "unit": "iter/sec",
             "range": "stddev: 0.004525570238826323",
             "extra": "mean: 86.93242190908666 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 16.65122917333869,
             "unit": "iter/sec",
             "range": "stddev: 0.005561596810699052",
             "extra": "mean: 60.05562650000407 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 19.46564873608633,
             "unit": "iter/sec",
             "range": "stddev: 0.0033938677018360364",
             "extra": "mean: 51.37254933333679 msec\nrounds: 18"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 16.976752984102053,
             "unit": "iter/sec",
             "range": "stddev: 0.005646503186750752",
             "extra": "mean: 58.904079062495285 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 17.206253966591255,
             "unit": "iter/sec",
             "range": "stddev: 0.0035639390086628724",
@@ -7910,49 +7910,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 4.24127402741565,
             "unit": "iter/sec",
             "range": "stddev: 0.002324885522778878",
             "extra": "mean: 235.77821039998526 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 9.44086908125824,
             "unit": "iter/sec",
             "range": "stddev: 0.004179161638401889",
             "extra": "mean: 105.92245177778953 msec\nrounds: 9"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 11.238878657027287,
             "unit": "iter/sec",
             "range": "stddev: 0.015376837756292748",
             "extra": "mean: 88.97684818180096 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 17.50675290897861,
             "unit": "iter/sec",
             "range": "stddev: 0.003977937269698792",
             "extra": "mean: 57.12081533332972 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 20.409696732850215,
             "unit": "iter/sec",
             "range": "stddev: 0.0028658270977886926",
             "extra": "mean: 48.996318421060145 msec\nrounds: 19"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 17.867456771490378,
             "unit": "iter/sec",
             "range": "stddev: 0.004863143067917169",
             "extra": "mean: 55.967674235295604 msec\nrounds: 17"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 18.34442148580697,
             "unit": "iter/sec",
             "range": "stddev: 0.0007387244265980597",
@@ -7983,49 +7983,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 4.5561225739195725,
             "unit": "iter/sec",
             "range": "stddev: 0.004265650045628908",
             "extra": "mean: 219.4848764000028 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 10.49846041232953,
             "unit": "iter/sec",
             "range": "stddev: 0.01364030439932804",
             "extra": "mean: 95.25206179999373 msec\nrounds: 10"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 13.556308694477636,
             "unit": "iter/sec",
             "range": "stddev: 0.003252423763217929",
             "extra": "mean: 73.7663933846066 msec\nrounds: 13"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 24.89564419268634,
             "unit": "iter/sec",
             "range": "stddev: 0.006674600174687063",
             "extra": "mean: 40.16766918181505 msec\nrounds: 22"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 31.223280208169456,
             "unit": "iter/sec",
             "range": "stddev: 0.006849290767505427",
             "extra": "mean: 32.027384481479096 msec\nrounds: 27"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 26.71121387940037,
             "unit": "iter/sec",
             "range": "stddev: 0.00020407827052435916",
             "extra": "mean: 37.43745995651654 msec\nrounds: 23"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 26.53501181980388,
             "unit": "iter/sec",
             "range": "stddev: 0.0017441314449733118",
@@ -8056,49 +8056,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.998017734313061,
             "unit": "iter/sec",
             "range": "stddev: 0.0024987788332973583",
             "extra": "mean: 166.7217477999884 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 12.96788564658028,
             "unit": "iter/sec",
             "range": "stddev: 0.0013451105484024238",
             "extra": "mean: 77.1135732727337 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 16.8286185413642,
             "unit": "iter/sec",
             "range": "stddev: 0.0020336507721563568",
             "extra": "mean: 59.42258406666193 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 27.7670930068219,
             "unit": "iter/sec",
             "range": "stddev: 0.0011819526490839125",
             "extra": "mean: 36.01385279165944 msec\nrounds: 24"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 35.8884815832617,
             "unit": "iter/sec",
             "range": "stddev: 0.0016722081161520427",
             "extra": "mean: 27.86409332141813 msec\nrounds: 28"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 31.68049569585167,
             "unit": "iter/sec",
             "range": "stddev: 0.0005079871481434844",
             "extra": "mean: 31.565162666660637 msec\nrounds: 27"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 31.38225681652342,
             "unit": "iter/sec",
             "range": "stddev: 0.0004220083161325381",
@@ -8129,49 +8129,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.972071512020852,
             "unit": "iter/sec",
             "range": "stddev: 0.001149313252318025",
             "extra": "mean: 167.44608600000106 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 12.20757238482125,
             "unit": "iter/sec",
             "range": "stddev: 0.004664531845680573",
             "extra": "mean: 81.91636866666367 msec\nrounds: 12"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 16.420821678080596,
             "unit": "iter/sec",
             "range": "stddev: 0.0016162440295568131",
             "extra": "mean: 60.89829239999934 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 26.918042452399163,
             "unit": "iter/sec",
             "range": "stddev: 0.0009799158436876727",
             "extra": "mean: 37.14980395652328 msec\nrounds: 23"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 34.897733209675145,
             "unit": "iter/sec",
             "range": "stddev: 0.0006765297728866967",
             "extra": "mean: 28.65515631034617 msec\nrounds: 29"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 31.395145097318093,
             "unit": "iter/sec",
             "range": "stddev: 0.00048022123414555827",
             "extra": "mean: 31.852058555557505 msec\nrounds: 27"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 31.16060789375106,
             "unit": "iter/sec",
             "range": "stddev: 0.0006511167035929854",
@@ -8202,49 +8202,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 6.004475330008343,
             "unit": "iter/sec",
             "range": "stddev: 0.002347125497991941",
             "extra": "mean: 166.54244460000314 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 12.756763348899748,
             "unit": "iter/sec",
             "range": "stddev: 0.0024775447145500094",
             "extra": "mean: 78.38979000000408 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 16.907919438052378,
             "unit": "iter/sec",
             "range": "stddev: 0.0016424021535976312",
             "extra": "mean: 59.14388246666438 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 27.685668807356127,
             "unit": "iter/sec",
             "range": "stddev: 0.001380008951636953",
             "extra": "mean: 36.11977037499988 msec\nrounds: 24"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 37.07950827202866,
             "unit": "iter/sec",
             "range": "stddev: 0.00017640769651687354",
             "extra": "mean: 26.96907393333371 msec\nrounds: 30"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 32.311978168475925,
             "unit": "iter/sec",
             "range": "stddev: 0.0004218805067972361",
             "extra": "mean: 30.948275428572053 msec\nrounds: 28"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 32.15715658818178,
             "unit": "iter/sec",
             "range": "stddev: 0.00027903731751873856",
@@ -8275,49 +8275,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 6.026038447048512,
             "unit": "iter/sec",
             "range": "stddev: 0.0015073514714168828",
             "extra": "mean: 165.94650179999917 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 13.05717196997329,
             "unit": "iter/sec",
             "range": "stddev: 0.0010249465439280921",
             "extra": "mean: 76.58626249999874 msec\nrounds: 12"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 16.8729996805772,
             "unit": "iter/sec",
             "range": "stddev: 0.001982461779355955",
             "extra": "mean: 59.26628453333744 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 28.43419855609997,
             "unit": "iter/sec",
             "range": "stddev: 0.0010764367585947678",
             "extra": "mean: 35.16891809090468 msec\nrounds: 22"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 37.11796593388209,
             "unit": "iter/sec",
             "range": "stddev: 0.00023469809986459482",
             "extra": "mean: 26.94113146666742 msec\nrounds: 30"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 32.54970813856922,
             "unit": "iter/sec",
             "range": "stddev: 0.00023452996269471255",
             "extra": "mean: 30.722241678568757 msec\nrounds: 28"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 32.09864725565408,
             "unit": "iter/sec",
             "range": "stddev: 0.00045404302355155334",
@@ -8348,49 +8348,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.421746279068818,
             "unit": "iter/sec",
             "range": "stddev: 0.01185630513423422",
             "extra": "mean: 184.44241919999058 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 13.06053324463746,
             "unit": "iter/sec",
             "range": "stddev: 0.0016805240689017158",
             "extra": "mean: 76.56655216666526 msec\nrounds: 12"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 17.184936531968393,
             "unit": "iter/sec",
             "range": "stddev: 0.0011463922556452428",
             "extra": "mean: 58.190497133332045 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 28.180731579775106,
             "unit": "iter/sec",
             "range": "stddev: 0.0009564018943546331",
             "extra": "mean: 35.48523916666824 msec\nrounds: 24"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 36.82727079455658,
             "unit": "iter/sec",
             "range": "stddev: 0.0007601090913862465",
             "extra": "mean: 27.153790612901172 msec\nrounds: 31"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 32.65190753644409,
             "unit": "iter/sec",
             "range": "stddev: 0.00020310292476981084",
             "extra": "mean: 30.62608207143366 msec\nrounds: 28"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 32.21613131448388,
             "unit": "iter/sec",
             "range": "stddev: 0.00018403230962616045",
@@ -8421,49 +8421,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.621810421585481,
             "unit": "iter/sec",
             "range": "stddev: 0.0034712977050783142",
             "extra": "mean: 177.87864140000238 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 11.922541006943442,
             "unit": "iter/sec",
             "range": "stddev: 0.0012942010889946136",
             "extra": "mean: 83.87473772726976 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 15.653551886465262,
             "unit": "iter/sec",
             "range": "stddev: 0.00140855874416688",
             "extra": "mean: 63.88326478571571 msec\nrounds: 14"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 25.271909578789188,
             "unit": "iter/sec",
             "range": "stddev: 0.0009509075953287869",
             "extra": "mean: 39.5696255909092 msec\nrounds: 22"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 32.11020202306223,
             "unit": "iter/sec",
             "range": "stddev: 0.0004190192613822721",
             "extra": "mean: 31.142750185183473 msec\nrounds: 27"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 28.727208870972557,
             "unit": "iter/sec",
             "range": "stddev: 0.00026939465865183864",
             "extra": "mean: 34.81020395999735 msec\nrounds: 25"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 28.53606286664816,
             "unit": "iter/sec",
             "range": "stddev: 0.0009361823429088344",
@@ -8494,49 +8494,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.90898175354541,
             "unit": "iter/sec",
             "range": "stddev: 0.0034976272056932984",
             "extra": "mean: 169.2338953999979 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 12.484029096458539,
             "unit": "iter/sec",
             "range": "stddev: 0.0023952680421669105",
             "extra": "mean: 80.10234454545443 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 16.376416107867747,
             "unit": "iter/sec",
             "range": "stddev: 0.0018261137677677718",
             "extra": "mean: 61.06342153333344 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 26.215645543448414,
             "unit": "iter/sec",
             "range": "stddev: 0.001251284570025374",
             "extra": "mean: 38.145160238097255 msec\nrounds: 21"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 33.542003166333515,
             "unit": "iter/sec",
             "range": "stddev: 0.0008205077247672352",
             "extra": "mean: 29.813365499998262 msec\nrounds: 28"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 29.04830969193101,
             "unit": "iter/sec",
             "range": "stddev: 0.0008786894801615343",
             "extra": "mean: 34.42541099999971 msec\nrounds: 25"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 28.683324383392907,
             "unit": "iter/sec",
             "range": "stddev: 0.00036543883318170597",
@@ -8567,49 +8567,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.390975936697567,
             "unit": "iter/sec",
             "range": "stddev: 0.01347122599155795",
             "extra": "mean: 185.49517039999728 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 12.109313063185269,
             "unit": "iter/sec",
             "range": "stddev: 0.0017241545610801453",
             "extra": "mean: 82.58106754545804 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 16.140295251128357,
             "unit": "iter/sec",
             "range": "stddev: 0.001553527478328822",
             "extra": "mean: 61.95673526666686 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 26.536132247804844,
             "unit": "iter/sec",
             "range": "stddev: 0.000708498065356982",
             "extra": "mean: 37.68446699999859 msec\nrounds: 23"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 34.66033983601551,
             "unit": "iter/sec",
             "range": "stddev: 0.00027710689380515174",
             "extra": "mean: 28.85141936666476 msec\nrounds: 30"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 30.894326703830327,
             "unit": "iter/sec",
             "range": "stddev: 0.00035777687887598894",
             "extra": "mean: 32.36840244445328 msec\nrounds: 27"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 30.6442683084389,
             "unit": "iter/sec",
             "range": "stddev: 0.0005245011943627131",
@@ -8640,49 +8640,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.785664214096564,
             "unit": "iter/sec",
             "range": "stddev: 0.0030533869656403172",
             "extra": "mean: 172.84100200000125 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 12.363756433898793,
             "unit": "iter/sec",
             "range": "stddev: 0.0024624485822737326",
             "extra": "mean: 80.88156745454906 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 16.267727932748777,
             "unit": "iter/sec",
             "range": "stddev: 0.0016314213568512925",
             "extra": "mean: 61.47139933333202 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 26.872316940818017,
             "unit": "iter/sec",
             "range": "stddev: 0.0008008832456382857",
             "extra": "mean: 37.213017478259886 msec\nrounds: 23"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 34.453804683815356,
             "unit": "iter/sec",
             "range": "stddev: 0.00032048958515916947",
             "extra": "mean: 29.02437072413512 msec\nrounds: 29"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 29.84956996941221,
             "unit": "iter/sec",
             "range": "stddev: 0.0008703200019107841",
             "extra": "mean: 33.501320153849164 msec\nrounds: 26"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 29.66447923130222,
             "unit": "iter/sec",
             "range": "stddev: 0.00033547930122924057",
@@ -8713,49 +8713,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.737537916175289,
             "unit": "iter/sec",
             "range": "stddev: 0.00519621878268566",
             "extra": "mean: 174.29078719999325 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 12.407539299132784,
             "unit": "iter/sec",
             "range": "stddev: 0.0014768923723612307",
             "extra": "mean: 80.59615818181567 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 16.213897328409264,
             "unit": "iter/sec",
             "range": "stddev: 0.0017142789691855043",
             "extra": "mean: 61.67548614285628 msec\nrounds: 14"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 25.699771694795132,
             "unit": "iter/sec",
             "range": "stddev: 0.0013224724123345616",
             "extra": "mean: 38.91085149999702 msec\nrounds: 22"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 33.91442574178501,
             "unit": "iter/sec",
             "range": "stddev: 0.0007285697073203146",
             "extra": "mean: 29.485977666663782 msec\nrounds: 27"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 29.029980658931976,
             "unit": "iter/sec",
             "range": "stddev: 0.0014173684817508658",
             "extra": "mean: 34.44714661538429 msec\nrounds: 26"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 24.543345459024014,
             "unit": "iter/sec",
             "range": "stddev: 0.03347215621806853",
@@ -8786,49 +8786,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.791123458851668,
             "unit": "iter/sec",
             "range": "stddev: 0.002555585137167556",
             "extra": "mean: 172.6780662000067 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 11.366907954674375,
             "unit": "iter/sec",
             "range": "stddev: 0.004648042116677747",
             "extra": "mean: 87.97467209090696 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 17.211367374258327,
             "unit": "iter/sec",
             "range": "stddev: 0.0016337201030663575",
             "extra": "mean: 58.10113619999887 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 27.87877308614283,
             "unit": "iter/sec",
             "range": "stddev: 0.0009357322251716076",
             "extra": "mean: 35.86958424999883 msec\nrounds: 24"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 37.83698177612825,
             "unit": "iter/sec",
             "range": "stddev: 0.0005657974880763885",
             "extra": "mean: 26.42916937499784 msec\nrounds: 32"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 34.80504404722428,
             "unit": "iter/sec",
             "range": "stddev: 0.0005240914003272286",
             "extra": "mean: 28.73146773333133 msec\nrounds: 30"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 35.063935591472074,
             "unit": "iter/sec",
             "range": "stddev: 0.0010274045313009247",
@@ -8859,49 +8859,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.98814339942075,
             "unit": "iter/sec",
             "range": "stddev: 0.0019966346165493057",
             "extra": "mean: 166.9966688000045 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 12.954540916039543,
             "unit": "iter/sec",
             "range": "stddev: 0.0011131002611068528",
             "extra": "mean: 77.19300950000161 msec\nrounds: 10"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 15.890725119265678,
             "unit": "iter/sec",
             "range": "stddev: 0.0020114948029785916",
             "extra": "mean: 62.929790333331916 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 28.43916087809789,
             "unit": "iter/sec",
             "range": "stddev: 0.0009183946667898438",
             "extra": "mean: 35.16278150000337 msec\nrounds: 24"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 37.78918350959447,
             "unit": "iter/sec",
             "range": "stddev: 0.0007466274125253466",
             "extra": "mean: 26.46259874194173 msec\nrounds: 31"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 34.26727292619042,
             "unit": "iter/sec",
             "range": "stddev: 0.0005612573438881013",
             "extra": "mean: 29.18236307143372 msec\nrounds: 28"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 35.940277494599165,
             "unit": "iter/sec",
             "range": "stddev: 0.00020264303968712773",
@@ -8932,49 +8932,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 4.917890134210547,
             "unit": "iter/sec",
             "range": "stddev: 0.014619183101561413",
             "extra": "mean: 203.33923139999683 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 11.695189018392892,
             "unit": "iter/sec",
             "range": "stddev: 0.0019108176117417566",
             "extra": "mean: 85.50524480000377 msec\nrounds: 10"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 15.609150806236384,
             "unit": "iter/sec",
             "range": "stddev: 0.0017477545416238664",
             "extra": "mean: 64.06498421428962 msec\nrounds: 14"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 25.417742596681506,
             "unit": "iter/sec",
             "range": "stddev: 0.001285839257884101",
             "extra": "mean: 39.34259685714805 msec\nrounds: 21"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 34.566954376553674,
             "unit": "iter/sec",
             "range": "stddev: 0.0005057897634874363",
             "extra": "mean: 28.92936383999995 msec\nrounds: 25"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 31.6745449237207,
             "unit": "iter/sec",
             "range": "stddev: 0.000848356610872835",
             "extra": "mean: 31.571092888886675 msec\nrounds: 27"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 32.089778352928576,
             "unit": "iter/sec",
             "range": "stddev: 0.0005779664208407515",
@@ -9005,49 +9005,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.736053203646547,
             "unit": "iter/sec",
             "range": "stddev: 0.0027357629971181455",
             "extra": "mean: 174.33590039999558 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 12.550982073493403,
             "unit": "iter/sec",
             "range": "stddev: 0.0018241645739952564",
             "extra": "mean: 79.67504010000255 msec\nrounds: 10"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 17.06666821404478,
             "unit": "iter/sec",
             "range": "stddev: 0.001738885394449741",
             "extra": "mean: 58.59374468749934 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 26.5620206204884,
             "unit": "iter/sec",
             "range": "stddev: 0.0015132819693459579",
             "extra": "mean: 37.64773826087079 msec\nrounds: 23"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 37.71544763928543,
             "unit": "iter/sec",
             "range": "stddev: 0.00033605449025660123",
             "extra": "mean: 26.514334645159373 msec\nrounds: 31"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 34.67952973634297,
             "unit": "iter/sec",
             "range": "stddev: 0.0008344918716937181",
             "extra": "mean: 28.83545444827742 msec\nrounds: 29"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 34.079166387675905,
             "unit": "iter/sec",
             "range": "stddev: 0.001236244221049821",
@@ -9078,49 +9078,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.745984478504588,
             "unit": "iter/sec",
             "range": "stddev: 0.0013287576234124988",
             "extra": "mean: 174.03458080002565 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 12.238284930391341,
             "unit": "iter/sec",
             "range": "stddev: 0.0017942421787376403",
             "extra": "mean: 81.71079572732444 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 16.567024847945063,
             "unit": "iter/sec",
             "range": "stddev: 0.0015476381897028628",
             "extra": "mean: 60.360868000028255 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 26.31087047391991,
             "unit": "iter/sec",
             "range": "stddev: 0.0007876336926099336",
             "extra": "mean: 38.007104363621444 msec\nrounds: 22"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 35.81115877829992,
             "unit": "iter/sec",
             "range": "stddev: 0.0005179930680612251",
             "extra": "mean: 27.92425696668488 msec\nrounds: 30"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 34.73228627260145,
             "unit": "iter/sec",
             "range": "stddev: 0.0010532847451124342",
             "extra": "mean: 28.791654892838128 msec\nrounds: 28"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 36.03870945680942,
             "unit": "iter/sec",
             "range": "stddev: 0.0006314897469338001",
@@ -9151,49 +9151,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.697813108675682,
             "unit": "iter/sec",
             "range": "stddev: 0.002414217746488639",
             "extra": "mean: 175.50593200001003 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 12.409730254239745,
             "unit": "iter/sec",
             "range": "stddev: 0.0012972809651345474",
             "extra": "mean: 80.58192881818306 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 14.959410946727187,
             "unit": "iter/sec",
             "range": "stddev: 0.004126572196101861",
             "extra": "mean: 66.84755192307753 msec\nrounds: 13"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 26.62917121899607,
             "unit": "iter/sec",
             "range": "stddev: 0.0006297943146710465",
             "extra": "mean: 37.55280221739099 msec\nrounds: 23"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 36.297411318711056,
             "unit": "iter/sec",
             "range": "stddev: 0.00036794192156125054",
             "extra": "mean: 27.550174066669797 msec\nrounds: 30"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 34.07102751154804,
             "unit": "iter/sec",
             "range": "stddev: 0.0003491288226878437",
             "extra": "mean: 29.35045031034241 msec\nrounds: 29"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 34.28776945745961,
             "unit": "iter/sec",
             "range": "stddev: 0.0003143273354094514",
@@ -9224,49 +9224,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.957133837429276,
             "unit": "iter/sec",
             "range": "stddev: 0.0017767547358323338",
             "extra": "mean: 167.86596160000613 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 12.836130980915794,
             "unit": "iter/sec",
             "range": "stddev: 0.0009622725452433112",
             "extra": "mean: 77.90509472727857 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 17.36245788722808,
             "unit": "iter/sec",
             "range": "stddev: 0.001522238290764253",
             "extra": "mean: 57.595532066667 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 27.3136140147692,
             "unit": "iter/sec",
             "range": "stddev: 0.0013098729806888204",
             "extra": "mean: 36.611778999998805 msec\nrounds: 23"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 37.19420643699737,
             "unit": "iter/sec",
             "range": "stddev: 0.000715306066582475",
             "extra": "mean: 26.885907666665315 msec\nrounds: 30"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 34.47480067337934,
             "unit": "iter/sec",
             "range": "stddev: 0.0006607321405004341",
             "extra": "mean: 29.006694178573664 msec\nrounds: 28"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 35.229328750361,
             "unit": "iter/sec",
             "range": "stddev: 0.00030209969685107154",
@@ -9297,49 +9297,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.605507340108283,
             "unit": "iter/sec",
             "range": "stddev: 0.006085452245600441",
             "extra": "mean: 178.39598439999236 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 12.277880268127092,
             "unit": "iter/sec",
             "range": "stddev: 0.001863530854808189",
             "extra": "mean: 81.44728390909316 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 16.813602551497365,
             "unit": "iter/sec",
             "range": "stddev: 0.0014457261838512453",
             "extra": "mean: 59.47565353333175 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 26.956573883032473,
             "unit": "iter/sec",
             "range": "stddev: 0.001153262348594155",
             "extra": "mean: 37.096702434779345 msec\nrounds: 23"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 36.49102644850551,
             "unit": "iter/sec",
             "range": "stddev: 0.0007295923732757123",
             "extra": "mean: 27.403997566666288 msec\nrounds: 30"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 33.09304410971117,
             "unit": "iter/sec",
             "range": "stddev: 0.00078555714912008",
             "extra": "mean: 30.21783057142662 msec\nrounds: 28"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 33.386603039994455,
             "unit": "iter/sec",
             "range": "stddev: 0.0006606789271112477",
@@ -9370,49 +9370,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.528488615855707,
             "unit": "iter/sec",
             "range": "stddev: 0.005688294848819506",
             "extra": "mean: 180.88126239999838 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 11.849945684748716,
             "unit": "iter/sec",
             "range": "stddev: 0.0019251912630950903",
             "extra": "mean: 84.38857245455851 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 16.49365486128668,
             "unit": "iter/sec",
             "range": "stddev: 0.0013777198651778802",
             "extra": "mean: 60.629375866665214 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 26.186708764801853,
             "unit": "iter/sec",
             "range": "stddev: 0.0010013221922785128",
             "extra": "mean: 38.18731131817996 msec\nrounds: 22"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 35.194437642085404,
             "unit": "iter/sec",
             "range": "stddev: 0.0007470363310909216",
             "extra": "mean: 28.413580866659533 msec\nrounds: 30"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 33.11171034896905,
             "unit": "iter/sec",
             "range": "stddev: 0.000489272773517441",
             "extra": "mean: 30.20079571429132 msec\nrounds: 28"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 33.42838220245448,
             "unit": "iter/sec",
             "range": "stddev: 0.000334486207882113",
@@ -9443,49 +9443,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.845099987215666,
             "unit": "iter/sec",
             "range": "stddev: 0.0018837615713880973",
             "extra": "mean: 171.08347199999798 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 12.498060088040894,
             "unit": "iter/sec",
             "range": "stddev: 0.001319847160615954",
             "extra": "mean: 80.01241736362564 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 17.1547687280722,
             "unit": "iter/sec",
             "range": "stddev: 0.0009706621028342791",
             "extra": "mean: 58.2928289999965 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 27.7524917245174,
             "unit": "iter/sec",
             "range": "stddev: 0.0009547546359306078",
             "extra": "mean: 36.03280058332814 msec\nrounds: 24"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 37.48502651246175,
             "unit": "iter/sec",
             "range": "stddev: 0.000579766610545829",
             "extra": "mean: 26.677318733322863 msec\nrounds: 30"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 35.13129353637053,
             "unit": "iter/sec",
             "range": "stddev: 0.0006912157893515615",
             "extra": "mean: 28.464650724139307 msec\nrounds: 29"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 34.86686816791138,
             "unit": "iter/sec",
             "range": "stddev: 0.0005507810041706037",
@@ -9516,49 +9516,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.745528136518733,
             "unit": "iter/sec",
             "range": "stddev: 0.0029110017024657556",
             "extra": "mean: 174.04840360000549 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 12.54020289295886,
             "unit": "iter/sec",
             "range": "stddev: 0.0012843514871073091",
             "extra": "mean: 79.74352636363525 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 17.1053407711283,
             "unit": "iter/sec",
             "range": "stddev: 0.0012825091635755995",
             "extra": "mean: 58.46127319999823 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 27.95174060039956,
             "unit": "iter/sec",
             "range": "stddev: 0.001031324729412409",
             "extra": "mean: 35.77594734782654 msec\nrounds: 23"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 39.93007507080792,
             "unit": "iter/sec",
             "range": "stddev: 0.00022113719580438827",
             "extra": "mean: 25.043779612903357 msec\nrounds: 31"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 36.82842674933977,
             "unit": "iter/sec",
             "range": "stddev: 0.0007520105444757105",
             "extra": "mean: 27.152938321426593 msec\nrounds: 28"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 35.6335743546947,
             "unit": "iter/sec",
             "range": "stddev: 0.0006478583703279912",
@@ -9589,49 +9589,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.650688021388422,
             "unit": "iter/sec",
             "range": "stddev: 0.0010701288966689663",
             "extra": "mean: 176.96960019999324 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 12.138317317596435,
             "unit": "iter/sec",
             "range": "stddev: 0.0013912363838193673",
             "extra": "mean: 82.38374181817935 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 16.71385846890443,
             "unit": "iter/sec",
             "range": "stddev: 0.0013857501054667265",
             "extra": "mean: 59.83058920000227 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 26.493808740740036,
             "unit": "iter/sec",
             "range": "stddev: 0.0009473974833205661",
             "extra": "mean: 37.744667434783764 msec\nrounds: 23"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 35.71678745937675,
             "unit": "iter/sec",
             "range": "stddev: 0.00048194137453108296",
             "extra": "mean: 27.99803876923061 msec\nrounds: 26"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 33.148530787205445,
             "unit": "iter/sec",
             "range": "stddev: 0.00048448684114121333",
             "extra": "mean: 30.167249535716273 msec\nrounds: 28"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 33.2209969014327,
             "unit": "iter/sec",
             "range": "stddev: 0.0007001459276256163",
@@ -9662,49 +9662,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.735685695271169,
             "unit": "iter/sec",
             "range": "stddev: 0.001396014284254571",
             "extra": "mean: 174.3470708000018 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 12.51444081143941,
             "unit": "iter/sec",
             "range": "stddev: 0.0010267651180421015",
             "extra": "mean: 79.9076854545433 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 16.635942096412816,
             "unit": "iter/sec",
             "range": "stddev: 0.0019445368532902522",
             "extra": "mean: 60.11081273333048 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 26.716356239528288,
             "unit": "iter/sec",
             "range": "stddev: 0.0012311316356087329",
             "extra": "mean: 37.430253999998925 msec\nrounds: 22"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 36.9314717534278,
             "unit": "iter/sec",
             "range": "stddev: 0.0012654258778865889",
             "extra": "mean: 27.07717706666225 msec\nrounds: 30"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 33.910626013953966,
             "unit": "iter/sec",
             "range": "stddev: 0.0011426440536515515",
             "extra": "mean: 29.489281607143067 msec\nrounds: 28"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 36.63951731764024,
             "unit": "iter/sec",
             "range": "stddev: 0.0004421403021576734",
@@ -9735,49 +9735,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.735228796933434,
             "unit": "iter/sec",
             "range": "stddev: 0.0013441390384843145",
             "extra": "mean: 174.36096019999923 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 12.420746056424607,
             "unit": "iter/sec",
             "range": "stddev: 0.0009017643634529082",
             "extra": "mean: 80.51046172727699 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 17.10023579207368,
             "unit": "iter/sec",
             "range": "stddev: 0.0016951565981348244",
             "extra": "mean: 58.47872579999868 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 28.01802196161304,
             "unit": "iter/sec",
             "range": "stddev: 0.0008159421726116296",
             "extra": "mean: 35.691313304346785 msec\nrounds: 23"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 39.66058243266309,
             "unit": "iter/sec",
             "range": "stddev: 0.00019875636135956477",
             "extra": "mean: 25.21395145161646 msec\nrounds: 31"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 36.13119462225815,
             "unit": "iter/sec",
             "range": "stddev: 0.001057978903097712",
             "extra": "mean: 27.67691493333473 msec\nrounds: 30"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 37.17435460531306,
             "unit": "iter/sec",
             "range": "stddev: 0.0005200546606376349",
@@ -9808,49 +9808,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.806185885126955,
             "unit": "iter/sec",
             "range": "stddev: 0.0023876785328057573",
             "extra": "mean: 172.23010420000264 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 12.743829500026695,
             "unit": "iter/sec",
             "range": "stddev: 0.0014788272993430144",
             "extra": "mean: 78.46934863636595 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 17.30559158858485,
             "unit": "iter/sec",
             "range": "stddev: 0.001234534963823317",
             "extra": "mean: 57.78479140000172 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 28.180389667697675,
             "unit": "iter/sec",
             "range": "stddev: 0.0014118547567910772",
             "extra": "mean: 35.48566970833159 msec\nrounds: 24"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 37.41425434379984,
             "unit": "iter/sec",
             "range": "stddev: 0.0014475383597052668",
             "extra": "mean: 26.727781096771114 msec\nrounds: 31"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 37.0235714269938,
             "unit": "iter/sec",
             "range": "stddev: 0.00048699064005548607",
             "extra": "mean: 27.009819999993365 msec\nrounds: 28"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 36.79095095068234,
             "unit": "iter/sec",
             "range": "stddev: 0.0007372148188804514",
@@ -9881,49 +9881,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.829906036512527,
             "unit": "iter/sec",
             "range": "stddev: 0.001218129410826846",
             "extra": "mean: 171.52935120000734 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 12.785310925592604,
             "unit": "iter/sec",
             "range": "stddev: 0.0016311477577676146",
             "extra": "mean: 78.21475800000144 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 17.660258860652835,
             "unit": "iter/sec",
             "range": "stddev: 0.0011686921631455073",
             "extra": "mean: 56.624311562499585 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 27.383273954207304,
             "unit": "iter/sec",
             "range": "stddev: 0.002899456179888901",
             "extra": "mean: 36.51864279166498 msec\nrounds: 24"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 40.635196541453126,
             "unit": "iter/sec",
             "range": "stddev: 0.00018113735381441637",
             "extra": "mean: 24.609207906251207 msec\nrounds: 32"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 37.65849895815899,
             "unit": "iter/sec",
             "range": "stddev: 0.00037827668929826775",
             "extra": "mean: 26.55443067741665 msec\nrounds: 31"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 37.074860747959825,
             "unit": "iter/sec",
             "range": "stddev: 0.00018414289816854896",
@@ -9954,49 +9954,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.71699372026991,
             "unit": "iter/sec",
             "range": "stddev: 0.002553709550840977",
             "extra": "mean: 174.91710660000308 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 12.447581874805572,
             "unit": "iter/sec",
             "range": "stddev: 0.0015739011161045213",
             "extra": "mean: 80.33688872728301 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 16.645773668361166,
             "unit": "iter/sec",
             "range": "stddev: 0.00288643273350892",
             "extra": "mean: 60.07530919999908 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 27.18727309561273,
             "unit": "iter/sec",
             "range": "stddev: 0.0019486118514142963",
             "extra": "mean: 36.78191617390904 msec\nrounds: 23"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 37.3192264832833,
             "unit": "iter/sec",
             "range": "stddev: 0.0011998315873048581",
             "extra": "mean: 26.795839416659344 msec\nrounds: 24"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 35.38157990784151,
             "unit": "iter/sec",
             "range": "stddev: 0.0003670457005732347",
             "extra": "mean: 28.26329413793003 msec\nrounds: 29"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 35.55171690728568,
             "unit": "iter/sec",
             "range": "stddev: 0.0006610275788945299",
@@ -10027,49 +10027,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.322436673249553,
             "unit": "iter/sec",
             "range": "stddev: 0.013908273150052332",
             "extra": "mean: 187.88386999999034 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 11.94606661045205,
             "unit": "iter/sec",
             "range": "stddev: 0.0050563076159867645",
             "extra": "mean: 83.70956170000454 msec\nrounds: 10"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 17.17725084794585,
             "unit": "iter/sec",
             "range": "stddev: 0.0016922862498084492",
             "extra": "mean: 58.2165335333381 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 27.691430212935632,
             "unit": "iter/sec",
             "range": "stddev: 0.0004975890576018285",
             "extra": "mean: 36.11225539130388 msec\nrounds: 23"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 37.866660969571356,
             "unit": "iter/sec",
             "range": "stddev: 0.0007601571176124254",
             "extra": "mean: 26.408454677415932 msec\nrounds: 31"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 35.8392193984827,
             "unit": "iter/sec",
             "range": "stddev: 0.00023849362934014393",
             "extra": "mean: 27.902393433332882 msec\nrounds: 30"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 36.150310663661756,
             "unit": "iter/sec",
             "range": "stddev: 0.00013393783117895616",
@@ -10100,49 +10100,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 4.994523993904169,
             "unit": "iter/sec",
             "range": "stddev: 0.014232968691203324",
             "extra": "mean: 200.21928039999466 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 12.267736095630807,
             "unit": "iter/sec",
             "range": "stddev: 0.0010145278036088098",
             "extra": "mean: 81.51463254545827 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 16.824306926853787,
             "unit": "iter/sec",
             "range": "stddev: 0.001706336451572995",
             "extra": "mean: 59.43781246666806 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 27.317834199821426,
             "unit": "iter/sec",
             "range": "stddev: 0.00211608054753376",
             "extra": "mean: 36.606123043478206 msec\nrounds: 23"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 38.18587994780233,
             "unit": "iter/sec",
             "range": "stddev: 0.0006277473164293741",
             "extra": "mean: 26.187690354836302 msec\nrounds: 31"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 35.95608214819992,
             "unit": "iter/sec",
             "range": "stddev: 0.0005287447262479382",
             "extra": "mean: 27.81170639999952 msec\nrounds: 30"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 35.186651176567885,
             "unit": "iter/sec",
             "range": "stddev: 0.0018975046651464066",
@@ -10173,49 +10173,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.510995319074186,
             "unit": "iter/sec",
             "range": "stddev: 0.0010596084043468573",
             "extra": "mean: 181.45542539999724 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 12.021436327127056,
             "unit": "iter/sec",
             "range": "stddev: 0.001632037590926588",
             "extra": "mean: 83.184735399999 msec\nrounds: 10"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 16.174782331738598,
             "unit": "iter/sec",
             "range": "stddev: 0.003083002766590656",
             "extra": "mean: 61.824634142851664 msec\nrounds: 14"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 25.416514224383356,
             "unit": "iter/sec",
             "range": "stddev: 0.002321822719931142",
             "extra": "mean: 39.34449827272731 msec\nrounds: 22"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 36.50154064425203,
             "unit": "iter/sec",
             "range": "stddev: 0.000514026634406818",
             "extra": "mean: 27.396103899999957 msec\nrounds: 30"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 34.77135923226351,
             "unit": "iter/sec",
             "range": "stddev: 0.0005288821373394916",
             "extra": "mean: 28.759301392857953 msec\nrounds: 28"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 34.84221246929654,
             "unit": "iter/sec",
             "range": "stddev: 0.0010688123713092678",
@@ -10246,49 +10246,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.681091802584952,
             "unit": "iter/sec",
             "range": "stddev: 0.0028241123677563594",
             "extra": "mean: 176.0225031999994 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 12.38523617786348,
             "unit": "iter/sec",
             "range": "stddev: 0.002252951635575633",
             "extra": "mean: 80.74129436363364 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 16.136265104662158,
             "unit": "iter/sec",
             "range": "stddev: 0.0042939127387405995",
             "extra": "mean: 61.972209399997766 msec\nrounds: 15"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 27.473128094435047,
             "unit": "iter/sec",
             "range": "stddev: 0.0019333493165233843",
             "extra": "mean: 36.399204217395244 msec\nrounds: 23"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 39.14202791016292,
             "unit": "iter/sec",
             "range": "stddev: 0.0002611420344934795",
             "extra": "mean: 25.547986483867327 msec\nrounds: 31"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 35.93783853631304,
             "unit": "iter/sec",
             "range": "stddev: 0.0010794212537477458",
             "extra": "mean: 27.82582483333158 msec\nrounds: 30"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 36.331630998471546,
             "unit": "iter/sec",
             "range": "stddev: 0.0007300572434252531",
@@ -10319,49 +10319,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.819023237938732,
             "unit": "iter/sec",
             "range": "stddev: 0.0021718065247409136",
             "extra": "mean: 171.8501472000014 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 12.686256123687947,
             "unit": "iter/sec",
             "range": "stddev: 0.001197543128389124",
             "extra": "mean: 78.82546199999751 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 17.17831980859586,
             "unit": "iter/sec",
             "range": "stddev: 0.0029567378468995796",
             "extra": "mean: 58.2129108749978 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 28.537716098861246,
             "unit": "iter/sec",
             "range": "stddev: 0.0006125556242593749",
             "extra": "mean: 35.04134656521808 msec\nrounds: 23"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 39.81021113826812,
             "unit": "iter/sec",
             "range": "stddev: 0.00026341471467329755",
             "extra": "mean: 25.119183531250755 msec\nrounds: 32"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 36.3053599679609,
             "unit": "iter/sec",
             "range": "stddev: 0.0012356762129674193",
             "extra": "mean: 27.544142266665023 msec\nrounds: 30"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 37.22220491527672,
             "unit": "iter/sec",
             "range": "stddev: 0.00028674171605599377",
@@ -10392,49 +10392,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.977538597729547,
             "unit": "iter/sec",
             "range": "stddev: 0.0014475491640934003",
             "extra": "mean: 167.29293899998083 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 13.671061428627475,
             "unit": "iter/sec",
             "range": "stddev: 0.0013217873901743699",
             "extra": "mean: 73.14720990909893 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 19.134074061959073,
             "unit": "iter/sec",
             "range": "stddev: 0.000961924537173851",
             "extra": "mean: 52.262785058835156 msec\nrounds: 17"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 33.346909971947994,
             "unit": "iter/sec",
             "range": "stddev: 0.001127143043233427",
             "extra": "mean: 29.987785999998724 msec\nrounds: 27"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 49.512305097735066,
             "unit": "iter/sec",
             "range": "stddev: 0.0008164287752095879",
             "extra": "mean: 20.196999473687296 msec\nrounds: 38"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 45.312296539130415,
             "unit": "iter/sec",
             "range": "stddev: 0.0005954426592061676",
             "extra": "mean: 22.069064611113415 msec\nrounds: 36"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 46.47437503267902,
             "unit": "iter/sec",
             "range": "stddev: 0.0001519207631173165",
@@ -10465,49 +10465,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.839757059285367,
             "unit": "iter/sec",
             "range": "stddev: 0.0027418805697821615",
             "extra": "mean: 171.2400002000038 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 13.389092820330738,
             "unit": "iter/sec",
             "range": "stddev: 0.0012684586877515847",
             "extra": "mean: 74.6876590833357 msec\nrounds: 12"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 18.826648455838686,
             "unit": "iter/sec",
             "range": "stddev: 0.001254775019001512",
             "extra": "mean: 53.11619868749773 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 32.568493781504,
             "unit": "iter/sec",
             "range": "stddev: 0.0010486011047893453",
             "extra": "mean: 30.704520961540773 msec\nrounds: 26"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 46.95539815107645,
             "unit": "iter/sec",
             "range": "stddev: 0.0006525929672032092",
             "extra": "mean: 21.296805891892433 msec\nrounds: 37"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 43.001311610753504,
             "unit": "iter/sec",
             "range": "stddev: 0.0007560276875639235",
             "extra": "mean: 23.255104612900368 msec\nrounds: 31"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 42.93565910417098,
             "unit": "iter/sec",
             "range": "stddev: 0.0006395828635151254",
@@ -10538,49 +10538,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.6766910074017884,
             "unit": "iter/sec",
             "range": "stddev: 0.0022280348363903956",
             "extra": "mean: 176.15896280000243 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 12.912683569628976,
             "unit": "iter/sec",
             "range": "stddev: 0.0014477871780476102",
             "extra": "mean: 77.4432359166634 msec\nrounds: 12"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 17.84573949789016,
             "unit": "iter/sec",
             "range": "stddev: 0.0026124409978145794",
             "extra": "mean: 56.03578378571683 msec\nrounds: 14"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 30.58083659385603,
             "unit": "iter/sec",
             "range": "stddev: 0.0004832966240516084",
             "extra": "mean: 32.70021723999889 msec\nrounds: 25"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 42.85695995876398,
             "unit": "iter/sec",
             "range": "stddev: 0.00022022305635273215",
             "extra": "mean: 23.333432911764575 msec\nrounds: 34"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 37.89031057965652,
             "unit": "iter/sec",
             "range": "stddev: 0.0002696367488311987",
             "extra": "mean: 26.391971580642167 msec\nrounds: 31"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 38.009657866368165,
             "unit": "iter/sec",
             "range": "stddev: 0.00041099585919128484",
@@ -10611,49 +10611,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.719846895897131,
             "unit": "iter/sec",
             "range": "stddev: 0.005047516565289593",
             "extra": "mean: 174.8298544000022 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 13.091137436698796,
             "unit": "iter/sec",
             "range": "stddev: 0.001058003227158887",
             "extra": "mean: 76.38755645454219 msec\nrounds: 11"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 18.551096971639208,
             "unit": "iter/sec",
             "range": "stddev: 0.0012225557435248068",
             "extra": "mean: 53.905168062502895 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 32.19177869461766,
             "unit": "iter/sec",
             "range": "stddev: 0.0007489386442448668",
             "extra": "mean: 31.063831839996965 msec\nrounds: 25"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 46.76199519378981,
             "unit": "iter/sec",
             "range": "stddev: 0.0003577199342974571",
             "extra": "mean: 21.38488736111081 msec\nrounds: 36"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 41.73281660758295,
             "unit": "iter/sec",
             "range": "stddev: 0.000512089118953823",
             "extra": "mean: 23.961958029410784 msec\nrounds: 34"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 41.53888907324804,
             "unit": "iter/sec",
             "range": "stddev: 0.00035406056474691824",
@@ -10684,49 +10684,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.808664631682326,
             "unit": "iter/sec",
             "range": "stddev: 0.0024051673031787006",
             "extra": "mean: 172.15660800000023 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 13.290977012776603,
             "unit": "iter/sec",
             "range": "stddev: 0.0012087799599385257",
             "extra": "mean: 75.23901358332807 msec\nrounds: 12"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 18.35636038548613,
             "unit": "iter/sec",
             "range": "stddev: 0.001418481742292746",
             "extra": "mean: 54.47703024999839 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 31.527105275067285,
             "unit": "iter/sec",
             "range": "stddev: 0.0018762516761035568",
             "extra": "mean: 31.718738249998303 msec\nrounds: 24"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 48.771291067016435,
             "unit": "iter/sec",
             "range": "stddev: 0.0004062948474287571",
             "extra": "mean: 20.50386565789091 msec\nrounds: 38"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 41.71830722629121,
             "unit": "iter/sec",
             "range": "stddev: 0.0016074311703354062",
             "extra": "mean: 23.97029185713921 msec\nrounds: 35"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 44.59585588628014,
             "unit": "iter/sec",
             "range": "stddev: 0.0009560686093910091",
@@ -10757,49 +10757,49 @@ window.BENCHMARK_DATA = {
         "tool": "pytest",
         "benches": [
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
             "value": 5.781481120670019,
             "unit": "iter/sec",
             "range": "stddev: 0.008147079474383723",
             "extra": "mean: 172.96605819999797 msec\nrounds: 5"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
             "value": 13.258173367229102,
             "unit": "iter/sec",
             "range": "stddev: 0.0016950204235160202",
             "extra": "mean: 75.42517150000094 msec\nrounds: 12"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
             "value": 18.55520587587247,
             "unit": "iter/sec",
             "range": "stddev: 0.003175817437438961",
             "extra": "mean: 53.893231187497115 msec\nrounds: 16"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
             "value": 34.378551523218796,
             "unit": "iter/sec",
             "range": "stddev: 0.0008602811426001786",
             "extra": "mean: 29.087903814813544 msec\nrounds: 27"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
             "value": 50.777532163886875,
             "unit": "iter/sec",
             "range": "stddev: 0.00021762495775435762",
             "extra": "mean: 19.693749526315163 msec\nrounds: 38"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
             "value": 47.5688686918375,
             "unit": "iter/sec",
             "range": "stddev: 0.0001413960380991749",
             "extra": "mean: 21.02215224999861 msec\nrounds: 36"
           },
           {
-            "name": ".github/workflows/tests/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
             "value": 47.44114491309483,
             "unit": "iter/sec",
             "range": "stddev: 0.0003271542155216191",
