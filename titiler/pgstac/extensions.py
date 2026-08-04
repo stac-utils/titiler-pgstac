@@ -46,6 +46,9 @@ class searchInfoExtension(FactoryExtension):
             logger.info(
                 f"opening data with backend: {factory.backend} and reader {factory.dataset_reader}"
             )
+            layers: list[tuple[str, str]] = []
+            links: list[model.Link] = []
+
             with factory.backend(
                 search_id,
                 reader=factory.dataset_reader,
@@ -53,39 +56,38 @@ class searchInfoExtension(FactoryExtension):
             ) as src_dst:
                 search_info = src_dst.info()
 
-            links: list[model.Link] = [
-                model.Link(
-                    rel="self",
-                    title="Mosaic metadata",
-                    href=factory.url_for(request, "info"),
-                ),
-            ]
+                links.append(
+                    model.Link(
+                        rel="self",
+                        title="Mosaic metadata",
+                        href=factory.url_for(request, "info"),
+                    )
+                )
 
-            layers: list[tuple[str, str]] = []
-            if renders := search_info.metadata.defaults_params:
-                # List of dependencies a `/tile` URL should validate
-                # Note: Those dependencies should only require Query() inputs
-                tile_dependencies: list[Callable] = [
-                    factory.layer_dependency,
-                    factory.dataset_dependency,
-                    factory.pixel_selection_dependency,
-                    factory.process_dependency,
-                    factory.colormap_dependency,
-                    factory.render_dependency,
-                    factory.assets_accessor_dependency,
-                    factory.reader_dependency,
-                    factory.backend_dependency,
-                ]
+                if renders := factory.get_renders(src_dst):
+                    # List of dependencies a `/tile` URL should validate
+                    # Note: Those dependencies should only require Query() inputs
+                    tile_dependencies: list[Callable] = [
+                        factory.layer_dependency,
+                        factory.dataset_dependency,
+                        factory.pixel_selection_dependency,
+                        factory.process_dependency,
+                        factory.colormap_dependency,
+                        factory.render_dependency,
+                        factory.assets_accessor_dependency,
+                        factory.reader_dependency,
+                        factory.backend_dependency,
+                    ]
 
-                for name, values in renders.items():
-                    if check_query_params(tile_dependencies, values):
-                        layers.append((name, urlencode(values, doseq=True)))
-                    else:
-                        warnings.warn(
-                            f"Cannot construct URL for layer `{name}`",
-                            UserWarning,
-                            stacklevel=2,
-                        )
+                    for name, values in renders.items():
+                        if check_query_params(tile_dependencies, values):
+                            layers.append((name, urlencode(values, doseq=True)))
+                        else:
+                            warnings.warn(
+                                f"Cannot construct URL for layer `{name}`",
+                                UserWarning,
+                                stacklevel=2,
+                            )
 
             try:
                 tilejson_endpoint = factory.url_for(

@@ -192,6 +192,8 @@ def test_tiles_collections(rio, app):
     meta = parse_img(response.content)
     assert meta["width"] == 256
     assert meta["height"] == 256
+    assert "server-timing" in response.headers
+    assert "x-assets" in response.headers
 
     response = app.get(
         f"/collections/{collection_id}/tiles/WebMercatorQuad/{z}/{x}/{y}?assets=cog&buffer=0.5"
@@ -275,6 +277,41 @@ def test_wmts_collections(app):
             io.BytesIO(response.content), layer=f"{search_id}_WebMercatorQuad_default"
         ) as sds:
             assert sds.crs == "epsg:3857"
+
+    response = app.get(
+        f"/collections/{collection_id}/WMTSCapabilities.xml?assets=cog&zooms=WebMercatorQuad::0,1"
+    )
+    wmts = WebMapTileService(
+        f"/collections/{collection_id}/WMTSCapabilities.xml?assets=cog&zooms=WebMercatorQuad::0,1",
+        xml=response.content,
+    )
+    assert wmts.version == "1.0.0"
+    assert len(wmts.contents) == 13  # 13 TMS
+    assert f"{search_id}_WebMercatorQuad_default" in wmts.contents
+    assert f"{search_id}_WorldCRS84Quad_default" in wmts.contents
+    layer = wmts.contents[f"{search_id}_WebMercatorQuad_default"]
+    assert ["0", "1"] == list(
+        layer.tilematrixsetlinks["WebMercatorQuad"].tilematrixlimits
+    )
+    response = app.get(
+        f"/collections/{collection_id}/WMTSCapabilities.xml?assets=cog&zooms=*::0,1"
+    )
+    wmts = WebMapTileService(
+        f"/collections/{collection_id}/WMTSCapabilities.xml?assets=cog&zooms=*::0,1",
+        xml=response.content,
+    )
+    assert wmts.version == "1.0.0"
+    assert len(wmts.contents) == 13  # 13 TMS
+    assert f"{search_id}_WebMercatorQuad_default" in wmts.contents
+    assert f"{search_id}_WorldCRS84Quad_default" in wmts.contents
+    layer = wmts.contents[f"{search_id}_WebMercatorQuad_default"]
+    assert ["0", "1"] == list(
+        layer.tilematrixsetlinks["WebMercatorQuad"].tilematrixlimits
+    )
+    layer = wmts.contents[f"{search_id}_WorldCRS84Quad_default"]
+    assert ["0", "1"] == list(
+        layer.tilematrixsetlinks["WorldCRS84Quad"].tilematrixlimits
+    )
 
 
 @patch("rio_tiler.io.rasterio.rasterio")

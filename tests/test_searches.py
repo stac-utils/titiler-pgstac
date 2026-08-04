@@ -3,6 +3,7 @@
 import io
 from datetime import datetime
 from unittest.mock import patch
+from urllib.parse import parse_qs, urlparse
 
 import pytest
 import rasterio
@@ -691,8 +692,9 @@ def test_query_with_metadata(app):
         == "TileJSON link for `colormap` layer (Template URL)."
     )
 
-    assert "asset_bidx=cog%7C1" in resp["links"][2]["href"]
-    assert "assets=cog" in resp["links"][2]["href"]
+    query = urlparse(resp["links"][2]["href"])
+    query_params = parse_qs(query.query)
+    assert query_params["assets"] == ["cog|bidx=1"]
 
 
 @patch("rio_tiler.io.rasterio.rasterio")
