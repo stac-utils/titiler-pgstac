@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1785853240529,
+  "lastUpdate": 1785854106545,
   "repoUrl": "https://github.com/stac-utils/titiler-pgstac",
   "entries": {
     "TiTiler-pgSTAC Benchmarks": [
@@ -11023,6 +11023,79 @@ window.BENCHMARK_DATA = {
             "unit": "iter/sec",
             "range": "stddev: 0.0004104903624983429",
             "extra": "mean: 22.09922941666144 msec\nrounds: 36"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "vincent.sarago@gmail.com",
+            "name": "Vincent Sarago",
+            "username": "vincentsarago"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "59f1befc6a3ed263cf5df7baa60bce7c2caa29ac",
+          "message": "Merge pull request #307 from stac-utils/copilot/fix-publish-docker-job\n\nFix publish-docker: add packages:write permission for ghcr.io push",
+          "timestamp": "2026-08-04T16:31:20+02:00",
+          "tree_id": "8ce243875415da660640dfd6c05f6db7b446341c",
+          "url": "https://github.com/stac-utils/titiler-pgstac/commit/59f1befc6a3ed263cf5df7baa60bce7c2caa29ac"
+        },
+        "date": 1785854106128,
+        "tool": "pytest",
+        "benches": [
+          {
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "value": 5.243223462686685,
+            "unit": "iter/sec",
+            "range": "stddev: 0.012373931819326398",
+            "extra": "mean: 190.72236900000235 msec\nrounds: 5"
+          },
+          {
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "value": 12.628358710580423,
+            "unit": "iter/sec",
+            "range": "stddev: 0.001148065244420394",
+            "extra": "mean: 79.18685419999747 msec\nrounds: 10"
+          },
+          {
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "value": 17.822546628710136,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0010964277982340094",
+            "extra": "mean: 56.108704375002816 msec\nrounds: 16"
+          },
+          {
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "value": 30.618749807613508,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0011100585115727752",
+            "extra": "mean: 32.65972668000131 msec\nrounds: 25"
+          },
+          {
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "value": 43.86428279613018,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0004365309830255797",
+            "extra": "mean: 22.797591485713806 msec\nrounds: 35"
+          },
+          {
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "value": 40.451682654974235,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0003060639704643558",
+            "extra": "mean: 24.720850515152367 msec\nrounds: 33"
+          },
+          {
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "value": 40.36830488383597,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0006078412114311592",
+            "extra": "mean: 24.771909617646937 msec\nrounds: 34"
           }
         ]
       }
