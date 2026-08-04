@@ -218,6 +218,11 @@ if settings.telemetry_enabled:
 
     trace.set_tracer_provider(provider)
 
+if settings.metrics_enabled:
+    from titiler.pgstac.metrics import instrument_app
+
+    instrument_app(app)
+
 TITILER_CONFORMS_TO = {
     "http://www.opengis.net/spec/ogcapi-common-1/1.0/conf/core",
     "http://www.opengis.net/spec/ogcapi-common-1/1.0/conf/landing-page",

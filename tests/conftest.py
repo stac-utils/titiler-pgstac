@@ -136,6 +136,7 @@ def app(pgstac, monkeypatch):
     monkeypatch.setenv("TITILER_PGSTAC_API_DEBUG", "TRUE")
     monkeypatch.setenv("TITILER_PGSTAC_API_ENABLE_ASSETS_ENDPOINTS", "TRUE")
     monkeypatch.setenv("TITILER_PGSTAC_API_ENABLE_EXTERNAL_DATASET_ENDPOINTS", "TRUE")
+    monkeypatch.setenv("TITILER_PGSTAC_API_METRICS_ENABLED", "TRUE")
     monkeypatch.setenv("DATABASE_URL", pgstac)
 
     from titiler.pgstac.main import app

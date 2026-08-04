@@ -4,7 +4,13 @@
 
 ## 3.0.2 (2026-07-29)
 
+* Response compression via `starlette-cramjam` (image mediatypes excluded).
 * fix: exclude search's list endpoints from default `Cache-Control` middleware paths.
+* Optional Prometheus metrics via [metrics] extra, `TITILER_PGSTAC_API_METRICS_ENABLED`,
+  and `/metrics` endpoint, with prefixed low-cardinality `operation` labels
+  (`titiler_pgstac_http_requests_total`,
+  `titiler_pgstac_http_request_duration_seconds`) and
+  `PROMETHEUS_MULTIPROC_DIR` support for multi-worker deployments.
 
 ## 3.0.1 (2026-07-29)
 

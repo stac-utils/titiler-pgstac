@@ -51,6 +51,9 @@ psycopg-c = [  # C implementation of the libpq wrapper
 psycopg-binary = [  # pre-compiled C implementation
     "psycopg[binary,pool]"
 ]
+metrics = [
+    "prometheus-fastapi-instrumentator>=8.0.2",
+]
 telemetry = [
     "opentelemetry-api",
     "opentelemetry-sdk",
@@ -75,6 +78,7 @@ dev = [
     "IPython",
     "jupyter",
     "matplotlib",
+    "titiler-pgstac[metrics]",
     "pyinstrument",
 ]
 docs = [

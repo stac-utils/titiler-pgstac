@@ -21,7 +21,12 @@ class ApiSettings(BaseSettings):
     cors_origins: str = "*"
     cachecontrol: str = "public, max-age=3600"
     cachecontrol_exclude_paths: set[str] = Field(
-        default={r"/healthz", r"/searches(/)?$", r"/searches/list$"}
+        default={
+            r"/healthz",
+            r"/searches(/)?$",
+            r"/searches/list$",
+            r"/metrics",
+        }
     )
     root_path: str = ""
     debug: bool = False
@@ -30,6 +35,7 @@ class ApiSettings(BaseSettings):
     enable_external_dataset_endpoints: bool = False
 
     telemetry_enabled: bool = False
+    metrics_enabled: bool = False
 
     model_config = SettingsConfigDict(
         env_prefix="TITILER_PGSTAC_API_", env_file=".env", extra="ignore"

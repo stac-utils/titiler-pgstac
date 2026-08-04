@@ -85,6 +85,62 @@ In `titiler.pgstac` setup.py, we have added three options to let users choose wh
 - `python -m pip install titiler.pgstac["psycopg-c"]`: use the C wrapper (requires development packages installed on the client machine)
 - `python -m pip install titiler.pgstac["psycopg-binary"]`: binary wheels
 
+### Prometheus metrics
+
+Install the optional metrics extra and enable it:
+
+```bash
+python -m pip install titiler-pgstac[metrics]
+export TITILER_PGSTAC_API_METRICS_ENABLED=TRUE
+```
+
+Once enabled, `/metrics` is available on startup and records:
+
+- `titiler_pgstac_http_requests_total{operation,method,status}`
+- `titiler_pgstac_http_request_duration_seconds{operation,method}`
+
+`operation` values are low-cardinality labels such as `landing`, `conformance`,
+`tiles`, `point`, `search`, `search_info`, `collection`, `item`, `register_search`,
+`list_searches`, `external`, `tms`, `algorithms`, `colormaps`, `other`, and
+`unknown`. `status` is grouped (`2xx`, `3xx`, `4xx`, `5xx`). `/healthz` and the
+scrape endpoint are excluded from request counters. Untemplated paths (for example
+bare 404s) are also ignored.
+
+With `TITILER_PGSTAC_API_METRICS_ENABLED` left at its default (`FALSE`), `/metrics`
+is not registered even if the extra is installed.
+
+#### Multi-worker deployments
+
+For multi-worker deployments (for example `uvicorn --workers N` or Gunicorn), set
+`PROMETHEUS_MULTIPROC_DIR` to an existing writable directory **before** the
+application is imported, and clear that directory before each server start.
+
+```bash
+export PROMETHEUS_MULTIPROC_DIR=/tmp/titiler-pgstac-prometheus
+mkdir -p "$PROMETHEUS_MULTIPROC_DIR"
+rm -rf "$PROMETHEUS_MULTIPROC_DIR"/*
+```
+
+With Gunicorn, also mark workers dead on exit so stale metric files are cleaned up:
+
+```python
+from prometheus_client import multiprocess
+
+
+def child_exit(server, worker):
+    multiprocess.mark_process_dead(worker.pid)
+```
+
+#### Custom apps
+
+Custom apps can enable the same instrumentation:
+
+```python
+from titiler.pgstac.metrics import instrument_app
+
+instrument_app(app)
+```
+
 ## Launch
 
 You'll need to have `PGUSER`, `PGPASSWORD`, `PGDATABASE`, `PGHOST`, `PGPORT` variables set in your environment pointing to your Postgres database where pgstac has been installed.
