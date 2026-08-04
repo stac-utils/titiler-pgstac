@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 3.1.0 (2026-08-04)
+
 * update titiler requirement to `>=2.2,<2.3`
 * Optional Prometheus metrics via [metrics] extra, `TITILER_PGSTAC_API_METRICS_ENABLED`,
   and `/metrics` endpoint, with prefixed low-cardinality `operation` labels
