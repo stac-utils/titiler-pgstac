@@ -136,7 +136,9 @@ class MosaicTilerFactory(TitilerPgSTACFactory.MosaicTilerFactory):
             if layer:
                 config = search_info.metadata.defaults_params.get(layer)
                 if not config:
-                    raise HTTPException(status_code=404, detail=f"Invalid {layer} configuration.")
+                    raise HTTPException(
+                        status_code=404, detail=f"Invalid {layer} configuration."
+                    )
 
                 # This assume the default configuration follows the endpoint expected format
                 # as `"true_color": {"assets": ["B4", "B3", "B2"]}`

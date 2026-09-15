@@ -12,6 +12,7 @@ from fastapi import FastAPI
 from titiler.pgstac.db import close_db_connection, connect_to_db
 from titiler.pgstac.factory import MosaicTilerFactory
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """FastAPI Lifespan."""

@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## 3.2.0 (2026-09-15)
+
+* update titiler-* requirement to `>=2.2.1,<2.4`
+* refactor docker image to use wolfi-base as base image
+
 ## 3.1.0 (2026-08-04)
 
 * update titiler requirement to `>=2.2,<2.3`
@@ -61,12 +66,14 @@
         coordinates: List[float]
         values: List[Tuple[str, List[Optional[float]], List[str]]]
 
+
     # now
     class AssetPoint(BaseModel):
         name: str
         values: list[float | None]
         band_names: list[str]
         band_descriptions: list[str] | None = None
+
 
     class Point(BaseModel):
         coordinates: list[float]
@@ -337,11 +344,17 @@
 
     ```python
     # before
-    resp = httpx.post("/mosaic/register", body={"collections": ["my-collection"], "filter-lang": "cql-json"})
+    resp = httpx.post(
+        "/mosaic/register",
+        body={"collections": ["my-collection"], "filter-lang": "cql-json"},
+    )
     assert resp.json()["searchid"]
 
     # now
-    resp = httpx.post("/searches/register", body={"collections": ["my-collection"], "filter-lang": "cql-json"})
+    resp = httpx.post(
+        "/searches/register",
+        body={"collections": ["my-collection"], "filter-lang": "cql-json"},
+    )
     assert resp.json()["id"]
     ```
 
@@ -363,10 +376,7 @@
 
     # now
     app = FastAPI()
-    mosaic = MosaicTilerFactory(
-        ...,
-        path_dependency=lambda: "aaaaaaaaaaaaaa"
-    )
+    mosaic = MosaicTilerFactory(..., path_dependency=lambda: "aaaaaaaaaaaaaa")
     app.include_router(mosaic.router)
     ```
 

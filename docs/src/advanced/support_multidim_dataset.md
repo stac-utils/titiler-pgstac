@@ -8,7 +8,6 @@ By default titiler-pgstac (which is using rio-tiler's STACReader to access datas
 We need a Custom STACReader which can handle a new `md://{assetName}?variable={variableName}`. Note: here are the other query-parameters options https://github.com/developmentseed/titiler/blob/a1955706f02671cefac7e2806e43bab46f2a04dd/src/titiler/xarray/titiler/xarray/io.py#L252-L262
 
 ```python
-
 import warnings
 from typing import Optional, Set, Type, Tuple, Dict
 from urllib.parse import urlparse, parse_qsl
@@ -64,13 +63,10 @@ class PgSTACReader(reader.PgSTACReader):
         """Get Asset Reader."""
         asset_type = asset_info.get("media_type", None)
         if (
-            asset_type and
-            asset_type in [
-                "application/x-netcdf",
-                "application/x-zarr",
-                "application/vnd+zarr"
-            ] and
-            not asset_info["url"].startswith("vrt://")
+            asset_type
+            and asset_type
+            in ["application/x-netcdf", "application/x-zarr", "application/vnd+zarr"]
+            and not asset_info["url"].startswith("vrt://")
         ):
             return XarrayReader, asset_info.get("reader_options", {})
 
@@ -90,11 +86,9 @@ class PgSTACReader(reader.PgSTACReader):
                     f"'{parsed.netloc}' is not valid, should be one of {self.assets}"
                 )
 
-
             return parsed.netloc, dict(parse_qsl(parsed.query))
 
         return asset, None
-
 
     # We need a Custom _get_asset_info method to handle
     # `md://{asset}:{variable}` form
@@ -166,7 +160,6 @@ class PgSTACReader(reader.PgSTACReader):
 # PgSTAC will return Items in form of Simple Dictionary
 @attr.s
 class SimpleSTACReader(reader.SimpleSTACReader):
-
     """
     Example:
 
@@ -204,13 +197,10 @@ class SimpleSTACReader(reader.SimpleSTACReader):
         """Get Asset Reader."""
         asset_type = asset_info.get("media_type", None)
         if (
-            asset_type and
-            asset_type in [
-                "application/x-netcdf",
-                "application/x-zarr",
-                "application/vnd+zarr"
-            ] and
-            not asset_info["url"].startswith("vrt://")
+            asset_type
+            and asset_type
+            in ["application/x-netcdf", "application/x-zarr", "application/vnd+zarr"]
+            and not asset_info["url"].startswith("vrt://")
         ):
             return XarrayReader, asset_info.get("reader_options", {})
 
@@ -246,7 +236,6 @@ class SimpleSTACReader(reader.SimpleSTACReader):
                 raise InvalidAssetName(
                     f"'{parsed.netloc}' is not valid, should be one of {self.assets}"
                 )
-
 
             return parsed.netloc, dict(parse_qsl(parsed.query))
 
@@ -334,7 +323,6 @@ app = FastAPI(
     docs_url="/api.html",
     lifespan=lifespan,
 )
-
 
 
 ###############################################################################

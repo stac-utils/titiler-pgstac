@@ -66,12 +66,14 @@ class Point(BaseModel):
     coordinates: List[float]
     values: List[Tuple[str, List[Optional[float]], List[str]]]
 
+
 # Now (2.0)
 class AssetPoint(BaseModel):
     name: str
     values: list[float | None]
     band_names: list[str]
     band_descriptions: list[str] | None = None
+
 
 class Point(BaseModel):
     coordinates: list[float]
@@ -86,8 +88,8 @@ response = {
     "coordinates": [-122.5, 37.5],
     "values": [
         ("red", [100.0, 200.0], ["B1", "B2"]),
-        ("green", [150.0, 250.0], ["B1", "B2"])
-    ]
+        ("green", [150.0, 250.0], ["B1", "B2"]),
+    ],
 }
 
 # Accessing values:
@@ -102,15 +104,15 @@ response = {
             "name": "red",
             "values": [100.0, 200.0],
             "band_names": ["B1", "B2"],
-            "band_descriptions": None
+            "band_descriptions": None,
         },
         {
             "name": "green",
             "values": [150.0, 250.0],
             "band_names": ["B1", "B2"],
-            "band_descriptions": None
-        }
-    ]
+            "band_descriptions": None,
+        },
+    ],
 }
 
 # Accessing values:
@@ -131,27 +133,21 @@ Support for `cql-text` (CQL1) has been removed. Only CQL2 is now supported.
 search = {
     "collections": ["my-collection"],
     "filter-lang": "cql-text",  # No longer supported
-    "filter": "landcover='urban'"
+    "filter": "landcover='urban'",
 }
 
 # Or
 search = {
     "collections": ["my-collection"],
     "filter-lang": "cql2-json",  # Still supported
-    "filter": {...}
+    "filter": {...},
 }
 
 # Now (2.0) - Only CQL2 supported
 search = {
     "collections": ["my-collection"],
     "filter-lang": "cql2-json",
-    "filter": {
-        "op": "=",
-        "args": [
-            {"property": "landcover"},
-            "urban"
-        ]
-    }
+    "filter": {"op": "=", "args": [{"property": "landcover"}, "urban"]},
 }
 ```
 
@@ -174,11 +170,8 @@ response = httpx.get(
     "/collections/my-collection/tiles/0/0/0",
     params={
         "filter-lang": "cql2-json",
-        "filter": json.dumps({
-            "op": "=",
-            "args": [{"property": "cloud_cover"}, 10]
-        })
-    }
+        "filter": json.dumps({"op": "=", "args": [{"property": "cloud_cover"}, 10]}),
+    },
 )
 ```
 
@@ -219,9 +212,7 @@ WMTS endpoints have been updated to match the latest titiler implementation:
 # Now (2.0)
 from titiler.pgstac.extensions import wmtsExtension
 
-factory = MosaicTilerFactory(
-    extensions=[wmtsExtension()]
-)
+factory = MosaicTilerFactory(extensions=[wmtsExtension()])
 # WMTS at: /searches/{search_id}/WMTSCapabilities.xml
 ```
 
@@ -327,8 +318,7 @@ def get_collection_id(
     collection_id: str,
     ids: str | None = None,  # Instead of Optional[str]
     bbox: str | None = None,
-) -> str:
-    ...
+) -> str: ...
 ```
 
 ### CQL2 Library Integration
