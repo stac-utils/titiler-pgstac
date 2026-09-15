@@ -163,9 +163,9 @@ $ uvicorn titiler.pgstac.main:app --reload
 ```
 $ git clone https://github.com/stac-utils/titiler-pgstac.git
 $ cd titiler-pgstac
-$ docker compose up --build tiler
+$ docker compose up --build app
 # or
-$ docker compose up --build tiler-uvicorn
+$ docker compose up --build app-gunicorn
 ```
 
 ## Contribution & Development

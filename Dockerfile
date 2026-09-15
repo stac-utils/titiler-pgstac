@@ -49,8 +49,6 @@ ENV UV_LINK_MODE=copy \
     UV_COMPILE_BYTECODE=1 \
     PATH="/opt/venv/bin:${PATH}"
 
-
-
 # Copy project metadata and dependencies
 COPY pyproject.toml uv.lock README.md LICENSE ./
 RUN uv sync --frozen --no-dev --group server --extra psycopg-binary --extra metrics --extra telemetry --no-install-project
