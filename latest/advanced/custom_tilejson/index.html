@@ -1493,15 +1493,15 @@
 
 <span class="nd">@dataclass</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">MosaicTilerFactory</span><span class="p">(</span><span class="n">TitilerPgSTACFactory</span><span class="o">.</span><span class="n">MosaicTilerFactory</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Custom factory.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Custom factory."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">tilejson</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Custom TileJSON endpoint.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Custom TileJSON endpoint."""</span>
 
         <span class="nd">@self</span><span class="o">.</span><span class="n">router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-            <span class="s2">&quot;/</span><span class="si">{tileMatrixSetId}</span><span class="s2">/tilejson.json&quot;</span><span class="p">,</span>
+            <span class="s2">"/</span><span class="si">{tileMatrixSetId}</span><span class="s2">/tilejson.json"</span><span class="p">,</span>
             <span class="n">response_model</span><span class="o">=</span><span class="n">TileJSON</span><span class="p">,</span>
-            <span class="n">responses</span><span class="o">=</span><span class="p">{</span><span class="mi">200</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Return a tilejson&quot;</span><span class="p">}},</span>
+            <span class="n">responses</span><span class="o">=</span><span class="p">{</span><span class="mi">200</span><span class="p">:</span> <span class="p">{</span><span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Return a tilejson"</span><span class="p">}},</span>
             <span class="n">response_model_exclude_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">def</span><span class="w"> </span><span class="nf">tilejson</span><span class="p">(</span>
@@ -1509,35 +1509,35 @@
             <span class="n">tileMatrixSetId</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
                 <span class="n">Literal</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">supported_tms</span><span class="o">.</span><span class="n">list</span><span class="p">())],</span>
                 <span class="n">Path</span><span class="p">(</span>
-                    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Identifier selecting one of the TileMatrixSetId supported.&quot;</span>
+                    <span class="n">description</span><span class="o">=</span><span class="s2">"Identifier selecting one of the TileMatrixSetId supported."</span>
                 <span class="p">),</span>
             <span class="p">],</span>
             <span class="c1">########################################################</span>
             <span class="c1"># CUSTOM: add `layer=` query-parameter</span>
             <span class="n">layer</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
                 <span class="nb">str</span><span class="p">,</span>
-                <span class="n">Query</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Name of default configuration&quot;</span><span class="p">),</span>
+                <span class="n">Query</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"Name of default configuration"</span><span class="p">),</span>
             <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
             <span class="c1">########################################################</span>
             <span class="n">tile_format</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
                 <span class="n">Optional</span><span class="p">[</span><span class="n">ImageType</span><span class="p">],</span>
                 <span class="n">Query</span><span class="p">(</span>
-                    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Default will be automatically defined if the output image needs a mask (png) or not (jpeg).&quot;</span><span class="p">,</span>
+                    <span class="n">description</span><span class="o">=</span><span class="s2">"Default will be automatically defined if the output image needs a mask (png) or not (jpeg)."</span><span class="p">,</span>
                 <span class="p">),</span>
             <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
             <span class="n">tile_scale</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
                 <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
                 <span class="n">Query</span><span class="p">(</span>
-                    <span class="n">gt</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">lt</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Tile size scale. 1=256x256, 2=512x512...&quot;</span>
+                    <span class="n">gt</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">lt</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Tile size scale. 1=256x256, 2=512x512..."</span>
                 <span class="p">),</span>
             <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
             <span class="n">minzoom</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
                 <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
-                <span class="n">Query</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Overwrite default minzoom.&quot;</span><span class="p">),</span>
+                <span class="n">Query</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"Overwrite default minzoom."</span><span class="p">),</span>
             <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
             <span class="n">maxzoom</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
                 <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
-                <span class="n">Query</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Overwrite default maxzoom.&quot;</span><span class="p">),</span>
+                <span class="n">Query</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"Overwrite default maxzoom."</span><span class="p">),</span>
             <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
             <span class="n">search_id</span><span class="o">=</span><span class="n">Depends</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path_dependency</span><span class="p">),</span>
             <span class="n">layer_params</span><span class="o">=</span><span class="n">Depends</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layer_dependency</span><span class="p">),</span>
@@ -1547,8 +1547,8 @@
                 <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
                 <span class="n">Query</span><span class="p">(</span>
                     <span class="n">gt</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Tile buffer.&quot;</span><span class="p">,</span>
-                    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Buffer on each side of the given tile. It must be a multiple of `0.5`. Output **tilesize** will be expanded to `tilesize + 2 * buffer` (e.g 0.5 = 257x257, 1.0 = 258x258).&quot;</span><span class="p">,</span>
+                    <span class="n">title</span><span class="o">=</span><span class="s2">"Tile buffer."</span><span class="p">,</span>
+                    <span class="n">description</span><span class="o">=</span><span class="s2">"Buffer on each side of the given tile. It must be a multiple of `0.5`. Output **tilesize** will be expanded to `tilesize + 2 * buffer` (e.g 0.5 = 257x257, 1.0 = 258x258)."</span><span class="p">,</span>
                 <span class="p">),</span>
             <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
             <span class="n">post_process</span><span class="o">=</span><span class="n">Depends</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">process_dependency</span><span class="p">),</span>
@@ -1556,8 +1556,8 @@
             <span class="n">color_formula</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
                 <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
                 <span class="n">Query</span><span class="p">(</span>
-                    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Color Formula&quot;</span><span class="p">,</span>
-                    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;rio-color formula (info: https://github.com/mapbox/rio-color)&quot;</span><span class="p">,</span>
+                    <span class="n">title</span><span class="o">=</span><span class="s2">"Color Formula"</span><span class="p">,</span>
+                    <span class="n">description</span><span class="o">=</span><span class="s2">"rio-color formula (info: https://github.com/mapbox/rio-color)"</span><span class="p">,</span>
                 <span class="p">),</span>
             <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
             <span class="n">colormap</span><span class="o">=</span><span class="n">Depends</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">colormap_dependency</span><span class="p">),</span>
@@ -1566,38 +1566,38 @@
             <span class="n">backend_params</span><span class="o">=</span><span class="n">Depends</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">backend_dependency</span><span class="p">),</span>
             <span class="n">reader_params</span><span class="o">=</span><span class="n">Depends</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reader_dependency</span><span class="p">),</span>
         <span class="p">):</span>
-<span class="w">            </span><span class="sd">&quot;&quot;&quot;Return TileJSON document for a SearchId.&quot;&quot;&quot;</span>
+<span class="w">            </span><span class="sd">"""Return TileJSON document for a SearchId."""</span>
             <span class="k">with</span> <span class="n">request</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">dbpool</span><span class="o">.</span><span class="n">connection</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
                 <span class="k">with</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">(</span><span class="n">row_factory</span><span class="o">=</span><span class="n">class_row</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">Search</span><span class="p">))</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
                     <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-                        <span class="s2">&quot;SELECT * FROM searches WHERE hash=</span><span class="si">%s</span><span class="s2">;&quot;</span><span class="p">,</span>
+                        <span class="s2">"SELECT * FROM searches WHERE hash=</span><span class="si">%s</span><span class="s2">;"</span><span class="p">,</span>
                         <span class="p">(</span><span class="n">search_id</span><span class="p">,),</span>
                     <span class="p">)</span>
                     <span class="n">search_info</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
                     <span class="k">if</span> <span class="ow">not</span> <span class="n">search_info</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;search </span><span class="si">{</span><span class="n">search_id</span><span class="si">}</span><span class="s2"> not found&quot;</span><span class="p">)</span>
+                        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"search </span><span class="si">{</span><span class="n">search_id</span><span class="si">}</span><span class="s2"> not found"</span><span class="p">)</span>
 
             <span class="n">route_params</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s2">&quot;search_id&quot;</span><span class="p">:</span> <span class="n">search_info</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
-                <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{z}</span><span class="s2">&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{x}</span><span class="s2">&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{y}</span><span class="s2">&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;tileMatrixSetId&quot;</span><span class="p">:</span> <span class="n">tileMatrixSetId</span><span class="p">,</span>
+                <span class="s2">"search_id"</span><span class="p">:</span> <span class="n">search_info</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                <span class="s2">"z"</span><span class="p">:</span> <span class="s2">"</span><span class="si">{z}</span><span class="s2">"</span><span class="p">,</span>
+                <span class="s2">"x"</span><span class="p">:</span> <span class="s2">"</span><span class="si">{x}</span><span class="s2">"</span><span class="p">,</span>
+                <span class="s2">"y"</span><span class="p">:</span> <span class="s2">"</span><span class="si">{y}</span><span class="s2">"</span><span class="p">,</span>
+                <span class="s2">"tileMatrixSetId"</span><span class="p">:</span> <span class="n">tileMatrixSetId</span><span class="p">,</span>
             <span class="p">}</span>
             <span class="k">if</span> <span class="n">tile_scale</span><span class="p">:</span>
-                <span class="n">route_params</span><span class="p">[</span><span class="s2">&quot;scale&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tile_scale</span>
+                <span class="n">route_params</span><span class="p">[</span><span class="s2">"scale"</span><span class="p">]</span> <span class="o">=</span> <span class="n">tile_scale</span>
             <span class="k">if</span> <span class="n">tile_format</span><span class="p">:</span>
-                <span class="n">route_params</span><span class="p">[</span><span class="s2">&quot;format&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tile_format</span><span class="o">.</span><span class="n">value</span>
+                <span class="n">route_params</span><span class="p">[</span><span class="s2">"format"</span><span class="p">]</span> <span class="o">=</span> <span class="n">tile_format</span><span class="o">.</span><span class="n">value</span>
 
-            <span class="n">tiles_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">url_for</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;tile&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">route_params</span><span class="p">)</span>
+            <span class="n">tiles_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">url_for</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">"tile"</span><span class="p">,</span> <span class="o">**</span><span class="n">route_params</span><span class="p">)</span>
 
             <span class="n">qs_key_to_remove</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="s2">&quot;tilematrixsetid&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;tile_format&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;tile_scale&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;minzoom&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;maxzoom&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;layer&quot;</span><span class="p">,</span>
+                <span class="s2">"tilematrixsetid"</span><span class="p">,</span>
+                <span class="s2">"tile_format"</span><span class="p">,</span>
+                <span class="s2">"tile_scale"</span><span class="p">,</span>
+                <span class="s2">"minzoom"</span><span class="p">,</span>
+                <span class="s2">"maxzoom"</span><span class="p">,</span>
+                <span class="s2">"layer"</span><span class="p">,</span>
             <span class="p">]</span>
             <span class="n">qs</span> <span class="o">=</span> <span class="p">[</span>
                 <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
@@ -1608,27 +1608,29 @@
             <span class="k">if</span> <span class="n">layer</span><span class="p">:</span>
                 <span class="n">config</span> <span class="o">=</span> <span class="n">search_info</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">defaults_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">config</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="n">status_code</span><span class="o">=</span><span class="mi">404</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Invalid </span><span class="si">{</span><span class="n">layer</span><span class="si">}</span><span class="s2"> configuration.&quot;</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span>
+                        <span class="n">status_code</span><span class="o">=</span><span class="mi">404</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">"Invalid </span><span class="si">{</span><span class="n">layer</span><span class="si">}</span><span class="s2"> configuration."</span>
+                    <span class="p">)</span>
 
                 <span class="c1"># This assume the default configuration follows the endpoint expected format</span>
-                <span class="c1"># as `&quot;true_color&quot;: {&quot;assets&quot;: [&quot;B4&quot;, &quot;B3&quot;, &quot;B2&quot;]}`</span>
+                <span class="c1"># as `"true_color": {"assets": ["B4", "B3", "B2"]}`</span>
                 <span class="n">qs</span> <span class="o">=</span> <span class="n">QueryParams</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">qs</span><span class="p">:</span>
-                <span class="n">tiles_url</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;?</span><span class="si">{</span><span class="n">urlencode</span><span class="p">(</span><span class="n">qs</span><span class="p">,</span><span class="w"> </span><span class="n">doseq</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">tiles_url</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">"?</span><span class="si">{</span><span class="n">urlencode</span><span class="p">(</span><span class="n">qs</span><span class="p">,</span><span class="w"> </span><span class="n">doseq</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
 
             <span class="n">minzoom</span> <span class="o">=</span> <span class="n">_first_value</span><span class="p">([</span><span class="n">minzoom</span><span class="p">,</span> <span class="n">search_info</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">minzoom</span><span class="p">],</span> <span class="n">tms</span><span class="o">.</span><span class="n">minzoom</span><span class="p">)</span>
             <span class="n">maxzoom</span> <span class="o">=</span> <span class="n">_first_value</span><span class="p">([</span><span class="n">maxzoom</span><span class="p">,</span> <span class="n">search_info</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">maxzoom</span><span class="p">],</span> <span class="n">tms</span><span class="o">.</span><span class="n">maxzoom</span><span class="p">)</span>
             <span class="n">bounds</span> <span class="o">=</span> <span class="n">_first_value</span><span class="p">(</span>
-                <span class="p">[</span><span class="n">search_info</span><span class="o">.</span><span class="n">input_search</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;bbox&quot;</span><span class="p">),</span> <span class="n">search_info</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">bounds</span><span class="p">],</span>
+                <span class="p">[</span><span class="n">search_info</span><span class="o">.</span><span class="n">input_search</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"bbox"</span><span class="p">),</span> <span class="n">search_info</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">bounds</span><span class="p">],</span>
                 <span class="n">tms</span><span class="o">.</span><span class="n">bbox</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="k">return</span> <span class="p">{</span>
-                <span class="s2">&quot;bounds&quot;</span><span class="p">:</span> <span class="n">bounds</span><span class="p">,</span>
-                <span class="s2">&quot;minzoom&quot;</span><span class="p">:</span> <span class="n">minzoom</span><span class="p">,</span>
-                <span class="s2">&quot;maxzoom&quot;</span><span class="p">:</span> <span class="n">maxzoom</span><span class="p">,</span>
-                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">search_info</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">name</span> <span class="ow">or</span> <span class="n">search_info</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
-                <span class="s2">&quot;tiles&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">tiles_url</span><span class="p">],</span>
+                <span class="s2">"bounds"</span><span class="p">:</span> <span class="n">bounds</span><span class="p">,</span>
+                <span class="s2">"minzoom"</span><span class="p">:</span> <span class="n">minzoom</span><span class="p">,</span>
+                <span class="s2">"maxzoom"</span><span class="p">:</span> <span class="n">maxzoom</span><span class="p">,</span>
+                <span class="s2">"name"</span><span class="p">:</span> <span class="n">search_info</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">name</span> <span class="ow">or</span> <span class="n">search_info</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                <span class="s2">"tiles"</span><span class="p">:</span> <span class="p">[</span><span class="n">tiles_url</span><span class="p">],</span>
             <span class="p">}</span>
 </code></pre></div>
 

@@ -1588,74 +1588,69 @@
 <span class="c1"># Used for `/collections/{collection_id}/items/{item_id}` endpoints</span>
 <span class="nd">@attr</span><span class="o">.</span><span class="n">s</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">PgSTACReader</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">PgSTACReader</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 
 <span class="sd">    Example:</span>
 
 <span class="sd">        import httpx2 as httpx</span>
 <span class="sd">        import pystac</span>
 
-<span class="sd">        item = pystac.Item.from_dict(httpx.get(&quot;https://raw.githubusercontent.com/cogeotiff/rio-tiler/refs/heads/main/tests/fixtures/stac_netcdf.json&quot;).json())</span>
+<span class="sd">        item = pystac.Item.from_dict(httpx.get("https://raw.githubusercontent.com/cogeotiff/rio-tiler/refs/heads/main/tests/fixtures/stac_netcdf.json").json())</span>
 
 <span class="sd">        with PgSTACReader(item) as src:</span>
 <span class="sd">            print(src)</span>
-<span class="sd">            print(src._get_asset_info(&quot;netcdf&quot;))</span>
-<span class="sd">            print(src._get_reader(src._get_asset_info(&quot;netcdf&quot;)))</span>
-<span class="sd">            print(src._get_reader(src._get_asset_info(&quot;md://netcdf?variable=data&quot;)))</span>
-<span class="sd">            print(src._get_reader(src._get_asset_info(&quot;vrt://netcdf?sd_name=data&quot;)))</span>
+<span class="sd">            print(src._get_asset_info("netcdf"))</span>
+<span class="sd">            print(src._get_reader(src._get_asset_info("netcdf")))</span>
+<span class="sd">            print(src._get_reader(src._get_asset_info("md://netcdf?variable=data")))</span>
+<span class="sd">            print(src._get_reader(src._get_asset_info("vrt://netcdf?sd_name=data")))</span>
 
-<span class="sd">        &gt;&gt; PgSTACReader(bounds=(-170.085, 79.91999999999659, 169.91499999997504, -80.08), crs=CRS.from_epsg(4326), transform=[0.16999999999998752, 0, -170.085, 0, 0.1599999999999966, -80.08, 0, 0, 1], height=1000, width=2000, input=&lt;Item id=my_stac&gt;, tms=&lt;TileMatrixSet title=&#39;Google Maps Compatible for the World&#39; id=&#39;WebMercatorQuad&#39; crs=&#39;http://www.opengis.net/def/crs/EPSG/0/3857&gt;, minzoom=0, maxzoom=3, include_assets=None, exclude_assets=None, exclude_asset_types=None, assets=[&#39;geotiff&#39;, &#39;netcdf&#39;], default_assets=None, reader=&lt;class &#39;rio_tiler.io.rasterio.Reader&#39;&gt;, reader_options={}, ctx=&lt;class &#39;rasterio.env.Env&#39;&gt;, item=&lt;Item id=my_stac&gt;, fetch_options=NOTHING, include_asset_types=[&#39;image/tiff; application=geotiff&#39;, &#39;image/tiff; profile=cloud-optimized; application=geotiff&#39;, &#39;application/x-hdf&#39;, &#39;image/jp2&#39;, &#39;application/x-hdf5&#39;, &#39;image/tiff&#39;, &#39;image/tiff; application=geotiff; profile=cloud-optimized&#39;, &#39;image/x.geotiff&#39;, &#39;image/vnd.stac.geotiff; cloud-optimized=true&#39;, &#39;application/x-netcdf&#39;, &#39;application/x-zarr&#39;, &#39;application/vnd+zarr&#39;])</span>
-<span class="sd">        &gt;&gt; {&#39;url&#39;: &#39;dataset_2d.nc&#39;, &#39;metadata&#39;: {}, &#39;media_type&#39;: &#39;application/x-netcdf&#39;}</span>
-<span class="sd">        &gt;&gt; (&lt;class &#39;titiler.xarray.io.Reader&#39;&gt;, {})</span>
-<span class="sd">        &gt;&gt; (&lt;class &#39;titiler.xarray.io.Reader&#39;&gt;, {&#39;variable&#39;: &#39;data&#39;})</span>
-<span class="sd">        &gt;&gt; (&lt;class &#39;rio_tiler.io.rasterio.Reader&#39;&gt;, {})</span>
+<span class="sd">        &gt;&gt; PgSTACReader(bounds=(-170.085, 79.91999999999659, 169.91499999997504, -80.08), crs=CRS.from_epsg(4326), transform=[0.16999999999998752, 0, -170.085, 0, 0.1599999999999966, -80.08, 0, 0, 1], height=1000, width=2000, input=&lt;Item id=my_stac&gt;, tms=&lt;TileMatrixSet title='Google Maps Compatible for the World' id='WebMercatorQuad' crs='http://www.opengis.net/def/crs/EPSG/0/3857&gt;, minzoom=0, maxzoom=3, include_assets=None, exclude_assets=None, exclude_asset_types=None, assets=['geotiff', 'netcdf'], default_assets=None, reader=&lt;class 'rio_tiler.io.rasterio.Reader'&gt;, reader_options={}, ctx=&lt;class 'rasterio.env.Env'&gt;, item=&lt;Item id=my_stac&gt;, fetch_options=NOTHING, include_asset_types=['image/tiff; application=geotiff', 'image/tiff; profile=cloud-optimized; application=geotiff', 'application/x-hdf', 'image/jp2', 'application/x-hdf5', 'image/tiff', 'image/tiff; application=geotiff; profile=cloud-optimized', 'image/x.geotiff', 'image/vnd.stac.geotiff; cloud-optimized=true', 'application/x-netcdf', 'application/x-zarr', 'application/vnd+zarr'])</span>
+<span class="sd">        &gt;&gt; {'url': 'dataset_2d.nc', 'metadata': {}, 'media_type': 'application/x-netcdf'}</span>
+<span class="sd">        &gt;&gt; (&lt;class 'titiler.xarray.io.Reader'&gt;, {})</span>
+<span class="sd">        &gt;&gt; (&lt;class 'titiler.xarray.io.Reader'&gt;, {'variable': 'data'})</span>
+<span class="sd">        &gt;&gt; (&lt;class 'rio_tiler.io.rasterio.Reader'&gt;, {})</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">include_asset_types</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">ib</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="p">[</span>
             <span class="o">*</span><span class="n">DEFAULT_VALID_TYPE</span><span class="p">,</span>
-            <span class="s2">&quot;application/x-netcdf&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;application/x-zarr&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;application/vnd+zarr&quot;</span><span class="p">,</span>
+            <span class="s2">"application/x-netcdf"</span><span class="p">,</span>
+            <span class="s2">"application/x-zarr"</span><span class="p">,</span>
+            <span class="s2">"application/vnd+zarr"</span><span class="p">,</span>
         <span class="p">]</span>
     <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_reader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">asset_info</span><span class="p">:</span> <span class="n">AssetInfo</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">BaseReader</span><span class="p">],</span> <span class="n">Dict</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get Asset Reader.&quot;&quot;&quot;</span>
-        <span class="n">asset_type</span> <span class="o">=</span> <span class="n">asset_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;media_type&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="w">        </span><span class="sd">"""Get Asset Reader."""</span>
+        <span class="n">asset_type</span> <span class="o">=</span> <span class="n">asset_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"media_type"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="p">(</span>
-            <span class="n">asset_type</span> <span class="ow">and</span>
-            <span class="n">asset_type</span> <span class="ow">in</span> <span class="p">[</span>
-                <span class="s2">&quot;application/x-netcdf&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;application/x-zarr&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;application/vnd+zarr&quot;</span>
-            <span class="p">]</span> <span class="ow">and</span>
-            <span class="ow">not</span> <span class="n">asset_info</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;vrt://&quot;</span><span class="p">)</span>
+            <span class="n">asset_type</span>
+            <span class="ow">and</span> <span class="n">asset_type</span>
+            <span class="ow">in</span> <span class="p">[</span><span class="s2">"application/x-netcdf"</span><span class="p">,</span> <span class="s2">"application/x-zarr"</span><span class="p">,</span> <span class="s2">"application/vnd+zarr"</span><span class="p">]</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="n">asset_info</span><span class="p">[</span><span class="s2">"url"</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"vrt://"</span><span class="p">)</span>
         <span class="p">):</span>
-            <span class="k">return</span> <span class="n">XarrayReader</span><span class="p">,</span> <span class="n">asset_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;reader_options&quot;</span><span class="p">,</span> <span class="p">{})</span>
+            <span class="k">return</span> <span class="n">XarrayReader</span><span class="p">,</span> <span class="n">asset_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"reader_options"</span><span class="p">,</span> <span class="p">{})</span>
 
-        <span class="k">return</span> <span class="n">Reader</span><span class="p">,</span> <span class="n">asset_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;reader_options&quot;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="k">return</span> <span class="n">Reader</span><span class="p">,</span> <span class="n">asset_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"reader_options"</span><span class="p">,</span> <span class="p">{})</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_parse_md_asset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">asset</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse md:// prefixed asset.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">asset</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;md://&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">asset</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">assets</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Parse md:// prefixed asset."""</span>
+        <span class="k">if</span> <span class="n">asset</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"md://"</span><span class="p">)</span> <span class="ow">and</span> <span class="n">asset</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">assets</span><span class="p">:</span>
             <span class="n">parsed</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">asset</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">parsed</span><span class="o">.</span><span class="n">netloc</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">InvalidAssetName</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">asset</span><span class="si">}</span><span class="s2">&#39; is not valid, couldn&#39;t find valid asset&quot;</span>
+                    <span class="sa">f</span><span class="s2">"'</span><span class="si">{</span><span class="n">asset</span><span class="si">}</span><span class="s2">' is not valid, couldn't find valid asset"</span>
                 <span class="p">)</span>
 
             <span class="k">if</span> <span class="n">parsed</span><span class="o">.</span><span class="n">netloc</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">assets</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">InvalidAssetName</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">parsed</span><span class="o">.</span><span class="n">netloc</span><span class="si">}</span><span class="s2">&#39; is not valid, should be one of </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">assets</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">"'</span><span class="si">{</span><span class="n">parsed</span><span class="o">.</span><span class="n">netloc</span><span class="si">}</span><span class="s2">' is not valid, should be one of </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">assets</span><span class="si">}</span><span class="s2">"</span>
                 <span class="p">)</span>
-
 
             <span class="k">return</span> <span class="n">parsed</span><span class="o">.</span><span class="n">netloc</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">parse_qsl</span><span class="p">(</span><span class="n">parsed</span><span class="o">.</span><span class="n">query</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="n">asset</span><span class="p">,</span> <span class="kc">None</span>
-
 
     <span class="c1"># We need a Custom _get_asset_info method to handle</span>
     <span class="c1"># `md://{asset}:{variable}` form</span>
@@ -1668,7 +1663,7 @@
 
         <span class="k">if</span> <span class="n">asset</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">assets</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">InvalidAssetName</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">asset</span><span class="si">}</span><span class="s2">&#39; is not valid, should be one of </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">assets</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"'</span><span class="si">{</span><span class="n">asset</span><span class="si">}</span><span class="s2">' is not valid, should be one of </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">assets</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
 
         <span class="n">asset_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">assets</span><span class="p">[</span><span class="n">asset</span><span class="p">]</span>
@@ -1679,24 +1674,24 @@
             <span class="n">metadata</span><span class="o">=</span><span class="n">extras</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">vrt_options</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">STAC_ALTERNATE_KEY</span> <span class="ow">and</span> <span class="n">extras</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;alternate&quot;</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">alternate</span> <span class="o">:=</span> <span class="n">extras</span><span class="p">[</span><span class="s2">&quot;alternate&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">STAC_ALTERNATE_KEY</span><span class="p">):</span>
-                <span class="n">info</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">alternate</span><span class="p">[</span><span class="s2">&quot;href&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">STAC_ALTERNATE_KEY</span> <span class="ow">and</span> <span class="n">extras</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"alternate"</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">alternate</span> <span class="o">:=</span> <span class="n">extras</span><span class="p">[</span><span class="s2">"alternate"</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">STAC_ALTERNATE_KEY</span><span class="p">):</span>
+                <span class="n">info</span><span class="p">[</span><span class="s2">"url"</span><span class="p">]</span> <span class="o">=</span> <span class="n">alternate</span><span class="p">[</span><span class="s2">"href"</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="n">asset_info</span><span class="o">.</span><span class="n">media_type</span><span class="p">:</span>
-            <span class="n">info</span><span class="p">[</span><span class="s2">&quot;media_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">asset_info</span><span class="o">.</span><span class="n">media_type</span>
+            <span class="n">info</span><span class="p">[</span><span class="s2">"media_type"</span><span class="p">]</span> <span class="o">=</span> <span class="n">asset_info</span><span class="o">.</span><span class="n">media_type</span>
 
         <span class="c1"># https://github.com/stac-extensions/file</span>
-        <span class="k">if</span> <span class="n">head</span> <span class="o">:=</span> <span class="n">extras</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;file:header_size&quot;</span><span class="p">):</span>
-            <span class="n">info</span><span class="p">[</span><span class="s2">&quot;env&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;GDAL_INGESTED_BYTES_AT_OPEN&quot;</span><span class="p">:</span> <span class="n">head</span><span class="p">}</span>
+        <span class="k">if</span> <span class="n">head</span> <span class="o">:=</span> <span class="n">extras</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"file:header_size"</span><span class="p">):</span>
+            <span class="n">info</span><span class="p">[</span><span class="s2">"env"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"GDAL_INGESTED_BYTES_AT_OPEN"</span><span class="p">:</span> <span class="n">head</span><span class="p">}</span>
 
         <span class="c1"># https://github.com/stac-extensions/raster</span>
-        <span class="k">if</span> <span class="n">extras</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;raster:bands&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">vrt_options</span><span class="p">:</span>
-            <span class="n">bands</span> <span class="o">=</span> <span class="n">extras</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;raster:bands&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">extras</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"raster:bands"</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">vrt_options</span><span class="p">:</span>
+            <span class="n">bands</span> <span class="o">=</span> <span class="n">extras</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"raster:bands"</span><span class="p">)</span>
             <span class="n">stats</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="s2">&quot;statistics&quot;</span><span class="p">][</span><span class="s2">&quot;minimum&quot;</span><span class="p">],</span> <span class="n">b</span><span class="p">[</span><span class="s2">&quot;statistics&quot;</span><span class="p">][</span><span class="s2">&quot;maximum&quot;</span><span class="p">])</span>
+                <span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="s2">"statistics"</span><span class="p">][</span><span class="s2">"minimum"</span><span class="p">],</span> <span class="n">b</span><span class="p">[</span><span class="s2">"statistics"</span><span class="p">][</span><span class="s2">"maximum"</span><span class="p">])</span>
                 <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">bands</span>
-                <span class="k">if</span> <span class="p">{</span><span class="s2">&quot;minimum&quot;</span><span class="p">,</span> <span class="s2">&quot;maximum&quot;</span><span class="p">}</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;statistics&quot;</span><span class="p">,</span> <span class="p">{}))</span>
+                <span class="k">if</span> <span class="p">{</span><span class="s2">"minimum"</span><span class="p">,</span> <span class="s2">"maximum"</span><span class="p">}</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"statistics"</span><span class="p">,</span> <span class="p">{}))</span>
             <span class="p">]</span>
             <span class="c1"># check that stats data are all double and make warning if not</span>
             <span class="k">if</span> <span class="p">(</span>
@@ -1704,20 +1699,20 @@
                 <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">))</span> <span class="k">for</span> <span class="n">stat</span> <span class="ow">in</span> <span class="n">stats</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">stat</span><span class="p">)</span>
                 <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">stats</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">bands</span><span class="p">)</span>
             <span class="p">):</span>
-                <span class="n">info</span><span class="p">[</span><span class="s2">&quot;dataset_statistics&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stats</span>
+                <span class="n">info</span><span class="p">[</span><span class="s2">"dataset_statistics"</span><span class="p">]</span> <span class="o">=</span> <span class="n">stats</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                    <span class="s2">&quot;Some statistics data in STAC are invalid, they will be ignored.&quot;</span>
+                    <span class="s2">"Some statistics data in STAC are invalid, they will be ignored."</span>
                 <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">vrt_options</span><span class="p">:</span>
             <span class="c1"># Construct VRT url</span>
-            <span class="n">info</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;vrt://</span><span class="si">{</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">?</span><span class="si">{</span><span class="n">vrt_options</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">info</span><span class="p">[</span><span class="s2">"url"</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"vrt://</span><span class="si">{</span><span class="n">info</span><span class="p">[</span><span class="s1">'url'</span><span class="p">]</span><span class="si">}</span><span class="s2">?</span><span class="si">{</span><span class="n">vrt_options</span><span class="si">}</span><span class="s2">"</span>
 
         <span class="k">if</span> <span class="n">reader_options</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># NOTE: add `reader_options`,</span>
             <span class="c1"># not defined in AssetInfo structure</span>
-            <span class="n">info</span><span class="p">[</span><span class="s2">&quot;reader_options&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">reader_options</span>
+            <span class="n">info</span><span class="p">[</span><span class="s2">"reader_options"</span><span class="p">]</span> <span class="o">=</span> <span class="n">reader_options</span>
 
         <span class="k">return</span> <span class="n">info</span>
 
@@ -1727,67 +1722,63 @@
 <span class="c1"># PgSTAC will return Items in form of Simple Dictionary</span>
 <span class="nd">@attr</span><span class="o">.</span><span class="n">s</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">SimpleSTACReader</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">SimpleSTACReader</span><span class="p">):</span>
-
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Example:</span>
 
 <span class="sd">        item =     {</span>
-<span class="sd">            &quot;id&quot;: &quot;IAMASTACITEM&quot;,</span>
-<span class="sd">            &quot;collection&quot;: &quot;mycollection&quot;,</span>
-<span class="sd">            &quot;bbox&quot;: (0, 0, 10, 10),</span>
-<span class="sd">            &quot;assets&quot;: {</span>
-<span class="sd">                &quot;COG&quot;: {</span>
-<span class="sd">                    &quot;href&quot;: &quot;https://somewhereovertherainbow.io/cog.tif&quot;</span>
+<span class="sd">            "id": "IAMASTACITEM",</span>
+<span class="sd">            "collection": "mycollection",</span>
+<span class="sd">            "bbox": (0, 0, 10, 10),</span>
+<span class="sd">            "assets": {</span>
+<span class="sd">                "COG": {</span>
+<span class="sd">                    "href": "https://somewhereovertherainbow.io/cog.tif"</span>
 <span class="sd">                },</span>
-<span class="sd">                &quot;NETCDF&quot;: {</span>
-<span class="sd">                    &quot;href&quot;: &quot;https://somewhereovertherainbow.io/cog.nc&quot;,</span>
-<span class="sd">                    &quot;type&quot;: &quot;application/x-netcdf&quot;</span>
+<span class="sd">                "NETCDF": {</span>
+<span class="sd">                    "href": "https://somewhereovertherainbow.io/cog.nc",</span>
+<span class="sd">                    "type": "application/x-netcdf"</span>
 <span class="sd">                }</span>
 <span class="sd">            }</span>
 <span class="sd">        }</span>
 
 <span class="sd">        with SimpleSTACReader(item) as src:</span>
 <span class="sd">            print(src)</span>
-<span class="sd">            print(src._get_asset_info(&quot;NETCDF&quot;))</span>
-<span class="sd">            print(src._get_reader(src._get_asset_info(&quot;NETCDF&quot;)))</span>
-<span class="sd">            print(src._get_reader(src._get_asset_info(&quot;md://NETCDF?variable=data&quot;)))</span>
-<span class="sd">            print(src._get_reader(src._get_asset_info(&quot;vrt://NETCDF?sd_name=data&quot;)))</span>
+<span class="sd">            print(src._get_asset_info("NETCDF"))</span>
+<span class="sd">            print(src._get_reader(src._get_asset_info("NETCDF")))</span>
+<span class="sd">            print(src._get_reader(src._get_asset_info("md://NETCDF?variable=data")))</span>
+<span class="sd">            print(src._get_reader(src._get_asset_info("vrt://NETCDF?sd_name=data")))</span>
 
-<span class="sd">        &gt;&gt; SimpleSTACReader(bounds=(0, 0, 10, 10), crs=CRS.from_epsg(4326), transform=None, height=None, width=None, input={&#39;id&#39;: &#39;IAMASTACITEM&#39;, &#39;collection&#39;: &#39;mycollection&#39;, &#39;bbox&#39;: (0, 0, 10, 10), &#39;assets&#39;: {&#39;COG&#39;: {&#39;href&#39;: &#39;https://somewhereovertherainbow.io/cog.tif&#39;}, &#39;NETCDF&#39;: {&#39;href&#39;: &#39;https://somewhereovertherainbow.io/cog.nc&#39;, &#39;media_type&#39;: &#39;application/x-netcdf&#39;}}}, tms=&lt;TileMatrixSet title=&#39;Google Maps Compatible for the World&#39; id=&#39;WebMercatorQuad&#39; crs=&#39;http://www.opengis.net/def/crs/EPSG/0/3857&gt;, minzoom=0, maxzoom=24, assets=[&#39;COG&#39;, &#39;NETCDF&#39;], default_assets=None, reader=&lt;class &#39;rio_tiler.io.rasterio.Reader&#39;&gt;, reader_options={}, ctx=&lt;class &#39;rasterio.env.Env&#39;&gt;)</span>
-<span class="sd">        &gt;&gt; {&#39;url&#39;: &#39;https://somewhereovertherainbow.io/cog.nc&#39;, &#39;env&#39;: {}, &#39;media_type&#39;: &#39;application/x-netcdf&#39;}</span>
-<span class="sd">        &gt;&gt; (&lt;class &#39;titiler.xarray.io.Reader&#39;&gt;, {})</span>
-<span class="sd">        &gt;&gt; (&lt;class &#39;titiler.xarray.io.Reader&#39;&gt;, {&#39;variable&#39;: &#39;data&#39;})</span>
-<span class="sd">        &gt;&gt; (&lt;class &#39;rio_tiler.io.rasterio.Reader&#39;&gt;, {})</span>
+<span class="sd">        &gt;&gt; SimpleSTACReader(bounds=(0, 0, 10, 10), crs=CRS.from_epsg(4326), transform=None, height=None, width=None, input={'id': 'IAMASTACITEM', 'collection': 'mycollection', 'bbox': (0, 0, 10, 10), 'assets': {'COG': {'href': 'https://somewhereovertherainbow.io/cog.tif'}, 'NETCDF': {'href': 'https://somewhereovertherainbow.io/cog.nc', 'media_type': 'application/x-netcdf'}}}, tms=&lt;TileMatrixSet title='Google Maps Compatible for the World' id='WebMercatorQuad' crs='http://www.opengis.net/def/crs/EPSG/0/3857&gt;, minzoom=0, maxzoom=24, assets=['COG', 'NETCDF'], default_assets=None, reader=&lt;class 'rio_tiler.io.rasterio.Reader'&gt;, reader_options={}, ctx=&lt;class 'rasterio.env.Env'&gt;)</span>
+<span class="sd">        &gt;&gt; {'url': 'https://somewhereovertherainbow.io/cog.nc', 'env': {}, 'media_type': 'application/x-netcdf'}</span>
+<span class="sd">        &gt;&gt; (&lt;class 'titiler.xarray.io.Reader'&gt;, {})</span>
+<span class="sd">        &gt;&gt; (&lt;class 'titiler.xarray.io.Reader'&gt;, {'variable': 'data'})</span>
+<span class="sd">        &gt;&gt; (&lt;class 'rio_tiler.io.rasterio.Reader'&gt;, {})</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_reader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">asset_info</span><span class="p">:</span> <span class="n">AssetInfo</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">BaseReader</span><span class="p">],</span> <span class="n">Dict</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get Asset Reader.&quot;&quot;&quot;</span>
-        <span class="n">asset_type</span> <span class="o">=</span> <span class="n">asset_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;media_type&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="w">        </span><span class="sd">"""Get Asset Reader."""</span>
+        <span class="n">asset_type</span> <span class="o">=</span> <span class="n">asset_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"media_type"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="p">(</span>
-            <span class="n">asset_type</span> <span class="ow">and</span>
-            <span class="n">asset_type</span> <span class="ow">in</span> <span class="p">[</span>
-                <span class="s2">&quot;application/x-netcdf&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;application/x-zarr&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;application/vnd+zarr&quot;</span>
-            <span class="p">]</span> <span class="ow">and</span>
-            <span class="ow">not</span> <span class="n">asset_info</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;vrt://&quot;</span><span class="p">)</span>
+            <span class="n">asset_type</span>
+            <span class="ow">and</span> <span class="n">asset_type</span>
+            <span class="ow">in</span> <span class="p">[</span><span class="s2">"application/x-netcdf"</span><span class="p">,</span> <span class="s2">"application/x-zarr"</span><span class="p">,</span> <span class="s2">"application/vnd+zarr"</span><span class="p">]</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="n">asset_info</span><span class="p">[</span><span class="s2">"url"</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"vrt://"</span><span class="p">)</span>
         <span class="p">):</span>
-            <span class="k">return</span> <span class="n">XarrayReader</span><span class="p">,</span> <span class="n">asset_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;reader_options&quot;</span><span class="p">,</span> <span class="p">{})</span>
+            <span class="k">return</span> <span class="n">XarrayReader</span><span class="p">,</span> <span class="n">asset_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"reader_options"</span><span class="p">,</span> <span class="p">{})</span>
 
-        <span class="k">return</span> <span class="n">Reader</span><span class="p">,</span> <span class="n">asset_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;reader_options&quot;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="k">return</span> <span class="n">Reader</span><span class="p">,</span> <span class="n">asset_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"reader_options"</span><span class="p">,</span> <span class="p">{})</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_parse_vrt_asset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">asset</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
-        <span class="k">if</span> <span class="n">asset</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;vrt://&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">asset</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">assets</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">asset</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"vrt://"</span><span class="p">)</span> <span class="ow">and</span> <span class="n">asset</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">assets</span><span class="p">:</span>
             <span class="n">parsed</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">asset</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">parsed</span><span class="o">.</span><span class="n">netloc</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">InvalidAssetName</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">asset</span><span class="si">}</span><span class="s2">&#39; is not valid, couldn&#39;t find valid asset&quot;</span>
+                    <span class="sa">f</span><span class="s2">"'</span><span class="si">{</span><span class="n">asset</span><span class="si">}</span><span class="s2">' is not valid, couldn't find valid asset"</span>
                 <span class="p">)</span>
 
             <span class="k">if</span> <span class="n">parsed</span><span class="o">.</span><span class="n">netloc</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">assets</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">InvalidAssetName</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">parsed</span><span class="o">.</span><span class="n">netloc</span><span class="si">}</span><span class="s2">&#39; is not valid, should be one of </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">assets</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">"'</span><span class="si">{</span><span class="n">parsed</span><span class="o">.</span><span class="n">netloc</span><span class="si">}</span><span class="s2">' is not valid, should be one of </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">assets</span><span class="si">}</span><span class="s2">"</span>
                 <span class="p">)</span>
 
             <span class="k">return</span> <span class="n">parsed</span><span class="o">.</span><span class="n">netloc</span><span class="p">,</span> <span class="n">parsed</span><span class="o">.</span><span class="n">query</span>
@@ -1795,19 +1786,18 @@
         <span class="k">return</span> <span class="n">asset</span><span class="p">,</span> <span class="kc">None</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_parse_md_asset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">asset</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse md:// prefixed asset.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">asset</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;md://&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">asset</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">assets</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Parse md:// prefixed asset."""</span>
+        <span class="k">if</span> <span class="n">asset</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"md://"</span><span class="p">)</span> <span class="ow">and</span> <span class="n">asset</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">assets</span><span class="p">:</span>
             <span class="n">parsed</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">asset</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">parsed</span><span class="o">.</span><span class="n">netloc</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">InvalidAssetName</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">asset</span><span class="si">}</span><span class="s2">&#39; is not valid, couldn&#39;t find valid asset&quot;</span>
+                    <span class="sa">f</span><span class="s2">"'</span><span class="si">{</span><span class="n">asset</span><span class="si">}</span><span class="s2">' is not valid, couldn't find valid asset"</span>
                 <span class="p">)</span>
 
             <span class="k">if</span> <span class="n">parsed</span><span class="o">.</span><span class="n">netloc</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">assets</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">InvalidAssetName</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">parsed</span><span class="o">.</span><span class="n">netloc</span><span class="si">}</span><span class="s2">&#39; is not valid, should be one of </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">assets</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">"'</span><span class="si">{</span><span class="n">parsed</span><span class="o">.</span><span class="n">netloc</span><span class="si">}</span><span class="s2">' is not valid, should be one of </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">assets</span><span class="si">}</span><span class="s2">"</span>
                 <span class="p">)</span>
-
 
             <span class="k">return</span> <span class="n">parsed</span><span class="o">.</span><span class="n">netloc</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">parse_qsl</span><span class="p">(</span><span class="n">parsed</span><span class="o">.</span><span class="n">query</span><span class="p">))</span>
 
@@ -1824,38 +1814,38 @@
 
         <span class="k">if</span> <span class="n">asset</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">assets</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">InvalidAssetName</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">asset</span><span class="si">}</span><span class="s2">&#39; is not valid, should be one of </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">assets</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"'</span><span class="si">{</span><span class="n">asset</span><span class="si">}</span><span class="s2">' is not valid, should be one of </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">assets</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
 
-        <span class="n">asset_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="s2">&quot;assets&quot;</span><span class="p">][</span><span class="n">asset</span><span class="p">]</span>
+        <span class="n">asset_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="s2">"assets"</span><span class="p">][</span><span class="n">asset</span><span class="p">]</span>
         <span class="n">info</span> <span class="o">=</span> <span class="n">AssetInfo</span><span class="p">(</span>
-            <span class="n">url</span><span class="o">=</span><span class="n">asset_info</span><span class="p">[</span><span class="s2">&quot;href&quot;</span><span class="p">],</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">asset_info</span><span class="p">[</span><span class="s2">"href"</span><span class="p">],</span>
             <span class="n">env</span><span class="o">=</span><span class="p">{},</span>
         <span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">media_type</span> <span class="o">:=</span> <span class="n">asset_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">):</span>
-            <span class="n">info</span><span class="p">[</span><span class="s2">&quot;media_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">media_type</span>
+        <span class="k">if</span> <span class="n">media_type</span> <span class="o">:=</span> <span class="n">asset_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"type"</span><span class="p">):</span>
+            <span class="n">info</span><span class="p">[</span><span class="s2">"media_type"</span><span class="p">]</span> <span class="o">=</span> <span class="n">media_type</span>
 
-        <span class="k">if</span> <span class="n">header_size</span> <span class="o">:=</span> <span class="n">asset_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;file:header_size&quot;</span><span class="p">):</span>
-            <span class="n">info</span><span class="p">[</span><span class="s2">&quot;env&quot;</span><span class="p">][</span><span class="s2">&quot;GDAL_INGESTED_BYTES_AT_OPEN&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">header_size</span>
+        <span class="k">if</span> <span class="n">header_size</span> <span class="o">:=</span> <span class="n">asset_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"file:header_size"</span><span class="p">):</span>
+            <span class="n">info</span><span class="p">[</span><span class="s2">"env"</span><span class="p">][</span><span class="s2">"GDAL_INGESTED_BYTES_AT_OPEN"</span><span class="p">]</span> <span class="o">=</span> <span class="n">header_size</span>
 
-        <span class="k">if</span> <span class="n">bands</span> <span class="o">:=</span> <span class="n">asset_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;raster:bands&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">bands</span> <span class="o">:=</span> <span class="n">asset_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"raster:bands"</span><span class="p">):</span>
             <span class="n">stats</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="s2">&quot;statistics&quot;</span><span class="p">][</span><span class="s2">&quot;minimum&quot;</span><span class="p">],</span> <span class="n">b</span><span class="p">[</span><span class="s2">&quot;statistics&quot;</span><span class="p">][</span><span class="s2">&quot;maximum&quot;</span><span class="p">])</span>
+                <span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="s2">"statistics"</span><span class="p">][</span><span class="s2">"minimum"</span><span class="p">],</span> <span class="n">b</span><span class="p">[</span><span class="s2">"statistics"</span><span class="p">][</span><span class="s2">"maximum"</span><span class="p">])</span>
                 <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">bands</span>
-                <span class="k">if</span> <span class="p">{</span><span class="s2">&quot;minimum&quot;</span><span class="p">,</span> <span class="s2">&quot;maximum&quot;</span><span class="p">}</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;statistics&quot;</span><span class="p">,</span> <span class="p">{}))</span>
+                <span class="k">if</span> <span class="p">{</span><span class="s2">"minimum"</span><span class="p">,</span> <span class="s2">"maximum"</span><span class="p">}</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"statistics"</span><span class="p">,</span> <span class="p">{}))</span>
             <span class="p">]</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">stats</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">bands</span><span class="p">):</span>
-                <span class="n">info</span><span class="p">[</span><span class="s2">&quot;dataset_statistics&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stats</span>
+                <span class="n">info</span><span class="p">[</span><span class="s2">"dataset_statistics"</span><span class="p">]</span> <span class="o">=</span> <span class="n">stats</span>
 
         <span class="k">if</span> <span class="n">vrt_options</span><span class="p">:</span>
             <span class="c1"># Construct VRT url</span>
-            <span class="n">info</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;vrt://</span><span class="si">{</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">?</span><span class="si">{</span><span class="n">vrt_options</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">info</span><span class="p">[</span><span class="s2">"url"</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"vrt://</span><span class="si">{</span><span class="n">info</span><span class="p">[</span><span class="s1">'url'</span><span class="p">]</span><span class="si">}</span><span class="s2">?</span><span class="si">{</span><span class="n">vrt_options</span><span class="si">}</span><span class="s2">"</span>
 
         <span class="k">if</span> <span class="n">reader_options</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># NOTE: add `reader_options`,</span>
             <span class="c1"># not defined in AssetInfo structure</span>
-            <span class="n">info</span><span class="p">[</span><span class="s2">&quot;reader_options&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">reader_options</span>
+            <span class="n">info</span><span class="p">[</span><span class="s2">"reader_options"</span><span class="p">]</span> <span class="o">=</span> <span class="n">reader_options</span>
 
         <span class="k">return</span> <span class="n">info</span>
 </code></pre></div>
@@ -1878,7 +1868,7 @@
 
 <span class="nd">@asynccontextmanager</span>
 <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">lifespan</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">FastAPI</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;FastAPI Lifespan.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""FastAPI Lifespan."""</span>
     <span class="c1"># Create Connection Pool</span>
     <span class="k">await</span> <span class="n">connect_to_db</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">postgres_settings</span><span class="p">)</span>
     <span class="k">yield</span>
@@ -1888,11 +1878,10 @@
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">(</span>
     <span class="n">title</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-    <span class="n">openapi_url</span><span class="o">=</span><span class="s2">&quot;/api&quot;</span><span class="p">,</span>
-    <span class="n">docs_url</span><span class="o">=</span><span class="s2">&quot;/api.html&quot;</span><span class="p">,</span>
+    <span class="n">openapi_url</span><span class="o">=</span><span class="s2">"/api"</span><span class="p">,</span>
+    <span class="n">docs_url</span><span class="o">=</span><span class="s2">"/api.html"</span><span class="p">,</span>
     <span class="n">lifespan</span><span class="o">=</span><span class="n">lifespan</span><span class="p">,</span>
 <span class="p">)</span>
-
 
 
 <span class="c1">###############################################################################</span>
@@ -1901,11 +1890,11 @@
     <span class="n">path_dependency</span><span class="o">=</span><span class="n">SearchIdParams</span><span class="p">,</span>
     <span class="c1"># Use our Custom Reader</span>
     <span class="n">dataset_reader</span><span class="o">=</span><span class="n">SimpleSTACReader</span><span class="p">,</span>
-    <span class="n">router_prefix</span><span class="o">=</span><span class="s2">&quot;/searches/</span><span class="si">{search_id}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">router_prefix</span><span class="o">=</span><span class="s2">"/searches/</span><span class="si">{search_id}</span><span class="s2">"</span><span class="p">,</span>
     <span class="n">add_viewer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
-    <span class="n">searches</span><span class="o">.</span><span class="n">router</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;STAC Search&quot;</span><span class="p">],</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;/searches/</span><span class="si">{search_id}</span><span class="s2">&quot;</span>
+    <span class="n">searches</span><span class="o">.</span><span class="n">router</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">"STAC Search"</span><span class="p">],</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">"/searches/</span><span class="si">{search_id}</span><span class="s2">"</span>
 <span class="p">)</span>
 
 <span class="c1">###############################################################################</span>
@@ -1914,11 +1903,11 @@
     <span class="n">path_dependency</span><span class="o">=</span><span class="n">CollectionIdParams</span><span class="p">,</span>
     <span class="c1"># Use our Custom Reader</span>
     <span class="n">dataset_reader</span><span class="o">=</span><span class="n">SimpleSTACReader</span><span class="p">,</span>
-    <span class="n">router_prefix</span><span class="o">=</span><span class="s2">&quot;/collections/</span><span class="si">{collection_id}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">router_prefix</span><span class="o">=</span><span class="s2">"/collections/</span><span class="si">{collection_id}</span><span class="s2">"</span><span class="p">,</span>
     <span class="n">add_viewer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
-    <span class="n">collection</span><span class="o">.</span><span class="n">router</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;STAC Collection&quot;</span><span class="p">],</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;/collections/</span><span class="si">{collection_id}</span><span class="s2">&quot;</span>
+    <span class="n">collection</span><span class="o">.</span><span class="n">router</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">"STAC Collection"</span><span class="p">],</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">"/collections/</span><span class="si">{collection_id}</span><span class="s2">"</span>
 <span class="p">)</span>
 
 <span class="c1">###############################################################################</span>
@@ -1927,13 +1916,13 @@
     <span class="c1"># Use our Custom Reader</span>
     <span class="n">reader</span><span class="o">=</span><span class="n">PgSTACReader</span><span class="p">,</span>
     <span class="n">path_dependency</span><span class="o">=</span><span class="n">ItemIdParams</span><span class="p">,</span>
-    <span class="n">router_prefix</span><span class="o">=</span><span class="s2">&quot;/collections/</span><span class="si">{collection_id}</span><span class="s2">/items/</span><span class="si">{item_id}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">router_prefix</span><span class="o">=</span><span class="s2">"/collections/</span><span class="si">{collection_id}</span><span class="s2">/items/</span><span class="si">{item_id}</span><span class="s2">"</span><span class="p">,</span>
     <span class="n">add_viewer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
     <span class="n">stac</span><span class="o">.</span><span class="n">router</span><span class="p">,</span>
-    <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;STAC Item&quot;</span><span class="p">],</span>
-    <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;/collections/</span><span class="si">{collection_id}</span><span class="s2">/items/</span><span class="si">{item_id}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">"STAC Item"</span><span class="p">],</span>
+    <span class="n">prefix</span><span class="o">=</span><span class="s2">"/collections/</span><span class="si">{collection_id}</span><span class="s2">/items/</span><span class="si">{item_id}</span><span class="s2">"</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 

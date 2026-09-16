@@ -2339,137 +2339,137 @@
 <ul>
 <li><code>https://myendpoint/collections/my-collection/info</code></li>
 </ul>
-<div class="highlight"><pre><span></span><code>curl<span class="w"> </span><span class="s1">&#39;http://myendpoint/collections/my-collection/info&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span><span class="s1">'http://myendpoint/collections/my-collection/info'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq
 &gt;&gt;<span class="w"> </span><span class="o">{</span>
-<span class="w">  </span><span class="s2">&quot;search&quot;</span>:<span class="w"> </span><span class="o">{</span>
-<span class="w">    </span><span class="s2">&quot;hash&quot;</span>:<span class="w"> </span><span class="s2">&quot;37c6ebb942cc5393a9eb408ad8431f62&quot;</span>,
-<span class="w">    </span><span class="s2">&quot;search&quot;</span>:<span class="w"> </span><span class="o">{</span>
-<span class="w">      </span><span class="s2">&quot;collections&quot;</span>:<span class="w"> </span><span class="o">[</span>
-<span class="w">        </span><span class="s2">&quot;my-collection&quot;</span>
+<span class="w">  </span><span class="s2">"search"</span>:<span class="w"> </span><span class="o">{</span>
+<span class="w">    </span><span class="s2">"hash"</span>:<span class="w"> </span><span class="s2">"37c6ebb942cc5393a9eb408ad8431f62"</span>,
+<span class="w">    </span><span class="s2">"search"</span>:<span class="w"> </span><span class="o">{</span>
+<span class="w">      </span><span class="s2">"collections"</span>:<span class="w"> </span><span class="o">[</span>
+<span class="w">        </span><span class="s2">"my-collection"</span>
 <span class="w">      </span><span class="o">]</span>
 <span class="w">    </span><span class="o">}</span>,
-<span class="w">    </span><span class="s2">&quot;_where&quot;</span>:<span class="w"> </span><span class="s2">&quot;collection = ANY (&#39;{my-collection}&#39;) &quot;</span>,
-<span class="w">    </span><span class="s2">&quot;orderby&quot;</span>:<span class="w"> </span><span class="s2">&quot;datetime DESC, id DESC&quot;</span>,
-<span class="w">    </span><span class="s2">&quot;lastused&quot;</span>:<span class="w"> </span><span class="s2">&quot;2024-05-17T06:44:45.980518Z&quot;</span>,
-<span class="w">    </span><span class="s2">&quot;usecount&quot;</span>:<span class="w"> </span><span class="m">1</span>,
-<span class="w">    </span><span class="s2">&quot;metadata&quot;</span>:<span class="w"> </span><span class="o">{</span>
-<span class="w">      </span><span class="s2">&quot;type&quot;</span>:<span class="w"> </span><span class="s2">&quot;mosaic&quot;</span>,
-<span class="w">      </span><span class="s2">&quot;bounds&quot;</span>:<span class="w"> </span><span class="o">[</span>
+<span class="w">    </span><span class="s2">"_where"</span>:<span class="w"> </span><span class="s2">"collection = ANY ('{my-collection}') "</span>,
+<span class="w">    </span><span class="s2">"orderby"</span>:<span class="w"> </span><span class="s2">"datetime DESC, id DESC"</span>,
+<span class="w">    </span><span class="s2">"lastused"</span>:<span class="w"> </span><span class="s2">"2024-05-17T06:44:45.980518Z"</span>,
+<span class="w">    </span><span class="s2">"usecount"</span>:<span class="w"> </span><span class="m">1</span>,
+<span class="w">    </span><span class="s2">"metadata"</span>:<span class="w"> </span><span class="o">{</span>
+<span class="w">      </span><span class="s2">"type"</span>:<span class="w"> </span><span class="s2">"mosaic"</span>,
+<span class="w">      </span><span class="s2">"bounds"</span>:<span class="w"> </span><span class="o">[</span>
 <span class="w">        </span><span class="m">91</span>.831615,
 <span class="w">        </span><span class="m">19</span>.982078842323997,
 <span class="w">        </span><span class="m">92</span>.97426268500965,
 <span class="w">        </span><span class="m">21</span>.666101
 <span class="w">      </span><span class="o">]</span>,
-<span class="w">      </span><span class="s2">&quot;name&quot;</span>:<span class="w"> </span><span class="s2">&quot;Mosaic for &#39;my-collection&#39; Collection&quot;</span>,
-<span class="w">      </span><span class="s2">&quot;assets&quot;</span>:<span class="w"> </span><span class="o">[</span>
-<span class="w">        </span><span class="s2">&quot;visual&quot;</span>,
-<span class="w">        </span><span class="s2">&quot;data-mask&quot;</span>,
-<span class="w">        </span><span class="s2">&quot;ms_analytic&quot;</span>,
-<span class="w">        </span><span class="s2">&quot;pan_analytic&quot;</span>
+<span class="w">      </span><span class="s2">"name"</span>:<span class="w"> </span><span class="s2">"Mosaic for 'my-collection' Collection"</span>,
+<span class="w">      </span><span class="s2">"assets"</span>:<span class="w"> </span><span class="o">[</span>
+<span class="w">        </span><span class="s2">"visual"</span>,
+<span class="w">        </span><span class="s2">"data-mask"</span>,
+<span class="w">        </span><span class="s2">"ms_analytic"</span>,
+<span class="w">        </span><span class="s2">"pan_analytic"</span>
 <span class="w">      </span><span class="o">]</span>,
-<span class="w">      </span><span class="s2">&quot;defaults&quot;</span>:<span class="w"> </span><span class="o">{</span>
-<span class="w">        </span><span class="s2">&quot;color&quot;</span>:<span class="w"> </span><span class="o">{</span>
-<span class="w">          </span><span class="s2">&quot;assets&quot;</span>:<span class="w"> </span><span class="o">[</span>
-<span class="w">            </span><span class="s2">&quot;visual&quot;</span>
+<span class="w">      </span><span class="s2">"defaults"</span>:<span class="w"> </span><span class="o">{</span>
+<span class="w">        </span><span class="s2">"color"</span>:<span class="w"> </span><span class="o">{</span>
+<span class="w">          </span><span class="s2">"assets"</span>:<span class="w"> </span><span class="o">[</span>
+<span class="w">            </span><span class="s2">"visual"</span>
 <span class="w">          </span><span class="o">]</span>,
-<span class="w">          </span><span class="s2">&quot;colormap&quot;</span>:<span class="w"> </span><span class="o">{</span>
-<span class="w">            </span><span class="s2">&quot;1&quot;</span>:<span class="w"> </span><span class="o">[</span>
+<span class="w">          </span><span class="s2">"colormap"</span>:<span class="w"> </span><span class="o">{</span>
+<span class="w">            </span><span class="s2">"1"</span>:<span class="w"> </span><span class="o">[</span>
 <span class="w">              </span><span class="m">0</span>,
 <span class="w">              </span><span class="m">0</span>,
 <span class="w">              </span><span class="m">0</span>,
 <span class="w">              </span><span class="m">255</span>
 <span class="w">            </span><span class="o">]</span>,
-<span class="w">            </span><span class="s2">&quot;1000&quot;</span>:<span class="w"> </span><span class="o">[</span>
+<span class="w">            </span><span class="s2">"1000"</span>:<span class="w"> </span><span class="o">[</span>
 <span class="w">              </span><span class="m">255</span>,
 <span class="w">              </span><span class="m">255</span>,
 <span class="w">              </span><span class="m">255</span>,
 <span class="w">              </span><span class="m">255</span>
 <span class="w">            </span><span class="o">]</span>
 <span class="w">          </span><span class="o">}</span>,
-<span class="w">          </span><span class="s2">&quot;asset_bidx&quot;</span>:<span class="w"> </span><span class="o">[</span><span class="s2">&quot;visual|1&quot;</span><span class="o">]</span>
+<span class="w">          </span><span class="s2">"asset_bidx"</span>:<span class="w"> </span><span class="o">[</span><span class="s2">"visual|1"</span><span class="o">]</span>
 <span class="w">        </span><span class="o">}</span>,
-<span class="w">        </span><span class="s2">&quot;visual&quot;</span>:<span class="w"> </span><span class="o">{</span>
-<span class="w">          </span><span class="s2">&quot;assets&quot;</span>:<span class="w"> </span><span class="o">[</span>
-<span class="w">            </span><span class="s2">&quot;visual&quot;</span>
+<span class="w">        </span><span class="s2">"visual"</span>:<span class="w"> </span><span class="o">{</span>
+<span class="w">          </span><span class="s2">"assets"</span>:<span class="w"> </span><span class="o">[</span>
+<span class="w">            </span><span class="s2">"visual"</span>
 <span class="w">          </span><span class="o">]</span>,
-<span class="w">          </span><span class="s2">&quot;maxzoom&quot;</span>:<span class="w"> </span><span class="m">22</span>,
-<span class="w">          </span><span class="s2">&quot;minzoom&quot;</span>:<span class="w"> </span><span class="m">8</span>,
-<span class="w">          </span><span class="s2">&quot;asset_bidx&quot;</span>:<span class="w"> </span><span class="o">[</span><span class="s2">&quot;visual|1,2,3&quot;</span><span class="o">]</span>
+<span class="w">          </span><span class="s2">"maxzoom"</span>:<span class="w"> </span><span class="m">22</span>,
+<span class="w">          </span><span class="s2">"minzoom"</span>:<span class="w"> </span><span class="m">8</span>,
+<span class="w">          </span><span class="s2">"asset_bidx"</span>:<span class="w"> </span><span class="o">[</span><span class="s2">"visual|1,2,3"</span><span class="o">]</span>
 <span class="w">        </span><span class="o">}</span>,
-<span class="w">        </span><span class="s2">&quot;visualr&quot;</span>:<span class="w"> </span><span class="o">{</span>
-<span class="w">          </span><span class="s2">&quot;assets&quot;</span>:<span class="w"> </span><span class="o">[</span>
-<span class="w">            </span><span class="s2">&quot;visual&quot;</span>
+<span class="w">        </span><span class="s2">"visualr"</span>:<span class="w"> </span><span class="o">{</span>
+<span class="w">          </span><span class="s2">"assets"</span>:<span class="w"> </span><span class="o">[</span>
+<span class="w">            </span><span class="s2">"visual"</span>
 <span class="w">          </span><span class="o">]</span>,
-<span class="w">          </span><span class="s2">&quot;rescale&quot;</span>:<span class="w"> </span><span class="o">[</span>
+<span class="w">          </span><span class="s2">"rescale"</span>:<span class="w"> </span><span class="o">[</span>
 <span class="w">            </span><span class="o">[</span>
 <span class="w">              </span><span class="m">0</span>,
 <span class="w">              </span><span class="m">100</span>
 <span class="w">            </span><span class="o">]</span>
 <span class="w">          </span><span class="o">]</span>,
-<span class="w">          </span><span class="s2">&quot;asset_bidx&quot;</span>:<span class="w"> </span><span class="o">[</span><span class="s2">&quot;visual|1&quot;</span><span class="o">]</span>
+<span class="w">          </span><span class="s2">"asset_bidx"</span>:<span class="w"> </span><span class="o">[</span><span class="s2">"visual|1"</span><span class="o">]</span>
 <span class="w">        </span><span class="o">}</span>
 <span class="w">      </span><span class="o">}</span>
 <span class="w">    </span><span class="o">}</span>
 <span class="w">  </span><span class="o">}</span>,
-<span class="w">  </span><span class="s2">&quot;links&quot;</span>:<span class="w"> </span><span class="o">[</span>
+<span class="w">  </span><span class="s2">"links"</span>:<span class="w"> </span><span class="o">[</span>
 <span class="w">    </span><span class="o">{</span>
-<span class="w">      </span><span class="s2">&quot;href&quot;</span>:<span class="w"> </span><span class="s2">&quot;http://myendpoint/collections/my-collection/info&quot;</span>,
-<span class="w">      </span><span class="s2">&quot;rel&quot;</span>:<span class="w"> </span><span class="s2">&quot;self&quot;</span>,
-<span class="w">      </span><span class="s2">&quot;title&quot;</span>:<span class="w"> </span><span class="s2">&quot;Mosaic metadata&quot;</span>
+<span class="w">      </span><span class="s2">"href"</span>:<span class="w"> </span><span class="s2">"http://myendpoint/collections/my-collection/info"</span>,
+<span class="w">      </span><span class="s2">"rel"</span>:<span class="w"> </span><span class="s2">"self"</span>,
+<span class="w">      </span><span class="s2">"title"</span>:<span class="w"> </span><span class="s2">"Mosaic metadata"</span>
 <span class="w">    </span><span class="o">}</span>,
 <span class="w">    </span><span class="o">{</span>
-<span class="w">      </span><span class="s2">&quot;href&quot;</span>:<span class="w"> </span><span class="s2">&quot;http://myendpoint/collections/my-collection/{tileMatrixSetId}/tilejson.json&quot;</span>,
-<span class="w">      </span><span class="s2">&quot;rel&quot;</span>:<span class="w"> </span><span class="s2">&quot;tilejson&quot;</span>,
-<span class="w">      </span><span class="s2">&quot;templated&quot;</span>:<span class="w"> </span>true,
-<span class="w">      </span><span class="s2">&quot;title&quot;</span>:<span class="w"> </span><span class="s2">&quot;TileJSON link (Template URL).&quot;</span>
+<span class="w">      </span><span class="s2">"href"</span>:<span class="w"> </span><span class="s2">"http://myendpoint/collections/my-collection/{tileMatrixSetId}/tilejson.json"</span>,
+<span class="w">      </span><span class="s2">"rel"</span>:<span class="w"> </span><span class="s2">"tilejson"</span>,
+<span class="w">      </span><span class="s2">"templated"</span>:<span class="w"> </span>true,
+<span class="w">      </span><span class="s2">"title"</span>:<span class="w"> </span><span class="s2">"TileJSON link (Template URL)."</span>
 <span class="w">    </span><span class="o">}</span>,
 <span class="w">    </span><span class="o">{</span>
-<span class="w">      </span><span class="s2">&quot;href&quot;</span>:<span class="w"> </span><span class="s2">&quot;http://myendpoint/collections/my-collection/{tileMatrixSetId}/tilejson.json?colormap=%7B%221%22%3A+%5B0%2C+0%2C+0%2C+255%5D%2C+%221000%22%3A+%5B255%2C+255%2C+255%2C+255%5D%7D&amp;assets=visual&amp;asset_bidx=visual%7C1&quot;</span>,
-<span class="w">      </span><span class="s2">&quot;rel&quot;</span>:<span class="w"> </span><span class="s2">&quot;tilejson&quot;</span>,
-<span class="w">      </span><span class="s2">&quot;templated&quot;</span>:<span class="w"> </span>true,
-<span class="w">      </span><span class="s2">&quot;title&quot;</span>:<span class="w"> </span><span class="s2">&quot;TileJSON link for `color` layer (Template URL).&quot;</span>
+<span class="w">      </span><span class="s2">"href"</span>:<span class="w"> </span><span class="s2">"http://myendpoint/collections/my-collection/{tileMatrixSetId}/tilejson.json?colormap=%7B%221%22%3A+%5B0%2C+0%2C+0%2C+255%5D%2C+%221000%22%3A+%5B255%2C+255%2C+255%2C+255%5D%7D&amp;assets=visual&amp;asset_bidx=visual%7C1"</span>,
+<span class="w">      </span><span class="s2">"rel"</span>:<span class="w"> </span><span class="s2">"tilejson"</span>,
+<span class="w">      </span><span class="s2">"templated"</span>:<span class="w"> </span>true,
+<span class="w">      </span><span class="s2">"title"</span>:<span class="w"> </span><span class="s2">"TileJSON link for `color` layer (Template URL)."</span>
 <span class="w">    </span><span class="o">}</span>,
 <span class="w">    </span><span class="o">{</span>
-<span class="w">      </span><span class="s2">&quot;href&quot;</span>:<span class="w"> </span><span class="s2">&quot;http://myendpoint/collections/my-collection/{tileMatrixSetId}/tilejson.json?maxzoom=22&amp;minzoom=8&amp;assets=visual&amp;asset_bidx=visual%7C1%2C2%2C3&quot;</span>,
-<span class="w">      </span><span class="s2">&quot;rel&quot;</span>:<span class="w"> </span><span class="s2">&quot;tilejson&quot;</span>,
-<span class="w">      </span><span class="s2">&quot;templated&quot;</span>:<span class="w"> </span>true,
-<span class="w">      </span><span class="s2">&quot;title&quot;</span>:<span class="w"> </span><span class="s2">&quot;TileJSON link for `visual` layer (Template URL).&quot;</span>
+<span class="w">      </span><span class="s2">"href"</span>:<span class="w"> </span><span class="s2">"http://myendpoint/collections/my-collection/{tileMatrixSetId}/tilejson.json?maxzoom=22&amp;minzoom=8&amp;assets=visual&amp;asset_bidx=visual%7C1%2C2%2C3"</span>,
+<span class="w">      </span><span class="s2">"rel"</span>:<span class="w"> </span><span class="s2">"tilejson"</span>,
+<span class="w">      </span><span class="s2">"templated"</span>:<span class="w"> </span>true,
+<span class="w">      </span><span class="s2">"title"</span>:<span class="w"> </span><span class="s2">"TileJSON link for `visual` layer (Template URL)."</span>
 <span class="w">    </span><span class="o">}</span>,
 <span class="w">    </span><span class="o">{</span>
-<span class="w">      </span><span class="s2">&quot;href&quot;</span>:<span class="w"> </span><span class="s2">&quot;http://myendpoint/collections/my-collection/{tileMatrixSetId}/tilejson.json?rescale=0%2C100&amp;assets=visual&amp;asset_bidx=visual%7C1&quot;</span>,
-<span class="w">      </span><span class="s2">&quot;rel&quot;</span>:<span class="w"> </span><span class="s2">&quot;tilejson&quot;</span>,
-<span class="w">      </span><span class="s2">&quot;templated&quot;</span>:<span class="w"> </span>true,
-<span class="w">      </span><span class="s2">&quot;title&quot;</span>:<span class="w"> </span><span class="s2">&quot;TileJSON link for `visualr` layer (Template URL).&quot;</span>
+<span class="w">      </span><span class="s2">"href"</span>:<span class="w"> </span><span class="s2">"http://myendpoint/collections/my-collection/{tileMatrixSetId}/tilejson.json?rescale=0%2C100&amp;assets=visual&amp;asset_bidx=visual%7C1"</span>,
+<span class="w">      </span><span class="s2">"rel"</span>:<span class="w"> </span><span class="s2">"tilejson"</span>,
+<span class="w">      </span><span class="s2">"templated"</span>:<span class="w"> </span>true,
+<span class="w">      </span><span class="s2">"title"</span>:<span class="w"> </span><span class="s2">"TileJSON link for `visualr` layer (Template URL)."</span>
 <span class="w">    </span><span class="o">}</span>,
 <span class="w">    </span><span class="o">{</span>
-<span class="w">      </span><span class="s2">&quot;href&quot;</span>:<span class="w"> </span><span class="s2">&quot;http://myendpoint/collections/my-collection/{tileMatrixSetId}/map.html&quot;</span>,
-<span class="w">      </span><span class="s2">&quot;rel&quot;</span>:<span class="w"> </span><span class="s2">&quot;map&quot;</span>,
-<span class="w">      </span><span class="s2">&quot;templated&quot;</span>:<span class="w"> </span>true,
-<span class="w">      </span><span class="s2">&quot;title&quot;</span>:<span class="w"> </span><span class="s2">&quot;Map viewer link (Template URL).&quot;</span>
+<span class="w">      </span><span class="s2">"href"</span>:<span class="w"> </span><span class="s2">"http://myendpoint/collections/my-collection/{tileMatrixSetId}/map.html"</span>,
+<span class="w">      </span><span class="s2">"rel"</span>:<span class="w"> </span><span class="s2">"map"</span>,
+<span class="w">      </span><span class="s2">"templated"</span>:<span class="w"> </span>true,
+<span class="w">      </span><span class="s2">"title"</span>:<span class="w"> </span><span class="s2">"Map viewer link (Template URL)."</span>
 <span class="w">    </span><span class="o">}</span>,
 <span class="w">    </span><span class="o">{</span>
-<span class="w">      </span><span class="s2">&quot;href&quot;</span>:<span class="w"> </span><span class="s2">&quot;http://myendpoint/collections/my-collection/{tileMatrixSetId}/map.html?colormap=%7B%221%22%3A+%5B0%2C+0%2C+0%2C+255%5D%2C+%221000%22%3A+%5B255%2C+255%2C+255%2C+255%5D%7D&amp;assets=visual&amp;asset_bidx=visual%7C1&quot;</span>,
-<span class="w">      </span><span class="s2">&quot;rel&quot;</span>:<span class="w"> </span><span class="s2">&quot;map&quot;</span>,
-<span class="w">      </span><span class="s2">&quot;templated&quot;</span>:<span class="w"> </span>true,
-<span class="w">      </span><span class="s2">&quot;title&quot;</span>:<span class="w"> </span><span class="s2">&quot;Map viewer link for `color` layer (Template URL).&quot;</span>
+<span class="w">      </span><span class="s2">"href"</span>:<span class="w"> </span><span class="s2">"http://myendpoint/collections/my-collection/{tileMatrixSetId}/map.html?colormap=%7B%221%22%3A+%5B0%2C+0%2C+0%2C+255%5D%2C+%221000%22%3A+%5B255%2C+255%2C+255%2C+255%5D%7D&amp;assets=visual&amp;asset_bidx=visual%7C1"</span>,
+<span class="w">      </span><span class="s2">"rel"</span>:<span class="w"> </span><span class="s2">"map"</span>,
+<span class="w">      </span><span class="s2">"templated"</span>:<span class="w"> </span>true,
+<span class="w">      </span><span class="s2">"title"</span>:<span class="w"> </span><span class="s2">"Map viewer link for `color` layer (Template URL)."</span>
 <span class="w">    </span><span class="o">}</span>,
 <span class="w">    </span><span class="o">{</span>
-<span class="w">      </span><span class="s2">&quot;href&quot;</span>:<span class="w"> </span><span class="s2">&quot;http://myendpoint/collections/my-collection/{tileMatrixSetId}/map.html?maxzoom=22&amp;minzoom=8&amp;assets=visual&amp;asset_bidx=visual%7C1%2C2%2C3&quot;</span>,
-<span class="w">      </span><span class="s2">&quot;rel&quot;</span>:<span class="w"> </span><span class="s2">&quot;map&quot;</span>,
-<span class="w">      </span><span class="s2">&quot;templated&quot;</span>:<span class="w"> </span>true,
-<span class="w">      </span><span class="s2">&quot;title&quot;</span>:<span class="w"> </span><span class="s2">&quot;Map viewer link for `visual` layer (Template URL).&quot;</span>
+<span class="w">      </span><span class="s2">"href"</span>:<span class="w"> </span><span class="s2">"http://myendpoint/collections/my-collection/{tileMatrixSetId}/map.html?maxzoom=22&amp;minzoom=8&amp;assets=visual&amp;asset_bidx=visual%7C1%2C2%2C3"</span>,
+<span class="w">      </span><span class="s2">"rel"</span>:<span class="w"> </span><span class="s2">"map"</span>,
+<span class="w">      </span><span class="s2">"templated"</span>:<span class="w"> </span>true,
+<span class="w">      </span><span class="s2">"title"</span>:<span class="w"> </span><span class="s2">"Map viewer link for `visual` layer (Template URL)."</span>
 <span class="w">    </span><span class="o">}</span>,
 <span class="w">    </span><span class="o">{</span>
-<span class="w">      </span><span class="s2">&quot;href&quot;</span>:<span class="w"> </span><span class="s2">&quot;http://myendpoint/collections/my-collection/{tileMatrixSetId}/map.html?rescale=0%2C100&amp;assets=visual&amp;asset_bidx=visual%7C1&quot;</span>,
-<span class="w">      </span><span class="s2">&quot;rel&quot;</span>:<span class="w"> </span><span class="s2">&quot;map&quot;</span>,
-<span class="w">      </span><span class="s2">&quot;templated&quot;</span>:<span class="w"> </span>true,
-<span class="w">      </span><span class="s2">&quot;title&quot;</span>:<span class="w"> </span><span class="s2">&quot;Map viewer link for `visualr` layer (Template URL).&quot;</span>
+<span class="w">      </span><span class="s2">"href"</span>:<span class="w"> </span><span class="s2">"http://myendpoint/collections/my-collection/{tileMatrixSetId}/map.html?rescale=0%2C100&amp;assets=visual&amp;asset_bidx=visual%7C1"</span>,
+<span class="w">      </span><span class="s2">"rel"</span>:<span class="w"> </span><span class="s2">"map"</span>,
+<span class="w">      </span><span class="s2">"templated"</span>:<span class="w"> </span>true,
+<span class="w">      </span><span class="s2">"title"</span>:<span class="w"> </span><span class="s2">"Map viewer link for `visualr` layer (Template URL)."</span>
 <span class="w">    </span><span class="o">}</span>,
 <span class="w">    </span><span class="o">{</span>
-<span class="w">      </span><span class="s2">&quot;href&quot;</span>:<span class="w"> </span><span class="s2">&quot;http://myendpoint/collections/my-collection/{tileMatrixSetId}/WMTSCapabilities.xml&quot;</span>,
-<span class="w">      </span><span class="s2">&quot;rel&quot;</span>:<span class="w"> </span><span class="s2">&quot;wmts&quot;</span>,
-<span class="w">      </span><span class="s2">&quot;templated&quot;</span>:<span class="w"> </span>true,
-<span class="w">      </span><span class="s2">&quot;title&quot;</span>:<span class="w"> </span><span class="s2">&quot;WMTS link (Template URL)&quot;</span>
+<span class="w">      </span><span class="s2">"href"</span>:<span class="w"> </span><span class="s2">"http://myendpoint/collections/my-collection/{tileMatrixSetId}/WMTSCapabilities.xml"</span>,
+<span class="w">      </span><span class="s2">"rel"</span>:<span class="w"> </span><span class="s2">"wmts"</span>,
+<span class="w">      </span><span class="s2">"templated"</span>:<span class="w"> </span>true,
+<span class="w">      </span><span class="s2">"title"</span>:<span class="w"> </span><span class="s2">"WMTS link (Template URL)"</span>
 <span class="w">    </span><span class="o">}</span>
 <span class="w">  </span><span class="o">]</span>
 <span class="o">}</span>

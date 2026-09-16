@@ -1848,8 +1848,8 @@
 <div class="highlight"><pre><span></span><code><span class="c1"># Make sure to have pip up to date</span>
 python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>pip
 
-<span class="c1"># Install `psycopg` or `psycopg[&quot;binary&quot;]` or `psycopg[&quot;c&quot;]`</span>
-python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>psycopg<span class="o">[</span><span class="s2">&quot;binary&quot;</span><span class="o">]</span>
+<span class="c1"># Install `psycopg` or `psycopg["binary"]` or `psycopg["c"]`</span>
+python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>psycopg<span class="o">[</span><span class="s2">"binary"</span><span class="o">]</span>
 
 python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>titiler.pgstac
 </code></pre></div>
@@ -1924,8 +1924,8 @@ is not registered even if the extra is installed.</p>
 <code>PROMETHEUS_MULTIPROC_DIR</code> to an existing writable directory <strong>before</strong> the
 application is imported, and clear that directory before each server start.</p>
 <div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">PROMETHEUS_MULTIPROC_DIR</span><span class="o">=</span>/tmp/titiler-pgstac-prometheus
-mkdir<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PROMETHEUS_MULTIPROC_DIR</span><span class="s2">&quot;</span>
-rm<span class="w"> </span>-rf<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PROMETHEUS_MULTIPROC_DIR</span><span class="s2">&quot;</span>/*
+mkdir<span class="w"> </span>-p<span class="w"> </span><span class="s2">"</span><span class="nv">$PROMETHEUS_MULTIPROC_DIR</span><span class="s2">"</span>
+rm<span class="w"> </span>-rf<span class="w"> </span><span class="s2">"</span><span class="nv">$PROMETHEUS_MULTIPROC_DIR</span><span class="s2">"</span>/*
 </code></pre></div>
 <p>With Gunicorn, also mark workers dead on exit so stale metric files are cleaned up:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">prometheus_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">multiprocess</span>
@@ -1954,9 +1954,9 @@ $ uvicorn titiler.pgstac.main:app --reload
 <h3 id="using-docker">Using Docker<a class="headerlink" href="#using-docker" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code>$ git clone https://github.com/stac-utils/titiler-pgstac.git
 $ cd titiler-pgstac
-$ docker compose up --build tiler
+$ docker compose up --build app
 # or
-$ docker compose up --build tiler-uvicorn
+$ docker compose up --build app-gunicorn
 </code></pre></div>
 <h2 id="contribution-development">Contribution &amp; Development<a class="headerlink" href="#contribution-development" title="Permanent link">&para;</a></h2>
 <p>See <a href="https://github.com//stac-utils/titiler-pgstac/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</a></p>

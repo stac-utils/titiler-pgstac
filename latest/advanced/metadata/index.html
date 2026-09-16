@@ -1547,40 +1547,40 @@
 <p><code>TiTiler-PgSTAC</code> uses PgSTAC <a href="https://github.com/stac-utils/pgstac/blob/3499daa2bfa700ae7bb07503795c169bf2ebafc7/sql/004_search.sql#L907-L915">search</a> to host mosaic parameters for performance purposes. To help users we added the possibility to add <code>metadata</code> to search entries and in <code>TiTiler-PgSTAC</code> we introduced a <code>non-official</code> specification to help user storing meaningful information.</p>
 <h3 id="specification">Specification<a class="headerlink" href="#specification" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">    </span><span class="c1">// OPTIONAL. Default: &quot;mosaic&quot; (No other value accepted for now). Describe the `type` of metadata.</span>
-<span class="w">    </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;mosaic&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="c1">// OPTIONAL. Default: "mosaic" (No other value accepted for now). Describe the `type` of metadata.</span>
+<span class="w">    </span><span class="s2">"type"</span><span class="o">:</span><span class="w"> </span><span class="s2">"mosaic"</span><span class="p">,</span>
 
 <span class="w">    </span><span class="c1">// OPTIONAL. Default: null.</span>
 <span class="w">    </span><span class="c1">// The maximum extent of available map tiles. The bounds are represented in WGS:84</span>
 <span class="w">    </span><span class="c1">// latitude and longitude values, in the order left, bottom, right, top.</span>
 <span class="w">    </span><span class="c1">// Values may be integers or floating point numbers.</span>
-<span class="w">    </span><span class="s2">&quot;bounds&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="o">-</span><span class="mf">180</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mf">85.05112877980659</span><span class="p">,</span><span class="w"> </span><span class="mf">180</span><span class="p">,</span><span class="w"> </span><span class="mf">85.0511287798066</span><span class="w"> </span><span class="p">],</span>
+<span class="w">    </span><span class="s2">"bounds"</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="o">-</span><span class="mf">180</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mf">85.05112877980659</span><span class="p">,</span><span class="w"> </span><span class="mf">180</span><span class="p">,</span><span class="w"> </span><span class="mf">85.0511287798066</span><span class="w"> </span><span class="p">],</span>
 
 <span class="w">    </span><span class="c1">// OPTIONAL. Default: null.</span>
 <span class="w">    </span><span class="c1">// An integer specifying the minimum zoom level.</span>
-<span class="w">    </span><span class="s2">&quot;minzoom&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">0</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"minzoom"</span><span class="o">:</span><span class="w"> </span><span class="mf">0</span><span class="p">,</span>
 
 <span class="w">    </span><span class="c1">// OPTIONAL. Default: null.</span>
 <span class="w">    </span><span class="c1">// An integer specifying the maximum zoom level. MUST be &gt;= minzoom.</span>
-<span class="w">    </span><span class="s2">&quot;maxzoom&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">11</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"maxzoom"</span><span class="o">:</span><span class="w"> </span><span class="mf">11</span><span class="p">,</span>
 
 <span class="w">    </span><span class="c1">// OPTIONAL. Default: null. The name can contain any legal character.</span>
-<span class="w">    </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;compositing&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"name"</span><span class="o">:</span><span class="w"> </span><span class="s2">"compositing"</span><span class="p">,</span>
 
 <span class="w">    </span><span class="c1">// OPTIONAL. Default: null. An array of available assets.</span>
-<span class="w">    </span><span class="s2">&quot;assets&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;image&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;cog&quot;</span><span class="p">],</span>
+<span class="w">    </span><span class="s2">"assets"</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"image"</span><span class="p">,</span><span class="w"> </span><span class="s2">"cog"</span><span class="p">],</span>
 
 <span class="w">    </span><span class="c1">// OPTIONAL. Default: null. A set of `defaults` configuration to be forwarded to the /tiles endpoints.</span>
 <span class="w">    </span><span class="c1">// Note: The defaults block should follow the STAC render extension https://github.com/stac-extensions/render</span>
-<span class="w">    </span><span class="s2">&quot;defaults&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="s2">&quot;true_color&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="s2">&quot;assets&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;B4&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;B3&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;B2&quot;</span><span class="p">],</span>
-<span class="w">            </span><span class="s2">&quot;color_formula&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Gamma RGB 3.5 Saturation 1.7 Sigmoidal RGB 15 0.35&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"defaults"</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="s2">"true_color"</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="s2">"assets"</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"B4"</span><span class="p">,</span><span class="w"> </span><span class="s2">"B3"</span><span class="p">,</span><span class="w"> </span><span class="s2">"B2"</span><span class="p">],</span>
+<span class="w">            </span><span class="s2">"color_formula"</span><span class="o">:</span><span class="w"> </span><span class="s2">"Gamma RGB 3.5 Saturation 1.7 Sigmoidal RGB 15 0.35"</span><span class="p">,</span>
 <span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="s2">&quot;ndvi&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="s2">&quot;expression&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;(B4-B3)/(B4+B3)&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="s2">&quot;rescale&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[[</span><span class="o">-</span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="mf">1</span><span class="p">]],</span>
-<span class="w">            </span><span class="s2">&quot;colormap_name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;viridis&quot;</span>
+<span class="w">        </span><span class="s2">"ndvi"</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="s2">"expression"</span><span class="o">:</span><span class="w"> </span><span class="s2">"(B4-B3)/(B4+B3)"</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">"rescale"</span><span class="o">:</span><span class="w"> </span><span class="p">[[</span><span class="o">-</span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="mf">1</span><span class="p">]],</span>
+<span class="w">            </span><span class="s2">"colormap_name"</span><span class="o">:</span><span class="w"> </span><span class="s2">"viridis"</span>
 <span class="w">        </span><span class="p">}</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
@@ -1592,63 +1592,63 @@
 <li>All metadata fields are optional and custom fields are also allowed.</li>
 </ul>
 </div>
-<div class="highlight"><pre><span></span><code>curl -X &#39;POST&#39; &#39;http://127.0.0.1:8081/searches/register&#39; -H &#39;accept: application/json&#39; -H &#39;Content-Type: application/json&#39; -d &#39;{&quot;filter&quot;: {&quot;op&quot;: &quot;=&quot;, &quot;args&quot;: [{&quot;property&quot;: &quot;collection&quot;}, &quot;landsat-c2l2-sr&quot;]}, &quot;metadata&quot;: {&quot;name&quot;: &quot;landsat mosaic&quot;}}&#39;
+<div class="highlight"><pre><span></span><code>curl -X 'POST' 'http://127.0.0.1:8081/searches/register' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{"filter": {"op": "=", "args": [{"property": "collection"}, "landsat-c2l2-sr"]}, "metadata": {"name": "landsat mosaic"}}'
 &gt;&gt; {
-  &quot;id&quot;: &quot;d7fcdefd0457c949ea7a6192bc2c7122&quot;,
-  &quot;links&quot;: [
+  "id": "d7fcdefd0457c949ea7a6192bc2c7122",
+  "links": [
     {
-      &quot;rel&quot;: &quot;metadata&quot;,
-      &quot;type&quot;: &quot;application/json&quot;,
-      &quot;href&quot;: &quot;http://127.0.0.1:8081/searches/d7fcdefd0457c949ea7a6192bc2c7122/info&quot;
+      "rel": "metadata",
+      "type": "application/json",
+      "href": "http://127.0.0.1:8081/searches/d7fcdefd0457c949ea7a6192bc2c7122/info"
     },
     {
-      &quot;rel&quot;: &quot;tilejson&quot;,
-      &quot;type&quot;: &quot;application/json&quot;,
-      &quot;href&quot;: &quot;http://127.0.0.1:8081/searches/d7fcdefd0457c949ea7a6192bc2c7122/tilejson.json&quot;
+      "rel": "tilejson",
+      "type": "application/json",
+      "href": "http://127.0.0.1:8081/searches/d7fcdefd0457c949ea7a6192bc2c7122/tilejson.json"
     }
   ]
 }
 
-curl http://127.0.0.1:8081/searches/d7fcdefd0457c949ea7a6192bc2c7122/info | jq &#39;.search.metadata&#39;
+curl http://127.0.0.1:8081/searches/d7fcdefd0457c949ea7a6192bc2c7122/info | jq '.search.metadata'
 &gt;&gt; {
-  &quot;type&quot;: &quot;mosaic&quot;,
-  &quot;name&quot;: &quot;landsat mosaic&quot;
+  "type": "mosaic",
+  "name": "landsat mosaic"
 }
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>curl -X &#39;POST&#39; &#39;http://127.0.0.1:8081/searches/register&#39; -H &#39;accept: application/json&#39; -H &#39;Content-Type: application/json&#39; -d &#39;{&quot;collections&quot;: [&quot;noaa-emergency-response&quot;], &quot;bbox&quot;: [-87.0251, 36.0999, -85.4249, 36.2251], &quot;filter-lang&quot;: &quot;cql-json&quot;, &quot;metadata&quot;: {&quot;bounds&quot;: [-87.0251, 36.0999, -85.4249, 36.2251], &quot;minzoom&quot;: 14, &quot;maxzoom&quot;: 18, &quot;assets&quot;: [&quot;cog&quot;], &quot;defaults&quot;: {&quot;true_color&quot;: {&quot;bidx&quot;: [1, 2, 3]}}}}&#39;
+<div class="highlight"><pre><span></span><code>curl -X 'POST' 'http://127.0.0.1:8081/searches/register' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{"collections": ["noaa-emergency-response"], "bbox": [-87.0251, 36.0999, -85.4249, 36.2251], "filter-lang": "cql-json", "metadata": {"bounds": [-87.0251, 36.0999, -85.4249, 36.2251], "minzoom": 14, "maxzoom": 18, "assets": ["cog"], "defaults": {"true_color": {"bidx": [1, 2, 3]}}}}'
 &gt;&gt; {
-  &quot;id&quot;:&quot;4b0db3dbd1858d54a3a55f84de97d1ca&quot;,
-  &quot;links&quot;:[
+  "id":"4b0db3dbd1858d54a3a55f84de97d1ca",
+  "links":[
     {
-      &quot;rel&quot;: &quot;metadata&quot;,
-      &quot;type&quot;: &quot;application/json&quot;,
-      &quot;href&quot;: &quot;http://127.0.0.1:8081/searches/4b0db3dbd1858d54a3a55f84de97d1ca/info&quot;
+      "rel": "metadata",
+      "type": "application/json",
+      "href": "http://127.0.0.1:8081/searches/4b0db3dbd1858d54a3a55f84de97d1ca/info"
     },
     {
-      &quot;rel&quot;: &quot;tilejson&quot;,
-      &quot;type&quot;: &quot;application/json&quot;,
-      &quot;href&quot;: &quot;http://127.0.0.1:8081/searches/4b0db3dbd1858d54a3a55f84de97d1ca/tilejson.json&quot;
+      "rel": "tilejson",
+      "type": "application/json",
+      "href": "http://127.0.0.1:8081/searches/4b0db3dbd1858d54a3a55f84de97d1ca/tilejson.json"
     }
   ]
 }
 
-curl http://127.0.0.1:8081/searches/4b0db3dbd1858d54a3a55f84de97d1ca/info | jq &#39;.search.metadata&#39;
+curl http://127.0.0.1:8081/searches/4b0db3dbd1858d54a3a55f84de97d1ca/info | jq '.search.metadata'
 &gt;&gt; {
-  &quot;type&quot;: &quot;mosaic&quot;,
-  &quot;bounds&quot;: [
+  "type": "mosaic",
+  "bounds": [
     -87.0251,
     36.0999,
     -85.4249,
     36.2251
   ],
-  &quot;minzoom&quot;: 14,
-  &quot;maxzoom&quot;: 18,
-  &quot;assets&quot;: [
-    &quot;cog&quot;
+  "minzoom": 14,
+  "maxzoom": 18,
+  "assets": [
+    "cog"
   ],
-  &quot;defaults&quot;: {
-    &quot;true_color&quot;: {
-      &quot;bidx&quot;: [
+  "defaults": {
+    "true_color": {
+      "bidx": [
         1,
         2,
         3

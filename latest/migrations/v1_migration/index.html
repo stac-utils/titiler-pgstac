@@ -1779,20 +1779,19 @@ document aims to help with migrating your code and client application to use <co
     <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span>
     <span class="n">collection_id</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span><span class="p">,</span>
-        <span class="n">Path</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;STAC Collection Identifier&quot;</span><span class="p">),</span>
+        <span class="n">Path</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"STAC Collection Identifier"</span><span class="p">),</span>
     <span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;collection_id Path Parameter&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""collection_id Path Parameter"""</span>
     <span class="n">search</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">PgSTACSearch</span><span class="p">(</span><span class="n">collections</span><span class="o">=</span><span class="p">[</span><span class="n">collection_id</span><span class="p">])</span>
 
     <span class="k">with</span> <span class="n">request</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">dbpool</span><span class="o">.</span><span class="n">connection</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
         <span class="k">with</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">(</span><span class="n">row_factory</span><span class="o">=</span><span class="n">class_row</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">Search</span><span class="p">))</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
-
             <span class="n">metadata</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">Metadata</span><span class="p">(</span>
-                <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Mosaic for &#39;</span><span class="si">{</span><span class="n">collection_id</span><span class="si">}</span><span class="s2">&#39; Collection&quot;</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">"Mosaic for '</span><span class="si">{</span><span class="n">collection_id</span><span class="si">}</span><span class="s2">' Collection"</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-                <span class="s2">&quot;SELECT * FROM search_query(</span><span class="si">%s</span><span class="s2">, _metadata =&gt; </span><span class="si">%s</span><span class="s2">);&quot;</span><span class="p">,</span>
+                <span class="s2">"SELECT * FROM search_query(</span><span class="si">%s</span><span class="s2">, _metadata =&gt; </span><span class="si">%s</span><span class="s2">);"</span><span class="p">,</span>
                 <span class="p">(</span>
                     <span class="n">search</span><span class="o">.</span><span class="n">model_dump_json</span><span class="p">(</span><span class="n">by_alias</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exclude_none</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
                     <span class="n">metadata</span><span class="o">.</span><span class="n">model_dump_json</span><span class="p">(</span><span class="n">exclude_none</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
@@ -1811,10 +1810,10 @@ document aims to help with migrating your code and client application to use <co
 <div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">httpx2</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">httpx</span>
 
 <span class="c1"># before</span>
-<span class="n">resp</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/mosaic/{{ searchid }}/info&quot;</span><span class="p">)</span>
+<span class="n">resp</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/mosaic/{{ searchid }}/info"</span><span class="p">)</span>
 
 <span class="c1"># now</span>
-<span class="n">resp</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/searches/{{ search_id }}/info&quot;</span><span class="p">)</span>
+<span class="n">resp</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/searches/{{ search_id }}/info"</span><span class="p">)</span>
 </code></pre></div>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
@@ -1835,7 +1834,7 @@ easily revert this change in your own application.</p>
 <span class="c1"># STAC Search Endpoints</span>
 <span class="n">searches</span> <span class="o">=</span> <span class="n">MosaicTilerFactory</span><span class="p">(</span>
     <span class="n">path_dependency</span><span class="o">=</span><span class="n">SearchIdParams</span><span class="p">,</span>
-    <span class="n">router_prefix</span><span class="o">=</span><span class="s2">&quot;/mosaic/</span><span class="si">{search_id}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">router_prefix</span><span class="o">=</span><span class="s2">"/mosaic/</span><span class="si">{search_id}</span><span class="s2">"</span><span class="p">,</span>
     <span class="n">add_statistics</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">add_viewer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">add_part</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -1843,12 +1842,10 @@ easily revert this change in your own application.</p>
         <span class="n">searchInfoExtension</span><span class="p">(),</span>
     <span class="p">],</span>
 <span class="p">)</span>
-<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
-    <span class="n">searches</span><span class="o">.</span><span class="n">router</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;STAC Search&quot;</span><span class="p">],</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;/mosaic/</span><span class="si">{search_id}</span><span class="s2">&quot;</span>
-<span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">searches</span><span class="o">.</span><span class="n">router</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">"STAC Search"</span><span class="p">],</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">"/mosaic/</span><span class="si">{search_id}</span><span class="s2">"</span><span class="p">)</span>
 <span class="n">add_search_register_route</span><span class="p">(</span>
     <span class="n">app</span><span class="p">,</span>
-    <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;/mosaic&quot;</span><span class="p">,</span>
+    <span class="n">prefix</span><span class="o">=</span><span class="s2">"/mosaic"</span><span class="p">,</span>
     <span class="n">tile_dependencies</span><span class="o">=</span><span class="p">[</span>
         <span class="n">searches</span><span class="o">.</span><span class="n">layer_dependency</span><span class="p">,</span>
         <span class="n">searches</span><span class="o">.</span><span class="n">dataset_dependency</span><span class="p">,</span>
@@ -1861,9 +1858,9 @@ easily revert this change in your own application.</p>
         <span class="n">searches</span><span class="o">.</span><span class="n">reader_dependency</span><span class="p">,</span>
         <span class="n">searches</span><span class="o">.</span><span class="n">backend_dependency</span><span class="p">,</span>
     <span class="p">],</span>
-    <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;STAC Search&quot;</span><span class="p">],</span>
+    <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">"STAC Search"</span><span class="p">],</span>
 <span class="p">)</span>
-<span class="n">add_search_list_route</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;/mosaic&quot;</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;STAC Search&quot;</span><span class="p">])</span>
+<span class="n">add_search_list_route</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">"/mosaic"</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">"STAC Search"</span><span class="p">])</span>
 </code></pre></div>
 </div>
 <h3 id="searchid-id"><code>searchid</code> -&gt; <code>id</code><a class="headerlink" href="#searchid-id" title="Permanent link">&para;</a></h3>
@@ -1871,12 +1868,18 @@ easily revert this change in your own application.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">httpx2</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">httpx</span>
 
 <span class="c1"># before</span>
-<span class="n">resp</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/mosaic/register&quot;</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;collections&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;my-collection&quot;</span><span class="p">],</span> <span class="s2">&quot;filter-lang&quot;</span><span class="p">:</span> <span class="s2">&quot;cql-json&quot;</span><span class="p">})</span>
-<span class="k">assert</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">&quot;searchid&quot;</span><span class="p">]</span>
+<span class="n">resp</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="s2">"/mosaic/register"</span><span class="p">,</span>
+    <span class="n">body</span><span class="o">=</span><span class="p">{</span><span class="s2">"collections"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"my-collection"</span><span class="p">],</span> <span class="s2">"filter-lang"</span><span class="p">:</span> <span class="s2">"cql-json"</span><span class="p">},</span>
+<span class="p">)</span>
+<span class="k">assert</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">"searchid"</span><span class="p">]</span>
 
 <span class="c1"># now</span>
-<span class="n">resp</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/searches/register&quot;</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;collections&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;my-collection&quot;</span><span class="p">],</span> <span class="s2">&quot;filter-lang&quot;</span><span class="p">:</span> <span class="s2">&quot;cql-json&quot;</span><span class="p">})</span>
-<span class="k">assert</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
+<span class="n">resp</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="s2">"/searches/register"</span><span class="p">,</span>
+    <span class="n">body</span><span class="o">=</span><span class="p">{</span><span class="s2">"collections"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"my-collection"</span><span class="p">],</span> <span class="s2">"filter-lang"</span><span class="p">:</span> <span class="s2">"cql-json"</span><span class="p">},</span>
+<span class="p">)</span>
+<span class="k">assert</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">"id"</span><span class="p">]</span>
 </code></pre></div>
 <h2 id="api">API<a class="headerlink" href="#api" title="Permanent link">&para;</a></h2>
 <h3 id="pathparams-itempathparams-searchidparams-itemidparams"><code>PathParams / ItemPathParams</code> -&gt; <code>SearchIdParams / ItemIdParams</code><a class="headerlink" href="#pathparams-itempathparams-searchidparams-itemidparams" title="Permanent link">&para;</a></h3>
@@ -1887,17 +1890,17 @@ easily revert this change in your own application.</p>
 <span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
 <span class="n">mosaic</span> <span class="o">=</span> <span class="n">MosaicTilerFactory</span><span class="p">(</span>
     <span class="o">...</span><span class="p">,</span>
-    <span class="n">router_prefix</span><span class="o">=</span><span class="s2">&quot;/mosaics&quot;</span>
+    <span class="n">router_prefix</span><span class="o">=</span><span class="s2">"/mosaics"</span>
 <span class="p">)</span>
-<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">mosaic</span><span class="o">.</span><span class="n">router</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;/mosaics&quot;</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">mosaic</span><span class="o">.</span><span class="n">router</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">"/mosaics"</span><span class="p">)</span>
 
 <span class="c1"># Now</span>
 <span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
 <span class="n">mosaic</span> <span class="o">=</span> <span class="n">MosaicTilerFactory</span><span class="p">(</span>
     <span class="o">...</span>
-    <span class="n">router_prefix</span><span class="o">=</span><span class="s2">&quot;/mosaics/</span><span class="si">{search_id}</span><span class="s2">&quot;</span>
+    <span class="n">router_prefix</span><span class="o">=</span><span class="s2">"/mosaics/</span><span class="si">{search_id}</span><span class="s2">"</span>
 <span class="p">)</span>
-<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">mosaic</span><span class="o">.</span><span class="n">router</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;/mosaics/</span><span class="si">{search_id}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">mosaic</span><span class="o">.</span><span class="n">router</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">"/mosaics/</span><span class="si">{search_id}</span><span class="s2">"</span><span class="p">)</span>
 </code></pre></div>
 <h3 id="path_dependency-required-input-for-mosaictilerfactory-class"><code>path_dependency</code> required input for <code>MosaicTilerFactory</code> class<a class="headerlink" href="#path_dependency-required-input-for-mosaictilerfactory-class" title="Permanent link">&para;</a></h3>
 <p>With the introduction of the <em>collections</em> endpoints, and because we removed the default <code>{search_id}</code> prefix, we cannot default to <code>SearchIdParams</code> for the <code>path_dependency</code> (the dependency which sends the PgSTAC search identifier to the Mosaic Reader) and thus is now a required attribute when initializing the endpoints.</p>
@@ -1908,10 +1911,7 @@ easily revert this change in your own application.</p>
 
 <span class="c1"># now</span>
 <span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
-<span class="n">mosaic</span> <span class="o">=</span> <span class="n">MosaicTilerFactory</span><span class="p">(</span>
-    <span class="o">...</span><span class="p">,</span>
-    <span class="n">path_dependency</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="s2">&quot;aaaaaaaaaaaaaa&quot;</span>
-<span class="p">)</span>
+<span class="n">mosaic</span> <span class="o">=</span> <span class="n">MosaicTilerFactory</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">path_dependency</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="s2">"aaaaaaaaaaaaaa"</span><span class="p">)</span>
 <span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">mosaic</span><span class="o">.</span><span class="n">router</span><span class="p">)</span>
 </code></pre></div>
 <h3 id="searchinfoextension"><code>searchInfoExtension</code><a class="headerlink" href="#searchinfoextension" title="Permanent link">&para;</a></h3>
@@ -1938,9 +1938,9 @@ easily revert this change in your own application.</p>
 
 <span class="n">mosaic</span> <span class="o">=</span> <span class="n">MosaicTilerFactory</span><span class="p">(</span>
     <span class="o">...</span><span class="p">,</span>
-    <span class="n">router_prefix</span><span class="o">=</span><span class="s2">&quot;/</span><span class="si">{search_id}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">router_prefix</span><span class="o">=</span><span class="s2">"/</span><span class="si">{search_id}</span><span class="s2">"</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">mosaic</span><span class="o">.</span><span class="n">router</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;/</span><span class="si">{search_id}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">mosaic</span><span class="o">.</span><span class="n">router</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">"/</span><span class="si">{search_id}</span><span class="s2">"</span><span class="p">)</span>
 
 <span class="c1"># Now</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">titiler.pgstac.factory</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
@@ -1951,9 +1951,9 @@ easily revert this change in your own application.</p>
 
 <span class="n">mosaic</span> <span class="o">=</span> <span class="n">MosaicTilerFactory</span><span class="p">(</span>
     <span class="o">...</span><span class="p">,</span>
-    <span class="n">router_prefix</span><span class="o">=</span><span class="s2">&quot;/</span><span class="si">{search_id}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">router_prefix</span><span class="o">=</span><span class="s2">"/</span><span class="si">{search_id}</span><span class="s2">"</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">mosaic</span><span class="o">.</span><span class="n">router</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;/</span><span class="si">{search_id}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">mosaic</span><span class="o">.</span><span class="n">router</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">"/</span><span class="si">{search_id}</span><span class="s2">"</span><span class="p">)</span>
 
 <span class="c1"># add /register endpoint</span>
 <span class="n">add_search_register_route</span><span class="p">(</span>

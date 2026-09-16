@@ -2044,7 +2044,7 @@
 <h3 id="python-version-requirement">Python Version Requirement<a class="headerlink" href="#python-version-requirement" title="Permanent link">&para;</a></h3>
 <p><strong>Impact:</strong> High - Affects deployment and development environments</p>
 <p>titiler-pgstac 2.0 requires Python 3.11 or higher. Python 3.10 and earlier versions are no longer supported.</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Ensure you&#39;re using Python 3.11+</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># Ensure you're using Python 3.11+</span>
 python<span class="w"> </span>--version<span class="w">  </span><span class="c1"># Should show 3.11 or higher</span>
 </code></pre></div>
 <p><strong>Action Required:</strong></p>
@@ -2074,12 +2074,14 @@ python<span class="w"> </span>--version<span class="w">  </span><span class="c1"
     <span class="n">coordinates</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>
     <span class="n">values</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span>
 
+
 <span class="c1"># Now (2.0)</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">AssetPoint</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">values</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span>
     <span class="n">band_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
     <span class="n">band_descriptions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+
 
 <span class="k">class</span><span class="w"> </span><span class="nc">Point</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
     <span class="n">coordinates</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>
@@ -2088,39 +2090,39 @@ python<span class="w"> </span>--version<span class="w">  </span><span class="c1"
 <p><strong>Migration Example:</strong></p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Before (1.9)</span>
 <span class="n">response</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;coordinates&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">122.5</span><span class="p">,</span> <span class="mf">37.5</span><span class="p">],</span>
-    <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">[</span>
-        <span class="p">(</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mf">100.0</span><span class="p">,</span> <span class="mf">200.0</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;B1&quot;</span><span class="p">,</span> <span class="s2">&quot;B2&quot;</span><span class="p">]),</span>
-        <span class="p">(</span><span class="s2">&quot;green&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mf">150.0</span><span class="p">,</span> <span class="mf">250.0</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;B1&quot;</span><span class="p">,</span> <span class="s2">&quot;B2&quot;</span><span class="p">])</span>
-    <span class="p">]</span>
+    <span class="s2">"coordinates"</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">122.5</span><span class="p">,</span> <span class="mf">37.5</span><span class="p">],</span>
+    <span class="s2">"values"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s2">"red"</span><span class="p">,</span> <span class="p">[</span><span class="mf">100.0</span><span class="p">,</span> <span class="mf">200.0</span><span class="p">],</span> <span class="p">[</span><span class="s2">"B1"</span><span class="p">,</span> <span class="s2">"B2"</span><span class="p">]),</span>
+        <span class="p">(</span><span class="s2">"green"</span><span class="p">,</span> <span class="p">[</span><span class="mf">150.0</span><span class="p">,</span> <span class="mf">250.0</span><span class="p">],</span> <span class="p">[</span><span class="s2">"B1"</span><span class="p">,</span> <span class="s2">"B2"</span><span class="p">]),</span>
+    <span class="p">],</span>
 <span class="p">}</span>
 
 <span class="c1"># Accessing values:</span>
-<span class="k">for</span> <span class="n">asset_name</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">bands</span> <span class="ow">in</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;values&quot;</span><span class="p">]:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">asset_name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">values</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">asset_name</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">bands</span> <span class="ow">in</span> <span class="n">response</span><span class="p">[</span><span class="s2">"values"</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">asset_name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">values</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
 <span class="c1"># Now (2.0)</span>
 <span class="n">response</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;coordinates&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">122.5</span><span class="p">,</span> <span class="mf">37.5</span><span class="p">],</span>
-    <span class="s2">&quot;assets&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">"coordinates"</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">122.5</span><span class="p">,</span> <span class="mf">37.5</span><span class="p">],</span>
+    <span class="s2">"assets"</span><span class="p">:</span> <span class="p">[</span>
         <span class="p">{</span>
-            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;red&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">100.0</span><span class="p">,</span> <span class="mf">200.0</span><span class="p">],</span>
-            <span class="s2">&quot;band_names&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;B1&quot;</span><span class="p">,</span> <span class="s2">&quot;B2&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;band_descriptions&quot;</span><span class="p">:</span> <span class="kc">None</span>
+            <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"red"</span><span class="p">,</span>
+            <span class="s2">"values"</span><span class="p">:</span> <span class="p">[</span><span class="mf">100.0</span><span class="p">,</span> <span class="mf">200.0</span><span class="p">],</span>
+            <span class="s2">"band_names"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"B1"</span><span class="p">,</span> <span class="s2">"B2"</span><span class="p">],</span>
+            <span class="s2">"band_descriptions"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
         <span class="p">},</span>
         <span class="p">{</span>
-            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;green&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">150.0</span><span class="p">,</span> <span class="mf">250.0</span><span class="p">],</span>
-            <span class="s2">&quot;band_names&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;B1&quot;</span><span class="p">,</span> <span class="s2">&quot;B2&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;band_descriptions&quot;</span><span class="p">:</span> <span class="kc">None</span>
-        <span class="p">}</span>
-    <span class="p">]</span>
+            <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"green"</span><span class="p">,</span>
+            <span class="s2">"values"</span><span class="p">:</span> <span class="p">[</span><span class="mf">150.0</span><span class="p">,</span> <span class="mf">250.0</span><span class="p">],</span>
+            <span class="s2">"band_names"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"B1"</span><span class="p">,</span> <span class="s2">"B2"</span><span class="p">],</span>
+            <span class="s2">"band_descriptions"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">],</span>
 <span class="p">}</span>
 
 <span class="c1"># Accessing values:</span>
-<span class="k">for</span> <span class="n">asset</span> <span class="ow">in</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;assets&quot;</span><span class="p">]:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">asset</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">asset</span><span class="p">[</span><span class="s1">&#39;values&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">asset</span> <span class="ow">in</span> <span class="n">response</span><span class="p">[</span><span class="s2">"assets"</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">asset</span><span class="p">[</span><span class="s1">'name'</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">asset</span><span class="p">[</span><span class="s1">'values'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </code></pre></div>
 <p><strong>Action Required:</strong> Update all client code that parses <code>/point</code> endpoint responses to use the new structure.</p>
 <h3 id="cql-filter-changes">CQL Filter Changes<a class="headerlink" href="#cql-filter-changes" title="Permanent link">&para;</a></h3>
@@ -2128,29 +2130,23 @@ python<span class="w"> </span>--version<span class="w">  </span><span class="c1"
 <p>Support for <code>cql-text</code> (CQL1) has been removed. Only CQL2 is now supported.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Before (1.9) - Both supported</span>
 <span class="n">search</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;collections&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;my-collection&quot;</span><span class="p">],</span>
-    <span class="s2">&quot;filter-lang&quot;</span><span class="p">:</span> <span class="s2">&quot;cql-text&quot;</span><span class="p">,</span>  <span class="c1"># No longer supported</span>
-    <span class="s2">&quot;filter&quot;</span><span class="p">:</span> <span class="s2">&quot;landcover=&#39;urban&#39;&quot;</span>
+    <span class="s2">"collections"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"my-collection"</span><span class="p">],</span>
+    <span class="s2">"filter-lang"</span><span class="p">:</span> <span class="s2">"cql-text"</span><span class="p">,</span>  <span class="c1"># No longer supported</span>
+    <span class="s2">"filter"</span><span class="p">:</span> <span class="s2">"landcover='urban'"</span><span class="p">,</span>
 <span class="p">}</span>
 
 <span class="c1"># Or</span>
 <span class="n">search</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;collections&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;my-collection&quot;</span><span class="p">],</span>
-    <span class="s2">&quot;filter-lang&quot;</span><span class="p">:</span> <span class="s2">&quot;cql2-json&quot;</span><span class="p">,</span>  <span class="c1"># Still supported</span>
-    <span class="s2">&quot;filter&quot;</span><span class="p">:</span> <span class="p">{</span><span class="o">...</span><span class="p">}</span>
+    <span class="s2">"collections"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"my-collection"</span><span class="p">],</span>
+    <span class="s2">"filter-lang"</span><span class="p">:</span> <span class="s2">"cql2-json"</span><span class="p">,</span>  <span class="c1"># Still supported</span>
+    <span class="s2">"filter"</span><span class="p">:</span> <span class="p">{</span><span class="o">...</span><span class="p">},</span>
 <span class="p">}</span>
 
 <span class="c1"># Now (2.0) - Only CQL2 supported</span>
 <span class="n">search</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;collections&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;my-collection&quot;</span><span class="p">],</span>
-    <span class="s2">&quot;filter-lang&quot;</span><span class="p">:</span> <span class="s2">&quot;cql2-json&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;filter&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;op&quot;</span><span class="p">:</span> <span class="s2">&quot;=&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">[</span>
-            <span class="p">{</span><span class="s2">&quot;property&quot;</span><span class="p">:</span> <span class="s2">&quot;landcover&quot;</span><span class="p">},</span>
-            <span class="s2">&quot;urban&quot;</span>
-        <span class="p">]</span>
-    <span class="p">}</span>
+    <span class="s2">"collections"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"my-collection"</span><span class="p">],</span>
+    <span class="s2">"filter-lang"</span><span class="p">:</span> <span class="s2">"cql2-json"</span><span class="p">,</span>
+    <span class="s2">"filter"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"op"</span><span class="p">:</span> <span class="s2">"="</span><span class="p">,</span> <span class="s2">"args"</span><span class="p">:</span> <span class="p">[{</span><span class="s2">"property"</span><span class="p">:</span> <span class="s2">"landcover"</span><span class="p">},</span> <span class="s2">"urban"</span><span class="p">]},</span>
 <span class="p">}</span>
 </code></pre></div>
 <p><strong>Action Required:</strong>
@@ -2164,14 +2160,11 @@ python<span class="w"> </span>--version<span class="w">  </span><span class="c1"
 
 <span class="c1"># New in 2.0 - Filter support for collections</span>
 <span class="n">response</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-    <span class="s2">&quot;/collections/my-collection/tiles/0/0/0&quot;</span><span class="p">,</span>
+    <span class="s2">"/collections/my-collection/tiles/0/0/0"</span><span class="p">,</span>
     <span class="n">params</span><span class="o">=</span><span class="p">{</span>
-        <span class="s2">&quot;filter-lang&quot;</span><span class="p">:</span> <span class="s2">&quot;cql2-json&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;filter&quot;</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span>
-            <span class="s2">&quot;op&quot;</span><span class="p">:</span> <span class="s2">&quot;=&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;property&quot;</span><span class="p">:</span> <span class="s2">&quot;cloud_cover&quot;</span><span class="p">},</span> <span class="mi">10</span><span class="p">]</span>
-        <span class="p">})</span>
-    <span class="p">}</span>
+        <span class="s2">"filter-lang"</span><span class="p">:</span> <span class="s2">"cql2-json"</span><span class="p">,</span>
+        <span class="s2">"filter"</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s2">"op"</span><span class="p">:</span> <span class="s2">"="</span><span class="p">,</span> <span class="s2">"args"</span><span class="p">:</span> <span class="p">[{</span><span class="s2">"property"</span><span class="p">:</span> <span class="s2">"cloud_cover"</span><span class="p">},</span> <span class="mi">10</span><span class="p">]}),</span>
+    <span class="p">},</span>
 <span class="p">)</span>
 </code></pre></div>
 <p><strong>Action Required:</strong> Consider using these new filtering capabilities to improve collection queries.</p>
@@ -2181,10 +2174,10 @@ python<span class="w"> </span>--version<span class="w">  </span><span class="c1"
 <div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">httpx2</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">httpx</span>
 
 <span class="c1"># Before (1.9)</span>
-<span class="n">response</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/searches/list&quot;</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/searches/list"</span><span class="p">)</span>
 
 <span class="c1"># Now (2.0)</span>
-<span class="n">response</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/searches/&quot;</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/searches/"</span><span class="p">)</span>
 </code></pre></div>
 <p><strong>Action Required:</strong> Update any code using <code>/searches/list</code> to use <code>/searches/</code> instead.</p>
 <h3 id="wmts-endpoint-changes">WMTS Endpoint Changes<a class="headerlink" href="#wmts-endpoint-changes" title="Permanent link">&para;</a></h3>
@@ -2201,9 +2194,7 @@ python<span class="w"> </span>--version<span class="w">  </span><span class="c1"
 <span class="c1"># Now (2.0)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">titiler.pgstac.extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">wmtsExtension</span>
 
-<span class="n">factory</span> <span class="o">=</span> <span class="n">MosaicTilerFactory</span><span class="p">(</span>
-    <span class="n">extensions</span><span class="o">=</span><span class="p">[</span><span class="n">wmtsExtension</span><span class="p">()]</span>
-<span class="p">)</span>
+<span class="n">factory</span> <span class="o">=</span> <span class="n">MosaicTilerFactory</span><span class="p">(</span><span class="n">extensions</span><span class="o">=</span><span class="p">[</span><span class="n">wmtsExtension</span><span class="p">()])</span>
 <span class="c1"># WMTS at: /searches/{search_id}/WMTSCapabilities.xml</span>
 </code></pre></div>
 <p><strong>Action Required:</strong>
@@ -2245,13 +2236,13 @@ python<span class="w"> </span>--version<span class="w">  </span><span class="c1"
 <p>titiler-pgstac now uses <a href="https://hatch.pypa.io/">Hatch</a> as the build backend instead of pdm-backend.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Before (1.9)</span>
 <span class="k">[build-system]</span>
-<span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;pdm-backend&quot;</span><span class="p">]</span>
-<span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;pdm.backend&quot;</span>
+<span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">"pdm-backend"</span><span class="p">]</span>
+<span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"pdm.backend"</span>
 
 <span class="c1"># Now (2.0)</span>
 <span class="k">[build-system]</span>
-<span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;hatchling&quot;</span><span class="p">]</span>
-<span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;hatchling.build&quot;</span>
+<span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">"hatchling"</span><span class="p">]</span>
+<span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"hatchling.build"</span>
 </code></pre></div>
 <p><strong>Action Required:</strong>
 - Update build scripts to use <code>hatch</code> if building from source
@@ -2260,13 +2251,13 @@ python<span class="w"> </span>--version<span class="w">  </span><span class="c1"
 <p><strong>Impact:</strong> Low - Affects contributors</p>
 <p>The project now uses <a href="https://github.com/astral-sh/uv">uv</a> for dependency management during development.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Before (1.9)</span>
-pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[dev]&quot;</span>
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">".[dev]"</span>
 
 <span class="c1"># Now (2.0) - Recommended for development</span>
 uv<span class="w"> </span>sync
 
 <span class="c1"># Or traditional pip still works</span>
-pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[dev]&quot;</span>
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">".[dev]"</span>
 </code></pre></div>
 <p><strong>Action Required:</strong> Consider using <code>uv</code> for faster dependency resolution, but traditional pip still works.</p>
 <h2 id="new-features">New Features<a class="headerlink" href="#new-features" title="Permanent link">&para;</a></h2>
@@ -2278,15 +2269,14 @@ pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </s
     <span class="n">collection_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">ids</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># Instead of Optional[str]</span>
     <span class="n">bbox</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="o">...</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span> <span class="o">...</span>
 </code></pre></div>
 <h3 id="cql2-library-integration">CQL2 Library Integration<a class="headerlink" href="#cql2-library-integration" title="Permanent link">&para;</a></h3>
 <p>The project now uses the <a href="https://pypi.org/project/cql2/">cql2</a> library for better CQL2 support and text-to-JSON conversion.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">cql2</span><span class="w"> </span><span class="kn">import</span> <span class="n">Expr</span>
 
 <span class="c1"># Automatic conversion from cql2-text to cql2-json</span>
-<span class="n">filter_text</span> <span class="o">=</span> <span class="s2">&quot;landcover=&#39;urban&#39; AND cloud_cover &lt; 10&quot;</span>
+<span class="n">filter_text</span> <span class="o">=</span> <span class="s2">"landcover='urban' AND cloud_cover &lt; 10"</span>
 <span class="n">filter_json</span> <span class="o">=</span> <span class="n">Expr</span><span class="p">(</span><span class="n">filter_text</span><span class="p">)</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
 </code></pre></div>
 <h2 id="migration-checklist">Migration Checklist<a class="headerlink" href="#migration-checklist" title="Permanent link">&para;</a></h2>
@@ -2313,31 +2303,31 @@ pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </s
 <li>
 <p><strong>Basic Tile Access</strong>
    <div class="highlight"><pre><span></span><code><span class="c1"># Test tile endpoints</span>
-curl<span class="w"> </span><span class="s2">&quot;/searches/{search_id}/tiles/WebMercatorQuad/0/0/0&quot;</span>
+curl<span class="w"> </span><span class="s2">"/searches/{search_id}/tiles/WebMercatorQuad/0/0/0"</span>
 </code></pre></div></p>
 </li>
 <li>
 <p><strong>Point Queries</strong>
    <div class="highlight"><pre><span></span><code><span class="c1"># Test point endpoint and verify response structure</span>
-curl<span class="w"> </span><span class="s2">&quot;/searches/{search_id}/point/-122.5,37.5?assets=visual&quot;</span>
+curl<span class="w"> </span><span class="s2">"/searches/{search_id}/point/-122.5,37.5?assets=visual"</span>
 </code></pre></div></p>
 </li>
 <li>
 <p><strong>Search with Filters</strong>
    <div class="highlight"><pre><span></span><code><span class="c1"># Test CQL2 filter support</span>
-curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">&quot;/searches/register&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
-<span class="s1">    &quot;collections&quot;: [&quot;my-collection&quot;],</span>
-<span class="s1">    &quot;filter-lang&quot;: &quot;cql2-json&quot;,</span>
-<span class="s1">    &quot;filter&quot;: {&quot;op&quot;: &quot;=&quot;, &quot;args&quot;: [{&quot;property&quot;: &quot;cloudCover&quot;}, 0]}</span>
-<span class="s1">  }&#39;</span>
+curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">"/searches/register"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{</span>
+<span class="s1">    "collections": ["my-collection"],</span>
+<span class="s1">    "filter-lang": "cql2-json",</span>
+<span class="s1">    "filter": {"op": "=", "args": [{"property": "cloudCover"}, 0]}</span>
+<span class="s1">  }'</span>
 </code></pre></div></p>
 </li>
 <li>
 <p><strong>WMTS</strong>
    <div class="highlight"><pre><span></span><code><span class="c1"># Test WMTS capabilities</span>
-curl<span class="w"> </span><span class="s2">&quot;/searches/{search_id}/WMTSCapabilities.xml?assets=visual&quot;</span>
+curl<span class="w"> </span><span class="s2">"/searches/{search_id}/WMTSCapabilities.xml?assets=visual"</span>
 </code></pre></div></p>
 </li>
 <li>

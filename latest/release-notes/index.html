@@ -1455,6 +1455,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#320-2026-09-15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2.0 (2026-09-15)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#310-2026-08-04" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2221,6 +2232,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#320-2026-09-15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2.0 (2026-09-15)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#310-2026-08-04" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2936,6 +2958,11 @@
 
 <h1 id="release-notes">Release Notes<a class="headerlink" href="#release-notes" title="Permanent link">&para;</a></h1>
 <h2 id="unreleased">Unreleased<a class="headerlink" href="#unreleased" title="Permanent link">&para;</a></h2>
+<h2 id="320-2026-09-15">3.2.0 (2026-09-15)<a class="headerlink" href="#320-2026-09-15" title="Permanent link">&para;</a></h2>
+<ul>
+<li>update titiler-* requirement to <code>&gt;=2.2.1,&lt;2.4</code></li>
+<li>refactor docker image to use wolfi-base as base image</li>
+</ul>
 <h2 id="310-2026-08-04">3.1.0 (2026-08-04)<a class="headerlink" href="#310-2026-08-04" title="Permanent link">&para;</a></h2>
 <ul>
 <li>update titiler requirement to <code>&gt;=2.2,&lt;2.3</code></li>
@@ -2999,12 +3026,14 @@
     <span class="n">coordinates</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>
     <span class="n">values</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span>
 
+
 <span class="c1"># now</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">AssetPoint</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">values</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span>
     <span class="n">band_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
     <span class="n">band_descriptions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+
 
 <span class="k">class</span><span class="w"> </span><span class="nc">Point</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
     <span class="n">coordinates</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>
@@ -3226,15 +3255,15 @@ docker run \
 <li>
 <p>Expect the <code>Metadata.defaults</code> configurations to follow the STAC <code>render</code> extension (<a class="magiclink magiclink-github magiclink-repository" href="https://github.com/stac-extensions/render" title="GitHub Repository: stac-extensions/render">stac-extensions/render</a>)</p>
 <div class="highlight"><pre><span></span><code><span class="w">    </span><span class="c1">// before</span>
-<span class="w">    </span><span class="nt">&quot;blue&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;rescale&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;0,100&quot;</span><span class="p">],</span>
-<span class="w">        </span><span class="nt">&quot;assets&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;b1&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"blue"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"rescale"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"0,100"</span><span class="p">],</span>
+<span class="w">        </span><span class="nt">"assets"</span><span class="p">:</span><span class="w"> </span><span class="s2">"b1"</span><span class="p">,</span>
 <span class="w">    </span><span class="p">}</span>
 
 <span class="w">    </span><span class="c1">// now</span>
-<span class="w">    </span><span class="nt">&quot;blue&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;rescale&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">]],</span>
-<span class="w">        </span><span class="nt">&quot;assets&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;b1&quot;</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">"blue"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"rescale"</span><span class="p">:</span><span class="w"> </span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">]],</span>
+<span class="w">        </span><span class="nt">"assets"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"b1"</span><span class="p">],</span>
 <span class="w">    </span><span class="p">}</span>
 </code></pre></div>
 </li>
@@ -3313,12 +3342,18 @@ docker run \
 <li>
 <p>in <code>model.RegisterResponse</code> (model used in <code>/register</code> endpoint) rename <code>searchid</code> by <code>id</code></p>
 <div class="highlight"><pre><span></span><code><span class="c1"># before</span>
-<span class="n">resp</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/mosaic/register&quot;</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;collections&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;my-collection&quot;</span><span class="p">],</span> <span class="s2">&quot;filter-lang&quot;</span><span class="p">:</span> <span class="s2">&quot;cql-json&quot;</span><span class="p">})</span>
-<span class="k">assert</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">&quot;searchid&quot;</span><span class="p">]</span>
+<span class="n">resp</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="s2">"/mosaic/register"</span><span class="p">,</span>
+    <span class="n">body</span><span class="o">=</span><span class="p">{</span><span class="s2">"collections"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"my-collection"</span><span class="p">],</span> <span class="s2">"filter-lang"</span><span class="p">:</span> <span class="s2">"cql-json"</span><span class="p">},</span>
+<span class="p">)</span>
+<span class="k">assert</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">"searchid"</span><span class="p">]</span>
 
 <span class="c1"># now</span>
-<span class="n">resp</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/searches/register&quot;</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;collections&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;my-collection&quot;</span><span class="p">],</span> <span class="s2">&quot;filter-lang&quot;</span><span class="p">:</span> <span class="s2">&quot;cql-json&quot;</span><span class="p">})</span>
-<span class="k">assert</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
+<span class="n">resp</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="s2">"/searches/register"</span><span class="p">,</span>
+    <span class="n">body</span><span class="o">=</span><span class="p">{</span><span class="s2">"collections"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"my-collection"</span><span class="p">],</span> <span class="s2">"filter-lang"</span><span class="p">:</span> <span class="s2">"cql-json"</span><span class="p">},</span>
+<span class="p">)</span>
+<span class="k">assert</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">"id"</span><span class="p">]</span>
 </code></pre></div>
 </li>
 </ul>
@@ -3342,10 +3377,7 @@ docker run \
 
 <span class="c1"># now</span>
 <span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
-<span class="n">mosaic</span> <span class="o">=</span> <span class="n">MosaicTilerFactory</span><span class="p">(</span>
-    <span class="o">...</span><span class="p">,</span>
-    <span class="n">path_dependency</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="s2">&quot;aaaaaaaaaaaaaa&quot;</span>
-<span class="p">)</span>
+<span class="n">mosaic</span> <span class="o">=</span> <span class="n">MosaicTilerFactory</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">path_dependency</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="s2">"aaaaaaaaaaaaaa"</span><span class="p">)</span>
 <span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">mosaic</span><span class="o">.</span><span class="n">router</span><span class="p">)</span>
 </code></pre></div>
 </li>
@@ -3355,17 +3387,17 @@ docker run \
 <span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
 <span class="n">mosaic</span> <span class="o">=</span> <span class="n">MosaicTilerFactory</span><span class="p">(</span>
     <span class="o">...</span><span class="p">,</span>
-    <span class="n">router_prefix</span><span class="o">=</span><span class="s2">&quot;/mosaics&quot;</span>
+    <span class="n">router_prefix</span><span class="o">=</span><span class="s2">"/mosaics"</span>
 <span class="p">)</span>
-<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">mosaic</span><span class="o">.</span><span class="n">router</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;/mosaics&quot;</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">mosaic</span><span class="o">.</span><span class="n">router</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">"/mosaics"</span><span class="p">)</span>
 
 <span class="c1"># Now</span>
 <span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
 <span class="n">mosaic</span> <span class="o">=</span> <span class="n">MosaicTilerFactory</span><span class="p">(</span>
     <span class="o">...</span>
-    <span class="n">router_prefix</span><span class="o">=</span><span class="s2">&quot;/mosaics/</span><span class="si">{search_id}</span><span class="s2">&quot;</span>
+    <span class="n">router_prefix</span><span class="o">=</span><span class="s2">"/mosaics/</span><span class="si">{search_id}</span><span class="s2">"</span>
 <span class="p">)</span>
-<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">mosaic</span><span class="o">.</span><span class="n">router</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;/mosaics/</span><span class="si">{search_id}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">mosaic</span><span class="o">.</span><span class="n">router</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">"/mosaics/</span><span class="si">{search_id}</span><span class="s2">"</span><span class="p">)</span>
 </code></pre></div>
 </li>
 <li>
@@ -3393,9 +3425,9 @@ docker run \
 
 <span class="n">mosaic</span> <span class="o">=</span> <span class="n">MosaicTilerFactory</span><span class="p">(</span>
     <span class="o">...</span><span class="p">,</span>
-    <span class="n">router_prefix</span><span class="o">=</span><span class="s2">&quot;/</span><span class="si">{search_id}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">router_prefix</span><span class="o">=</span><span class="s2">"/</span><span class="si">{search_id}</span><span class="s2">"</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">mosaic</span><span class="o">.</span><span class="n">router</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;/</span><span class="si">{search_id}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">mosaic</span><span class="o">.</span><span class="n">router</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">"/</span><span class="si">{search_id}</span><span class="s2">"</span><span class="p">)</span>
 
 <span class="c1"># Now</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">titiler.pgstac.factory</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
@@ -3406,9 +3438,9 @@ docker run \
 
 <span class="n">mosaic</span> <span class="o">=</span> <span class="n">MosaicTilerFactory</span><span class="p">(</span>
     <span class="o">...</span><span class="p">,</span>
-    <span class="n">router_prefix</span><span class="o">=</span><span class="s2">&quot;/</span><span class="si">{search_id}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">router_prefix</span><span class="o">=</span><span class="s2">"/</span><span class="si">{search_id}</span><span class="s2">"</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">mosaic</span><span class="o">.</span><span class="n">router</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;/</span><span class="si">{search_id}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">mosaic</span><span class="o">.</span><span class="n">router</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">"/</span><span class="si">{search_id}</span><span class="s2">"</span><span class="p">)</span>
 
 <span class="c1"># add /register endpoint</span>
 <span class="n">add_search_register_route</span><span class="p">(</span>
@@ -3487,26 +3519,26 @@ docker run \
 <p>In <code>/mosaic/WMTSCapabilities.xml</code> we removed the query-parameters related to the <code>tile</code> endpoint (which are forwarded) so <code>?assets=</code> is no more required.
 The endpoint will still raise an error if there are no <code>layers</code> in the mosaic metadata and no required tile's parameters are passed.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># before</span>
-<span class="n">response</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/mosaic/</span><span class="si">{mosaic_id}</span><span class="s2">/WMTSCapabilities.xml&quot;</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/mosaic/</span><span class="si">{mosaic_id}</span><span class="s2">/WMTSCapabilities.xml"</span><span class="p">)</span>
 <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">400</span>
 
-<span class="n">response</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/mosaic/</span><span class="si">{mosaic_id}</span><span class="s2">/WMTSCapabilities.xml?assets=cog&quot;</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/mosaic/</span><span class="si">{mosaic_id}</span><span class="s2">/WMTSCapabilities.xml?assets=cog"</span><span class="p">)</span>
 <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
 
 <span class="c1"># now</span>
 <span class="c1"># If the mosaic has `defaults` layers set in the metadata</span>
 <span class="c1"># we will construct a WMTS document with multiple layers, so no need for the user to pass any `assets=`</span>
-<span class="n">response</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/mosaic/</span><span class="si">{mosaic_id}</span><span class="s2">/WMTSCapabilities.xml&quot;</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/mosaic/</span><span class="si">{mosaic_id}</span><span class="s2">/WMTSCapabilities.xml"</span><span class="p">)</span>
 <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
 <span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">))</span> <span class="k">as</span> <span class="n">src</span><span class="p">:</span>
-    <span class="k">assert</span> <span class="n">src</span><span class="o">.</span><span class="n">profile</span><span class="p">[</span><span class="s2">&quot;driver&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;WMTS&quot;</span>
+    <span class="k">assert</span> <span class="n">src</span><span class="o">.</span><span class="n">profile</span><span class="p">[</span><span class="s2">"driver"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"WMTS"</span>
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">subdatasets</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
 
 <span class="c1"># If the user pass any valid `tile` parameters, an additional layer will be added to the one from the metadata</span>
-<span class="n">response</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/mosaic/</span><span class="si">{mosaic_id}</span><span class="s2">/WMTSCapabilities.xml?assets=cog&quot;</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/mosaic/</span><span class="si">{mosaic_id}</span><span class="s2">/WMTSCapabilities.xml?assets=cog"</span><span class="p">)</span>
 <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
 <span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">))</span> <span class="k">as</span> <span class="n">src</span><span class="p">:</span>
-    <span class="k">assert</span> <span class="n">src</span><span class="o">.</span><span class="n">profile</span><span class="p">[</span><span class="s2">&quot;driver&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;WMTS&quot;</span>
+    <span class="k">assert</span> <span class="n">src</span><span class="o">.</span><span class="n">profile</span><span class="p">[</span><span class="s2">"driver"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"WMTS"</span>
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">subdatasets</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span>
 </code></pre></div>
 </li>
@@ -3680,24 +3712,24 @@ The endpoint will still raise an error if there are no <code>layers</code> in th
 <p>output response for <code>/register</code> endpoint:
 <div class="highlight"><pre><span></span><code><span class="c1">// before</span>
 <span class="p">{</span>
-<span class="w">    </span><span class="s2">&quot;searchid&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s2">&quot;metadata&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;http://endpoint/.../info&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s2">&quot;tiles&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;http://endpoint/.../tilejson.json&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"searchid"</span><span class="o">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"metadata"</span><span class="o">:</span><span class="w"> </span><span class="s2">"http://endpoint/.../info"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"tiles"</span><span class="o">:</span><span class="w"> </span><span class="s2">"http://endpoint/.../tilejson.json"</span><span class="p">,</span>
 <span class="p">}</span>
 
 <span class="c1">// now</span>
 <span class="p">{</span>
-<span class="w">    </span><span class="s2">&quot;searchid&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s2">&quot;links&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">"searchid"</span><span class="o">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"links"</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="s2">&quot;rel&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;info&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="s2">&quot;href&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;http://endpoint/.../info&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;application/json&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">"rel"</span><span class="o">:</span><span class="w"> </span><span class="s2">"info"</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">"href"</span><span class="o">:</span><span class="w"> </span><span class="s2">"http://endpoint/.../info"</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">"type"</span><span class="o">:</span><span class="w"> </span><span class="s2">"application/json"</span><span class="p">,</span>
 <span class="w">        </span><span class="p">},</span>
 <span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="s2">&quot;rel&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;tilejson&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="s2">&quot;href&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;http://endpoint/.../tilejson.json&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;application/json&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">"rel"</span><span class="o">:</span><span class="w"> </span><span class="s2">"tilejson"</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">"href"</span><span class="o">:</span><span class="w"> </span><span class="s2">"http://endpoint/.../tilejson.json"</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">"type"</span><span class="o">:</span><span class="w"> </span><span class="s2">"application/json"</span><span class="p">,</span>
 <span class="w">        </span><span class="p">}</span>
 <span class="w">    </span><span class="p">]</span>
 <span class="p">}</span>
@@ -3707,30 +3739,30 @@ The endpoint will still raise an error if there are no <code>layers</code> in th
 <p>output response for <code>/info</code> endpoint:
 <div class="highlight"><pre><span></span><code><span class="c1">// before</span>
 <span class="p">{</span>
-<span class="w">    </span><span class="s2">&quot;hash&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s2">&quot;search&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{},</span>
-<span class="w">    </span><span class="s2">&quot;_where&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"hash"</span><span class="o">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"search"</span><span class="o">:</span><span class="w"> </span><span class="p">{},</span>
+<span class="w">    </span><span class="s2">"_where"</span><span class="o">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span>
 <span class="w">    </span><span class="p">...</span>
 <span class="p">}</span>
 
 <span class="c1">// now</span>
 <span class="p">{</span>
-<span class="w">    </span><span class="s2">&quot;search&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="s2">&quot;hash&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="s2">&quot;search&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{},</span>
-<span class="w">        </span><span class="s2">&quot;_where&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"search"</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="s2">"hash"</span><span class="o">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"search"</span><span class="o">:</span><span class="w"> </span><span class="p">{},</span>
+<span class="w">        </span><span class="s2">"_where"</span><span class="o">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span>
 <span class="w">        </span><span class="p">...</span>
 <span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="s2">&quot;links&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">"links"</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="s2">&quot;rel&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;self&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="s2">&quot;href&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;http://endpoint/.../info&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;application/json&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">"rel"</span><span class="o">:</span><span class="w"> </span><span class="s2">"self"</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">"href"</span><span class="o">:</span><span class="w"> </span><span class="s2">"http://endpoint/.../info"</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">"type"</span><span class="o">:</span><span class="w"> </span><span class="s2">"application/json"</span><span class="p">,</span>
 <span class="w">        </span><span class="p">},</span>
 <span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="s2">&quot;rel&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;tilejson&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="s2">&quot;href&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;http://endpoint/.../tilejson.json&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;application/json&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">"rel"</span><span class="o">:</span><span class="w"> </span><span class="s2">"tilejson"</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">"href"</span><span class="o">:</span><span class="w"> </span><span class="s2">"http://endpoint/.../tilejson.json"</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">"type"</span><span class="o">:</span><span class="w"> </span><span class="s2">"application/json"</span><span class="p">,</span>
 <span class="w">        </span><span class="p">}</span>
 <span class="w">    </span><span class="p">]</span>
 <span class="p">}</span>

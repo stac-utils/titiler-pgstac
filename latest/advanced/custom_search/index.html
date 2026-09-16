@@ -1481,10 +1481,10 @@ override default behavior.</p>
 based approach for authorization and every token contains information
 about area a user has access to:</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;sub&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1234567890&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;John Doe&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;iat&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1516239022</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;scope&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;zone_A&quot;</span>
+<span class="w">  </span><span class="nt">"sub"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1234567890"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"John Doe"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"iat"</span><span class="p">:</span><span class="w"> </span><span class="mi">1516239022</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"scope"</span><span class="p">:</span><span class="w"> </span><span class="s2">"zone_A"</span>
 <span class="p">}</span>
 </code></pre></div>
 <p>We want our application to take this information into account while
@@ -1505,62 +1505,61 @@ registering a search query. It can be done in the following way:</p>
 
 <span class="nd">@asynccontextmanager</span>
 <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">lifespan</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">FastAPI</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;FastAPI Lifespan.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""FastAPI Lifespan."""</span>
     <span class="c1"># Create Connection Pool</span>
     <span class="k">await</span> <span class="n">connect_to_db</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">postgres_settings</span><span class="p">)</span>
     <span class="k">yield</span>
     <span class="c1"># Close the Connection Pool</span>
     <span class="k">await</span> <span class="n">close_db_connection</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
 
+
 <span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">(</span><span class="n">lifespan</span><span class="o">=</span><span class="n">lifespan</span><span class="p">)</span>
 
 <span class="n">AREAS</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;zone_A&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;Point&quot;</span><span class="p">,</span> <span class="s2">&quot;coordinates&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">41.93</span><span class="p">,</span> <span class="o">-</span><span class="mf">12.76</span><span class="p">]},</span>
-    <span class="s2">&quot;zone_B&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;Point&quot;</span><span class="p">,</span> <span class="s2">&quot;coordinates&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">2.15</span><span class="p">,</span> <span class="mf">41.39</span><span class="p">]},</span>
+    <span class="s2">"zone_A"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"Point"</span><span class="p">,</span> <span class="s2">"coordinates"</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">41.93</span><span class="p">,</span> <span class="o">-</span><span class="mf">12.76</span><span class="p">]},</span>
+    <span class="s2">"zone_B"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"Point"</span><span class="p">,</span> <span class="s2">"coordinates"</span><span class="p">:</span> <span class="p">[</span><span class="mf">2.15</span><span class="p">,</span> <span class="mf">41.39</span><span class="p">]},</span>
 <span class="p">}</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">search_factory</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">body</span><span class="p">:</span> <span class="n">RegisterMosaic</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">PgSTACSearch</span><span class="p">,</span> <span class="n">Metadata</span><span class="p">]:</span>
-    <span class="n">authorization</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Authorization&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">search_factory</span><span class="p">(</span>
+    <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">body</span><span class="p">:</span> <span class="n">RegisterMosaic</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">PgSTACSearch</span><span class="p">,</span> <span class="n">Metadata</span><span class="p">]:</span>
+    <span class="n">authorization</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Authorization"</span><span class="p">)</span>
     <span class="n">scheme</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="n">get_authorization_scheme_param</span><span class="p">(</span><span class="n">authorization</span><span class="p">)</span>
-    <span class="n">payload</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">algorithms</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;HS256&quot;</span><span class="p">],</span> <span class="n">key</span><span class="o">=</span><span class="s2">&quot;your-256-bit-secret&quot;</span><span class="p">)</span>
+    <span class="n">payload</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">algorithms</span><span class="o">=</span><span class="p">[</span><span class="s2">"HS256"</span><span class="p">],</span> <span class="n">key</span><span class="o">=</span><span class="s2">"your-256-bit-secret"</span><span class="p">)</span>
 
-    <span class="n">search</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(</span><span class="n">exclude_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;metadata&quot;</span><span class="p">},</span> <span class="n">by_alias</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">search</span><span class="p">[</span><span class="s2">&quot;filter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;op&quot;</span><span class="p">:</span> <span class="s2">&quot;and&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="n">search</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(</span><span class="n">exclude_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="p">{</span><span class="s2">"metadata"</span><span class="p">},</span> <span class="n">by_alias</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">search</span><span class="p">[</span><span class="s2">"filter"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">"op"</span><span class="p">:</span> <span class="s2">"and"</span><span class="p">,</span>
+        <span class="s2">"args"</span><span class="p">:</span> <span class="p">[</span>
             <span class="p">{</span>
-                <span class="s2">&quot;op&quot;</span><span class="p">:</span> <span class="s2">&quot;s_intersects&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;property&quot;</span><span class="p">:</span> <span class="s2">&quot;geometry&quot;</span><span class="p">},</span> <span class="n">AREAS</span><span class="p">[</span><span class="n">payload</span><span class="p">[</span><span class="s2">&quot;scope&quot;</span><span class="p">]]],</span>
+                <span class="s2">"op"</span><span class="p">:</span> <span class="s2">"s_intersects"</span><span class="p">,</span>
+                <span class="s2">"args"</span><span class="p">:</span> <span class="p">[{</span><span class="s2">"property"</span><span class="p">:</span> <span class="s2">"geometry"</span><span class="p">},</span> <span class="n">AREAS</span><span class="p">[</span><span class="n">payload</span><span class="p">[</span><span class="s2">"scope"</span><span class="p">]]],</span>
             <span class="p">},</span>
-            <span class="n">search</span><span class="p">[</span><span class="s2">&quot;filter&quot;</span><span class="p">],</span>
+            <span class="n">search</span><span class="p">[</span><span class="s2">"filter"</span><span class="p">],</span>
         <span class="p">],</span>
     <span class="p">}</span>
 
     <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">PgSTACSearch</span><span class="p">(</span><span class="o">**</span><span class="n">search</span><span class="p">),</span> <span class="n">body</span><span class="o">.</span><span class="n">metadata</span>
 
 
-<span class="n">mosaic</span> <span class="o">=</span> <span class="n">MosaicTilerFactory</span><span class="p">(</span>
-    <span class="n">extensions</span><span class="o">=</span><span class="p">[</span>
-      <span class="n">searchInfoExtension</span>
-    <span class="p">]</span>
-<span class="p">)</span>
+<span class="n">mosaic</span> <span class="o">=</span> <span class="n">MosaicTilerFactory</span><span class="p">(</span><span class="n">extensions</span><span class="o">=</span><span class="p">[</span><span class="n">searchInfoExtension</span><span class="p">])</span>
 <span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">mosaic</span><span class="o">.</span><span class="n">router</span><span class="p">)</span>
 <span class="n">add_search_register_route</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">search_dependency</span><span class="o">=</span><span class="n">search_factory</span><span class="p">)</span>
 </code></pre></div>
 <p>Checking:</p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span>curl<span class="w"> </span>-s<span class="w"> </span>-X<span class="w"> </span><span class="s1">&#39;POST&#39;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span><span class="s1">&#39;http://localhost:8081/register&#39;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s1">&#39;accept: application/json&#39;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s1">&#39;Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJzY29wZSI6InpvbmVfQSJ9.BelzluX7v7kYObix2KSyy1T5gEOQYQn_pyNO5Ri0gWo&#39;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s1">&#39;Content-Type: application/json&#39;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;filter&quot;:{&quot;op&quot;:&quot;and&quot;,&quot;args&quot;:[{&quot;op&quot;:&quot;=&quot;,&quot;args&quot;:[{&quot;property&quot;:&quot;collection&quot;},&quot;l1&quot;]}]}}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">&#39;.id&#39;</span>
-<span class="s2">&quot;bbc3c8f4c392436f74de6cd0308469f6&quot;</span>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>curl<span class="w"> </span>-s<span class="w"> </span>-X<span class="w"> </span><span class="s1">'POST'</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="s1">'http://localhost:8081/register'</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s1">'accept: application/json'</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s1">'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJzY29wZSI6InpvbmVfQSJ9.BelzluX7v7kYObix2KSyy1T5gEOQYQn_pyNO5Ri0gWo'</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s1">'Content-Type: application/json'</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{"filter":{"op":"and","args":[{"op":"=","args":[{"property":"collection"},"l1"]}]}}'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">'.id'</span>
+<span class="s2">"bbc3c8f4c392436f74de6cd0308469f6"</span>
 
-$<span class="w"> </span>curl<span class="w"> </span>-X<span class="w"> </span><span class="s1">&#39;GET&#39;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span><span class="s1">&#39;http://localhost:8081/bbc3c8f4c392436f74de6cd0308469f6/info&#39;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s1">&#39;accept: application/json&#39;</span>
-<span class="o">{</span><span class="s2">&quot;hash&quot;</span>:<span class="s2">&quot;bbc3c8f4c392436f74de6cd0308469f6&quot;</span>,<span class="s2">&quot;search&quot;</span>:<span class="o">{</span><span class="s2">&quot;filter&quot;</span>:<span class="o">{</span><span class="s2">&quot;op&quot;</span>:<span class="s2">&quot;and&quot;</span>,<span class="s2">&quot;args&quot;</span>:<span class="o">[{</span><span class="s2">&quot;op&quot;</span>:<span class="s2">&quot;s_intersects&quot;</span>,<span class="s2">&quot;args&quot;</span>:<span class="o">[{</span><span class="s2">&quot;property&quot;</span>:<span class="s2">&quot;geometry&quot;</span><span class="o">}</span>,<span class="o">{</span><span class="s2">&quot;type&quot;</span>:<span class="s2">&quot;Point&quot;</span>,<span class="s2">&quot;coordinates&quot;</span>:<span class="o">[</span>-41.93,-12.76<span class="o">]}]}</span>,<span class="o">{</span><span class="s2">&quot;op&quot;</span>:<span class="s2">&quot;and&quot;</span>,<span class="s2">&quot;args&quot;</span>:<span class="o">[{</span><span class="s2">&quot;op&quot;</span>:<span class="s2">&quot;=&quot;</span>,<span class="s2">&quot;args&quot;</span>:<span class="o">[{</span><span class="s2">&quot;property&quot;</span>:<span class="s2">&quot;collection&quot;</span><span class="o">}</span>,<span class="s2">&quot;l1&quot;</span><span class="o">]}]}]}}</span>,<span class="s2">&quot;_where&quot;</span>:<span class="s2">&quot;(  ( st_intersects(geometry, &#39;0101000020E6100000D7A3703D0AF744C085EB51B81E8529C0&#39;::geometry) and  ( (collection_id = &#39;l1&#39;) )  )  )  &quot;</span>,<span class="s2">&quot;orderby&quot;</span>:<span class="s2">&quot;datetime DESC, id DESC&quot;</span>,<span class="s2">&quot;lastused&quot;</span>:<span class="s2">&quot;2022-02-23T13:00:04.090757+00:00&quot;</span>,<span class="s2">&quot;usecount&quot;</span>:3,<span class="s2">&quot;metadata&quot;</span>:<span class="o">{</span><span class="s2">&quot;type&quot;</span>:<span class="s2">&quot;mosaic&quot;</span><span class="o">}}</span>
+$<span class="w"> </span>curl<span class="w"> </span>-X<span class="w"> </span><span class="s1">'GET'</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="s1">'http://localhost:8081/bbc3c8f4c392436f74de6cd0308469f6/info'</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s1">'accept: application/json'</span>
+<span class="o">{</span><span class="s2">"hash"</span>:<span class="s2">"bbc3c8f4c392436f74de6cd0308469f6"</span>,<span class="s2">"search"</span>:<span class="o">{</span><span class="s2">"filter"</span>:<span class="o">{</span><span class="s2">"op"</span>:<span class="s2">"and"</span>,<span class="s2">"args"</span>:<span class="o">[{</span><span class="s2">"op"</span>:<span class="s2">"s_intersects"</span>,<span class="s2">"args"</span>:<span class="o">[{</span><span class="s2">"property"</span>:<span class="s2">"geometry"</span><span class="o">}</span>,<span class="o">{</span><span class="s2">"type"</span>:<span class="s2">"Point"</span>,<span class="s2">"coordinates"</span>:<span class="o">[</span>-41.93,-12.76<span class="o">]}]}</span>,<span class="o">{</span><span class="s2">"op"</span>:<span class="s2">"and"</span>,<span class="s2">"args"</span>:<span class="o">[{</span><span class="s2">"op"</span>:<span class="s2">"="</span>,<span class="s2">"args"</span>:<span class="o">[{</span><span class="s2">"property"</span>:<span class="s2">"collection"</span><span class="o">}</span>,<span class="s2">"l1"</span><span class="o">]}]}]}}</span>,<span class="s2">"_where"</span>:<span class="s2">"(  ( st_intersects(geometry, '0101000020E6100000D7A3703D0AF744C085EB51B81E8529C0'::geometry) and  ( (collection_id = 'l1') )  )  )  "</span>,<span class="s2">"orderby"</span>:<span class="s2">"datetime DESC, id DESC"</span>,<span class="s2">"lastused"</span>:<span class="s2">"2022-02-23T13:00:04.090757+00:00"</span>,<span class="s2">"usecount"</span>:3,<span class="s2">"metadata"</span>:<span class="o">{</span><span class="s2">"type"</span>:<span class="s2">"mosaic"</span><span class="o">}}</span>
 </code></pre></div>
 
 

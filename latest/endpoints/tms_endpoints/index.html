@@ -1594,15 +1594,15 @@
 <p><code>:endpoint:/tileMatrixSets</code> - Get the list of supported TileMatrixSet</p>
 <div class="highlight"><pre><span></span><code>curl<span class="w"> </span>https://myendpoint/tileMatrixSets<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq
 &gt;&gt;<span class="w"> </span><span class="o">{</span>
-<span class="w">  </span><span class="s2">&quot;tileMatrixSets&quot;</span>:<span class="w"> </span><span class="o">[</span>
+<span class="w">  </span><span class="s2">"tileMatrixSets"</span>:<span class="w"> </span><span class="o">[</span>
 <span class="w">    </span><span class="o">{</span>
-<span class="w">      </span><span class="s2">&quot;id&quot;</span>:<span class="w"> </span><span class="s2">&quot;LINZAntarticaMapTilegrid&quot;</span>,
-<span class="w">      </span><span class="s2">&quot;title&quot;</span>:<span class="w"> </span><span class="s2">&quot;LINZ Antarctic Map Tile Grid (Ross Sea Region)&quot;</span>,
-<span class="w">      </span><span class="s2">&quot;links&quot;</span>:<span class="w"> </span><span class="o">[</span>
+<span class="w">      </span><span class="s2">"id"</span>:<span class="w"> </span><span class="s2">"LINZAntarticaMapTilegrid"</span>,
+<span class="w">      </span><span class="s2">"title"</span>:<span class="w"> </span><span class="s2">"LINZ Antarctic Map Tile Grid (Ross Sea Region)"</span>,
+<span class="w">      </span><span class="s2">"links"</span>:<span class="w"> </span><span class="o">[</span>
 <span class="w">        </span><span class="o">{</span>
-<span class="w">          </span><span class="s2">&quot;href&quot;</span>:<span class="w"> </span><span class="s2">&quot;https://myendpoint/tileMatrixSets/LINZAntarticaMapTilegrid&quot;</span>,
-<span class="w">          </span><span class="s2">&quot;rel&quot;</span>:<span class="w"> </span><span class="s2">&quot;item&quot;</span>,
-<span class="w">          </span><span class="s2">&quot;type&quot;</span>:<span class="w"> </span><span class="s2">&quot;application/json&quot;</span>
+<span class="w">          </span><span class="s2">"href"</span>:<span class="w"> </span><span class="s2">"https://myendpoint/tileMatrixSets/LINZAntarticaMapTilegrid"</span>,
+<span class="w">          </span><span class="s2">"rel"</span>:<span class="w"> </span><span class="s2">"item"</span>,
+<span class="w">          </span><span class="s2">"type"</span>:<span class="w"> </span><span class="s2">"application/json"</span>
 <span class="w">        </span><span class="o">}</span>
 <span class="w">      </span><span class="o">]</span>
 <span class="w">    </span><span class="o">}</span>,
@@ -1620,36 +1620,36 @@
 </ul>
 <div class="highlight"><pre><span></span><code>curl<span class="w"> </span>http://127.0.0.1:8000/tileMatrixSets/WebMercatorQuad<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq
 &gt;&gt;<span class="w"> </span><span class="o">{</span>
-<span class="w">  </span><span class="s2">&quot;type&quot;</span>:<span class="w"> </span><span class="s2">&quot;TileMatrixSetType&quot;</span>,
-<span class="w">  </span><span class="s2">&quot;title&quot;</span>:<span class="w"> </span><span class="s2">&quot;Google Maps Compatible for the World&quot;</span>,
-<span class="w">  </span><span class="s2">&quot;identifier&quot;</span>:<span class="w"> </span><span class="s2">&quot;WebMercatorQuad&quot;</span>,
-<span class="w">  </span><span class="s2">&quot;supportedCRS&quot;</span>:<span class="w"> </span><span class="s2">&quot;http://www.opengis.net/def/crs/EPSG/0/3857&quot;</span>,
-<span class="w">  </span><span class="s2">&quot;wellKnownScaleSet&quot;</span>:<span class="w"> </span><span class="s2">&quot;http://www.opengis.net/def/wkss/OGC/1.0/GoogleMapsCompatible&quot;</span>,
-<span class="w">  </span><span class="s2">&quot;boundingBox&quot;</span>:<span class="w"> </span><span class="o">{</span>
-<span class="w">    </span><span class="s2">&quot;type&quot;</span>:<span class="w"> </span><span class="s2">&quot;BoundingBoxType&quot;</span>,
-<span class="w">    </span><span class="s2">&quot;crs&quot;</span>:<span class="w"> </span><span class="s2">&quot;http://www.opengis.net/def/crs/EPSG/0/3857&quot;</span>,
-<span class="w">    </span><span class="s2">&quot;lowerCorner&quot;</span>:<span class="w"> </span><span class="o">[</span>
+<span class="w">  </span><span class="s2">"type"</span>:<span class="w"> </span><span class="s2">"TileMatrixSetType"</span>,
+<span class="w">  </span><span class="s2">"title"</span>:<span class="w"> </span><span class="s2">"Google Maps Compatible for the World"</span>,
+<span class="w">  </span><span class="s2">"identifier"</span>:<span class="w"> </span><span class="s2">"WebMercatorQuad"</span>,
+<span class="w">  </span><span class="s2">"supportedCRS"</span>:<span class="w"> </span><span class="s2">"http://www.opengis.net/def/crs/EPSG/0/3857"</span>,
+<span class="w">  </span><span class="s2">"wellKnownScaleSet"</span>:<span class="w"> </span><span class="s2">"http://www.opengis.net/def/wkss/OGC/1.0/GoogleMapsCompatible"</span>,
+<span class="w">  </span><span class="s2">"boundingBox"</span>:<span class="w"> </span><span class="o">{</span>
+<span class="w">    </span><span class="s2">"type"</span>:<span class="w"> </span><span class="s2">"BoundingBoxType"</span>,
+<span class="w">    </span><span class="s2">"crs"</span>:<span class="w"> </span><span class="s2">"http://www.opengis.net/def/crs/EPSG/0/3857"</span>,
+<span class="w">    </span><span class="s2">"lowerCorner"</span>:<span class="w"> </span><span class="o">[</span>
 <span class="w">      </span>-20037508.3427892,
 <span class="w">      </span>-20037508.3427892
 <span class="w">    </span><span class="o">]</span>,
-<span class="w">    </span><span class="s2">&quot;upperCorner&quot;</span>:<span class="w"> </span><span class="o">[</span>
+<span class="w">    </span><span class="s2">"upperCorner"</span>:<span class="w"> </span><span class="o">[</span>
 <span class="w">      </span><span class="m">20037508</span>.3427892,
 <span class="w">      </span><span class="m">20037508</span>.3427892
 <span class="w">    </span><span class="o">]</span>
 <span class="w">  </span><span class="o">}</span>,
-<span class="w">  </span><span class="s2">&quot;tileMatrix&quot;</span>:<span class="w"> </span><span class="o">[</span>
+<span class="w">  </span><span class="s2">"tileMatrix"</span>:<span class="w"> </span><span class="o">[</span>
 <span class="w">    </span><span class="o">{</span>
-<span class="w">      </span><span class="s2">&quot;type&quot;</span>:<span class="w"> </span><span class="s2">&quot;TileMatrixType&quot;</span>,
-<span class="w">      </span><span class="s2">&quot;identifier&quot;</span>:<span class="w"> </span><span class="s2">&quot;0&quot;</span>,
-<span class="w">      </span><span class="s2">&quot;scaleDenominator&quot;</span>:<span class="w"> </span><span class="m">559082264</span>.028717,
-<span class="w">      </span><span class="s2">&quot;topLeftCorner&quot;</span>:<span class="w"> </span><span class="o">[</span>
+<span class="w">      </span><span class="s2">"type"</span>:<span class="w"> </span><span class="s2">"TileMatrixType"</span>,
+<span class="w">      </span><span class="s2">"identifier"</span>:<span class="w"> </span><span class="s2">"0"</span>,
+<span class="w">      </span><span class="s2">"scaleDenominator"</span>:<span class="w"> </span><span class="m">559082264</span>.028717,
+<span class="w">      </span><span class="s2">"topLeftCorner"</span>:<span class="w"> </span><span class="o">[</span>
 <span class="w">        </span>-20037508.3427892,
 <span class="w">        </span><span class="m">20037508</span>.3427892
 <span class="w">      </span><span class="o">]</span>,
-<span class="w">      </span><span class="s2">&quot;tileWidth&quot;</span>:<span class="w"> </span><span class="m">256</span>,
-<span class="w">      </span><span class="s2">&quot;tileHeight&quot;</span>:<span class="w"> </span><span class="m">256</span>,
-<span class="w">      </span><span class="s2">&quot;matrixWidth&quot;</span>:<span class="w"> </span><span class="m">1</span>,
-<span class="w">      </span><span class="s2">&quot;matrixHeight&quot;</span>:<span class="w"> </span><span class="m">1</span>
+<span class="w">      </span><span class="s2">"tileWidth"</span>:<span class="w"> </span><span class="m">256</span>,
+<span class="w">      </span><span class="s2">"tileHeight"</span>:<span class="w"> </span><span class="m">256</span>,
+<span class="w">      </span><span class="s2">"matrixWidth"</span>:<span class="w"> </span><span class="m">1</span>,
+<span class="w">      </span><span class="s2">"matrixHeight"</span>:<span class="w"> </span><span class="m">1</span>
 <span class="w">    </span><span class="o">}</span>,
 <span class="w">    </span>...
 </code></pre></div>
