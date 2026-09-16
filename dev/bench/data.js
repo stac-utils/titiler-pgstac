@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1789489738240,
+  "lastUpdate": 1789538684468,
   "repoUrl": "https://github.com/stac-utils/titiler-pgstac",
   "entries": {
     "TiTiler-pgSTAC Benchmarks": [
@@ -11388,6 +11388,79 @@ window.BENCHMARK_DATA = {
             "unit": "iter/sec",
             "range": "stddev: 0.0007276467183444351",
             "extra": "mean: 17.97174072092852 msec\nrounds: 43"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "vincent.sarago@gmail.com",
+            "name": "Vincent Sarago",
+            "username": "vincentsarago"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "1813a96c01687314746a513e2969fff0786a8f73",
+          "message": "Merge pull request #312 from stac-utils/feat/upgrade-docker-image\n\nfeat: upgrade docker image to use wolfi-base and update dependencies",
+          "timestamp": "2026-09-16T08:01:26+02:00",
+          "tree_id": "95cf4d29ac65b628a46ee28a255551242eb9a5a4",
+          "url": "https://github.com/stac-utils/titiler-pgstac/commit/1813a96c01687314746a513e2969fff0786a8f73"
+        },
+        "date": 1789538683667,
+        "tool": "pytest",
+        "benches": [
+          {
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "value": 5.451280351701046,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0029187515693098504",
+            "extra": "mean: 183.443142800013 msec\nrounds: 5"
+          },
+          {
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "value": 12.602911710728751,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0017373061920901115",
+            "extra": "mean: 79.34674327272391 msec\nrounds: 11"
+          },
+          {
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "value": 17.638224187204784,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0018035074792442252",
+            "extra": "mean: 56.695049874999626 msec\nrounds: 16"
+          },
+          {
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "value": 32.045072044989965,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0009446647581721223",
+            "extra": "mean: 31.20604623999725 msec\nrounds: 25"
+          },
+          {
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "value": 48.147360362867104,
+            "unit": "iter/sec",
+            "range": "stddev: 0.00024392299831909724",
+            "extra": "mean: 20.76957059459555 msec\nrounds: 37"
+          },
+          {
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "value": 43.617420488677304,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0004540447227327273",
+            "extra": "mean: 22.926619428574213 msec\nrounds: 35"
+          },
+          {
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "value": 43.060677635475635,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0005295532355232956",
+            "extra": "mean: 23.223043735292908 msec\nrounds: 34"
           }
         ]
       }
