@@ -24,7 +24,6 @@ def CollectionIdParams(
 
     with request.app.state.dbpool.connection() as conn:
         with conn.cursor(row_factory=class_row(model.Search)) as cursor:
-
             metadata = model.Metadata(
                 name=f"Mosaic for '{collection_id}' Collection",
             )
@@ -87,9 +86,7 @@ resp = httpx.get("/searches/{{ search_id }}/info")
             searchInfoExtension(),
         ],
     )
-    app.include_router(
-        searches.router, tags=["STAC Search"], prefix="/mosaic/{search_id}"
-    )
+    app.include_router(searches.router, tags=["STAC Search"], prefix="/mosaic/{search_id}")
     add_search_register_route(
         app,
         prefix="/mosaic",
@@ -118,11 +115,17 @@ In `titiler.pgstac.model.RegisterResponse`, model used in `/register` endpoint, 
 import httpx2 as httpx
 
 # before
-resp = httpx.post("/mosaic/register", body={"collections": ["my-collection"], "filter-lang": "cql-json"})
+resp = httpx.post(
+    "/mosaic/register",
+    body={"collections": ["my-collection"], "filter-lang": "cql-json"},
+)
 assert resp.json()["searchid"]
 
 # now
-resp = httpx.post("/searches/register", body={"collections": ["my-collection"], "filter-lang": "cql-json"})
+resp = httpx.post(
+    "/searches/register",
+    body={"collections": ["my-collection"], "filter-lang": "cql-json"},
+)
 assert resp.json()["id"]
 ```
 
@@ -166,10 +169,7 @@ app.include_router(mosaic.router)
 
 # now
 app = FastAPI()
-mosaic = MosaicTilerFactory(
-    ...,
-    path_dependency=lambda: "aaaaaaaaaaaaaa"
-)
+mosaic = MosaicTilerFactory(..., path_dependency=lambda: "aaaaaaaaaaaaaa")
 app.include_router(mosaic.router)
 ```
 

@@ -77,10 +77,9 @@ jobs:
       - name: Install dependencies
         run: |
           uv sync
-          uv pip install pypgstac==${{ env.PGSTAC_VERSION }}
 
       - name: Launch services
-        run: docker compose up -d tiler-uvicorn
+        run: docker compose up -d app
         env:
           PGSTAC_VERSION: ${{ env.PGSTAC_VERSION }}
 
@@ -89,15 +88,17 @@ jobs:
 
       - name: Ingest Stac Items/Collection
         run: |
-          uv run pypgstac pgready --dsn postgresql://username:password@0.0.0.0:5439/postgis
-          uv run pypgstac load collections benchmark/stac/collection.json --dsn postgresql://username:password@0.0.0.0:5439/postgis --method upsert
-          uv run pypgstac load items benchmark/stac/items.json --dsn postgresql://username:password@0.0.0.0:5439/postgis --method upsert
+          uv run --with pypgstac==${{ env.PGSTAC_VERSION }} pypgstac pgready --dsn postgresql://username:password@0.0.0.0:5439/postgis
+          uv run --with pypgstac==${{ env.PGSTAC_VERSION }} pypgstac load collections benchmark/stac/collection.json --dsn postgresql://username:password@0.0.0.0:5439/postgis --method upsert
+          uv run --with pypgstac==${{ env.PGSTAC_VERSION }} pypgstac load items benchmark/stac/items.json --dsn postgresql://username:password@0.0.0.0:5439/postgis --method upsert
 
       - name: Sleep for 10 seconds
         run: sleep 10s
         shell: bash
 
       - name: Run Benchmark
+        env:
+          PORT: 8081
         run: |
           uv run pytest ./benchmark/benchmarks.py --benchmark-only --benchmark-columns 'min, max, mean, median' --benchmark-json output.json
 

@@ -42,6 +42,7 @@ async def lifespan(app: FastAPI):
     # Close the Connection Pool
     await close_db_connection(app)
 
+
 app = FastAPI(lifespan=lifespan)
 
 AREAS = {
@@ -50,7 +51,9 @@ AREAS = {
 }
 
 
-def search_factory(request: Request, body: RegisterMosaic) -> Tuple[PgSTACSearch, Metadata]:
+def search_factory(
+    request: Request, body: RegisterMosaic
+) -> Tuple[PgSTACSearch, Metadata]:
     authorization = request.headers.get("Authorization")
     scheme, token = get_authorization_scheme_param(authorization)
     payload = jwt.decode(token, algorithms=["HS256"], key="your-256-bit-secret")
@@ -70,11 +73,7 @@ def search_factory(request: Request, body: RegisterMosaic) -> Tuple[PgSTACSearch
     return model.PgSTACSearch(**search), body.metadata
 
 
-mosaic = MosaicTilerFactory(
-    extensions=[
-      searchInfoExtension
-    ]
-)
+mosaic = MosaicTilerFactory(extensions=[searchInfoExtension])
 app.include_router(mosaic.router)
 add_search_register_route(app, search_dependency=search_factory)
 ```
