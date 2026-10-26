@@ -70,7 +70,7 @@ dev = [
     "pytest-postgresql",
     "pytest-benchmark",
     "httpx2",
-    "pypgstac>=0.9.11,<0.10",
+    "pypgstac>=0.9.11,<0.11",
     "owslib",
     "pre-commit",
     "folium",
