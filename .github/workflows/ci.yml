@@ -19,7 +19,7 @@ env:
 
 jobs:
   tests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04  # action-setup-postgis v2 fails on 26.04
     strategy:
       matrix:
         python-version: ['3.11', '3.12', '3.13', '3.14']
@@ -61,7 +61,7 @@ jobs:
 
   benchmark:
     needs: [tests]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04  # action-setup-postgis v2 fails on 26.04
     env:
       PGSTAC_VERSION: '0.9.11'
     steps:
