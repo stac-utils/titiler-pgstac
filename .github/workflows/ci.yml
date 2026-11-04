@@ -11,6 +11,8 @@ on:
       - 'tests/**'
       - 'titiler/**'
       - 'pyproject.toml'
+      - 'uv.lock'
+      - 'Dockerfile'
       - '.github/workflows/ci.yml'
 
   pull_request:
