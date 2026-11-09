@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794229269914,
+  "lastUpdate": 1794238596170,
   "repoUrl": "https://github.com/stac-utils/titiler-pgstac",
   "entries": {
     "TiTiler-pgSTAC Benchmarks": [
@@ -12045,6 +12045,79 @@ window.BENCHMARK_DATA = {
             "unit": "iter/sec",
             "range": "stddev: 0.00105684953350437",
             "extra": "mean: 25.543352281249376 msec\nrounds: 32"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "10154151+lhoupert@users.noreply.github.com",
+            "name": "Loïc Houpert",
+            "username": "lhoupert"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "a017d2c4fcb8c750d60495cac4ea8f1196f6b4c1",
+          "message": "Merge pull request #348 from stac-utils/dependabot/docker/docker-6a732032cd\n\nchore(deps): bump chainguard/wolfi-base from `629d9ac` to `24f549a` in the docker group",
+          "timestamp": "2026-11-09T15:32:50Z",
+          "tree_id": "6c31baa6cfa72e259429e32d83c0aad714fee494",
+          "url": "https://github.com/stac-utils/titiler-pgstac/commit/a017d2c4fcb8c750d60495cac4ea8f1196f6b4c1"
+        },
+        "date": 1794238595089,
+        "tool": "pytest",
+        "benches": [
+          {
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "value": 5.130225189890511,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0067156578776731216",
+            "extra": "mean: 194.92321740000307 msec\nrounds: 5"
+          },
+          {
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "value": 11.195709659125589,
+            "unit": "iter/sec",
+            "range": "stddev: 0.005782866995092878",
+            "extra": "mean: 89.31992972726862 msec\nrounds: 11"
+          },
+          {
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "value": 16.25208139100344,
+            "unit": "iter/sec",
+            "range": "stddev: 0.002792785483184052",
+            "extra": "mean: 61.530580357145126 msec\nrounds: 14"
+          },
+          {
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "value": 28.336318460191727,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0020835237996812686",
+            "extra": "mean: 35.290399541664165 msec\nrounds: 24"
+          },
+          {
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "value": 40.464735924079456,
+            "unit": "iter/sec",
+            "range": "stddev: 0.001396343527245923",
+            "extra": "mean: 24.712875968750048 msec\nrounds: 32"
+          },
+          {
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "value": 35.93358319638501,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0010145327365277106",
+            "extra": "mean: 27.82912003333422 msec\nrounds: 30"
+          },
+          {
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "value": 36.337369026542675,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000898813365915933",
+            "extra": "mean: 27.519879033332018 msec\nrounds: 30"
           }
         ]
       }
