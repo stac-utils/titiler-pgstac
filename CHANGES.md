@@ -1,7 +1,5 @@
 # Release Notes
 
-## Unreleased
-
 ## 3.2.0 (2026-09-15)
 
 * update titiler-* requirement to `>=2.2.1,<2.4`
