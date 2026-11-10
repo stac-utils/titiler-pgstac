@@ -1366,6 +1366,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development - Contributing
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -1382,6 +1400,36 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#commit-messages-and-releases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commit messages and releases
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1461,6 +1509,25 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#commit-messages-and-releases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commit messages and releases
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1495,6 +1562,13 @@ uv<span class="w"> </span>sync
 <p>This repo is set to use <code>pre-commit</code> to run <em>isort</em>, <em>flake8</em>, <em>pydocstring</em>, <em>black</em> ("uncompromising Python code formatter") and mypy when committing new code.</p>
 <div class="highlight"><pre><span></span><code>uv<span class="w"> </span>run<span class="w"> </span>pre-commit<span class="w"> </span>run<span class="w"> </span>--all-files
 </code></pre></div>
+<h2 id="commit-messages-and-releases">Commit messages and releases<a class="headerlink" href="#commit-messages-and-releases" title="Permanent link">&para;</a></h2>
+<p>Releases are automated with <a href="https://github.com/googleapis/release-please">release-please</a>, which reads the <a href="https://www.conventionalcommits.org/">Conventional Commit</a> messages merged to <code>main</code>. Use them for your commits and your PR title, e.g. <code>fix: handle empty collections</code> or <code>feat: add a filter option</code>:</p>
+<ul>
+<li><code>fix:</code>, <code>perf:</code>, <code>deps:</code>, <code>revert:</code> and <code>docs:</code> lead to a patch release, <code>feat:</code> to a minor one, and a breaking change (<code>feat!:</code> or a <code>BREAKING CHANGE:</code> footer) to a major one.</li>
+<li><code>chore:</code>, <code>ci:</code>, <code>test:</code>, <code>build:</code>, <code>refactor:</code> and <code>style:</code> don't trigger a release on their own.</li>
+<li>release-please keeps a release PR open with the next version; merging it tags the release and publishes it. CHANGES.md is still written by hand.</li>
+</ul>
 
 
 
