@@ -1,0 +1,21 @@
+{
+  "packages": {
+    ".": {
+      "release-type": "python",
+      "skip-changelog": true,
+      "package-name": "titiler-pgstac",
+      "changelog-path": "CHANGES.md",
+      "include-v-in-tag": false,
+      "include-v-in-release-name": false,
+      "include-component-in-tag": false,
+      "extra-files": [
+        { "type": "generic", "path": "titiler/pgstac/__init__.py" },
+        {
+          "type": "toml",
+          "path": "pyproject.toml",
+          "jsonpath": "$.tool.bumpversion.current_version"
+        }
+      ]
+    }
+  }
+}
