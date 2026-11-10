@@ -1567,7 +1567,8 @@ uv<span class="w"> </span>sync
 <ul>
 <li><code>fix:</code>, <code>perf:</code>, <code>deps:</code>, <code>revert:</code> and <code>docs:</code> lead to a patch release, <code>feat:</code> to a minor one, and a breaking change (<code>feat!:</code> or a <code>BREAKING CHANGE:</code> footer) to a major one.</li>
 <li><code>chore:</code>, <code>ci:</code>, <code>test:</code>, <code>build:</code>, <code>refactor:</code> and <code>style:</code> don't trigger a release on their own.</li>
-<li>release-please keeps a release PR open with the next version; merging it tags the release and publishes it. CHANGES.md is still written by hand.</li>
+<li>release-please keeps a release PR open with the next version; merging it tags the release and publishes it.</li>
+<li>release-please also writes CHANGES.md from these messages, so don't edit it in your PR. Maintainers can adjust the wording in the release PR just before merging it.</li>
 </ul>
 
 
