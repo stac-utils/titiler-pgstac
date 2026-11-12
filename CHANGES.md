@@ -1,5 +1,13 @@
 # Release Notes
 
+## [3.2.1](https://github.com/stac-utils/titiler-pgstac/compare/3.2.0...3.2.1) (2026-11-12)
+
+
+### Bug Fixes
+
+* **deps:** bump chainguard/wolfi-base ([e62cc2f](https://github.com/stac-utils/titiler-pgstac/commit/e62cc2f4cdb09726cc2b5c9c622b3658d00f78b7))
+* **deps:** release the dependency and base-image updates merged since 3.2.0 ([172b93c](https://github.com/stac-utils/titiler-pgstac/commit/172b93c2f8316a500226c44fbfd6409fae2a8959))
+
 ## 3.2.0 (2026-09-15)
 
 * update titiler-* requirement to `>=2.2.1,<2.4`
