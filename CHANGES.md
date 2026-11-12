@@ -1,13 +1,11 @@
 # Release Notes
 
-## [3.2.1](https://github.com/stac-utils/titiler-pgstac/compare/3.2.0...3.2.1) (2026-11-10)
+## [3.2.1](https://github.com/stac-utils/titiler-pgstac/compare/3.2.0...3.2.1) (2026-11-12)
 
 
 ### Bug Fixes
 
 * **deps:** bump chainguard/wolfi-base ([e62cc2f](https://github.com/stac-utils/titiler-pgstac/commit/e62cc2f4cdb09726cc2b5c9c622b3658d00f78b7))
-* **deps:** bump chainguard/wolfi-base from `24f549a` to `b7787f1` in the docker group ([3526460](https://github.com/stac-utils/titiler-pgstac/commit/352646099e98a45e37231ec7e1057c1cb204ca12))
-* **deps:** release the dependency and base-image updates merged since 3.2.0 ([71943d2](https://github.com/stac-utils/titiler-pgstac/commit/71943d2e080dffffed44a65fd19b127ebe397f37))
 * **deps:** release the dependency and base-image updates merged since 3.2.0 ([172b93c](https://github.com/stac-utils/titiler-pgstac/commit/172b93c2f8316a500226c44fbfd6409fae2a8959))
 
 ## 3.2.0 (2026-09-15)
