@@ -21,7 +21,7 @@ env:
 
 jobs:
   tests:
-    runs-on: ubuntu-24.04  # action-setup-postgis v2 fails on 26.04
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: ['3.11', '3.12', '3.13', '3.14']
@@ -36,8 +36,15 @@ jobs:
           enable-cache: true
           python-version: ${{ matrix.python-version }}
 
-      - name: install lib postgres
-        uses: nyurik/action-setup-postgis@228cfe4dd41aad01801a0bdc767040e5024fff1d # v2
+      - name: Install PostgreSQL and PostGIS
+        env:
+          PG_MAJOR: '16'
+        run: |
+          curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo gpg --dearmor --yes -o /usr/share/keyrings/postgresql.gpg
+          echo "deb [signed-by=/usr/share/keyrings/postgresql.gpg] https://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list >/dev/null
+          sudo apt-get update
+          sudo apt-get install -y "postgresql-${PG_MAJOR}" "postgresql-${PG_MAJOR}-postgis-3"
+          echo "/usr/lib/postgresql/${PG_MAJOR}/bin" >> "$GITHUB_PATH"
 
       - name: Install dependencies
         run: |
@@ -63,7 +70,7 @@ jobs:
 
   benchmark:
     needs: [tests]
-    runs-on: ubuntu-24.04  # action-setup-postgis v2 fails on 26.04
+    runs-on: ubuntu-latest
     env:
       PGSTAC_VERSION: '0.9.11'
     steps:
@@ -85,8 +92,15 @@ jobs:
         env:
           PGSTAC_VERSION: ${{ env.PGSTAC_VERSION }}
 
-      - name: install lib postgres
-        uses: nyurik/action-setup-postgis@228cfe4dd41aad01801a0bdc767040e5024fff1d # v2
+      - name: Install PostgreSQL and PostGIS
+        env:
+          PG_MAJOR: '16'
+        run: |
+          curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo gpg --dearmor --yes -o /usr/share/keyrings/postgresql.gpg
+          echo "deb [signed-by=/usr/share/keyrings/postgresql.gpg] https://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list >/dev/null
+          sudo apt-get update
+          sudo apt-get install -y "postgresql-${PG_MAJOR}" "postgresql-${PG_MAJOR}-postgis-3"
+          echo "/usr/lib/postgresql/${PG_MAJOR}/bin" >> "$GITHUB_PATH"
 
       - name: Ingest Stac Items/Collection
         run: |
