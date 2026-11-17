@@ -5757,7 +5757,7 @@ dev = [
     { name = "pre-commit" },
     { name = "psycopg", extras = ["pool"] },
     { name = "pyinstrument" },
-    { name = "pypgstac", specifier = ">=0.9.11,<0.11" },
+    { name = "pypgstac", specifier = ">=0.10.1,<0.11" },
     { name = "pytest" },
     { name = "pytest-asyncio" },
     { name = "pytest-benchmark" },
