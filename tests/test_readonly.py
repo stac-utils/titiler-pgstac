@@ -9,7 +9,6 @@ import pytest
 from fastapi import FastAPI
 from psycopg.rows import class_row, dict_row
 from pypgstac.db import PgstacDB
-from pypgstac.load import Loader
 from pypgstac.migrate import Migrate
 from starlette.requests import Request
 from starlette.testclient import TestClient
@@ -24,14 +23,16 @@ items = os.path.join(DATA_DIR, "noaa-eri-nashville2020.json")
 
 @pytest.fixture(
     params=[
-        True,
-        False,
+        (read_only, pgstac_version)
+        for pgstac_version in ["0.9.11", "0.10.1"]
+        for read_only in [True, False]
     ],
+    ids=lambda param: f"{param[1]}-{'read_only' if param[0] else 'read_write'}",
     scope="session",
 )
 def pgstac_ro(request, database):
     """Create PgSTAC fixture."""
-    read_only = request.param
+    read_only, pgstac_version = request.param
 
     connection = f"postgresql://{database.user}:{quote(database.password)}@{database.host}:{database.port}/{database.dbname}"
     with psycopg.connect(connection) as conn:
@@ -40,12 +41,20 @@ def pgstac_ro(request, database):
 
     with PgstacDB(dsn=connection) as db:
         migrator = Migrate(db)
-        version = migrator.run_migration()
+        version = migrator.run_migration(pgstac_version)
         assert version
 
-        loader = Loader(db=db)
-        loader.load_collections(collection)
-        loader.load_items(items)
+    # Load with SQL, as conftest.py does: pypgstac's Loader refuses a database of another minor version
+    with psycopg.connect(connection) as conn:
+        with conn.cursor() as cur:
+            with open(collection) as f:
+                for line in f:
+                    cur.execute(
+                        "SELECT * FROM pgstac.create_collection(%s::jsonb);", (line,)
+                    )
+            with open(items) as f:
+                for line in f:
+                    cur.execute("SELECT * FROM pgstac.create_item(%s::jsonb);", (line,))
 
     # register one search
     with psycopg.connect(
