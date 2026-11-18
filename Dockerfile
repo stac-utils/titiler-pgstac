@@ -12,9 +12,11 @@ ENV PYTHONUNBUFFERED=1
 #              libstdc++.so.6 in DT_NEEDED and auditwheel does not vendor it.
 #   bash, tzdata, curl  parity with the old Debian base: /bin/sh is busybox,
 #              Wolfi ships no /usr/share/zoneinfo, curl is for in-pod debugging.
+#   libpq-18   for psycopg[c], compiled in the builder stage: an OS package,
+#              so Wolfi patches it. Same major as postgresql-18-dev below.
 RUN apk add --no-cache \
       python-${PYTHON_VERSION} \
-      libstdc++ bash tzdata curl libexpat1
+      libstdc++ bash tzdata curl libexpat1 libpq-18
 
 # uv as a pass-through stage rather than a direct COPY --from=<image>:
 # Dependabot only parses FROM lines (dependabot/dependabot-core#5103), so this
@@ -25,6 +27,10 @@ FROM ghcr.io/astral-sh/uv:0.13.8@sha256:5cc1805e2426484abca4ad46ea783bab281fdb22
 FROM base AS builder
 
 ARG PYTHON_VERSION
+
+# Builder only, to compile psycopg[c] from its sdist: C toolchain, Python
+# headers, and libpq headers + pg_config (via postgresql-18-dev).
+RUN apk add --no-cache build-base python-${PYTHON_VERSION}-dev postgresql-18-dev
 
 # Install uv
 COPY --from=uv /uv /uvx /usr/local/bin/
@@ -51,7 +57,7 @@ ENV UV_LINK_MODE=copy \
 
 # Copy project metadata and dependencies
 COPY pyproject.toml uv.lock README.md LICENSE ./
-RUN uv sync --frozen --no-dev --group server --extra psycopg-binary --extra metrics --extra telemetry --no-install-project
+RUN uv sync --frozen --no-dev --group server --extra psycopg-c --extra metrics --extra telemetry --no-install-project
 
 # Copy and install runtime source code to the builder image
 COPY titiler/ titiler/
@@ -77,6 +83,9 @@ ENV PATH="/opt/venv/bin:${PATH}"
 # Copy virtual environment and its interpreter from builder
 COPY --from=builder /opt/venv /opt/venv
 COPY --from=builder /opt/uv-python /opt/uv-python
+
+# Fail the build if psycopg is not the C implementation or cannot load libpq
+RUN python -c "import psycopg; assert psycopg.pq.__impl__ == 'c', psycopg.pq.__impl__; print('libpq', psycopg.pq.version())"
 
 WORKDIR /tmp
 
