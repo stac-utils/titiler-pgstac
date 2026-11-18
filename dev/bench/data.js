@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794997656573,
+  "lastUpdate": 1795034772433,
   "repoUrl": "https://github.com/stac-utils/titiler-pgstac",
   "entries": {
     "TiTiler-pgSTAC Benchmarks": [
@@ -12775,6 +12775,79 @@ window.BENCHMARK_DATA = {
             "unit": "iter/sec",
             "range": "stddev: 0.00031967007024550986",
             "extra": "mean: 13.825742036361921 msec\nrounds: 55"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "10154151+lhoupert@users.noreply.github.com",
+            "name": "Loïc Houpert",
+            "username": "lhoupert"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "20abd84b9cc4e6de513214e3b87c07ec540b866f",
+          "message": "fix(docker): link psycopg to Wolfi's libpq instead of the binary wheel (#362)",
+          "timestamp": "2026-11-18T21:41:19+01:00",
+          "tree_id": "348ce6ff39e27784ee0721a04b849fd74bfab568",
+          "url": "https://github.com/stac-utils/titiler-pgstac/commit/20abd84b9cc4e6de513214e3b87c07ec540b866f"
+        },
+        "date": 1795034771647,
+        "tool": "pytest",
+        "benches": [
+          {
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[0/0/0]",
+            "value": 5.047839526096414,
+            "unit": "iter/sec",
+            "range": "stddev: 0.006085364267771674",
+            "extra": "mean: 198.1045543999926 msec\nrounds: 5"
+          },
+          {
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[1/1/1]",
+            "value": 11.864992043703442,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0018967968464915289",
+            "extra": "mean: 84.2815567272701 msec\nrounds: 11"
+          },
+          {
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[2/2/1]",
+            "value": 16.29793768775697,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0029630093381082007",
+            "extra": "mean: 61.35745633333727 msec\nrounds: 15"
+          },
+          {
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[3/5/0]",
+            "value": 28.923238084521948,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0006695470681224291",
+            "extra": "mean: 34.574275434780674 msec\nrounds: 23"
+          },
+          {
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[4/5/9]",
+            "value": 43.811423177179776,
+            "unit": "iter/sec",
+            "range": "stddev: 0.00048005083318994866",
+            "extra": "mean: 22.82509737142878 msec\nrounds: 35"
+          },
+          {
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[5/16/5]",
+            "value": 39.221384025324035,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0009013612884537237",
+            "extra": "mean: 25.496295575758648 msec\nrounds: 33"
+          },
+          {
+            "name": "benchmark/benchmarks.py::test_benchmark_tile[6/43/31]",
+            "value": 39.19327166165835,
+            "unit": "iter/sec",
+            "range": "stddev: 0.00042558363834620233",
+            "extra": "mean: 25.51458343750035 msec\nrounds: 32"
           }
         ]
       }
