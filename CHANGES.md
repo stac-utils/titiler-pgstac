@@ -1,5 +1,14 @@
 # Release Notes
 
+## [3.2.2](https://github.com/stac-utils/titiler-pgstac/compare/3.2.1...3.2.2) (2026-11-18)
+
+
+### Bug Fixes
+
+* **deps:** bump soupsieve from 2.9.2 to 4.0 in the security group across 1 directory ([#358](https://github.com/stac-utils/titiler-pgstac/issues/358)) ([2f93867](https://github.com/stac-utils/titiler-pgstac/commit/2f938672b44e8904d1d30da4e44ec469c54684fa))
+* **deps:** bump the docker group with 2 updates ([#359](https://github.com/stac-utils/titiler-pgstac/issues/359)) ([8e2f303](https://github.com/stac-utils/titiler-pgstac/commit/8e2f30363fb6ff1292380c9cbcc3415c643a5b05))
+* **docker:** link psycopg to Wolfi's libpq instead of the binary wheel ([#362](https://github.com/stac-utils/titiler-pgstac/issues/362)) ([20abd84](https://github.com/stac-utils/titiler-pgstac/commit/20abd84b9cc4e6de513214e3b87c07ec540b866f))
+
 ## [3.2.1](https://github.com/stac-utils/titiler-pgstac/compare/3.2.0...3.2.1) (2026-11-12)
 
 
