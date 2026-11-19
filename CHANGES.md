@@ -2,6 +2,7 @@
 
 ## [3.2.2](https://github.com/stac-utils/titiler-pgstac/compare/3.2.1...3.2.2) (2026-11-18)
 
+* add `pgstac==0.10.1` support
 
 ### Bug Fixes
 
