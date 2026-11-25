@@ -1,5 +1,14 @@
 # Release Notes
 
+## [3.2.3](https://github.com/stac-utils/titiler-pgstac/compare/3.2.2...3.2.3) (2026-11-25)
+
+
+### Bug Fixes
+
+* **deps:** bump the docker group with 2 updates ([#363](https://github.com/stac-utils/titiler-pgstac/issues/363)) ([1a4d570](https://github.com/stac-utils/titiler-pgstac/commit/1a4d5703ba7f77712c0fbafe1888cd09dba3a6aa))
+* **deps:** bump the docker group with 2 updates ([#369](https://github.com/stac-utils/titiler-pgstac/issues/369)) ([561315c](https://github.com/stac-utils/titiler-pgstac/commit/561315cf1d6a59da83bef5b2a3475b5f75779f13))
+* **deps:** update rio-tiler version ([#366](https://github.com/stac-utils/titiler-pgstac/issues/366)) ([68fe992](https://github.com/stac-utils/titiler-pgstac/commit/68fe992e7afda3798908fc766ab9d0362b3e83f7))
+
 ## [3.2.2](https://github.com/stac-utils/titiler-pgstac/compare/3.2.1...3.2.2) (2026-11-18)
 
 * add `pgstac==0.10.1` support
