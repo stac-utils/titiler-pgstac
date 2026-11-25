@@ -1,4 +1,4 @@
-FROM cgr.dev/chainguard/wolfi-base:latest@sha256:be019c1c74fe69204a42c4e10bc4d886a49bf5403ffa74374ef7baa408fc9a26 AS base
+FROM cgr.dev/chainguard/wolfi-base:latest@sha256:28c39be5a5e1e9b85081c10740e8495f6518a865b23bc6a486637c4b21e74b43 AS base
 
 ARG PYTHON_VERSION=3.14
 
@@ -21,7 +21,7 @@ RUN apk add --no-cache \
 # uv as a pass-through stage rather than a direct COPY --from=<image>:
 # Dependabot only parses FROM lines (dependabot/dependabot-core#5103), so this
 # keeps the version pinned *and* auto-updated by the docker ecosystem.
-FROM ghcr.io/astral-sh/uv:0.13.9@sha256:d3b601f0c7b118bc1753febf7c41cc80981df678445e0254284eecf84db79a7d AS uv
+FROM ghcr.io/astral-sh/uv:0.13.10@sha256:a3ea1357342c1a4bf9a0c53a3deb1b55379aefa037338d8113d5771efa01774f AS uv
 
 # Build stage
 FROM base AS builder
